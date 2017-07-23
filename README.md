@@ -4,7 +4,7 @@
 [![Software License](https://img.shields.io/badge/license-GPL-brightgreen.svg?style=flat)](LICENSE)
 
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/XoopsModules25x/efqdirectory.svg?style=flat)](https://scrutinizer-ci.com/g/XoopsModules25x/efqdirectory/?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0de0f38c166432db7e482c7897ea257)](https://www.codacy.com/app/mambax7/efqdirectory_2)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30de0f38c166432db7e482c7897ea257)](https://www.codacy.com/app/mambax7/efqdirectory_2)
 [![Code Climate](https://img.shields.io/codeclimate/github/XoopsModules25x/efqdirectory.svg?style=flat)](https://codeclimate.com/github/XoopsModules25x/efqdirectory)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/350cffbb-7a63-4346-a443-1c52eace554a/mini.png)](https://insight.sensiolabs.com/projects/350cffbb-7a63-4346-a443-1c52eace554a)
 [![Latest Pre-Release](https://img.shields.io/github/tag/XoopsModules25x/efqdirectory.svg?style=flat)](https://github.com/XoopsModules25x/efqdirectory/tags/)
