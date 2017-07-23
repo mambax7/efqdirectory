@@ -154,7 +154,7 @@ var centerPoint = new GLatLng(40.078071,-101.689453);
 
 function load() {
 	doLoad();
-	$jsPointsArray
+	$jsPointsArray;
 	addMarkers();
 }
 
