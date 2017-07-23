@@ -41,9 +41,9 @@
  * @copyright EFQ Consultancy (c) 2007
  * @version   1.1.0
  */
-class efqXdirHandler extends xoopsObjectHandler
+class efqXdirHandler extends XoopsObjectHandler
 {
-    public $db; //Database reference
+//    public $db; //Database reference
     public $objXdir;
     public $errors; //array();
     public $categories; //array();

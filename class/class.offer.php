@@ -80,7 +80,7 @@ class efqSubscriptionOffer extends XoopsObject
  */
 class efqSubscriptionOfferHandler extends xoopsObjectHandler
 {
-    public $db; //Database reference
+//    public $db; //Database reference
     public $objOffer; // reference to object
 
     /**

@@ -78,9 +78,9 @@ class efqDataType extends XoopsObject
  * @copyright EFQ Consultancy (c) 2007
  * @version   1.1.0
  */
-class efqDataTypeHandler extends xoopsObjectHandler
+class efqDataTypeHandler extends XoopsObjectHandler
 {
-    public $db; //Database reference
+//    public $db; //Database reference
     public $objDataType; // reference to object
 
     /**

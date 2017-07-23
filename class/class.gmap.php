@@ -269,7 +269,7 @@ EOH;
  */
 class efqGmapHandler extends XoopsObjectHandler
 {
-    public $db;
+//    public $db;
 
     /**
      * efqGmapHandler constructor.
