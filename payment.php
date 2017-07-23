@@ -25,5 +25,5 @@
     <input type="submit" value=" Pay ">
 </form>
 
-</head>
+</body>
 </html>
