@@ -123,3 +123,16 @@ define('_MI_EFQDIR_LISTING_APPROVE_NOTIFY', 'Listing Approved');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYCAP', 'Notify me when this listing is approved.');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYDSC', 'Receive notification when this listing is approved.');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-notify : Listing approved');
+
+//Help
+define('_MI_EFQDIR_DIRNAME', basename(dirname(dirname(__DIR__))));
+define('_MI_EFQDIR_HELP_HEADER', __DIR__.'/help/helpheader.html');
+define('_MI_EFQDIR_BACK_2_ADMIN', 'Back to Administration of ');
+define('_MI_EFQDIR_OVERVIEW', 'Overview');
+
+//define('_MI_EFQDIR_HELP_DIR', __DIR__);
+
+//help multi-page
+define('_MI_EFQDIR_DISCLAIMER', 'Disclaimer');
+define('_MI_EFQDIR_LICENSE', 'License');
+define('_MI_EFQDIR_SUPPORT', 'Support');

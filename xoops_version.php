@@ -34,7 +34,6 @@ $modversion['official']      = 0;
 $modversion['image']         = 'assets/images/logoModule.png';
 $modversion['dirname']       = $moduleDirName;
 
-
 $modversion['modicons16'] = 'assets/images/icons/16';
 $modversion['modicons32'] = 'assets/images/icons/32';
 
@@ -87,6 +86,14 @@ $modversion['hasAdmin']    = 1;
 $modversion['system_menu'] = 1;
 $modversion['adminindex']  = 'admin/main.php';
 $modversion['adminmenu']   = 'admin/menu.php';
+
+// ------------------- Help files ------------------- //
+$modversion['helpsection'] = array(
+    ['name' => _MI_EFQDIR_OVERVIEW, 'link' => 'page=help'],
+    ['name' => _MI_EFQDIR_DISCLAIMER, 'link' => 'page=disclaimer'],
+    ['name' => _MI_EFQDIR_LICENSE, 'link' => 'page=license'],
+    ['name' => _MI_EFQDIR_SUPPORT, 'link' => 'page=support'],
+);
 
 // Blocks
 $modversion['blocks'][1]['file']        = 'efqdiralpha1_menu.php';
@@ -204,12 +211,12 @@ $modversion['config'][5]['formtype']    = 'yesno';
 $modversion['config'][5]['valuetype']   = 'int';
 $modversion['config'][5]['default']     = 0;
 
-$modversion['config'][6]['name'] = 'autoapproveadmin';
-$modversion['config'][6]['title'] = '_MI_EFQDIR_AUTOAPPROVEADMIN';
+$modversion['config'][6]['name']        = 'autoapproveadmin';
+$modversion['config'][6]['title']       = '_MI_EFQDIR_AUTOAPPROVEADMIN';
 $modversion['config'][6]['description'] = '_MI_EFQDIR_AUTOAPPROVEADMINDSC';
-$modversion['config'][6]['formtype'] = 'yesno';
-$modversion['config'][6]['valuetype'] = 'int';
-$modversion['config'][6]['default'] = 1;
+$modversion['config'][6]['formtype']    = 'yesno';
+$modversion['config'][6]['valuetype']   = 'int';
+$modversion['config'][6]['default']     = 1;
 
 /*$modversion['config'][6]['name'] = 'usedestmod';
 $modversion['config'][6]['title'] = '_MI_EFQDIR_USEDESTMOD';
@@ -333,54 +340,54 @@ $modversion['config'][22]['formtype']    = 'yesno';
 $modversion['config'][22]['valuetype']   = 'int';
 $modversion['config'][22]['default']     = 0;
 
-$modversion['config'][23]['name'] = 'catimagemaxsize';
-$modversion['config'][23]['title'] = '_MI_EFQDIR_CAT_IMGMAXSIZE';
+$modversion['config'][23]['name']        = 'catimagemaxsize';
+$modversion['config'][23]['title']       = '_MI_EFQDIR_CAT_IMGMAXSIZE';
 $modversion['config'][23]['description'] = '_MI_EFQDIR_CAT_IMGMAXSIZE_DSC';
-$modversion['config'][23]['formtype'] = 'textbox';
-$modversion['config'][23]['valuetype'] = 'int';
-$modversion['config'][23]['default'] = 100000;
+$modversion['config'][23]['formtype']    = 'textbox';
+$modversion['config'][23]['valuetype']   = 'int';
+$modversion['config'][23]['default']     = 100000;
 
-$modversion['config'][24]['name'] = 'catimagemaxwidth';
-$modversion['config'][24]['title'] = '_MI_EFQDIR_CAT_IMGMAXWIDTH';
+$modversion['config'][24]['name']        = 'catimagemaxwidth';
+$modversion['config'][24]['title']       = '_MI_EFQDIR_CAT_IMGMAXWIDTH';
 $modversion['config'][24]['description'] = '_MI_EFQDIR_CAT_IMGMAXWIDTH_DSC';
-$modversion['config'][24]['formtype'] = 'textbox';
-$modversion['config'][24]['valuetype'] = 'int';
-$modversion['config'][24]['default'] = 50;
+$modversion['config'][24]['formtype']    = 'textbox';
+$modversion['config'][24]['valuetype']   = 'int';
+$modversion['config'][24]['default']     = 50;
 
-$modversion['config'][25]['name'] = 'catimagemaxheight';
-$modversion['config'][25]['title'] = '_MI_EFQDIR_CAT_IMGMAXHEIGHT';
+$modversion['config'][25]['name']        = 'catimagemaxheight';
+$modversion['config'][25]['title']       = '_MI_EFQDIR_CAT_IMGMAXHEIGHT';
 $modversion['config'][25]['description'] = '_MI_EFQDIR_CAT_IMGMAXHEIGHT_DSC';
-$modversion['config'][25]['formtype'] = 'textbox';
-$modversion['config'][25]['valuetype'] = 'int';
-$modversion['config'][25]['default'] = 50;
+$modversion['config'][25]['formtype']    = 'textbox';
+$modversion['config'][25]['valuetype']   = 'int';
+$modversion['config'][25]['default']     = 50;
 
-$modversion['config'][26]['name'] = 'dirimagemaxsize';
-$modversion['config'][26]['title'] = '_MI_EFQDIR_DIR_IMGMAXSIZE';
+$modversion['config'][26]['name']        = 'dirimagemaxsize';
+$modversion['config'][26]['title']       = '_MI_EFQDIR_DIR_IMGMAXSIZE';
 $modversion['config'][26]['description'] = '_MI_EFQDIR_DIR_IMGMAXSIZE_DSC';
-$modversion['config'][26]['formtype'] = 'textbox';
-$modversion['config'][26]['valuetype'] = 'int';
-$modversion['config'][26]['default'] = 100000;
+$modversion['config'][26]['formtype']    = 'textbox';
+$modversion['config'][26]['valuetype']   = 'int';
+$modversion['config'][26]['default']     = 100000;
 
-$modversion['config'][27]['name'] = 'dirimagemaxwidth';
-$modversion['config'][27]['title'] = '_MI_EFQDIR_DIR_IMGMAXWIDTH';
+$modversion['config'][27]['name']        = 'dirimagemaxwidth';
+$modversion['config'][27]['title']       = '_MI_EFQDIR_DIR_IMGMAXWIDTH';
 $modversion['config'][27]['description'] = '_MI_EFQDIR_DIR_IMGMAXWIDTH_DSC';
-$modversion['config'][27]['formtype'] = 'textbox';
-$modversion['config'][27]['valuetype'] = 'int';
-$modversion['config'][27]['default'] = 50;
+$modversion['config'][27]['formtype']    = 'textbox';
+$modversion['config'][27]['valuetype']   = 'int';
+$modversion['config'][27]['default']     = 50;
 
-$modversion['config'][28]['name'] = 'dirimagemaxheight';
-$modversion['config'][28]['title'] = '_MI_EFQDIR_DIR_IMGMAXHEIGHT';
+$modversion['config'][28]['name']        = 'dirimagemaxheight';
+$modversion['config'][28]['title']       = '_MI_EFQDIR_DIR_IMGMAXHEIGHT';
 $modversion['config'][28]['description'] = '_MI_EFQDIR_DIR_IMGMAXHEIGHT_DSC';
-$modversion['config'][28]['formtype'] = 'textbox';
-$modversion['config'][28]['valuetype'] = 'int';
-$modversion['config'][28]['default'] = 50;
+$modversion['config'][28]['formtype']    = 'textbox';
+$modversion['config'][28]['valuetype']   = 'int';
+$modversion['config'][28]['default']     = 50;
 
-$modversion['config'][29]['name'] = 'imagemaxsize';
-$modversion['config'][29]['title'] = '_MI_EFQDIR_IMGMAXSIZE';
+$modversion['config'][29]['name']        = 'imagemaxsize';
+$modversion['config'][29]['title']       = '_MI_EFQDIR_IMGMAXSIZE';
 $modversion['config'][29]['description'] = '_MI_EFQDIR_IMGMAXSIZE_DSC';
-$modversion['config'][29]['formtype'] = 'textbox';
-$modversion['config'][29]['valuetype'] = 'int';
-$modversion['config'][29]['default'] = 100000;
+$modversion['config'][29]['formtype']    = 'textbox';
+$modversion['config'][29]['valuetype']   = 'int';
+$modversion['config'][29]['default']     = 100000;
 
 // Notification
 $modversion['hasNotification'] = 0;
