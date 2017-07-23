@@ -72,7 +72,7 @@ foreach ($coupons as $catid => $category) {
         }
         $output .= "<tr class='" . $class . '\'>
             <td>';
-        $output .= '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/addcoupon.php?couponid=' . $coupon['couponid'] . '"><img src="' . XOOPS_URL . '/modules/' . $mydirname . '/images/editicon.gif" alt="' . _MD_EDITCOUPON . '"></a>
+        $output .= '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/addcoupon.php?couponid=' . $coupon['couponid'] . '"><img src="' . XOOPS_URL . '/modules/' . $mydirname . '/assets/images/editicon.gif" alt="' . _MD_EDITCOUPON . '"></a>
             <a href="' . XOOPS_URL . '/modules/' . $moddir . '/singlelink.php?lid=' . $coupon['lid'] . '">' . $coupon['linkTitle'] . '</a><br>
             <br>
             ' . _MD_PUBLISHEDON . ' ' . $coupon['publish'];

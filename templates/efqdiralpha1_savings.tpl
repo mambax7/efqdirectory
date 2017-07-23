@@ -6,9 +6,9 @@
       <{foreach item=coupon from=$coupons}>
             <tr class='<{cycle values=odd,even}>'>
                 <td>
-                    <div><{if $coupon.logourl}> <img src="<{$xoops_url}>/modules/<{$moddir}>/images/shots/<{$coupon.logourl}>" border="0">
+                    <div><{if $coupon.logourl}> <img src="<{$xoops_url}>/modules/<{$moddir}>/assets/images/shots/<{$coupon.logourl}>" border="0">
         <{/if}>&nbsp;&nbsp;
-        <div> <{if $admin}> <a href="<{$xoops_url}>/modules/<{$moddir}>/addcoupon.php?couponid=<{$coupon.couponid}>&item=<{$coupon.itemid}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/images/editicon.gif" alt="<{$smarty.const._MD_EDITCOUPON}>"></a>
+        <div> <{if $admin}> <a href="<{$xoops_url}>/modules/<{$moddir}>/addcoupon.php?couponid=<{$coupon.couponid}>&item=<{$coupon.itemid}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/assets/images/editicon.gif" alt="<{$smarty.const._MD_EDITCOUPON}>"></a>
           <{/if}> <a href="<{$xoops_url}>/modules/<{$moddir}>/listing.php?item=<{$coupon.itemid}>"><{$itemtitle}></a><br>
           <br>
 
@@ -18,7 +18,7 @@
       </div>
                     </td>
 
-    <td> <{$coupon.heading}><a href="javascript:openWithSelfMain('<{$xoops_url}>/modules/<{$moddir}>/printcoupon.php?coupid=<{$coupon.couponid}>', 'print', 625, 380);">&nbsp;&nbsp;<img src="<{$xoops_url}>/modules/<{$moddir}>/images/print.png" alt="<{$smarty.const._MD_PRINTERFRIENDLY}>"></a>
+    <td> <{$coupon.heading}><a href="javascript:openWithSelfMain('<{$xoops_url}>/modules/<{$moddir}>/printcoupon.php?coupid=<{$coupon.couponid}>', 'print', 625, 380);">&nbsp;&nbsp;<img src="<{$xoops_url}>/modules/<{$moddir}>/assets/images/print.png" alt="<{$smarty.const._MD_PRINTERFRIENDLY}>"></a>
       <br>
       <br>
                     <{$coupon.descr}>

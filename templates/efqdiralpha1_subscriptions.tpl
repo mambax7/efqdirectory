@@ -22,10 +22,10 @@
             <td><{$active_orders.paymentstatus}></td>
             <td>
                 <{if $active_orders.terminate_on == false}>
-                <a href="<{$active_orders.renewal_url}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/images/renew.gif" title="<{$lang_renew_subscription}>" alt="<{$lang_renew_subscription_alt}>"></a>
+                <a href="<{$active_orders.renewal_url}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/assets/images/renew.gif" title="<{$lang_renew_subscription}>" alt="<{$lang_renew_subscription_alt}>"></a>
                 <{/if}>
                 <{if $active_orders.terminate_on}>
-                <a href="<{$active_orders.terminate_url}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/images/terminate.png" title="<{$lang_terminate_order}>" alt="<{$lang_terminate_order_alt}>"></a>
+                <a href="<{$active_orders.terminate_url}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/assets/images/terminate.png" title="<{$lang_terminate_order}>" alt="<{$lang_terminate_order_alt}>"></a>
                 <{/if}>
             </td>
           </tr>

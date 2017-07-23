@@ -120,9 +120,9 @@ function newlinkgraphic($time, $status)
     $startdate = (time() - (86400 * $count));
     if ($startdate < $time) {
         if ($status == 2) {
-            $new = '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/images/newred.gif\" alt=\"" . _MD_NEWTHISWEEK . '">';
+            $new = '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/assets/images/newred.gif\" alt=\"" . _MD_NEWTHISWEEK . '">';
         } elseif ($status == 3) {
-            $new = '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/images/update.gif\" alt=\"" . _MD_UPTHISWEEK . '">';
+            $new = '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/assets/images/update.gif\" alt=\"" . _MD_UPTHISWEEK . '">';
         }
     }
 
@@ -133,7 +133,7 @@ function popgraphic($hits)
 {
     global $xoopsModuleConfig, $moddir;
     if ($hits >= $xoopsModuleConfig['popular']) {
-        return '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/images/pop.gif\" alt=\"" . _MD_POPULAR . '">';
+        return '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/assets/images/pop.gif\" alt=\"" . _MD_POPULAR . '">';
     }
 
     return '';

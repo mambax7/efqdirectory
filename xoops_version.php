@@ -31,7 +31,7 @@ $modversion['help']          = 'page=help';
 $modversion['license']       = 'GNU GPL 2.0 or later';
 $modversion['license_url']   = 'www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official']      = 0;
-$modversion['image']         = 'images/efqdirectory_slogo.png';
+$modversion['image']         = 'assets/images/logoModule.png';
 $modversion['dirname']       = $moduleDirName;
 
 

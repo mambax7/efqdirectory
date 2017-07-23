@@ -74,7 +74,7 @@ function dirConfig()
                  . "/admin/directories.php?op=moddir&dirid=$dirid\">"
                  . _MD_EDIT_BRACKETS
                  . "</a></td><td class=\"even\">$openyn</td><td class=\"even\">$totalcats</td><td class=\"even\">";
-            echo '<a href="' . XOOPS_URL . '/modules/' . $moddir . "/admin/categories.php?dirid=$dirid\"><img src=\"" . XOOPS_URL . '/modules/' . $moddir . '/images/accessories-text-editor.png" title="' . _MD_MANAGE_CATS . '" alt="' . _MD_MANAGE_CATS . '"></a>';
+            echo '<a href="' . XOOPS_URL . '/modules/' . $moddir . "/admin/categories.php?dirid=$dirid\"><img src=\"" . XOOPS_URL . '/modules/' . $moddir . '/assets/images/accessories-text-editor.png" title="' . _MD_MANAGE_CATS . '" alt="' . _MD_MANAGE_CATS . '"></a>';
             echo "</td></tr>\n";
         }
         echo '<tr><td colspan="5">' . _MD_WITH_SELECTED . ':&nbsp;';

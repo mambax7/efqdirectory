@@ -64,7 +64,7 @@
 </tr></table>
 <{/if}>
 <{if $coupons > 0}>
-<br><a href="savings.php?itemid=<{$item_id}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/images/coupons.jpg" alt="<{$smarty.const._MD_SAVINGS}>"></a><br>
+<br><a href="savings.php?itemid=<{$item_id}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/assets/images/coupons.jpg" alt="<{$smarty.const._MD_SAVINGS}>"></a><br>
 <{/if}>
 
 <{if $listingowner == "1"}><{if $couponsallowed == "1"}>

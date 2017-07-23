@@ -2,7 +2,7 @@
   <tr>
     <td colspan="3" class="linkeven" width='60%' align='left' valign="bottom"><a href='../../modules/<{$moddir}>/listing.php?catid=<{$listing.catid}>&item=<{$listing.id}>'><{if $showlinkimages == 1}><img src='images/listing.gif' border='0' alt='<{$lang_visit}>'><b>&nbsp;<{/if}><{$listing.title}></b></a>
     <{if $link.coupons > 0}>
-     <a href="savings.php?itemid=<{$listing.id}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/images/coupons.jpg" alt="<{$smarty.const._MD_SAVINGS}>"></a>
+     <a href="savings.php?itemid=<{$listing.id}>"><img src="<{$xoops_url}>/modules/<{$moddir}>/assets/images/coupons.jpg" alt="<{$smarty.const._MD_SAVINGS}>"></a>
     <{/if}>
 </td>
   </tr>
@@ -11,7 +11,7 @@
   <tr>
     <td class="linkodd" colspan='2' align='left'><strong><{$lang_description}></strong><br>
 <{if $listing.logourl != ""}>
-   <a href="../../<{$moddir}>/listing.php?catid=<{$listing.catid}>&item=<{$listing.id}>"><img src="../../<{$moddir}>/images/shots/<{$listing.logourl}>" width="<{$shotwidth}>" alt=""  align="right" vspace="3" hspace="7"></a>
+   <a href="../../<{$moddir}>/listing.php?catid=<{$listing.catid}>&item=<{$listing.id}>"><img src="../../<{$moddir}>/assets/images/shots/<{$listing.logourl}>" width="<{$shotwidth}>" alt=""  align="right" vspace="3" hspace="7"></a>
 <{/if}>
     <div style="text-align: justify;"><{$listing.description}></div><br></td>
   </tr>

@@ -76,7 +76,7 @@ if ($get_dirid == '0' && $get_catid == '0') {
                 if ($img != '') {
                     $img = XOOPS_URL . "/modules/$moddir/uploads/" . $myts->htmlSpecialChars($img);
                 } else {
-                    $img = XOOPS_URL . "/modules/$moddir/images/nopicture.gif";
+                    $img = XOOPS_URL . "/modules/$moddir/assets/images/nopicture.gif";
                 }
                 $xoopsTpl->append('directories', array('image' => $img, 'id' => $dirid, 'title' => $name, 'descr' => $descr));
             }
@@ -91,7 +91,7 @@ if ($get_dirid == '0' && $get_catid == '0') {
             if ($img != '') {
                 $img = XOOPS_URL . "/modules/$moddir/uploads/" . $myts->htmlSpecialChars($img);
             } else {
-                $img = XOOPS_URL . "/modules/$moddir/images/nopicture.gif";
+                $img = XOOPS_URL . "/modules/$moddir/assets/images/nopicture.gif";
             }
             $xoopsTpl->append('directories', array('image' => $img, 'id' => $dirid, 'title' => $name, 'descr' => $descr));
         }
@@ -123,7 +123,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
     $xoopsTpl->assign('category_path', $pathstring);
 
     if (isset($xoopsUser) && $xoopsUser != null) {
-        $submitlink = '<a href="submit.php?dirid=' . $dirid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/images/' . $xoopsConfig['language'] . '/listing-new.gif" alt="' . _MD_SUBMITLISTING . '" title="' . _MD_SUBMITLISTING . '"></a>';
+        $submitlink = '<a href="submit.php?dirid=' . $dirid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/' . $xoopsConfig['language'] . '/listing-new.gif" alt="' . _MD_SUBMITLISTING . '" title="' . _MD_SUBMITLISTING . '"></a>';
         $xoopsTpl->assign('submit_link', $submitlink);
     }
 
@@ -211,7 +211,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
 
             while (list($itemid, $logourl, $uid, $status, $created, $ltitle, $hits, $rating, $votes, $type, $dirid, $description) = $xoopsDB->fetchRow($result)) {
                 if ($isadmin) {
-                    $adminlink = '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/admin/index.php?op=edit&amp;item=' . $itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/images/editicon.gif" border="0" alt="' . _MD_EDITTHISLINK . '"></a>';
+                    $adminlink = '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/admin/index.php?op=edit&amp;item=' . $itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/editicon.gif" border="0" alt="' . _MD_EDITTHISLINK . '"></a>';
                 } else {
                     $adminlink = '';
                 }
@@ -261,7 +261,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                 $coupons       = $couponHandler->getCountByLink($itemid);
                 $path          = $efqtree->getPathFromId($get_catid, 'title');
                 $path          = substr($path, 1);
-                $path          = str_replace('/', " <img src='" . XOOPS_URL . '/modules/' . $moddir . "/images/arrow.gif' board='0' alt=''> ", $path);
+                $path          = str_replace('/', " <img src='" . XOOPS_URL . '/modules/' . $moddir . "/assets/images/arrow.gif' board='0' alt=''> ", $path);
                 $new           = newlinkgraphic($created, $status);
                 $pop           = popgraphic($hits);
                 $xoopsTpl->append('listings', array(
@@ -358,7 +358,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                 while (list($itemid, $logourl, $uid, $status, $created, $itemtitle, $hits, $rating, $votes, $typeid, $dirid, $level, $description, $cid) = $xoopsDB->fetchRow($result)) {
                     if ($isadmin) {
                         if ($xoopsModuleConfig['showlinkimages'] == 1) {
-                            $adminlink = '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/admin/index.php?op=edit&amp;item=' . $itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/images/editicon.gif" border="0" alt="' . _MD_EDITTHISLISTING . '"></a>';
+                            $adminlink = '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/admin/index.php?op=edit&amp;item=' . $itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/editicon.gif" border="0" alt="' . _MD_EDITTHISLISTING . '"></a>';
                         } else {
                             $adminlink = '';
                         }
@@ -409,7 +409,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
 
                     $path = $efqtree->getPathFromId($get_catid, 'title');
                     $path = substr($path, 1);
-                    $path = str_replace('/', " <img src='" . XOOPS_URL . '/modules/' . $moddir . "/images/arrow.gif' board='0' alt=''> ", $path);
+                    $path = str_replace('/', " <img src='" . XOOPS_URL . '/modules/' . $moddir . "/assets/images/arrow.gif' board='0' alt=''> ", $path);
                     $new  = newlinkgraphic($created, $status);
                     $pop  = popgraphic($hits);
                     if ($level == null) {

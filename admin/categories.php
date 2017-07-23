@@ -999,7 +999,7 @@ function getCatOverview()
                        . XOOPS_URL
                        . '/modules/'
                        . $moddir
-                       . '/images/accessories-text-editor.png" title="'
+                       . '/assets/images/accessories-text-editor.png" title="'
                        . _MD_MANAGE_CAT
                        . '" alt="'
                        . _MD_MANAGE_CAT
@@ -1045,7 +1045,7 @@ function getChildrenCategories($childid = '0', $level = '0')
                          . XOOPS_URL
                          . '/modules/'
                          . $moddir
-                         . '/images/accessories-text-editor.png" title="'
+                         . '/assets/images/accessories-text-editor.png" title="'
                          . _MD_MANAGE_CAT
                          . '" alt="'
                          . _MD_MANAGE_CAT

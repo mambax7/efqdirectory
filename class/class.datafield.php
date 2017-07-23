@@ -130,34 +130,34 @@ class efqDataFieldHandler extends XoopsObjectHandler
 			$xoops_url = XOOPS_URL;
 			switch ($value) {
 				case 1:
-					$src = "$xoops_url/modules/$moddir/images/rating_1.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_1.gif";
 					break;
 				case 2:
-					$src = "$xoops_url/modules/$moddir/images/rating_2.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_2.gif";
 					break;
 				case 3:
-					$src = "$xoops_url/modules/$moddir/images/rating_3.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_3.gif";
 					break;
 				case 4:
-					$src = "$xoops_url/modules/$moddir/images/rating_4.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_4.gif";
 					break;
 				case 5:
-					$src = "$xoops_url/modules/$moddir/images/rating_5.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_5.gif";
 					break;
 				case 6:
-					$src = "$xoops_url/modules/$moddir/images/rating_6.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_6.gif";
 					break;
 				case 7:
-					$src = "$xoops_url/modules/$moddir/images/rating_7.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_7.gif";
 					break;
 				case 8:
-					$src = "$xoops_url/modules/$moddir/images/rating_8.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_8.gif";
 					break;
 				case 9:
-					$src = "$xoops_url/modules/$moddir/images/rating_9.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_9.gif";
 					break;
 				case 10:
-					$src = "$xoops_url/modules/$moddir/images/rating_10.gif";
+					$src = "$xoops_url/modules/$moddir/assets/images/rating_10.gif";
 					break;
 				default:
 				$src = "";

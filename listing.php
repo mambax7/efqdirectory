@@ -59,7 +59,7 @@ $islistingowner = false;
 
 $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
 if ($isadmin) {
-    $adminlink = '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/admin/index.php?op=edit&amp;item=' . $get_itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/images/editicon2.gif" border="0" alt="' . _MD_EDITTHISLISTING . '"></a>';
+    $adminlink = '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/admin/index.php?op=edit&amp;item=' . $get_itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/editicon2.gif" border="0" alt="' . _MD_EDITTHISLISTING . '"></a>';
 } else {
     $adminlink = '';
 }
@@ -74,7 +74,7 @@ $listing->setVars($listinghandler->getListing($get_itemid));
 $pathstring = "<a href='index.php?dirid=" . $dirid . '\'>' . _MD_MAIN . '</a>&nbsp;:&nbsp;';
 $pathstring .= $mytree->getNicePathFromId($get_catid, 'title', 'index.php?dirid=' . $dirid . '');
 
-$editlink = '<a href="edit.php?item=' . $get_itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/images/' . $xoopsConfig['language'] . '/listing-edit.gif" alt="' . _MD_EDIT_LISTING . '" title="' . _MD_EDIT_LISTING . '"></a>';
+$editlink = '<a href="edit.php?item=' . $get_itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/' . $xoopsConfig['language'] . '/listing-edit.gif" alt="' . _MD_EDIT_LISTING . '" title="' . _MD_EDIT_LISTING . '"></a>';
 
 if (isset($xoopsUser) && $xoopsUser != null) {
     if ($xoopsUser->getVar('uid') == $listing->getVar('uid')) {
