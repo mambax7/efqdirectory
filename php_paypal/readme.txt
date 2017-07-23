@@ -97,7 +97,7 @@ $paypal[url] (required)
 PayPal API URL
 
 $paypal[post_method] (required)
-Post Methods: fso – use this method if PHP is compiled with OpenSSL support. curl – use this method if cURL is installed on your web server. libCurl – use this method if PHP is compiled with libCurl support. If your system does not support any of the post methods listed above, use “fso” as the default post method.
+Post Methods: fso " use this method if PHP is compiled with OpenSSL support. curl " use this method if cURL is installed on your web server. libCurl " use this method if PHP is compiled with libCurl support. If your system does not support any of the post methods listed above, use "fso" as the default post method.
 
 $paypal[curl_location] (optional)
 If cURL is installed on your web server, set this option to the absolute path of cURL. (ex. /usr/bin/curl)
@@ -106,10 +106,10 @@ $paypal[business] (required)
 Primary Account email address
 
 $paypal[command] (required)
-Must be set to “_xclick”.
+Must be set to "_xclick".
 
 $paypal[site_url] (optional)
-URL of website you plan to run the script under. The site url must always have a trailing forward slash “/” after the domain name. (ex: http://www.paypalsolutions.com/)
+URL of website you plan to run the script under. The site url must always have a trailing forward slash "/" after the domain name. (ex: http://www.paypalsolutions.com/)
 
 $paypal[image_url] (optional)
 URL of the 150x50 pixel image you would like to use as your logo.
@@ -124,16 +124,16 @@ $paypal[notify_url] (optional)
 URL path to the IPN notification script.
 
 $paypal[return_method] (optional)
-Return URL behavior. If set to “1” the the buyer will be sent back to the success_url using a GET method. If set to “2” the buyer will be sent back to the success_url using a POST method.
+Return URL behavior. If set to "1" the the buyer will be sent back to the success_url using a GET method. If set to "2" the buyer will be sent back to the success_url using a POST method.
 
 $paypal[currency_code] (optional)
 Defines the currency of the payment. (ex. USD, EUR, GBP)
 
 $paypal[lc] (optional)
-Sets the default country and associated language for the login or signup page that your customers see when they click your button. This field is set to “USA” by default.
+Sets the default country and associated language for the login or signup page that your customers see when they click your button. This field is set to "USA" by default.
 
 $paypal[display_comment] (optional)
-If set to “1” customers will not be prompted to include a note. If set to “0” customers will be prompted to include a note.
+If set to "1" customers will not be prompted to include a note. If set to "0" customers will be prompted to include a note.
 
 $paypal[comment_header] (optional)
 Label that will appear above the notes field.
@@ -142,7 +142,7 @@ $paypal[background_color] (optional)
 Sets the background color of your payment pages. 1=black 0=white
 
 $paypal[display_shipping_address] (optional)
-(optional)If set to “1” customers will not be asked for a shipping address. If set to “0” customers will be prompted to include a shipping address.
+(optional)If set to "1" customers will not be asked for a shipping address. If set to "0" customers will be prompted to include a shipping address.
 
 $paypal[item_name] (optional)
 (optional)Description of item.
@@ -169,7 +169,7 @@ $paypal[quantity] (optional)
 Quantity of items to be purchased.
 
 $paypal[edit_quantity] (optional)
-If set to “1” the user will be able to edit the quantity. If set to “0” the quantity will not be editable by the user.
+If set to "1" the user will be able to edit the quantity. If set to "0" the quantity will not be editable by the user.
 
 $paypal[invoice] (optional)
 Transaction invoice number.
