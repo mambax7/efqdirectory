@@ -584,7 +584,7 @@ function getNumberOfResults($searchnum = 0, $limit = 10)
         $page  = $row['MAX(page)'];
         $items = $row['items'];
     }
-    $split_items    =explode(',', $items);
+    $split_items    = explode(',', $items);
     $count_lastpage = count($split_items);
     $count          = ($page * $limit) - ($limit - $count_lastpage);
 

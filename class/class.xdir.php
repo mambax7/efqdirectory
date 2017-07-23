@@ -51,12 +51,11 @@ class efqXdirHandler extends xoopsObjectHandler
     public $efq_dirid;
     public $fieldtypes; //array();
     public $datatypes; //array();
-        
-  /**
-   * efqSubscriptionOfferHandler::efqItemTypeHandler()
-   * 
-   * @return
-   */
+
+    /**
+     * efqSubscriptionOfferHandler::efqItemTypeHandler()
+     *
+     */
     public function __construct()
     {
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
@@ -129,16 +128,15 @@ class efqXdirHandler extends xoopsObjectHandler
             }
         }
     }
-    
+
     /**
      * Function createDataTypes inserts datatypes into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     * @return bool true if insertion is succesful, false if unsuccesful
+     * @internal  param object $obj object
+     *
      */
     public function createDataTypes()
     {
@@ -166,16 +164,15 @@ class efqXdirHandler extends xoopsObjectHandler
             $datatypes[$datatype['title']] = $objDataType->getVar('dtypeid');
         }
     }
-    
+
     /**
      * Function createFieldTypes inserts field types into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     * @return bool true if insertion is succesful, false if unsuccesful
+     * @internal  param object $obj object
+     *
      */
     public function createFieldTypes()
     {
@@ -192,16 +189,17 @@ class efqXdirHandler extends xoopsObjectHandler
             $fieldtypes[$fieldtype['title']] = $objFieldtype->getVar('typeid');
         }
     }
-    
+
     /**
      * Function doMigrate migrates xDirectory to EFQ Directory
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param int $dirid
+     * @return bool true if insertion is succesful, false if unsuccesful
+     * @internal  param object $obj object
+     *
      */
     public function doMigrate($dirid=0)
     {

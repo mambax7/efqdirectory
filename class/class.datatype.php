@@ -43,13 +43,13 @@
  */
 class efqDataType extends XoopsObject
 {
-    
-  /**
-   * efqSubscriptionOffer::efqSubscriptionOffer()
-   * 
-   * @param bool $itemtype
-   * @return
-   */
+
+    /**
+     * efqSubscriptionOffer::efqSubscriptionOffer()
+     *
+     * @param bool $offer
+     * @internal param bool $itemtype
+     */
     public function __construct($offer=false)
     {
         global $moddir;
@@ -82,27 +82,28 @@ class efqDataTypeHandler extends xoopsObjectHandler
 {
     public $db; //Database reference
     public $objDataType; // reference to object
-        
-  /**
-   * efqSubscriptionOfferHandler::efqItemTypeHandler()
-   * 
-   * @return
-   */
+
+    /**
+     * efqSubscriptionOfferHandler::efqItemTypeHandler()
+     *
+     * @param bool $obj
+     */
     public function __construct($obj=false)
     {
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->objDataType = $obj;
     }
-    
+
     /**
      * Function insertOffer inserts record into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param   object $obj object
+     *
+     * @param bool     $forceQuery
+     * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertDataType($obj, $forceQuery=false)
     {
@@ -148,16 +149,18 @@ class efqDataTypeHandler extends xoopsObjectHandler
         }
         return false;
     }
-    
+
     /**
      * Function updateOffer updates subscription offer
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object
-     * 
-     * @return	bool	true if update is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param      $obj
+     * @param bool $forceQuery
+     * @return bool true if update is succesful, false if unsuccesful
+     * @internal  param $object
+     *
      */
     public function updateDataType($obj, $forceQuery=false)
     {
@@ -199,13 +202,14 @@ class efqDataTypeHandler extends xoopsObjectHandler
         return false;
     }
 
-  /**
-   * function setDataType()
-   * 
-   * Sets the object created by class efqDataType with data from query 
-   * 
-   * @return bool true or false
-   */
+    /**
+     * function setDataType()
+     *
+     * Sets the object created by class efqDataType with data from query
+     *
+     * @param int $gpc_dtypeid
+     * @return bool true or false
+     */
     public function setDataType($gpc_dtypeid=0)
     {
         $sql = 'SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=' . (int)$gpc_dtypeid;

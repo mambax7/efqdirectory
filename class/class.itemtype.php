@@ -43,13 +43,13 @@
  */
 class efqItemType extends XoopsObject
 {
-    
-  /**
-   * efqItemType::efqItemType()
-   * 
-   * @param bool $itemtype
-   * @return
-   */
+
+    /**
+     * efqItemType::efqItemType()
+     *
+     * @param bool $obj
+     * @internal param bool $itemtype
+     */
     public function __construct($obj=false)
     {
         global $moddir;
@@ -74,26 +74,26 @@ class efqItemTypeHandler extends xoopsObject
 {
     public $db; //Database reference
     public $objItemType;
-        
-  /**
-   * efqItemTypeHandler::efqItemTypeHandler()
-   * 
-   * @return
-   */
+
+    /**
+     * efqItemTypeHandler::efqItemTypeHandler()
+     *
+     */
     public function __construct()
     {
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
-    
+
     /**
      * Function insert inserts new record into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param   object $obj object
+     *
+     * @param bool     $forceQuery
+     * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insert($obj, $forceQuery=false)
     {
@@ -142,13 +142,14 @@ class efqItemTypeHandler extends xoopsObject
 
     /**
      * Function update updates record in DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $objOffer object of type listing
-     * 
-     * @return	bool	true if update is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param      $obj
+     * @param bool $forceQuery
+     * @return bool true if update is succesful, false if unsuccesful
+     * @internal  param object $objOffer object of type listing
      */
     public function update($obj, $forceQuery=false)
     {
@@ -190,13 +191,14 @@ class efqItemTypeHandler extends xoopsObject
         return false;
     }
 
-  /**
-   * Function set()
-   * 
-   * Sets the object with data from query 
-   * 
-   * @return bool true or false
-   */
+    /**
+     * Function set()
+     *
+     * Sets the object with data from query
+     *
+     * @param int $typeid
+     * @return bool true or false
+     */
     public function set($typeid=0)
     {
         $sql = 'SELECT typeid,typename,level,dirid FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE typeid=' . (int)$typeid . '';
@@ -245,13 +247,14 @@ class efqItemTypeHandler extends xoopsObject
 
     /**
      * Function delete: Delete record
-     * 
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     *
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2007
-     * @version 1.0.0
-     * 
-     * @param   int   $orderid - Default: '0' - Order ID
-     * @return	array	$arr
+     * @version   1.0.0
+     *
+     * @param $obj
+     * @return array $arr
+     * @internal  param int $orderid - Default: '0' - Order ID
      */
     public function delete($obj)
     {

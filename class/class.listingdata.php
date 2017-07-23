@@ -125,16 +125,16 @@ class efqListingDataHandler extends XoopsObjectHandler
         return $arr;
     }
 
-    
     /**
      * Function updateListingData updates listing data
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object of type listing
-     * 
-     * @return	bool	true if update is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param   object $obj object of type listing
+     *
+     * @param bool     $forceQuery
+     * @return bool true if update is succesful, false if unsuccesful
      */
     public function updateListingData($obj, $forceQuery=false)
     {
@@ -172,16 +172,17 @@ class efqListingDataHandler extends XoopsObjectHandler
         }
         return false;
     }
-    
+
     /**
      * Function insertListingData inserts listing data into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $objListing object of type listing
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param      $obj
+     * @param bool $forceQuery
+     * @return bool true if insertion is succesful, false if unsuccesful
+     * @internal  param object $objListing object of type listing
      */
     public function insertListingData($obj, $forceQuery=false)
     {

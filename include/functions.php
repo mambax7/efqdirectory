@@ -16,6 +16,8 @@
  * @since
  * @author       Martijn Hertog (aka wtravel)
  * @author       XOOPS Development Team,
+ * @param $orderby
+ * @return string
  */
 
 function convertOrderByIn($orderby)

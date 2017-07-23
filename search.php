@@ -124,6 +124,13 @@ ob_end_clean();
 
 include XOOPS_ROOT_PATH . '/footer.php';
 
+/**
+ * @param $queryarray
+ * @param $andor
+ * @param $limit
+ * @param $offset
+ * @return array|int
+ */
 function mod_search($queryarray, $andor, $limit, $offset)
 {
     global $xoopsDB, $eh;

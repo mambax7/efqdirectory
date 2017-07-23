@@ -84,10 +84,11 @@ class efqDirectoryHandler extends XoopsObjectHandler
     {
         $this->db =XoopsDatabaseFactory::getDatabaseConnection();
     }
-    
+
     /**
      * create instance of directory class or reset the existing instance.
-     * 
+     *
+     * @param bool $isNew
      * @return object $directory
      */
     public function &create($isNew = true)
@@ -98,12 +99,13 @@ class efqDirectoryHandler extends XoopsObjectHandler
         }
         return $directory;
     }
-     
+
     /**
      * retrieve a directory
-     * 
-     * @param int $dirid ID of the directory
-     * @return mixed reference to the {@link efqDirectory} object, FALSE if failed
+     *
+     * @param bool|int $dirid ID of the directory
+     * @return mixed reference to the <a href='psi_element://efqDirectory'>efqDirectory</a> object, FALSE if failed
+     *                        object, FALSE if failed
      */
     public function &get($dirid = false)
     {
@@ -144,11 +146,11 @@ class efqDirectoryHandler extends XoopsObjectHandler
         }
         return $arr;
     }
-    
-         
+
     /**
      * retrieve all directory ID's
-     * 
+     *
+     * @param array $idarray
      * @return array $idarray
      */
     public function &getAllDirectoryIds($idarray = array())
@@ -162,10 +164,11 @@ class efqDirectoryHandler extends XoopsObjectHandler
         }
         return $idarray;
     }
-    
+
     /**
      * retrieve all directory ID's and titles as array
-     * 
+     *
+     * @param array $arr
      * @return array $idarray
      */
     public function &getAllDirectoryTitles($arr = array())
@@ -208,10 +211,11 @@ class efqDirectoryHandler extends XoopsObjectHandler
             return false;
         }
     }
-    
+
     /**
      * retrieve all directory ID's and names
-     * 
+     *
+     * @param bool $dashes
      * @return array $array
      */
     public function directoryArray($dashes = false)
@@ -231,13 +235,14 @@ class efqDirectoryHandler extends XoopsObjectHandler
 
     /**
      * Function insertDirectory inserts new record into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param   object $obj object
+     *
+     * @param bool     $forceQuery
+     * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertDirectory($obj, $forceQuery=false)
     {

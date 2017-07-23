@@ -43,13 +43,13 @@
  */
 class efqSubscriptionOffer extends XoopsObject
 {
-    
-  /**
-   * efqSubscriptionOffer::efqSubscriptionOffer()
-   * 
-   * @param bool $itemtype
-   * @return
-   */
+
+    /**
+     * efqSubscriptionOffer::efqSubscriptionOffer()
+     *
+     * @param bool $offer
+     * @internal param bool $itemtype
+     */
     public function __construct($offer=false)
     {
         global $moddir;
@@ -82,27 +82,28 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
 {
     public $db; //Database reference
     public $objOffer; // reference to object
-        
-  /**
-   * efqSubscriptionOfferHandler::efqItemTypeHandler()
-   * 
-   * @return
-   */
+
+    /**
+     * efqSubscriptionOfferHandler::efqItemTypeHandler()
+     *
+     * @param bool $offer
+     */
     public function __construct($offer=false)
     {
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->objOffer = $offer;
     }
-    
+
     /**
      * Function insertOffer inserts Subscripion offer into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param   object $obj object
+     *
+     * @param bool     $forceQuery
+     * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertOffer($obj, $forceQuery=false)
     {
@@ -148,16 +149,17 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
         }
         return false;
     }
-    
+
     /**
      * Function updateOffer updates subscription offer
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $objOffer object of type listing
-     * 
-     * @return	bool	true if update is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param      $obj
+     * @param bool $forceQuery
+     * @return bool true if update is succesful, false if unsuccesful
+     * @internal  param object $objOffer object of type listing
      */
     public function updateOffer($obj, $forceQuery=false)
     {
@@ -199,13 +201,14 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
         return false;
     }
 
-  /**
-   * efqSubscriptionOfferHandler::setOffer()
-   * 
-   * Sets the object created by class efqSubscriptionOffer with data from query 
-   * 
-   * @return bool true or false
-   */
+    /**
+     * efqSubscriptionOfferHandler::setOffer()
+     *
+     * Sets the object created by class efqSubscriptionOffer with data from query
+     *
+     * @param int $gpc_offerid
+     * @return bool true or false
+     */
     public function setOffer($gpc_offerid=0)
     {
         $sql = 'SELECT o.offerid, o.title, o.typeid, o.duration, o.count, ' . 'o.price, o.activeyn, o.currency, o.descr, o.dirid, t.typename, t.level FROM ' .

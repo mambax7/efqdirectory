@@ -88,10 +88,11 @@ class efqGmap extends XoopsObject
     {
         $this->_key = $key;
     }
-    
+
     /**
-     * Set the value of the script that triggers the points to be added to the google map. 
-    */
+     * Set the value of the script that triggers the points to be added to the google map.
+     * @param $pointsJS
+     */
     public function setPointsJS($pointsJS)
     {
         $this->_jsPointsArray = $pointsJS;
@@ -213,16 +214,17 @@ if (window.onload){
 </script>\n
 EOH;
     }
-    
+
     /**
      * Function setData sets class from array.
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param $arr
+     * @return bool true if insertion is succesful, false if unsuccesful
+     * @internal  param object $obj object
+     *
      */
     public function setData($arr)
     {
@@ -255,10 +257,11 @@ class efqGmapHandler extends XoopsObjectHandler
     {
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
-    
+
     /**
      * create instance of efqGmap class or reset the existing instance.
-     * 
+     *
+     * @param bool $isNew
      * @return object $efqGmap
      */
     public function &create($isNew = true)
@@ -269,12 +272,14 @@ class efqGmapHandler extends XoopsObjectHandler
         }
         return $gmap;
     }
-    
+
     /**
-     * retrieve all points from the database 
-     * 
-     * @param int $dirid ID of the directory
-     * @return mixed reference to the {@link efqGmap} object, FALSE if failed
+     * retrieve all points from the database
+     *
+     * @param $gmap
+     * @return mixed reference to the <a href='psi_element://efqGmap'>efqGmap</a> object, FALSE if failed
+     * object, FALSE if failed
+     * @internal param int $dirid ID of the directory
      */
     public function getPointsJS($gmap)
     {
@@ -333,13 +338,14 @@ class efqGmapHandler extends XoopsObjectHandler
 
     /**
      * Function insertGmap inserts google map data into DB
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if insertion is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param   object $obj object
+     *
+     * @param bool     $forceQuery
+     * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertGmap($obj, $forceQuery=false)
     {
@@ -383,16 +389,16 @@ class efqGmapHandler extends XoopsObjectHandler
         return false;
     }
 
-    
     /**
      * Function updateGmap updates google map data
-     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
-     * @version 1.0.0
-     * 
-     * @param   object   $obj object
-     * 
-     * @return	bool	true if update is succesful, false if unsuccesful
+     * @version   1.0.0
+     *
+     * @param   object $obj object
+     *
+     * @param bool     $forceQuery
+     * @return bool true if update is succesful, false if unsuccesful
      */
     public function updateGmap($obj, $forceQuery=false)
     {
