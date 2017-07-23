@@ -93,7 +93,7 @@ class efqXdirHandler extends xoopsObjectHandler
      *
      * Get xdir categories from database and return
      *
-     * @return arr Array
+     * @return \arr|bool
      */
     public function setCategories_xdir()
     {

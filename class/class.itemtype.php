@@ -237,7 +237,7 @@ class efqItemTypeHandler extends xoopsObject
      * efqItemTypeHandler::getByDir()
      *
      * @param integer $dirid
-     * @return array $arr or boolean false
+     * @return array|bool
      */
     public function getByDir($dirid = 0)
     {
@@ -262,7 +262,7 @@ class efqItemTypeHandler extends xoopsObject
      * @version   1.0.0
      *
      * @param $obj
-     * @return array $arr
+     * @return array|bool
      * @internal  param int $orderid - Default: '0' - Order ID
      */
     public function delete($obj)

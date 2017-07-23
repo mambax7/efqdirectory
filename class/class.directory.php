@@ -165,7 +165,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * retrieve all directory ID's
      *
      * @param array $idarray
-     * @return array $idarray
+     * @return array|bool
      */
     public function &getAllDirectoryIds($idarray = array())
     {
@@ -184,7 +184,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * retrieve all directory ID's and titles as array
      *
      * @param array $arr
-     * @return array $idarray
+     * @return array|bool
      */
     public function &getAllDirectoryTitles($arr = array())
     {

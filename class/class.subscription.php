@@ -133,7 +133,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
      * @version   1.0.0
      *
      * @param int|string|XoopsObject $orderid - Default: '0' - Order ID
-     * @return array $arr
+     * @return array|bool
      */
     public function delete(XoopsObject $orderid = null)
     {
