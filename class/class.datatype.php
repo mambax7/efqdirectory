@@ -106,8 +106,8 @@ class efqDataTypeHandler extends xoopsObjectHandler
      */
     public function insertDataType($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_dtypes";
-        $keyName = "dtypeid";
+        $tablename = 'efqdiralpha1_dtypes';
+        $keyName = 'dtypeid';
         $excludedVars = array();
         if ($obj instanceof efqDataType) {
             // Variable part of this function ends. From this line you can copy
@@ -119,20 +119,20 @@ class efqDataTypeHandler extends xoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strFields = "";
-        $strValues = "";
+        $strFields = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
                 $strValues .= "'".$v."'";
                 if ($i < $countVars) {
-                    $strFields .= ", ";
-                    $strValues .= ", ";
+                    $strFields .= ', ';
+                    $strValues .= ', ';
                 }
                 $i++;
             }
         }
-        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
@@ -161,8 +161,8 @@ class efqDataTypeHandler extends xoopsObjectHandler
      */
     public function updateDataType($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_dtypes";
-        $keyName = "dtypeid";
+        $tablename = 'efqdiralpha1_dtypes';
+        $keyName = 'dtypeid';
         $excludedVars = array();
         if ($obj instanceof efqDataType) {
             // Variable part of this function ends. From this line you can copy
@@ -175,18 +175,18 @@ class efqDataTypeHandler extends xoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strSet = "";
-        $strValues = "";
+        $strSet = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 if ($i < $countVars and $i > 1) {
-                    $strSet .= ", ";
+                    $strSet .= ', ';
                 }
-                $strSet .= $k."="."'".$v."'";
+                $strSet .= $k . '=' . "'" . $v . "'";
             }
             $i++;
         }
-        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        $sql = sprintf('UPDATE %s SET %s WHERE %s = %u', $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 return true;
@@ -208,7 +208,7 @@ class efqDataTypeHandler extends xoopsObjectHandler
    */
     public function setDataType($gpc_dtypeid=0)
     {
-        $sql = "SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=".intval($gpc_dtypeid);
+        $sql = 'SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=' . intval($gpc_dtypeid);
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {

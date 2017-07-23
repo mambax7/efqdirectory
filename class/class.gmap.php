@@ -128,7 +128,7 @@ class efqGmap extends XoopsObject
     {
         global $icmsPreloadHandler;
         
-        $icmsPreloadHandler->addPreloadEvents("gmap.php");
+        $icmsPreloadHandler->addPreloadEvents('gmap.php');
         $gmapScript = <<<EOH
 <script type="text/javascript">
 var mArray = Array();
@@ -281,7 +281,7 @@ class efqGmapHandler extends XoopsObjectHandler
         if (!is_object($gmap)) {
             return false;
         }
-        $sql = 'SELECT * FROM '.$this->db->prefix("efqdiralpha1_gmaps");
+        $sql = 'SELECT * FROM '.$this->db->prefix('efqdiralpha1_gmaps');
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -294,7 +294,7 @@ class efqGmapHandler extends XoopsObjectHandler
             $row['descr'] = str_replace(';', ',', $row['descr']);
             //$javaScript .= "mArray.push('{$row{'lat'}};{$row{'lon'}};{$row{'descr'}}')\n";
             //echo $row['lat'];
-            $javaScript .= "mArray.push('{".$row['lat']."};{".$row['lon']."};{".$row['descr']."}')\n";
+            $javaScript .= "mArray.push('{".$row['lat'] . '};{' . $row['lon'] . '};{' . $row['descr'] . "}')\n";
         }
         $gmap->setPointsJS($javaScript);
         return true;
@@ -304,8 +304,8 @@ class efqGmapHandler extends XoopsObjectHandler
     {
         $arr = array();
         $sql = sprintf('SELECT * FROM %s WHERE id=%u',
-        $this->db->prefix("efqdiralpha1_gmaps"), intval($id));
-        $result = $this->db->query($sql) or $eh->show("0013");
+                       $this->db->prefix('efqdiralpha1_gmaps'), intval($id));
+        $result = $this->db->query($sql) or $eh->show('0013');
         while (list($id, $lat, $lon, $descr, $dataid) = $this->db->fetchRow($result)) {
             $arr = array('id'=>$id, 'lat'=>$lat, 'lon'=>$lon, 'descr'=>$descr, 'dataid'=>$dataid);
         }
@@ -320,7 +320,7 @@ class efqGmapHandler extends XoopsObjectHandler
         $id = intval($id);
         echo $id;
         if ($id > 0) {
-            $sql = 'SELECT * FROM '.$this->db->prefix("efqdiralpha1_gmaps").' WHERE dataid='.intval($id);
+            $sql = 'SELECT * FROM '.$this->db->prefix('efqdiralpha1_gmaps') . ' WHERE dataid=' . intval($id);
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
@@ -343,8 +343,8 @@ class efqGmapHandler extends XoopsObjectHandler
      */
     public function insertGmap($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_gmaps";
-        $keyName = "id";
+        $tablename = 'efqdiralpha1_gmaps';
+        $keyName = 'id';
         if ($obj instanceof efqGmap) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -355,18 +355,18 @@ class efqGmapHandler extends XoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strFields = "";
-        $strValues = "";
+        $strFields = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             $strFields .= $k;
             $strValues .= "'".$v."'";
             if ($i < $countVars) {
-                $strFields .= ", ";
-                $strValues .= ", ";
+                $strFields .= ', ';
+                $strValues .= ', ';
             }
             $i++;
         }
-        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
@@ -396,8 +396,8 @@ class efqGmapHandler extends XoopsObjectHandler
      */
     public function updateGmap($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_gmaps";
-        $keyName = "id";
+        $tablename = 'efqdiralpha1_gmaps';
+        $keyName = 'id';
         if ($obj instanceof efqGmap) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -409,18 +409,18 @@ class efqGmapHandler extends XoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strSet = "";
-        $strValues = "";
+        $strSet = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if ($k != 'id') {
-                $strSet .= $k."="."'".$v."'";
+                $strSet .= $k . '=' . "'" . $v . "'";
                 if ($i < $countVars) {
-                    $strSet .= ", ";
+                    $strSet .= ', ';
                 }
             }
             $i++;
         }
-        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        $sql = sprintf('UPDATE %s SET %s WHERE %s = %u', $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 return true;

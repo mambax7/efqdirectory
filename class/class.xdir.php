@@ -92,7 +92,7 @@ class efqXdirHandler extends xoopsObjectHandler
     public function setCategories_xdir()
     {
         $arr = array();
-        $sql = 'SELECT cid, pid, title, imgurl FROM '.$this->db->prefix("efqdiralpha1_xdir_cat");
+        $sql = 'SELECT cid, pid, title, imgurl FROM '.$this->db->prefix('efqdiralpha1_xdir_cat');
         $result = $this->db->query($sql);
         if (!$result) {
             return false;
@@ -111,7 +111,7 @@ class efqXdirHandler extends xoopsObjectHandler
     
     public function saveCategories($dirid=0)
     {
-        $tablename = "efqdiralpha1_cat";
+        $tablename = 'efqdiralpha1_cat';
         $xdir_cats = $this->get_xdir_cats();
         foreach ($xdir_cats as $xdir_cat) {
             $cid = $xdir_cat['cid'];
@@ -121,7 +121,7 @@ class efqXdirHandler extends xoopsObjectHandler
             //Set fields and values
             $strFields = 'cid,dirid,title,active,pid,img,allowlist';
             $strValues = "$cid,$dirid,'$title',1,$pid,'$imgurl',1";
-            $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+            $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);

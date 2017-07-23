@@ -106,8 +106,8 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      */
     public function insertOffer($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_subscr_offers";
-        $keyName = "offerid";
+        $tablename = 'efqdiralpha1_subscr_offers';
+        $keyName = 'offerid';
         $excludedVars = array('level', 'typename');
         if ($obj instanceof efqSubscriptionOffer) {
             // Variable part of this function ends. From this line you can copy
@@ -119,20 +119,20 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strFields = "";
-        $strValues = "";
+        $strFields = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
                 $strValues .= "'".$v."'";
                 if ($i < $countVars) {
-                    $strFields .= ", ";
-                    $strValues .= ", ";
+                    $strFields .= ', ';
+                    $strValues .= ', ';
                 }
                 $i++;
             }
         }
-        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
@@ -161,8 +161,8 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      */
     public function updateOffer($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_subscr_offers";
-        $keyName = "offerid";
+        $tablename = 'efqdiralpha1_subscr_offers';
+        $keyName = 'offerid';
         $excludedVars = array('level', 'typename');
         if ($obj instanceof efqSubscriptionOffer) {
             // Variable part of this function ends. From this line you can copy
@@ -175,18 +175,18 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strSet = "";
-        $strValues = "";
+        $strSet = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 if ($i < $countVars and $i > 1) {
-                    $strSet .= ", ";
+                    $strSet .= ', ';
                 }
-                $strSet .= $k."="."'".$v."'";
+                $strSet .= $k . '=' . "'" . $v . "'";
             }
             $i++;
         }
-        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        $sql = sprintf('UPDATE %s SET %s WHERE %s = %u', $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 return true;
@@ -208,10 +208,8 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
    */
     public function setOffer($gpc_offerid=0)
     {
-        $sql = "SELECT o.offerid, o.title, o.typeid, o.duration, o.count, " .
-        "o.price, o.activeyn, o.currency, o.descr, o.dirid, t.typename, t.level FROM " .
-            $this->db->prefix("efqdiralpha1_itemtypes") . " t, " . $this->db->prefix("efqdiralpha1_subscr_offers") .
-            " o	WHERE o.typeid=t.typeid AND o.offerid=" . intval($gpc_offerid) . "";
+        $sql = 'SELECT o.offerid, o.title, o.typeid, o.duration, o.count, ' . 'o.price, o.activeyn, o.currency, o.descr, o.dirid, t.typename, t.level FROM ' .
+               $this->db->prefix('efqdiralpha1_itemtypes') . ' t, ' . $this->db->prefix('efqdiralpha1_subscr_offers') . ' o	WHERE o.typeid=t.typeid AND o.offerid=' . intval($gpc_offerid) . '';
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {

@@ -110,13 +110,12 @@ class efqListingDataHandler extends XoopsObjectHandler
     public function getData($itemid=0)
     {
         $arr = array();
-        $sql = "SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.dataid, d.itemid, d.value, d.created, t.custom ";
-        $sql .= "FROM ".$this->db->prefix("efqdiralpha1_item_x_cat")." ic, ".$this->db->
-            prefix("efqdiralpha1_dtypes_x_cat")." xc, ".$this->db->prefix("efqdiralpha1_fieldtypes")." f, ".$this->db->prefix("efqdiralpha1_dtypes")." t ";
-        $sql .= "LEFT JOIN ".$this->db->prefix("efqdiralpha1_data") .
-            " d ON (t.dtypeid=d.dtypeid AND d.itemid=".$itemid.") ";
-        $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=".$itemid."";
-        $data_result = $this->db->query($sql) or $eh->show("0013");
+        $sql = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.dataid, d.itemid, d.value, d.created, t.custom ';
+        $sql .= 'FROM ' . $this->db->prefix('efqdiralpha1_item_x_cat') . ' ic, ' . $this->db->
+            prefix('efqdiralpha1_dtypes_x_cat') . ' xc, ' . $this->db->prefix('efqdiralpha1_fieldtypes') . ' f, ' . $this->db->prefix('efqdiralpha1_dtypes') . ' t ';
+        $sql .= 'LEFT JOIN ' . $this->db->prefix('efqdiralpha1_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
+        $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=".$itemid . '';
+        $data_result = $this->db->query($sql) or $eh->show('0013');
         while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $dataid, $itemid, $value, $created, $custom) = $this->db->fetchRow($data_result)) {
             $arr[] = array('dtypeid'=>$dtypeid, 'title'=>$title, 'section'=>$section,
                 'ftypeid'=>$ftypeid, 'fieldtype'=>$fieldtype, 'ext'=>$ext,
@@ -139,8 +138,8 @@ class efqListingDataHandler extends XoopsObjectHandler
      */
     public function updateListingData($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_data";
-        $keyName = "dataid";
+        $tablename = 'efqdiralpha1_data';
+        $keyName = 'dataid';
         if ($obj instanceof efqListingData) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -152,16 +151,16 @@ class efqListingDataHandler extends XoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strSet = "";
-        $strValues = "";
+        $strSet = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
-            $strSet .= $k."="."'".$v."'";
+            $strSet .= $k . '=' . "'" . $v . "'";
             if ($i < $countVars) {
-                $strSet .= ", ";
+                $strSet .= ', ';
             }
             $i++;
         }
-        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        $sql = sprintf('UPDATE %s SET %s WHERE %s = %u', $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 return true;
@@ -186,8 +185,8 @@ class efqListingDataHandler extends XoopsObjectHandler
      */
     public function insertListingData($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_data";
-        $keyName = "dataid";
+        $tablename = 'efqdiralpha1_data';
+        $keyName = 'dataid';
         if ($obj instanceof efqListingData) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -198,18 +197,18 @@ class efqListingDataHandler extends XoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strFields = "";
-        $strValues = "";
+        $strFields = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             $strFields .= $k;
             $strValues .= "'".$v."'";
             if ($i < $countVars) {
-                $strFields .= ", ";
-                $strValues .= ", ";
+                $strFields .= ', ';
+                $strValues .= ', ';
             }
             $i++;
         }
-        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();

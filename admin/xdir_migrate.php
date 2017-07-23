@@ -30,10 +30,10 @@
 //	Based upon the mylinks and the mxDirectory modules						 //
 // ------------------------------------------------------------------------- //
 include '../../../include/cp_header.php';
-if (file_exists("../language/".$xoopsConfig['language']."/main.php")) {
-    include "../language/".$xoopsConfig['language']."/main.php";
+if (file_exists('../language/' . $xoopsConfig['language'] . '/main.php')) {
+    include '../language/' . $xoopsConfig['language'] . '/main.php';
 } else {
-    include "../language/english/main.php";
+    include '../language/english/main.php';
 }
 include '../include/functions.php';
 include '../class/class.fieldtype.php';
@@ -45,7 +45,7 @@ include_once XOOPS_ROOT_PATH.'/class/module.errorhandler.php';
 $myts =& MyTextSanitizer::getInstance();
 $eh = new ErrorHandler;
 
-$moddir = $xoopsModule->getVar("dirname");
+$moddir = $xoopsModule->getVar('dirname');
 
 if (isset($_GET['dirid'])) {
     $get_dir = intval($_GET['dirid']);
@@ -56,31 +56,31 @@ function xdirConfig()
     global $xoopsDB, $xoopsModule, $xoopsUser, $myts, $moddir;
     xoops_cp_header();
     adminmenu(0, _MD_A_DIRADMIN);
-    echo "<h4>"._MD_MIGRATE_FROM_XDIR."</h4>";
+    echo '<h4>' . _MD_MIGRATE_FROM_XDIR . '</h4>';
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
     $form = new XoopsThemeForm(_MD_XIDR_MIGRATE_TO_NEWDIR, 'submitform', 'xdir_migrate.php');
-    $form->addElement(new XoopsFormText(_MD_DIRNAME, "dirname", 100, 150, ""), true);
-    $form_diropen = new XoopsFormCheckBox(_MD_OPENYN, "open", 0);
+    $form->addElement(new XoopsFormText(_MD_DIRNAME, 'dirname', 100, 150, ''), true);
+    $form_diropen = new XoopsFormCheckBox(_MD_OPENYN, 'open', 0);
     $form_diropen->addOption(1, _MD_YESNO);
     $form->addElement($form_diropen);
     $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-    $form->addElement(new XoopsFormHidden("op", "newdir"));
-    $form->addElement(new XoopsFormHidden("uid", $xoopsUser->getVar('uid')));
+    $form->addElement(new XoopsFormHidden('op', 'newdir'));
+    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
     $form->display();
-    echo "</td></tr></table>";
+    echo '</td></tr></table>';
     xoops_cp_footer();
 }
 
 function newDir()
 {
     global $xoopsDB, $_POST, $myts, $eh;
-    if (isset($_POST["dirname"]) and $_POST["dirname"] != "") {
-        $p_dirname = $_POST["dirname"];
+    if (isset($_POST['dirname']) and $_POST['dirname'] != '') {
+        $p_dirname = $_POST['dirname'];
     } else {
         redirect_header("directories.php?op=moddir&dirid=$db_dirid", 2, _MD_XDIR_CREATE_EMPTY_DIR);
     }
-    if (isset($_POST["open"])) {
-        $p_open = $_POST["open"];
+    if (isset($_POST['open'])) {
+        $p_open = $_POST['open'];
     } else {
         $p_open = 0;
     }
@@ -96,12 +96,12 @@ function newDir()
         $xdirHandler->doMigrate($db_dirid);
         $migration_errors = $xdirHandler->get_errors();
         if (count($migration_errors) > 0) {
-            redirect_header("xdir_migrate.php", 2, _MD_XDIR_MIGRATION_FAILED);
+            redirect_header('xdir_migrate.php', 2, _MD_XDIR_MIGRATION_FAILED);
         } else {
             redirect_header('directories.php?op=moddir&dirid='.$db_dirid, 2, _MD_XDIR_MIGRATION_COMPLETED);
         }
     } else {
-        redirect_header("xdir_migrate.php", 2, _MD_XDIR_MIGRATION_FAILED);
+        redirect_header('xdir_migrate.php', 2, _MD_XDIR_MIGRATION_FAILED);
     }
 }
 
@@ -112,7 +112,7 @@ if (!isset($_POST['op'])) {
 }
 switch ($op) {
 
-case "newdir":
+case 'newdir':
     newDir();
     break;
 default:

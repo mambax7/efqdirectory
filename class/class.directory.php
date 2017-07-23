@@ -112,7 +112,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         }
         $dirid = intval($dirid);
         if ($dirid > 0) {
-            $sql = "SELECT * FROM ".$this->db->prefix("efqdiralpha1_dir")." WHERE dirid=".$dirid;
+            $sql = 'SELECT * FROM ' . $this->db->prefix('efqdiralpha1_dir') . ' WHERE dirid=' . $dirid;
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
@@ -130,7 +130,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function &getAll()
     {
-        $sql = "SELECT dirid,postfix,open,name,descr,img FROM ".$this->db->prefix("efqdiralpha1_dir")."";
+        $sql = 'SELECT dirid,postfix,open,name,descr,img FROM ' . $this->db->prefix('efqdiralpha1_dir') . '';
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -153,7 +153,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function &getAllDirectoryIds($idarray = array())
     {
-        $sql = "SELECT dirid FROM ".$this->db->prefix("efqdiralpha1_dir")."";
+        $sql = 'SELECT dirid FROM ' . $this->db->prefix('efqdiralpha1_dir') . '';
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -170,7 +170,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function &getAllDirectoryTitles($arr = array())
     {
-        $sql = "SELECT dirid, name FROM ".$this->db->prefix("efqdiralpha1_dir")."";
+        $sql = 'SELECT dirid, name FROM ' . $this->db->prefix('efqdiralpha1_dir') . '';
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -194,7 +194,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         $block = array();
         $myts =& MyTextSanitizer::getInstance();
         $dirid = 0;
-        $result = $xoopsDB->query("SELECT dirid FROM ".$xoopsDB->prefix("efqdiralpha1_dir")."");
+        $result = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . '');
         $num_results = $xoopsDB->getRowsNum($result);
         if (!$result) {
             return false;
@@ -216,7 +216,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function directoryArray($dashes = false)
     {
-        $sql = "SELECT dirid, name FROM ".$this->db->prefix("efqdiralpha1_dir")." ORDER BY name ASC";
+        $sql = 'SELECT dirid, name FROM ' . $this->db->prefix('efqdiralpha1_dir') . ' ORDER BY name ASC';
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         $result = $this->db->query($sql);
@@ -241,8 +241,8 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function insertDirectory($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_dir";
-        $keyName = "dirid";
+        $tablename = 'efqdiralpha1_dir';
+        $keyName = 'dirid';
         $excludedVars = array();
         if ($obj instanceof efqDirectory) {
             // Variable part of this function ends. From this line you can copy
@@ -254,20 +254,20 @@ class efqDirectoryHandler extends XoopsObjectHandler
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strFields = "";
-        $strValues = "";
+        $strFields = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
                 $strValues .= "'".$v."'";
                 if ($i < $countVars) {
-                    $strFields .= ", ";
-                    $strValues .= ", ";
+                    $strFields .= ', ';
+                    $strValues .= ', ';
                 }
                 $i++;
             }
         }
-        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();

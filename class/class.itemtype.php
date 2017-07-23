@@ -97,8 +97,8 @@ class efqItemTypeHandler extends xoopsObject
      */
     public function insert($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_itemtypes";
-        $keyName = "typeid";
+        $tablename = 'efqdiralpha1_itemtypes';
+        $keyName = 'typeid';
         $excludedVars = array();
         if ($obj instanceof efqItemType) {
             // Variable part of this function ends. From this line you can copy
@@ -110,20 +110,20 @@ class efqItemTypeHandler extends xoopsObject
         }
         $countVars = count($cleanvars);
         $i = 1;
-        $strFields = "";
-        $strValues = "";
+        $strFields = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
                 $strValues .= "'".$v."'";
                 if ($i < $countVars) {
-                    $strFields .= ", ";
-                    $strValues .= ", ";
+                    $strFields .= ', ';
+                    $strValues .= ', ';
                 }
                 $i++;
             }
         }
-        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
@@ -152,8 +152,8 @@ class efqItemTypeHandler extends xoopsObject
      */
     public function update($obj, $forceQuery=false)
     {
-        $tablename = "efqdiralpha1_itemtypes";
-        $keyName = "typeid";
+        $tablename = 'efqdiralpha1_itemtypes';
+        $keyName = 'typeid';
         $excludedVars = array();
         if ($obj instanceof efqItemType) {
             // Variable part of this function ends. From this line you can copy
@@ -166,18 +166,18 @@ class efqItemTypeHandler extends xoopsObject
         }
         $countVars = count($cleanvars);
         $i = 0;
-        $strSet = "";
-        $strValues = "";
+        $strSet = '';
+        $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 if ($i < $countVars and $i > 0) {
-                    $strSet .= ", ";
+                    $strSet .= ', ';
                 }
-                $strSet .= $k."="."'".$v."'";
+                $strSet .= $k . '=' . "'" . $v . "'";
             }
             $i++;
         }
-        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        $sql = sprintf('UPDATE %s SET %s WHERE %s = %u', $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
         if ($forceQuery) {
             if ($this->db->queryF($sql)) {
                 return true;
@@ -199,7 +199,7 @@ class efqItemTypeHandler extends xoopsObject
    */
     public function set($typeid=0)
     {
-        $sql = "SELECT typeid,typename,level,dirid FROM ".$this->db->prefix("efqdiralpha1_itemtypes")." WHERE typeid=".intval($typeid)."";
+        $sql = 'SELECT typeid,typename,level,dirid FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE typeid=' . intval($typeid) . '';
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
@@ -232,7 +232,7 @@ class efqItemTypeHandler extends xoopsObject
     public function getByDir($dirid=0)
     {
         $arr = array();
-        $sql = "SELECT typeid,typename,level FROM ".$this->db->prefix("efqdiralpha1_itemtypes")." WHERE dirid=".intval($dirid)."";
+        $sql = 'SELECT typeid,typename,level FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE dirid=' . intval($dirid) . '';
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -255,11 +255,11 @@ class efqItemTypeHandler extends xoopsObject
      */
     public function delete($obj)
     {
-        $tablename = "efqdiralpha1_itemtypes";
-        $keyName = "typeid";
+        $tablename = 'efqdiralpha1_itemtypes';
+        $keyName = 'typeid';
         $id = $obj->getVar($keyName);
         if ($id != 0) {
-            $sql = "DELETE FROM ".$this->db->prefix($tablename)." WHERE ".$keyName."=".intval($id)."";
+            $sql = 'DELETE FROM ' . $this->db->prefix($tablename) . ' WHERE ' . $keyName . '=' . intval($id) . '';
             $this->db->queryF($sql);
             return true;
         } else {
