@@ -77,6 +77,11 @@ if (isset($paypal['business'])) {
     die('This page is not directly accessible');
 }
 
+/**
+ * @param string $txn_id
+ * @param string $payment_status
+ * @return bool
+ */
 function checkDuplicateTrx($txn_id = '0', $payment_status = '0')
 {
     global $xoopsDB;

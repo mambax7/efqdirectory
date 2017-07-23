@@ -36,6 +36,9 @@ class db_manager
     public $f_tables = array();
     public $db;
 
+    /**
+     * db_manager constructor.
+     */
     public function __construct()
     {
         $this->db = XoopsDatabaseFactory::getDatabase();
@@ -43,16 +46,25 @@ class db_manager
         $this->db->setLogger(XoopsLogger::instance());
     }
 
+    /**
+     * @return bool
+     */
     public function isConnectable()
     {
         return ($this->db->connect(false) !== false) ? true : false;
     }
 
+    /**
+     * @return bool
+     */
     public function dbExists()
     {
         return ($this->db->connect() !== false) ? true : false;
     }
 
+    /**
+     * @return bool
+     */
     public function createDB()
     {
         $this->db->connect(false);
@@ -62,6 +74,10 @@ class db_manager
         return ($result !== false) ? true : false;
     }
 
+    /**
+     * @param $sql_file_path
+     * @return bool
+     */
     public function queryFromFile($sql_file_path)
     {
         global $pieces;
@@ -131,6 +147,9 @@ class db_manager
         return true;
     }
 
+    /**
+     * @return string
+     */
     public function report()
     {
         $content = "<table align='center'><tr><td align='left'>\n";
@@ -180,6 +199,10 @@ class db_manager
         return $content;
     }
 
+    /**
+     * @param $sql
+     * @return mixed
+     */
     public function query($sql)
     {
         $this->db->connect();
@@ -187,6 +210,10 @@ class db_manager
         return $this->db->query($sql);
     }
 
+    /**
+     * @param $table
+     * @return mixed
+     */
     public function prefix($table)
     {
         $this->db->connect();
@@ -194,6 +221,10 @@ class db_manager
         return $this->db->prefix($table);
     }
 
+    /**
+     * @param $ret
+     * @return mixed
+     */
     public function fetchArray($ret)
     {
         $this->db->connect();
@@ -201,6 +232,11 @@ class db_manager
         return $this->db->fetchArray($ret);
     }
 
+    /**
+     * @param $table
+     * @param $query
+     * @return bool
+     */
     public function insert($table, $query)
     {
         $this->db->connect();
@@ -225,11 +261,18 @@ class db_manager
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isError()
     {
         return isset($this->f_tables) ? true : false;
     }
 
+    /**
+     * @param $tables
+     * @return array
+     */
     public function deleteTables($tables)
     {
         global $ct;
@@ -244,6 +287,10 @@ class db_manager
         return $deleted;
     }
 
+    /**
+     * @param $table
+     * @return bool
+     */
     public function tableExists($table)
     {
         $table = trim($table);

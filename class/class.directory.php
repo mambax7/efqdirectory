@@ -42,6 +42,10 @@
  */
 class efqDirectory extends XoopsObject
 {
+    /**
+     * efqDirectory constructor.
+     * @param bool $directory
+     */
     public function __construct($directory = false)
     {
         global $moddir;
@@ -80,6 +84,9 @@ class efqDirectory extends XoopsObject
  */
 class efqDirectoryHandler extends XoopsObjectHandler
 {
+    /**
+     * efqDirectoryHandler constructor.
+     */
     public function __construct()
     {
         $this->db =XoopsDatabaseFactory::getDatabaseConnection();

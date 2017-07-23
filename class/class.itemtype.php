@@ -219,7 +219,10 @@ class efqItemTypeHandler extends xoopsObject
         }
         return true;
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function getObjItemType()
     {
         return $this->objItemType;

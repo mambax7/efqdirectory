@@ -398,6 +398,9 @@ class XoopsMediaUploader
         return true;
     }
 
+    /**
+     * @return mixed
+     */
     public function getWidth()
     {
         //$filename = $imgloc."/";
@@ -414,6 +417,9 @@ class XoopsMediaUploader
         return $result;
     }
 
+    /**
+     * @return mixed
+     */
     public function getHeight()
     {
         //$filename = $imgloc."/";

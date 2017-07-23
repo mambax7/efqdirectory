@@ -20,6 +20,10 @@
 
 class EfqDirUpgrade
 {
+    /**
+     * @param string $filename
+     * @return string
+     */
     public function prepare2upgrade($filename = '')
     {
         global $moddir, $xoopsConfig;

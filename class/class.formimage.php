@@ -60,16 +60,25 @@ class XoopsFormImage extends XoopsFormElement
         $this->_src    = $src;
     }
 
+    /**
+     * @return string
+     */
     public function getWidth()
     {
         return $this->_width;
     }
 
+    /**
+     * @return string
+     */
     public function getHeight()
     {
         return $this->_height;
     }
 
+    /**
+     * @return string
+     */
     public function getSrc()
     {
         return $this->_src;
@@ -80,6 +89,9 @@ class XoopsFormImage extends XoopsFormElement
     *
     * @return bool
     */
+    /**
+     * @return bool
+     */
     public function isMultiple()
     {
         return $this->_multiple;

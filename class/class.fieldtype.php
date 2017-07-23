@@ -29,6 +29,9 @@
  */
 class efqFieldType extends XoopsObject
 {
+    /**
+     * efqFieldType constructor.
+     */
     public function __construct()
     {
     }
@@ -45,6 +48,9 @@ class efqFieldType extends XoopsObject
  */
 class efqFieldTypeHandler extends XoopsObjectHandler
 {
+    /**
+     * efqFieldTypeHandler constructor.
+     */
     public function __construct()
     {
     }

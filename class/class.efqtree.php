@@ -38,6 +38,12 @@ class efqTree
 
     //constructor of class XoopsTree
     //sets the names of table, unique id, and parend id
+    /**
+     * efqTree constructor.
+     * @param $table_name
+     * @param $id_name
+     * @param $pid_name
+     */
     public function __construct($table_name, $id_name, $pid_name)
     {
         $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
@@ -47,12 +53,21 @@ class efqTree
         $this->dirid = 0;
     }
 
+    /**
+     * @param int $dirid
+     */
     public function setDir($dirid = 0)
     {
         $this->dirid = $dirid;
     }
 
     // returns an array of first child objects for a given id($sel_id)
+
+    /**
+     * @param        $sel_id
+     * @param string $order
+     * @return array
+     */
     public function getFirstChild($sel_id, $order = '')
     {
         $arr = array();
@@ -73,6 +88,11 @@ class efqTree
     }
 
     // returns an array of all FIRST child ids of a given id($sel_id)
+
+    /**
+     * @param $sel_id
+     * @return array
+     */
     public function getFirstChildId($sel_id)
     {
         $idarray = array();
@@ -89,6 +109,13 @@ class efqTree
     }
 
     //returns an array of ALL child ids for a given id($sel_id)
+
+    /**
+     * @param        $sel_id
+     * @param string $order
+     * @param array  $idarray
+     * @return array
+     */
     public function getAllChildId($sel_id, $order = '', $idarray = array())
     {
         $sql = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
@@ -109,6 +136,13 @@ class efqTree
     }
 
     //returns an array of ALL parent ids for a given id($sel_id)
+
+    /**
+     * @param        $sel_id
+     * @param string $order
+     * @param array  $idarray
+     * @return array
+     */
     public function getAllParentId($sel_id, $order = '', $idarray = array())
     {
         $sql = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id . '';
@@ -128,6 +162,12 @@ class efqTree
 
     //generates path from the root id to a given id($sel_id)
     // the path is delimetered with "/"
+    /**
+     * @param        $sel_id
+     * @param        $title
+     * @param string $path
+     * @return string
+     */
     public function getPathFromId($sel_id, $title, $path = '')
     {
         $result = $this->db->query('SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id");
@@ -149,6 +189,15 @@ class efqTree
     //makes a nicely ordered selection box
     //$preset_id is used to specify a preselected item
     //set $none to 1 to add a option with value 0
+    /**
+     * @param        $title
+     * @param string $order
+     * @param int    $preset_id
+     * @param int    $none
+     * @param string $sel_name
+     * @param string $onchange
+     * @param int    $multiple
+     */
     public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = '', $multiple = 0)
     {
         if ($sel_name == '') {
@@ -201,6 +250,15 @@ class efqTree
     }
 
     //generates nicely formatted linked path from the root id to a given id
+
+    /**
+     * @param        $sel_id
+     * @param        $title
+     * @param        $funcURL
+     * @param string $path
+     * @param string $outputvar
+     * @return string
+     */
     public function getNicePathFromId($sel_id, $title, $funcURL, $path = '', $outputvar = 'catid')
     {
         $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
@@ -221,6 +279,13 @@ class efqTree
     }
 
     //generates nicely formatted path from the root id to a given id
+
+    /**
+     * @param        $sel_id
+     * @param        $title
+     * @param string $path
+     * @return string
+     */
     public function getUnformattedPathFromId($sel_id, $title, $path = '')
     {
         $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
@@ -247,6 +312,11 @@ class efqTree
 
     //generates id path from the root id to a given id
     // the path is delimetered with "/"
+    /**
+     * @param        $sel_id
+     * @param string $path
+     * @return string
+     */
     public function getIdPathFromId($sel_id, $path = '')
     {
         $result = $this->db->query('SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id");
@@ -263,6 +333,12 @@ class efqTree
         return $path;
     }
 
+    /**
+     * @param int    $sel_id
+     * @param string $order
+     * @param array  $parray
+     * @return array
+     */
     public function getAllChild($sel_id = 0, $order = '', $parray = array())
     {
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
@@ -282,6 +358,13 @@ class efqTree
         return $parray;
     }
 
+    /**
+     * @param int    $sel_id
+     * @param string $order
+     * @param array  $parray
+     * @param string $r_prefix
+     * @return array
+     */
     public function getChildTreeArray($sel_id = 0, $order = '', $parray = array(), $r_prefix = '')
     {
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';

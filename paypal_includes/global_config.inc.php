@@ -14,6 +14,9 @@
 
 //create variable names to perform additional order processing
 
+/**
+ * @return array
+ */
 function create_local_variables()
 {
     $array_name = array();
@@ -83,6 +86,11 @@ function create_local_variables()
 
 //post transaction data using curl
 
+/**
+ * @param $url
+ * @param $data
+ * @return array|string|\XoopsFormElementTray|\XoopsFormText
+ */
 function curlPost($url, $data)
 {
     global $paypal, $info;
@@ -106,6 +114,11 @@ function curlPost($url, $data)
 
 //posts transaction data using libCurl
 
+/**
+ * @param $url
+ * @param $data
+ * @return string
+ */
 function libCurlPost($url, $data)
 {
     //build post string
@@ -138,6 +151,11 @@ function libCurlPost($url, $data)
 }
 
 //posts transaction data using fsockopen.
+/**
+ * @param $url
+ * @param $data
+ * @return array|string
+ */
 function fsockPost($url, $data)
 {
     //Parse url

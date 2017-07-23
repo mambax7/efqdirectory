@@ -67,6 +67,10 @@ function b_efqdiralpha1_menu_show($options)
     return $block;
 }
 
+/**
+ * @param $options
+ * @return string
+ */
 function b_efqdiralpha1_menu_edit($options)
 {
     $form = '' . _MB_EFQDIR_DISP . '&nbsp;';

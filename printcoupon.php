@@ -26,6 +26,9 @@ if (!($coupid > 0)) {
     redirect_header('index.php');
 }
 
+/**
+ * @param $coupid
+ */
 function PrintPage($coupid)
 {
     global $xoopsModule, $xoopsTpl, $xoopsModuleConfig, $mydirname;

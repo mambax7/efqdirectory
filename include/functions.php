@@ -53,6 +53,10 @@ function convertOrderByIn($orderby)
     return $orderby;
 }
 
+/**
+ * @param $orderby
+ * @return string
+ */
 function convertorderbytrans($orderby)
 {
     $orderbyTrans = '';
@@ -84,6 +88,10 @@ function convertorderbytrans($orderby)
     return $orderbyTrans;
 }
 
+/**
+ * @param $orderby
+ * @return string
+ */
 function convertorderbyout($orderby)
 {
     if ($orderby == 'title ASC') {
@@ -114,6 +122,11 @@ function convertorderbyout($orderby)
     return $orderby;
 }
 
+/**
+ * @param $time
+ * @param $status
+ * @return string
+ */
 function newlinkgraphic($time, $status)
 {
     global $moddir;
@@ -131,6 +144,10 @@ function newlinkgraphic($time, $status)
     return $new;
 }
 
+/**
+ * @param $hits
+ * @return string
+ */
 function popgraphic($hits)
 {
     global $xoopsModuleConfig, $moddir;
@@ -141,6 +158,11 @@ function popgraphic($hits)
     return '';
 }
 
+/**
+ * @param     $sel_id
+ * @param int $status
+ * @return int
+ */
 function getTotalItems($sel_id, $status = 0)
 {
     global $xoopsDB, $mytree;
@@ -179,6 +201,12 @@ function getTotalItems($sel_id, $status = 0)
     return $count;
 }
 
+/**
+ * @param        $sel_id
+ * @param string $status
+ * @param        $locdestid
+ * @return int
+ */
 function getTotalItems2($sel_id, $status = '', $locdestid)
 {
     global $xoopsDB, $mytree;
@@ -208,6 +236,10 @@ function getTotalItems2($sel_id, $status = '', $locdestid)
     return $count;
 }
 
+/**
+ * @param int $dirid
+ * @return int
+ */
 function getDirNameFromId($dirid = 0)
 {
     global $xoopsDB;
@@ -225,6 +257,10 @@ function getDirNameFromId($dirid = 0)
     return $dirname;
 }
 
+/**
+ * @param int $cid
+ * @return int
+ */
 function getCatTitleFromId($cid = 0)
 {
     global $xoopsDB;
@@ -243,6 +279,10 @@ function getCatTitleFromId($cid = 0)
     return $cattitle;
 }
 
+/**
+ * @param $get_itemid
+ * @return int|string
+ */
 function getCategoriesPaths($get_itemid)
 {
     global $efqtree, $xoopsDB, $get_itemid, $get_dirid, $xoopsUser, $xoopsModule;
@@ -273,6 +313,10 @@ function getCategoriesPaths($get_itemid)
     return $output;
 }
 
+/**
+ * @param int $currentoption
+ * @param     $breadcrumb
+ */
 function adminmenu($currentoption = 0, $breadcrumb)
 {
     global $xoopsModule, $xoopsConfig;
@@ -312,6 +356,10 @@ function adminmenu($currentoption = 0, $breadcrumb)
     echo '</div></ul>';
 }
 
+/**
+ * @param string $typeid
+ * @return int|string
+ */
 function getTypeFromId($typeid = '0')
 {
     global $xoopsDB;
@@ -330,6 +378,10 @@ function getTypeFromId($typeid = '0')
     return $typename;
 }
 
+/**
+ * @param string $catid
+ * @return int
+ */
 function getDirId($catid = '0')
 {
     global $xoopsDB;
@@ -348,6 +400,10 @@ function getDirId($catid = '0')
     return $dirid;
 }
 
+/**
+ * @param string $catid
+ * @return bool
+ */
 function checkDescription($catid = '0')
 {
     global $xoopsDB;
@@ -366,6 +422,10 @@ function checkDescription($catid = '0')
     return $txtid;
 }
 
+/**
+ * @param string $get_catid
+ * @return int|string
+ */
 function getTemplateFromCatid($get_catid = '0')
 {
     global $xoopsDB;
@@ -384,6 +444,11 @@ function getTemplateFromCatid($get_catid = '0')
     return $tplname;
 }
 
+/**
+ * @param string $item
+ * @param string $dirid
+ * @return string
+ */
 function getCatSelectArea($item = '0', $dirid = '0')
 {
     global $xoopsDB, $myts, $eh, $mytree, $moddir, $get_itemid;
@@ -427,6 +492,11 @@ function getCatSelectArea($item = '0', $dirid = '0')
     return $output;
 }
 
+/**
+ * @param string $childid
+ * @param string $level
+ * @return string
+ */
 function getCatSelectAreaChildren($childid = '0', $level = '0')
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir, $get_itemid;
@@ -471,6 +541,10 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
     return $output;
 }
 
+/**
+ * @param int $item
+ * @return int
+ */
 function getDirIdFromItem($item = 0)
 {
     global $xoopsDB;
@@ -490,6 +564,10 @@ function getDirIdFromItem($item = 0)
     return $dirid;
 }
 
+/**
+ * @param int $item
+ * @return int
+ */
 function getUserIdFromItem($item = 0)
 {
     global $xoopsDB;
@@ -510,6 +588,9 @@ function getUserIdFromItem($item = 0)
 }
 
 //updates rating data in itemtable for a given item
+/**
+ * @param $sel_id
+ */
 function updaterating($sel_id)
 {
     global $xoopsDB;
@@ -526,6 +607,10 @@ function updaterating($sel_id)
     $xoopsDB->query($query) or exit();
 }
 
+/**
+ * @param string $typeid
+ * @return array|int
+ */
 function getAddressFields($typeid = '0')
 {
     global $xoopsDB;
@@ -566,6 +651,10 @@ function getAddressFields($typeid = '0')
     return $addressarray;
 }
 
+/**
+ * @param string $addrid
+ * @return array
+ */
 function getAddressValues($addrid = '0')
 {
     global $xoopsDB;
@@ -595,6 +684,9 @@ function getAddressValues($addrid = '0')
     return $addressarray;
 }
 
+/**
+ * @return string
+ */
 function getCatSelectArea2()
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir, $xoopsUser, $xoopsModule;
@@ -647,6 +739,11 @@ function getCatSelectArea2()
     return $output;
 }
 
+/**
+ * @param string $childid
+ * @param string $level
+ * @return string
+ */
 function getCatSelectAreaChildren2($childid = '0', $level = '0')
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir;

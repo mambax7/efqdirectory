@@ -31,6 +31,9 @@ echo 'test category class';
  */
 class efqCategory extends XoopsObject
 {
+    /**
+     * efqCategory constructor.
+     */
     public function __construct()
     {
     }
@@ -47,6 +50,9 @@ class efqCategory extends XoopsObject
  */
 class efqCategoryHandler extends XoopsObjectHandler
 {
+    /**
+     * efqCategoryHandler constructor.
+     */
     public function __construct()
     {
     }

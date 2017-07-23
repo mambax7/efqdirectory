@@ -52,10 +52,11 @@ class efqGmap extends XoopsObject
     private $_jsPointsArray; //javascript assigning points to google map
     private $_map; // generate output for showing the map on a web page
     public $db;
-     
-    
-    
-    
+
+    /**
+     * efqGmap constructor.
+     * @param bool $gmap
+     */
     public function __construct($gmap = false)
     {
         global $xoopsModuleConfig;
@@ -83,7 +84,10 @@ class efqGmap extends XoopsObject
             }
         }
     }
-    
+
+    /**
+     * @param string $key
+     */
     public function setKey($key='')
     {
         $this->_key = $key;
@@ -106,7 +110,10 @@ class efqGmap extends XoopsObject
     {
         return $this->_jsPointsArray;
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function showMap()
     {
         return $this->_map;
@@ -118,13 +125,22 @@ class efqGmap extends XoopsObject
         $this->_map .= $this->printScript($this->_jsPointsArray, $this->_key);
         $this->_map .= $this->printTrigger();
     }
-    
+
+    /**
+     * @param int $width
+     * @param int $height
+     * @return string
+     */
     public function printPlaceHolder($width=700, $height=500)
     {
         return '<div id="map" style="width:'.$width.'px; height:'.$height.'px"></div>';
     }
-    
-    
+
+    /**
+     * @param string $jsPointsArray
+     * @param string $key
+     * @return string
+     */
     public function printScript($jsPointsArray='', $key='')
     {
         global $icmsPreloadHandler;
@@ -252,7 +268,10 @@ EOH;
 class efqGmapHandler extends XoopsObjectHandler
 {
     public $db;
-    
+
+    /**
+     * efqGmapHandler constructor.
+     */
     public function __construct()
     {
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
@@ -304,7 +323,11 @@ class efqGmapHandler extends XoopsObjectHandler
         $gmap->setPointsJS($javaScript);
         return true;
     }
-    
+
+    /**
+     * @param int $id
+     * @return array
+     */
     public function getGmapById($id=0)
     {
         $arr = array();
@@ -316,7 +339,11 @@ class efqGmapHandler extends XoopsObjectHandler
         }
         return $arr;
     }
-    
+
+    /**
+     * @param int $id
+     * @return bool|object
+     */
     public function getByDataId($id=0)
     {
         if ($id == false) {

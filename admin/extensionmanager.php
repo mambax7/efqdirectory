@@ -46,6 +46,10 @@ if (isset($_GET['ext'])) {
     $ext = '';
 }
 
+/**
+ * @param string $type
+ * @param string $ext
+ */
 function showExtFields($type = 'text', $ext = '')
 {
     global $xoopsConfig, $xoopsDB, $_POST, $myts, $eh, $xoopsUser;

@@ -239,7 +239,10 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
         }
         return true;
     }
-    
+
+    /**
+     * @return bool
+     */
     public function getOffer()
     {
         return $this->objOffer;

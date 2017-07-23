@@ -239,7 +239,10 @@ class efqDataTypeHandler extends xoopsObjectHandler
         }
         return true;
     }
-    
+
+    /**
+     * @return bool
+     */
     public function getDataType()
     {
         return $this->objDataType;

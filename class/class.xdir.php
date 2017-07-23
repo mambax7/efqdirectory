@@ -60,20 +60,28 @@ class efqXdirHandler extends xoopsObjectHandler
     {
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
-    
 
+    /**
+     * @param $arr
+     */
     public function set_xdir_cats($arr)
     {
         if (is_array($arr)) {
             $this->xdir_cats = $arr;
         }
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function get_xdir_cats()
     {
         return $this->xdir_cats;
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function get_errors()
     {
         return $this->errors;
@@ -107,7 +115,11 @@ class efqXdirHandler extends xoopsObjectHandler
         $this->set_xdir_cats($arr);
         return true;
     }
-    
+
+    /**
+     * @param int $dirid
+     * @return bool
+     */
     public function saveCategories($dirid=0)
     {
         $tablename = 'efqdiralpha1_cat';

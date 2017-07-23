@@ -339,6 +339,14 @@ if (isset($_POST['submit'])) {
 }
 include XOOPS_ROOT_PATH . '/footer.php';
 
+/**
+ * @param $queryarray
+ * @param $andor
+ * @param $limit
+ * @param $offset
+ * @param $filter_arr
+ * @return array
+ */
 function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
 {
     global $xoopsDB, $eh;
@@ -540,6 +548,10 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
     return $item_arr;
 }
 
+/**
+ * @param string $items
+ * @return array|bool
+ */
 function get_search_results($items = '')
 {
     global $xoopsDB, $eh;
@@ -569,6 +581,11 @@ function get_search_results($items = '')
     }
 }
 
+/**
+ * @param int $searchnum
+ * @param int $limit
+ * @return int
+ */
 function getNumberOfResults($searchnum = 0, $limit = 10)
 {
     global $xoopsDB, $eh;
@@ -591,6 +608,14 @@ function getNumberOfResults($searchnum = 0, $limit = 10)
     return $count;
 }
 
+/**
+ * @param     $queryarray
+ * @param     $andor
+ * @param     $limit
+ * @param int $offset
+ * @param     $filter_arr
+ * @return int|void
+ */
 function mod_search_count($queryarray, $andor, $limit, $offset = 0, $filter_arr)
 {
     global $xoopsDB, $eh;
@@ -619,6 +644,10 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0, $filter_arr)
     return $count;
 }
 
+/**
+ * @param int $dtypeid
+ * @return array
+ */
 function getPostedValue_text($dtypeid = 0)
 {
     global $_POST;
@@ -636,6 +665,10 @@ function getPostedValue_text($dtypeid = 0)
     return $postedvalues;
 }
 
+/**
+ * @param int $dtypeid
+ * @return array
+ */
 function getPostedValue_address($dtypeid = 0)
 {
     global $_POST;
@@ -653,6 +686,10 @@ function getPostedValue_address($dtypeid = 0)
     return $postedvalues;
 }
 
+/**
+ * @param int $dtypeid
+ * @return array
+ */
 function getPostedValue_array($dtypeid = 0)
 {
     global $_POST;

@@ -176,6 +176,13 @@ function mod_search($queryarray, $andor, $limit, $offset)
     }
 }
 
+/**
+ * @param     $queryarray
+ * @param     $andor
+ * @param     $limit
+ * @param int $offset
+ * @return int|void
+ */
 function mod_search_count($queryarray, $andor, $limit, $offset = 0)
 {
     global $xoopsDB, $eh;

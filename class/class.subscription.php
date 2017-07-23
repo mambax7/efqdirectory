@@ -111,6 +111,9 @@ class efqSubscription extends XoopsObject
     }
 }
 
+/**
+ * Class efqSubscriptionHandler
+ */
 class efqSubscriptionHandler extends XoopsObjectHandler
 {
     /**
@@ -215,6 +218,10 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     return $orderid;
     }*/
 
+    /**
+     * @param int $offerid
+     * @return string
+     */
     public function getOrderItemName($offerid = 0)
     {
         $sql     = 'SELECT o.offerid, o.duration, o.count, o.price, o.currency, o.descr, t.typeid, t.typename FROM '
@@ -238,6 +245,12 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         return $itemname;
     }
 
+    /**
+     * @param string $orderid
+     * @param string $status
+     * @param string $startdate
+     * @param string $billto
+     */
     public function updateOrder($orderid = '0', $status = '1', $startdate = '0', $billto = '0')
     {
         $ordervars = $this->getOrderVars($orderid);
@@ -259,6 +272,10 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         }
     }
 
+    /**
+     * @param string $orderid
+     * @return mixed
+     */
     public function getOrderVars($orderid = '0')
     {
         $sql     = 'SELECT ord.uid, ord.billto, ord.startdate, ord.typeid, ord.status, ord.itemid, ord.offerid FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_subscr_orders') . ' ord WHERE ord.orderid=' . (int)$orderid . '';
@@ -278,6 +295,11 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         return $arr;
     }
 
+    /**
+     * @param string $offerid
+     * @param string $showactive
+     * @return array
+     */
     public function getOfferVars($offerid = '0', $showactive = '1')
     {
         $sql = 'SELECT count, duration FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_subscr_offers') . ' WHERE offerid=' . (int)$offerid . '';
@@ -307,6 +329,11 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     }
     }*/
 
+    /**
+     * @param string $itemid
+     * @param string $typeid
+     * @return bool
+     */
     public function updateItem($itemid = '0', $typeid = '0')
     {
         if ($itemid != '0' && $typeid != '0') {
@@ -319,10 +346,18 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         }
     }
 
+    /**
+     * @param string $offerid
+     */
     public function getNewBillto($offerid = '0')
     {
     }
 
+    /**
+     * @param int $itemid
+     * @param int $itemtype
+     * @return bool
+     */
     public function changeItemType($itemid = 0, $itemtype = 0)
     {
         global $xoopsDB, $eh;
@@ -332,6 +367,11 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         return true;
     }
 
+    /**
+     * @param string $dashes
+     * @param string $showactive
+     * @return array
+     */
     public function durationPriceArray($dashes = '0', $showactive = '1')
     {
         $sql = 'SELECT o.offerid, o.duration, o.count, o.price, o.currency, o.descr, t.typeid, t.typename FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_subscr_offers') . ' o, ' . $this->db->prefix($module->getVar('dirname', 'n') . '_itemtypes') . ' t WHERE o.typeid=t.typeid';
@@ -357,6 +397,11 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         return $arr;
     }
 
+    /**
+     * @param string $selname
+     * @param bool   $none
+     * @param int    $preselected
+     */
     public function itemsSelBox($selname = '', $none = false, $preselected = 0)
     {
         $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_itemtypes') . '';
@@ -379,6 +424,10 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         echo "</select>\n";
     }
 
+    /**
+     * @param string $dashes
+     * @return array
+     */
     public function itemTypesArray($dashes = '0')
     {
         $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_itemtypes') . ' ORDER BY typelevel ASC';
@@ -395,6 +444,10 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         return $arr;
     }
 
+    /**
+     * @param int $typeid
+     * @return bool
+     */
     public function countSubscriptionsForType($typeid = 0)
     {
         $sql = 'SELECT COUNT(itemid) FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_items') . ' WHERE typeid=' . (int)$typeid . '';

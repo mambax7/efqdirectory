@@ -360,6 +360,10 @@ if (!empty($_POST['submit'])) {
 }
 include XOOPS_ROOT_PATH . '/footer.php';
 
+/**
+ * @param $locdestid
+ * @return int
+ */
 function GetLevelid($locdestid)
 {
     global $xoopsDB;
@@ -378,6 +382,10 @@ function GetLevelid($locdestid)
     return $levelid;
 }
 
+/**
+ * @param $locdestid
+ * @return int
+ */
 function GetLocName($locdestid)
 {
     global $xoopsDB;

@@ -61,17 +61,29 @@ class efqListingData extends XoopsObject
     }
         
     //Set variable $_updated to true of false (default)
+
+    /**
+     * @param bool $set
+     */
     public function setUpdated($set=false)
     {
         $this->_updated = $set;
     }
     
     //Set variable $_inserted to true of false (default)
+
+    /**
+     * @param bool $set
+     */
     public function setInserted($set=false)
     {
         $this->_inserted = $set;
     }
-    
+
+    /**
+     * @param $arr
+     * @return bool
+     */
     public function setListingData($arr)
     {
         if (is_array($arr)) {
@@ -98,7 +110,10 @@ class efqListingData extends XoopsObject
 class efqListingDataHandler extends XoopsObjectHandler
 {
     public $errorhandler;
-    
+
+    /**
+     * efqListingDataHandler constructor.
+     */
     public function __construct()
     {
         //Instantiate class
@@ -106,7 +121,11 @@ class efqListingDataHandler extends XoopsObjectHandler
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->errorhandler = $eh;
     }
-    
+
+    /**
+     * @param int $itemid
+     * @return array
+     */
     public function getData($itemid=0)
     {
         $arr = array();
