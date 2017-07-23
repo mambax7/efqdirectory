@@ -74,7 +74,7 @@ function xdirConfig()
 function newDir()
 {
     global $xoopsDB, $_POST, $myts, $eh;
-    if (isset($_POST['dirname']) and $_POST['dirname'] != '') {
+    if (isset($_POST['dirname']) and $_POST['dirname'] !== '') {
         $p_dirname = $_POST['dirname'];
     } else {
         redirect_header("directories.php?op=moddir&dirid=$db_dirid", 2, _MD_XDIR_CREATE_EMPTY_DIR);

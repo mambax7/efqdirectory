@@ -31,7 +31,7 @@ if (isset($paypal['business'])) {
 
         $subscription = new efqSubscription();
         $ordervalues  = $subscription->getOrderVars($orderid);
-        if ($ordervalues['billto'] == '') {
+        if ($ordervalues['billto'] === '') {
             $current_billto = $ordervalues['startdate'];
         } else {
             $current_billto = $ordervalues['billto'];
@@ -61,7 +61,7 @@ if (isset($paypal['business'])) {
                 $billto = '';
         }
 
-        if ($ordervalues['startdate'] < time() && $ordervalues[billto] == '') {
+        if ($ordervalues['startdate'] < time() && $ordervalues[billto] === '') {
             $subscription->changeItemType($ordervalues[itemid], $ordervalues[typeid]);
             $subscription->updateOrder($orderid, '1', time(), $billto);
         } else {

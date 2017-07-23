@@ -145,7 +145,7 @@ class XoopsImageHandler extends XoopsObjectHandler
      */
     public function delete(XoopsObject $image)
     {
-        if (strtolower(get_class($image)) != 'xoopsimage') {
+        if (strtolower(get_class($image)) !== 'xoopsimage') {
             return false;
         }
         $id  = $image->getVar('image_id');

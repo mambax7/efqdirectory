@@ -454,7 +454,7 @@ class efqGmapHandler extends XoopsObjectHandler
         $strSet    = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
-            if ($k != 'id') {
+            if ($k !== 'id') {
                 $strSet .= $k . '=' . "'" . $v . "'";
                 if ($i < $countVars) {
                     $strSet .= ', ';

@@ -95,7 +95,7 @@ if (!$islistingowner and !$isadmin) {
 
 $type     = getTypeFromId($listing->getVar('typeid'));
 $template = getTemplateFromCatid($get_catid);
-if ($listing->getVar('logourl') != '') {
+if ($listing->getVar('logourl') !== '') {
     $logourl = '<img src="' . XOOPS_URL . '/modules/' . $moddir . '/uploads/' . $listing->getVar('logourl') . '">';
 } else {
     $logourl = '';

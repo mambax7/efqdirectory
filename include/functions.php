@@ -60,28 +60,28 @@ function convertOrderByIn($orderby)
 function convertorderbytrans($orderby)
 {
     $orderbyTrans = '';
-    if ($orderby == 'hits ASC') {
+    if ($orderby === 'hits ASC') {
         $orderbyTrans = '' . _MD_POPULARITYLTOM . '';
     }
-    if ($orderby == 'hits DESC') {
+    if ($orderby === 'hits DESC') {
         $orderbyTrans = '' . _MD_POPULARITYMTOL . '';
     }
-    if ($orderby == 'title ASC') {
+    if ($orderby === 'title ASC') {
         $orderbyTrans = '' . _MD_TITLEATOZ . '';
     }
-    if ($orderby == 'title DESC') {
+    if ($orderby === 'title DESC') {
         $orderbyTrans = '' . _MD_TITLEZTOA . '';
     }
-    if ($orderby == 'date ASC') {
+    if ($orderby === 'date ASC') {
         $orderbyTrans = '' . _MD_DATEOLD . '';
     }
-    if ($orderby == 'date DESC') {
+    if ($orderby === 'date DESC') {
         $orderbyTrans = '' . _MD_DATENEW . '';
     }
-    if ($orderby == 'rating ASC') {
+    if ($orderby === 'rating ASC') {
         $orderbyTrans = '' . _MD_RATINGLTOH . '';
     }
-    if ($orderby == 'rating DESC') {
+    if ($orderby === 'rating DESC') {
         $orderbyTrans = '' . _MD_RATINGHTOL . '';
     }
 
@@ -94,28 +94,28 @@ function convertorderbytrans($orderby)
  */
 function convertorderbyout($orderby)
 {
-    if ($orderby == 'title ASC') {
+    if ($orderby === 'title ASC') {
         $orderby = 'titleA';
     }
-    if ($orderby == 'date ASC') {
+    if ($orderby === 'date ASC') {
         $orderby = 'dateA';
     }
-    if ($orderby == 'hits ASC') {
+    if ($orderby === 'hits ASC') {
         $orderby = 'hitsA';
     }
-    if ($orderby == 'rating ASC') {
+    if ($orderby === 'rating ASC') {
         $orderby = 'ratingA';
     }
-    if ($orderby == 'title DESC') {
+    if ($orderby === 'title DESC') {
         $orderby = 'titleD';
     }
-    if ($orderby == 'date DESC') {
+    if ($orderby === 'date DESC') {
         $orderby = 'dateD';
     }
-    if ($orderby == 'hits DESC') {
+    if ($orderby === 'hits DESC') {
         $orderby = 'hitsD';
     }
-    if ($orderby == 'rating DESC') {
+    if ($orderby === 'rating DESC') {
         $orderby = 'ratingD';
     }
 
@@ -169,7 +169,7 @@ function getTotalItems($sel_id, $status = 0)
     $count = 0;
     $arr   = array();
     $query = 'SELECT DISTINCT l.itemid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' l, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . ' x WHERE x.itemid=l.itemid AND x.cid=' . $sel_id . '';
-    if ($status != '') {
+    if ($status !== '') {
         $query .= " AND l.status>='$status'";
     } else {
         $query .= '';
@@ -187,7 +187,7 @@ function getTotalItems($sel_id, $status = 0)
     $size = count($arr);
     for ($i = 0; $i < $size; ++$i) {
         $query2 = 'SELECT DISTINCT l.itemid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' l, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . ' x WHERE l.itemid=x.itemid AND x.cid=' . $arr[$i] . '';
-        if ($status != '') {
+        if ($status !== '') {
             $query2 .= " AND l.status>='$status'";
         } else {
             $query2 .= '';
@@ -215,7 +215,7 @@ function getTotalItems2($sel_id, $status = '', $locdestid)
     $query = 'SELECT count(*) FROM ' . $xoopsDB->prefix('links_links') . ' t, ' . $xoopsDB->prefix('links_x_loc_dest') . ' x  WHERE x.ldestid=t.lid AND x.locdestid=' . $locdestid . ' AND t.cid=' . $sel_id . '';
     //  $query = "select DISTINCT count(lid) from ".$xoopsDB->prefix("links_links")." t, ".$xoopsDB->prefix("links_x_loc_dest")." x  where x.ldestid=t.lid AND x.locdestid=".$locdestid." AND t.cid=".$sel_id."";
     //  $query = "select count(*) from ".$xoopsDB->prefix("links_links")." where cid=".$sel_id."";
-    if ($status != '') {
+    if ($status !== '') {
         $query .= " and status>=$status";
     }
     $result = $xoopsDB->query($query);
@@ -225,7 +225,7 @@ function getTotalItems2($sel_id, $status = '', $locdestid)
     $size  = count($arr);
     for ($i = 0; $i < $size; ++$i) {
         $query2 = 'select count(*) ' . $xoopsDB->prefix('links_links') . ' t, ' . $xoopsDB->prefix('links_x_loc_dest') . ' x  where x.ldestid=t.lid AND x.locdestid=' . $locdestid . ' AND t.cid=' . $arr[$i] . '';
-        if ($status != '') {
+        if ($status !== '') {
             $query2 .= " and status>=$status";
         }
         $result2 = $xoopsDB->query($query2);
@@ -718,7 +718,7 @@ function getCatSelectArea2()
             //$cats .= $cid."|";
             $output .= '<tr><td><strong>' . $tab . '' . $title . "</strong></td><td>&nbsp;</td><td align=\"center\">$checkbox</td></tr>\n";
             $output .= getCatSelectAreaChildren2($cid);
-            if ($output != '') {
+            if ($output !== '') {
                 $selectablecat = true;
             }
         }

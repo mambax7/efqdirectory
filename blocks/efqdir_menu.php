@@ -74,7 +74,7 @@ function b_efqdiralpha1_menu_edit($options)
 {
     $form = '' . _MB_EFQDIR_DISP . '&nbsp;';
     $form .= "<input type='hidden' name='options[]' value='";
-    if ($options[0] == 'date') {
+    if ($options[0] === 'date') {
         $form .= "date'";
     } else {
         $form .= "hits'";

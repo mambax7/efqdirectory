@@ -170,7 +170,7 @@ function fsockPost($url, $data)
     $postdata .= 'cmd=_notify-validate';
 
     //Set the port number
-    if ($web['scheme'] == 'https') {
+    if ($web['scheme'] === 'https') {
         $web['port'] = '443';
         $ssl         = 'ssl://';
     } else {

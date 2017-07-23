@@ -96,7 +96,7 @@ class db_manager
             $prefixed_query = SqlUtility::prefixQuery($piece, $this->db->prefix());
             if ($prefixed_query !== false) {
                 $table = $this->db->prefix($prefixed_query[4]);
-                if ($prefixed_query[1] == 'CREATE TABLE') {
+                if ($prefixed_query[1] === 'CREATE TABLE') {
                     if ($this->db->query($prefixed_query[0]) !== false) {
                         if (!isset($this->s_tables['create'][$table])) {
                             $this->s_tables['create'][$table] = 1;
@@ -106,7 +106,7 @@ class db_manager
                             $this->f_tables['create'][$table] = 1;
                         }
                     }
-                } elseif ($prefixed_query[1] == 'INSERT INTO') {
+                } elseif ($prefixed_query[1] === 'INSERT INTO') {
                     if ($this->db->query($prefixed_query[0]) !== false) {
                         if (!isset($this->s_tables['insert'][$table])) {
                             $this->s_tables['insert'][$table] = 1;
@@ -120,7 +120,7 @@ class db_manager
                             $this->f_tables['insert'][$table]++;
                         }
                     }
-                } elseif ($prefixed_query[1] == 'ALTER TABLE') {
+                } elseif ($prefixed_query[1] === 'ALTER TABLE') {
                     if ($this->db->query($prefixed_query[0]) !== false) {
                         if (!isset($this->s_tables['alter'][$table])) {
                             $this->s_tables['alter'][$table] = 1;
@@ -130,7 +130,7 @@ class db_manager
                             $this->f_tables['alter'][$table] = 1;
                         }
                     }
-                } elseif ($prefixed_query[1] == 'DROP TABLE') {
+                } elseif ($prefixed_query[1] === 'DROP TABLE') {
                     if ($this->db->query('DROP TABLE ' . $table) !== false) {
                         if (!isset($this->s_tables['drop'][$table])) {
                             $this->s_tables['drop'][$table] = 1;
@@ -295,7 +295,7 @@ class db_manager
     {
         $table = trim($table);
         $ret   = false;
-        if ($table != '') {
+        if ($table !== '') {
             $this->db->connect();
             $sql = 'SELECT * FROM ' . $this->db->prefix($table);
             $ret = (false != $this->db->query($sql)) ? true : false;

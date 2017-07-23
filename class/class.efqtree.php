@@ -72,7 +72,7 @@ class efqTree
     {
         $arr = array();
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -119,7 +119,7 @@ class efqTree
     public function getAllChildId($sel_id, $order = '', $idarray = array())
     {
         $sql = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -146,7 +146,7 @@ class efqTree
     public function getAllParentId($sel_id, $order = '', $idarray = array())
     {
         $sql = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -200,7 +200,7 @@ class efqTree
      */
     public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = '', $multiple = 0)
     {
-        if ($sel_name == '') {
+        if ($sel_name === '') {
             $sel_name = $this->id;
         }
         $myts = MyTextSanitizer::getInstance();
@@ -209,7 +209,7 @@ class efqTree
         if ($this->dirid != 0) {
             $sql .= " AND dirid=$this->dirid";
         }
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         //echo 'test';
@@ -217,7 +217,7 @@ class efqTree
         $result = $this->db->query($sql);
 
         echo "<select name='" . $sel_name . '\'';
-        if ($onchange != '') {
+        if ($onchange !== '') {
             echo " onchange='" . $onchange . '\'';
         }
         if ($multiple != 0) {
@@ -296,7 +296,7 @@ class efqTree
         list($parentid, $name) = $this->db->fetchRow($result);
         $myts = MyTextSanitizer::getInstance();
         $name = $myts->htmlSpecialChars($name);
-        if ($path != '') {
+        if ($path !== '') {
             $path = '' . $name . '&nbsp;:&nbsp;' . $path . '';
         } else {
             $path = '' . $name . '';
@@ -342,7 +342,7 @@ class efqTree
     public function getAllChild($sel_id = 0, $order = '', $parray = array())
     {
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);
@@ -368,7 +368,7 @@ class efqTree
     public function getChildTreeArray($sel_id = 0, $order = '', $parray = array(), $r_prefix = '')
     {
         $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
-        if ($order != '') {
+        if ($order !== '') {
             $sql .= " ORDER BY $order";
         }
         $result = $this->db->query($sql);

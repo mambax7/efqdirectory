@@ -48,7 +48,7 @@ if (empty($xoopsUser) and !$xoopsModuleConfig['anonpost']) {
 if (!empty($_POST['submit'])) {
     //Get all selectable categories and put the prefix 'selectcat' in front of the catid.
     //With all results check if the result has a corresponding $_POST value.
-    if ($_POST['title'] == '') {
+    if ($_POST['title'] === '') {
         $eh->show('1001');
     }
     $title = $myts->makeTboxData4Save($_POST['title']);

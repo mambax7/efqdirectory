@@ -73,7 +73,7 @@ if (!empty($_POST['submit'])) {
         $op = '';
     }
     // If option is "submitforapproval" then submit and redirect;
-    if ($op == 'submitforapproval') {
+    if ($op === 'submitforapproval') {
         if ($efqListingHandler->updateStatus($post_itemid, '1')) {
             redirect_header('index.php', 2, _MD_SUBMITTED_PUBLICATION);
         } else {
@@ -96,7 +96,7 @@ if (!empty($_POST['submit'])) {
         $err    = array();
         $ucount = count($_POST['xoops_upload_file']);
         for ($i = 0; $i < $ucount; ++$i) {
-            if ($_POST['xoops_upload_file'][$i] != '') {
+            if ($_POST['xoops_upload_file'][$i] !== '') {
                 $medianame = $_POST['xoops_upload_file'][$i];
                 if ($uploader->fetchMedia($_POST['xoops_upload_file'][$i])) {
                     if (!$uploader->upload()) {
@@ -145,7 +145,7 @@ if (!empty($_POST['submit'])) {
                 $sql = 'UPDATE ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
                 $xoopsDB->query($sql) || $eh->show('0013');
             }
-        } elseif ($p_description != null or $p_description != '') {
+        } elseif ($p_description != null or $p_description !== '') {
             $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text'), $post_itemid, $p_description);
             $xoopsDB->query($sql) || $eh->show('0013');
         }
@@ -236,7 +236,7 @@ if (!empty($_POST['submit'])) {
         } else {
             $post_urllink = '';
         }
-        if ($post_urllink != '') {
+        if ($post_urllink !== '') {
             $post_value = $post_urllink . '|' . $post_urltitle;
         }
         if ($itemid == null) {
@@ -302,7 +302,7 @@ if (!empty($_POST['submit'])) {
                 redirect_header('listing.php?item=' . $itemid, 2, _MD_ONLYADMIN_ALLOWED_TO_EDIT);
                 exit();
             }
-            if ($logourl != '') {
+            if ($logourl !== '') {
                 $picture = "uploads/$logourl";
             } else {
                 $picture = 'images/nopicture.gif';

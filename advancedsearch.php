@@ -249,7 +249,7 @@ if (isset($_POST['submit'])) {
     $num_results = $xoopsDB->getRowsNum($result);
     while (list($searchid, $searchnum, $created, $page, $items, $dirid, $catid) = $xoopsDB->fetchRow($result)) {
         //Split items and for each item, get item data.
-        if ($items != '') {
+        if ($items !== '') {
             $searchresults = get_search_results($items);
         } else {
             $searchresults = 0;
@@ -410,7 +410,7 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
             $select = '0';
         }
 
-        if ($postvalue != '') {
+        if ($postvalue !== '') {
             ${'sql' . $n} = '';
             //$zero_allowed = '1';
             switch ($constr) {
@@ -555,7 +555,7 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
 function get_search_results($items = '')
 {
     global $xoopsDB, $eh;
-    if ($items != '') {
+    if ($items !== '') {
         $z           = 0;
         $ret         = array();
         $split_items = explode(',', $items);
@@ -677,7 +677,7 @@ function getPostedValue_address($dtypeid = 0)
     foreach ($addressfields['addressfields'] as $field => $fieldvalue) {
         if (isset($_POST["$dtypeid$field"])) {
             $addressfield = $_POST["$dtypeid$field"];
-            if ($addressfield != '') {
+            if ($addressfield !== '') {
                 $postedvalues[] = array('field' => $field, 'postvalue' => $addressfield);
             }
         }
