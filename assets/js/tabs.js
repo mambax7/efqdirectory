@@ -3,5 +3,5 @@ function showTab(objLI) {
         objLI.className = 'inactive';
     } else {
         objLI.className = 'active';
-    };
-};
+    }
+}
