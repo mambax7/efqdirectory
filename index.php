@@ -122,7 +122,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
     $pathstring .= $efqtree->getNicePathFromId($get_catid, 'title', 'index.php?dirid=' . $dirid . '&op=');
     $xoopsTpl->assign('category_path', $pathstring);
 
-    if (isset($xoopsUser) && $xoopsUser != null) {
+    if (isset($xoopsUser) && $xoopsUser !== null) {
         $submitlink = '<a href="submit.php?dirid=' . $dirid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/' . $xoopsConfig['language'] . '/listing-new.gif" alt="' . _MD_SUBMITLISTING . '" title="' . _MD_SUBMITLISTING . '"></a>';
         $xoopsTpl->assign('submit_link', $submitlink);
     }
@@ -412,7 +412,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                     $path = str_replace('/', " <img src='" . XOOPS_URL . '/modules/' . $moddir . "/assets/images/arrow.gif' board='0' alt=''> ", $path);
                     $new  = newlinkgraphic($created, $status);
                     $pop  = popgraphic($hits);
-                    if ($level == null) {
+                    if ($level === null) {
                         $level = '0';
                     }
                     switch ($level) {

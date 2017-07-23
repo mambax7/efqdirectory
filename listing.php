@@ -76,7 +76,7 @@ $pathstring .= $mytree->getNicePathFromId($get_catid, 'title', 'index.php?dirid=
 
 $editlink = '<a href="edit.php?item=' . $get_itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/' . $xoopsConfig['language'] . '/listing-edit.gif" alt="' . _MD_EDIT_LISTING . '" title="' . _MD_EDIT_LISTING . '"></a>';
 
-if (isset($xoopsUser) && $xoopsUser != null) {
+if (isset($xoopsUser) && $xoopsUser !== null) {
     if ($xoopsUser->getVar('uid') == $listing->getVar('uid')) {
         $islistingowner = true;
         $xoopsTpl->assign('listingowner', '1');
