@@ -42,10 +42,10 @@
  */
 class efqDirectory extends XoopsObject
 {
-    public function efqDirectory($directory = false)
+    public function __construct($directory = false)
     {
         global $moddir;
-        $this->db = Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->initVar('dirid', XOBJ_DTYPE_INT, null, false);
         $this->initVar('postfix', XOBJ_DTYPE_TXTBOX);
         $this->initVar('open', XOBJ_DTYPE_INT, 0, false);
@@ -59,7 +59,7 @@ class efqDirectory extends XoopsObject
                 $this->assignVars($directory);
             } else {
                 $directory_handler = xoops_getModuleHandler('directory', $moddir);
-                $objDirectory =& $directory_handler->get($directory);
+                $objDirectory = $directory_handler->get($directory);
                 foreach ($objDirectory->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
                 }
@@ -80,9 +80,9 @@ class efqDirectory extends XoopsObject
  */
 class efqDirectoryHandler extends XoopsObjectHandler
 {
-    public function efqDirectoryHandler()
+    public function __construct()
     {
-        $this->db =& Database::getInstance();
+        $this->db =XoopsDatabaseFactory::getDatabaseConnection();
     }
     
     /**

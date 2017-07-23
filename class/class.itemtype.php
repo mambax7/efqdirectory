@@ -50,10 +50,10 @@ class efqItemType extends XoopsObject
    * @param bool $itemtype
    * @return
    */
-    public function efqItemType($obj=false)
+    public function __construct($obj=false)
     {
         global $moddir;
-        $this->db = Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->initVar('typeid', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('typename', XOBJ_DTYPE_TXTBOX, null, false, 50);
         $this->initVar('level', XOBJ_DTYPE_INT, 0, true, 4);
@@ -80,9 +80,9 @@ class efqItemTypeHandler extends xoopsObject
    * 
    * @return
    */
-    public function efqItemTypeHandler()
+    public function __construct()
     {
-        $this->db = Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
     
     /**

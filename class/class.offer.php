@@ -50,10 +50,10 @@ class efqSubscriptionOffer extends XoopsObject
    * @param bool $itemtype
    * @return
    */
-    public function efqSubscriptionOffer($offer=false)
+    public function __construct($offer=false)
     {
         global $moddir;
-        $this->db = Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->initVar('offerid', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('dirid', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('typeid', XOBJ_DTYPE_INT, 0, false);
@@ -88,9 +88,9 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
    * 
    * @return
    */
-    public function efqSubscriptionOfferHandler($offer=false)
+    public function __construct($offer=false)
     {
-        $this->db = Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->objOffer = $offer;
     }
     

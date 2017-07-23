@@ -56,14 +56,14 @@ class efqGmap extends XoopsObject
     
     
     
-    public function efqGmap($gmap = false)
+    public function __construct($gmap = false)
     {
         global $xoopsModuleConfig;
         $key = $xoopsModuleConfig['gmapkey'];
         $this->setKey($key);
         $this->setPointsJS('');
         
-        $this->db = Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->initVar('id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('dataid', XOBJ_DTYPE_INT, null, true);
         $this->initVar('lat', XOBJ_DTYPE_TXTBOX, null, true);
@@ -251,9 +251,9 @@ class efqGmapHandler extends XoopsObjectHandler
 {
     public $db;
     
-    public function efqGmapHandler()
+    public function __construct()
     {
-        $this->db = & Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
     
     /**

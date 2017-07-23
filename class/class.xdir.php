@@ -57,9 +57,9 @@ class efqXdirHandler extends xoopsObjectHandler
    * 
    * @return
    */
-    public function efqXdirHandler()
+    public function __construct()
     {
-        $this->db = Database::getInstance();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
     
 

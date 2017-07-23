@@ -47,7 +47,7 @@ class efqListingData extends XoopsObject
     /**
      * Constructor
      */
-    public function efqListingData()
+    public function __construct()
     {
         // class constructor;
         //$this->setCurrentUser();
@@ -99,11 +99,11 @@ class efqListingDataHandler extends XoopsObjectHandler
 {
     public $errorhandler;
     
-    public function efqListingDataHandler()
+    public function __construct()
     {
         //Instantiate class
         global $eh;
-        $this->db =& XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->errorhandler = $eh;
     }
     
