@@ -45,31 +45,31 @@
                             <tr align="left" valign="top">
                                 <td bgcolor="#EEEEEE">Order Number:</td>
                                 <td bgcolor="#EEEEEE">
-                                    <?= $_POST[txn_id] ?>
+                                    <?= $_POST['txn_id'] ?>
                                 </td>
                             </tr>
                             <tr align="left" valign="top">
                                 <td bgcolor="#EEEEEE">Date:</td>
                                 <td bgcolor="#EEEEEE">
-                                    <?= $_POST[payment_date] ?>
+                                    <?= $_POST['payment_date'] ?>
                                 </td>
                             </tr>
                             <tr align="left" valign="top">
                                 <td width="20%" bgcolor="#EEEEEE"> First Name:</td>
                                 <td width="80%" bgcolor="#EEEEEE">
-                                    <?= $_POST[first_name] ?>
+                                    <?= $_POST['first_name'] ?>
                                 </td>
                             </tr>
                             <tr align="left" valign="top">
                                 <td bgcolor="#EEEEEE">Last Name:</td>
                                 <td bgcolor="#EEEEEE">
-                                    <?= $_POST[last_name] ?>
+                                    <?= $_POST['last_name'] ?>
                                 </td>
                             </tr>
                             <tr align="left" valign="top">
                                 <td bgcolor="#EEEEEE">Email:</td>
                                 <td bgcolor="#EEEEEE">
-                                    <?= $_POST[payer_email] ?>
+                                    <?= $_POST['payer_email'] ?>
                                 </td>
                             </tr>
                         </table>

@@ -22,29 +22,29 @@ require_once __DIR__ . '/../paypal_includes/global_config.inc.php';
 require_once __DIR__ . '/../paypal_includes/config.inc.php';
 
 //decide which post method to use
-switch ($paypal[post_method]) {
+switch ($paypal['post_method']) {
 
     case 'libCurl': //php compiled with libCurl support
 
-        $result = libCurlPost($paypal[url], $_POST);
+        $result = libCurlPost($paypal['url'], $_POST);
 
         break;
 
     case 'curl': //cURL via command line
 
-        $result = curlPost($paypal[url], $_POST);
+        $result = curlPost($paypal['url'], $_POST);
         //print_r($result);
         break;
 
     case 'fso': //php fsockopen();
 
-        $result = fsockPost($paypal[url], $_POST);
+        $result = fsockPost($paypal['url'], $_POST);
         //print_r($result);
         break;
 
     default: //use the fsockopen method as default post method
 
-        $result = fsockPost($paypal[url], $_POST);
+        $result = fsockPost($paypal['url'], $_POST);
         //print_r($result);
         break;
 

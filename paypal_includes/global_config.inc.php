@@ -178,7 +178,7 @@ function fsockPost($url, $data)
     }
 
     //Create paypal connection
-    $fp = @fsockopen($ssl . $web[host], $web[port], $errnum, $errstr, 30);
+    $fp = @fsockopen($ssl . $web['host'], $web['port'], $errnum, $errstr, 30);
 
     //Error checking
     if (!$fp) {
@@ -214,55 +214,55 @@ function showVariables()
     global $paypal; ?>
 
     <!-- PayPal Configuration -->
-    <input type="hidden" name="business" value="<?= $paypal[business] ?>">
-    <input type="hidden" name="cmd" value="<?= $paypal[cmd] ?>">
+    <input type="hidden" name="business" value="<?= $paypal['business'] ?>">
+    <input type="hidden" name="cmd" value="<?= $paypal['cmd'] ?>">
     <input type="hidden" name="image_url" value="<?php echo "$paypal[site_url]$paypal[image_url]"; ?>">
     <input type="hidden" name="return" value="<?php echo "$paypal[site_url]$paypal[success_url]"; ?>">
     <input type="hidden" name="cancel_return" value="<?php echo "$paypal[site_url]$paypal[cancel_url]"; ?>">
     <input type="hidden" name="notify_url" value="<?php echo "$paypal[site_url]$paypal[notify_url]"; ?>">
-    <input type="hidden" name="rm" value="<?= $paypal[return_method] ?>">
-    <input type="hidden" name="currency_code" value="<?= $paypal[currency_code] ?>">
-    <input type="hidden" name="lc" value="<?= $paypal[lc] ?>">
-    <input type="hidden" name="bn" value="<?= $paypal[bn] ?>">
-    <input type="hidden" name="cbt" value="<?= $paypal[continue_button_text] ?>">
+    <input type="hidden" name="rm" value="<?= $paypal['return_method'] ?>">
+    <input type="hidden" name="currency_code" value="<?= $paypal['currency_code'] ?>">
+    <input type="hidden" name="lc" value="<?= $paypal['lc'] ?>">
+    <input type="hidden" name="bn" value="<?= $paypal['bn'] ?>">
+    <input type="hidden" name="cbt" value="<?= $paypal['continue_button_text'] ?>">
 
     <!-- Payment Page Information -->
-    <input type="hidden" name="no_shipping" value="<?= $paypal[display_shipping_address] ?>">
-    <input type="hidden" name="no_note" value="<?= $paypal[display_comment] ?>">
-    <input type="hidden" name="cn" value="<?= $paypal[comment_header] ?>">
-    <input type="hidden" name="cs" value="<?= $paypal[background_color] ?>">
+    <input type="hidden" name="no_shipping" value="<?= $paypal['display_shipping_address'] ?>">
+    <input type="hidden" name="no_note" value="<?= $paypal['display_comment'] ?>">
+    <input type="hidden" name="cn" value="<?= $paypal['comment_header'] ?>">
+    <input type="hidden" name="cs" value="<?= $paypal['background_color'] ?>">
 
     <!-- Product Information -->
-    <input type="hidden" name="item_name" value="<?= $paypal[item_name] ?>">
-    <input type="hidden" name="amount" value="<?= $paypal[amount] ?>">
-    <input type="hidden" name="quantity" value="<?= $paypal[quantity] ?>">
-    <input type="hidden" name="item_number" value="<?= $paypal[item_number] ?>">
-    <input type="hidden" name="undefined_quantity" value="<?= $paypal[edit_quantity] ?>">
-    <input type="hidden" name="on0" value="<?= $paypal[on0] ?>">
-    <input type="hidden" name="os0" value="<?= $paypal[os0] ?>">
-    <input type="hidden" name="on1" value="<?= $paypal[on1] ?>">
-    <input type="hidden" name="os1" value="<?= $paypal[os1] ?>">
+    <input type="hidden" name="item_name" value="<?= $paypal['item_name'] ?>">
+    <input type="hidden" name="amount" value="<?= $paypal['amount'] ?>">
+    <input type="hidden" name="quantity" value="<?= $paypal['quantity'] ?>">
+    <input type="hidden" name="item_number" value="<?= $paypal['item_number'] ?>">
+    <input type="hidden" name="undefined_quantity" value="<?= $paypal['edit_quantity'] ?>">
+    <input type="hidden" name="on0" value="<?= $paypal['on0'] ?>">
+    <input type="hidden" name="os0" value="<?= $paypal['os0'] ?>">
+    <input type="hidden" name="on1" value="<?= $paypal['on1'] ?>">
+    <input type="hidden" name="os1" value="<?= $paypal['os1'] ?>">
 
     <!-- Shipping and Misc Information -->
-    <input type="hidden" name="shipping" value="<?= $paypal[shipping_amount] ?>">
-    <input type="hidden" name="shipping2" value="<?= $paypal[shipping_amount_per_item] ?>">
-    <input type="hidden" name="handling" value="<?= $paypal[handling_amount] ?>">
-    <input type="hidden" name="tax" value="<?= $paypal[tax] ?>">
-    <input type="hidden" name="custom" value="<?= $paypal[custom] ?>">
-    <input type="hidden" name="invoice" value="<?= $paypal[invoice] ?>">
+    <input type="hidden" name="shipping" value="<?= $paypal['shipping_amount'] ?>">
+    <input type="hidden" name="shipping2" value="<?= $paypal['shipping_amount_per_item'] ?>">
+    <input type="hidden" name="handling" value="<?= $paypal['handling_amount'] ?>">
+    <input type="hidden" name="tax" value="<?= $paypal['tax'] ?>">
+    <input type="hidden" name="custom" value="<?= $paypal['custom'] ?>">
+    <input type="hidden" name="invoice" value="<?= $paypal['invoice'] ?>">
 
     <!-- Customer Information -->
-    <input type="hidden" name="first_name" value="<?= $paypal[firstname] ?>">
-    <input type="hidden" name="last_name" value="<?= $paypal[lastname] ?>">
-    <input type="hidden" name="address1" value="<?= $paypal[address1] ?>">
-    <input type="hidden" name="address2" value="<?= $paypal[address2] ?>">
-    <input type="hidden" name="city" value="<?= $paypal[city] ?>">
-    <input type="hidden" name="state" value="<?= $paypal[state] ?>">
-    <input type="hidden" name="zip" value="<?= $paypal[zip] ?>">
-    <input type="hidden" name="email" value="<?= $paypal[email] ?>">
-    <input type="hidden" name="night_phone_a" value="<?= $paypal[phone_1] ?>">
-    <input type="hidden" name="night_phone_b" value="<?= $paypal[phone_2] ?>">
-    <input type="hidden" name="night_phone_c" value="<?= $paypal[phone_3] ?>">
+    <input type="hidden" name="first_name" value="<?= $paypal['firstname'] ?>">
+    <input type="hidden" name="last_name" value="<?= $paypal['lastname'] ?>">
+    <input type="hidden" name="address1" value="<?= $paypal['address1'] ?>">
+    <input type="hidden" name="address2" value="<?= $paypal['address2'] ?>">
+    <input type="hidden" name="city" value="<?= $paypal['city'] ?>">
+    <input type="hidden" name="state" value="<?= $paypal['state'] ?>">
+    <input type="hidden" name="zip" value="<?= $paypal['zip'] ?>">
+    <input type="hidden" name="email" value="<?= $paypal['email'] ?>">
+    <input type="hidden" name="night_phone_a" value="<?= $paypal['phone_1'] ?>">
+    <input type="hidden" name="night_phone_b" value="<?= $paypal['phone_2'] ?>">
+    <input type="hidden" name="night_phone_c" value="<?= $paypal['phone_3'] ?>">
 
     <?php
 }

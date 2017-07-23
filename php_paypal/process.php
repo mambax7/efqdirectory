@@ -23,7 +23,7 @@ require_once __DIR__ . '/../paypal_includes/global_config.inc.php';
 <html>
 <head><title>::PHP PayPal::</title></head>
 <body onLoad="document.paypal_form.submit();">
-<form method="post" name="paypal_form" action="<?= $paypal[url] ?>">
+<form method="post" name="paypal_form" action="<?= $paypal['url'] ?>">
 
     <?php
     //show paypal hidden variables

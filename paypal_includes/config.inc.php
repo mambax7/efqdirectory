@@ -65,9 +65,9 @@ $paypal['lc']            = 'US';
 if ($xoopsModuleConfig['paypal_test'] == '1') {
     $paypal['url'] = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
 } elseif ($xoopsModuleConfig['paypal_secure_yn'] == '0') {
-    $paypal[url] = 'http://www.paypal.com/cgi-bin/webscr';
+    $paypal['url'] = 'http://www.paypal.com/cgi-bin/webscr';
 } else {
-    $paypal[url] = 'https://www.paypal.com/cgi-bin/webscr';
+    $paypal['url'] = 'https://www.paypal.com/cgi-bin/webscr';
 }
 
 $paypal['post_method']   = 'fso'; //fso=fsockopen(); curl=curl command line libCurl=php compiled with libCurl support

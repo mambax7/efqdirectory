@@ -61,8 +61,8 @@ if (isset($paypal['business'])) {
                 $billto = '';
         }
 
-        if ($ordervalues['startdate'] < time() && $ordervalues[billto] === '') {
-            $subscription->changeItemType($ordervalues[itemid], $ordervalues[typeid]);
+        if ($ordervalues['startdate'] < time() && $ordervalues['billto'] === '') {
+            $subscription->changeItemType($ordervalues['itemid'], $ordervalues['typeid']);
             $subscription->updateOrder($orderid, '1', time(), $billto);
         } else {
             $subscription->updateOrder($orderid, '1', $ordervalues['startdate'], $billto);
