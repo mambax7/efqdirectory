@@ -199,7 +199,7 @@ class efqItemTypeHandler extends xoopsObject
    */
     public function set($typeid=0)
     {
-        $sql = 'SELECT typeid,typename,level,dirid FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE typeid=' . intval($typeid) . '';
+        $sql = 'SELECT typeid,typename,level,dirid FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE typeid=' . (int)$typeid . '';
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
@@ -232,7 +232,7 @@ class efqItemTypeHandler extends xoopsObject
     public function getByDir($dirid=0)
     {
         $arr = array();
-        $sql = 'SELECT typeid,typename,level FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE dirid=' . intval($dirid) . '';
+        $sql = 'SELECT typeid,typename,level FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE dirid=' . (int)$dirid . '';
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -259,7 +259,7 @@ class efqItemTypeHandler extends xoopsObject
         $keyName = 'typeid';
         $id = $obj->getVar($keyName);
         if ($id != 0) {
-            $sql = 'DELETE FROM ' . $this->db->prefix($tablename) . ' WHERE ' . $keyName . '=' . intval($id) . '';
+            $sql = 'DELETE FROM ' . $this->db->prefix($tablename) . ' WHERE ' . $keyName . '=' . (int)$id . '';
             $this->db->queryF($sql);
             return true;
         } else {

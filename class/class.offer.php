@@ -209,7 +209,7 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
     public function setOffer($gpc_offerid=0)
     {
         $sql = 'SELECT o.offerid, o.title, o.typeid, o.duration, o.count, ' . 'o.price, o.activeyn, o.currency, o.descr, o.dirid, t.typename, t.level FROM ' .
-               $this->db->prefix('efqdiralpha1_itemtypes') . ' t, ' . $this->db->prefix('efqdiralpha1_subscr_offers') . ' o	WHERE o.typeid=t.typeid AND o.offerid=' . intval($gpc_offerid) . '';
+               $this->db->prefix('efqdiralpha1_itemtypes') . ' t, ' . $this->db->prefix('efqdiralpha1_subscr_offers') . ' o	WHERE o.typeid=t.typeid AND o.offerid=' . (int)$gpc_offerid . '';
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {

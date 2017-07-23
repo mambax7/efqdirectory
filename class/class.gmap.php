@@ -304,7 +304,7 @@ class efqGmapHandler extends XoopsObjectHandler
     {
         $arr = array();
         $sql = sprintf('SELECT * FROM %s WHERE id=%u',
-                       $this->db->prefix('efqdiralpha1_gmaps'), intval($id));
+                       $this->db->prefix('efqdiralpha1_gmaps'), (int)$id);
         $result = $this->db->query($sql) or $eh->show('0013');
         while (list($id, $lat, $lon, $descr, $dataid) = $this->db->fetchRow($result)) {
             $arr = array('id'=>$id, 'lat'=>$lat, 'lon'=>$lon, 'descr'=>$descr, 'dataid'=>$dataid);
@@ -317,10 +317,10 @@ class efqGmapHandler extends XoopsObjectHandler
         if ($id == false) {
             return false;
         }
-        $id = intval($id);
+        $id = (int)$id;
         echo $id;
         if ($id > 0) {
-            $sql = 'SELECT * FROM '.$this->db->prefix('efqdiralpha1_gmaps') . ' WHERE dataid=' . intval($id);
+            $sql = 'SELECT * FROM '.$this->db->prefix('efqdiralpha1_gmaps') . ' WHERE dataid=' . (int)$id;
             if (!$result = $this->db->query($sql)) {
                 return false;
             }

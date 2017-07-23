@@ -110,7 +110,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         if ($dirid == false) {
             return false;
         }
-        $dirid = intval($dirid);
+        $dirid = (int)$dirid;
         if ($dirid > 0) {
             $sql = 'SELECT * FROM ' . $this->db->prefix('efqdiralpha1_dir') . ' WHERE dirid=' . $dirid;
             if (!$result = $this->db->query($sql)) {

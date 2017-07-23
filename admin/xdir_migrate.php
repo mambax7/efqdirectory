@@ -48,7 +48,7 @@ $eh = new ErrorHandler;
 $moddir = $xoopsModule->getVar('dirname');
 
 if (isset($_GET['dirid'])) {
-    $get_dir = intval($_GET['dirid']);
+    $get_dir = (int)$_GET['dirid'];
 }
 
 function xdirConfig()

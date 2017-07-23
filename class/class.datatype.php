@@ -208,7 +208,7 @@ class efqDataTypeHandler extends xoopsObjectHandler
    */
     public function setDataType($gpc_dtypeid=0)
     {
-        $sql = 'SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=' . intval($gpc_dtypeid);
+        $sql = 'SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=' . (int)$gpc_dtypeid;
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
