@@ -19,13 +19,6 @@
  */
 
 include __DIR__ . '/../../mainfile.php';
-$info = __DIR__;
-if (preg_match("#[\/]#", $info)) {
-    $split = preg_split("[\]", $info);
-} else {
-    $split = preg_split('[/]', $info);
-}
-$count  = count($split) - 1;
-$moddir = $split[$count];
+$moduleDirName = basename(__DIR__);
 include __DIR__ . '/include/functions.php';
-$xoops_module_header = '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moddir . '/assets/css/efqdirectory.css">';
+$xoops_module_header = '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/efqdirectory.css">';

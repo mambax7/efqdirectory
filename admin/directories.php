@@ -167,7 +167,7 @@ function updateDir()
             $filename = $uploader->getMediaName();
         } else {
             $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dir') . " SET descr = '" . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
-            $xoopsDB->query($sql) || $eh->show('0013');
+            $xoopsDB->query($sql) or $eh->show('0013');
             redirect_header("directories.php?dirid=$p_dirid", 2, _MD_DIR_UPDATED);
             exit();
         }
@@ -176,7 +176,7 @@ function updateDir()
             $savedfilename = $uploader->getSavedFileName();
             echo $uploader->getErrors();
             $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dir') . " SET img = '" . $savedfilename . '\', descr = \'' . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
-            $xoopsDB->query($sql) || $eh->show('0013');
+            $xoopsDB->query($sql) or $eh->show('0013');
 
             //Rename the uploaded file to the same name in a different location that does not have 777 rights or 755.
             rename('' . XOOPS_ROOT_PATH . "/modules/$moddir/init_uploads/" . $savedfilename . '', '' . XOOPS_ROOT_PATH . "/modules/$moddir/uploads/" . $savedfilename . '');
@@ -189,7 +189,7 @@ function updateDir()
         } else {
             echo $uploader->getErrors();
             $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dir') . " SET descr = '" . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
-            $xoopsDB->query($sql) || $eh->show('0013');
+            $xoopsDB->query($sql) or $eh->show('0013');
             redirect_header("directories.php?dirid=$p_dirid", 2, _MD_DIR_UPDATED);
             exit();
         }
@@ -199,7 +199,7 @@ function updateDir()
 
 function changeStatus($status = 0)
 {
-    global $xoopsDB, $eh, $moddir;
+    global $xoopsDB, $eh, $moddir, $xoopsModule;
     $select      = $_POST['select'];
     $users       = '';
     $count       = 0;
@@ -215,7 +215,7 @@ function changeStatus($status = 0)
             ++$count;
         }
         $sql = sprintf('UPDATE %s SET OPEN=' . $status . ' WHERE dirid IN (%s)', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dir'), $directories);
-        $xoopsDB->query($sql) || $eh->show('0013');
+        $xoopsDB->query($sql) or $eh->show('0013');
         redirect_header('directories.php', 2, _MD_DIR_UPDATED);
         exit();
     } else {
@@ -239,7 +239,7 @@ function newDir()
     }
     $newid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dir') . '_dirid_seq');
     $sql   = sprintf("INSERT INTO %s (dirid, postfix, OPEN, NAME) VALUES (%u, '%s', '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dir'), $newid, $p_postfix, $p_open, $p_dirname);
-    $xoopsDB->query($sql) || $eh->show('0013');
+    $xoopsDB->query($sql) or $eh->show('0013');
     $db_dirid = $xoopsDB->getInsertId();
     redirect_header("directories.php?op=moddir&dirid=$db_dirid", 2, _MD_DIR_SAVED);
     exit();

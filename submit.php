@@ -63,7 +63,7 @@ if (!empty($_POST['submit'])) {
     $submitter = $xoopsUser->getVar('uid');
     $newid     = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . '_itemid_seq');
     $sql       = sprintf("INSERT INTO %s (itemid, uid, STATUS, created, title, hits, rating, votes, typeid, dirid) VALUES (%u, %u, %u, '%s', '%s', %u, %u, %u, '%s', %u)", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items'), $newid, $submitter, $status, time(), $title, 0, 0, 0, 0, $dirid);
-    $xoopsDB->query($sql) || $eh->show('0013');
+    $xoopsDB->query($sql) or $eh->show('0013');
     if ($newid == 0) {
         $itemid = $xoopsDB->getInsertId();
     }
@@ -74,7 +74,7 @@ if (!empty($_POST['submit'])) {
         while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
             if (isset($_POST['selected' . $cid . ''])) {
                 $sql = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat'), $newid, $cid, $itemid, 1, time());
-                $xoopsDB->query($sql) || $eh->show('0013');
+                $xoopsDB->query($sql) or $eh->show('0013');
                 ++$count;
             }
         }

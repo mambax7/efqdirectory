@@ -208,7 +208,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     $sql = "INSERT INTO ".$xoopsDB->prefix("efqdiralpha1_subscr_orders")."
     (orderid, uid, offerid, typeid, startdate, status, itemid, autorenew) VALUES
     ($newid, $submitter, $offerid, $typeid, '$startdate', '0' , $itemid, '0')";
-    $xoopsDB->query($sql) || $eh->show("0013");
+    $xoopsDB->query($sql) or $eh->show("0013");
     if ($newid == 0) {
     $orderid = $xoopsDB->getInsertId();
     }
@@ -324,7 +324,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     $sql = "INSERT INTO ".$xoopsDB->prefix("efqdiralpha1_subscr_scheduler")."
     (id, startdate, itemid, newtypeid, status) VALUES
     ($newid, $startdate, $itemid, $typeid, '0')";
-    $xoopsDB->queryF($sql) || $eh->show("0013");
+    $xoopsDB->queryF($sql) or $eh->show("0013");
     }
     }*/
 
@@ -429,8 +429,9 @@ class efqSubscriptionHandler extends XoopsObjectHandler
      */
     public function itemTypesArray($dashes = '0')
     {
-        $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_itemtypes') . ' ORDER BY typelevel ASC';
-        $result  = $this->db->query($sql) || $eh->show('0013');
+        global $xoopsModule;
+        $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($xoopsModule->getVar('dirname', 'n') . '_itemtypes') . ' ORDER BY typelevel ASC';
+        $result  = $this->db->query($sql) or $eh->show('0013');
         $numrows = $this->db->getRowsNum($result);
         $result  = $this->db->query($sql);
         if ($dashes == '0') {

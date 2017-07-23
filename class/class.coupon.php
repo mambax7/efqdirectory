@@ -156,7 +156,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
                 heading = " . $this->db->quoteString($heading) . ",
                 expire = $expire WHERE couponid = " . $couponid;
         }
-        $xoopsDB->query($sql) || $eh->show('0013');
+        $xoopsDB->query($sql) or $eh->show('0013');
         if ($coupon->_isNew) {
             $coupon->setVar('couponid', $this->db->getInsertId());
             $coupon->_isNew = false;
@@ -246,7 +246,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
             FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . ' coup, ' . $this->db->prefix($module->getVar('dirname', 'n') . '_items') . ' l';
         $sql    .= ' WHERE coup.itemid = l.itemid AND coup.itemid=' . (int)$itemid . ' AND coup.publish < ' . $now . ' AND (coup.expire = 0 OR coup.expire > ' . $now . ')';
         $sql    .= ' ORDER BY listingTitle ASC';
-        $result = $this->db->query($sql, $limit, $start) || $eh->show('0013');
+        $result = $this->db->query($sql, $limit, $start) or $eh->show('0013');
 
         if (!$result) {
             return $ret;

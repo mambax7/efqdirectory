@@ -20,7 +20,7 @@
 
 include __DIR__ . '/../../mainfile.php';
 include XOOPS_ROOT_PATH . '/header.php';
-$mydirname = basename(__DIR__);
+$moduleDirName = basename(__DIR__);
 $coupid    = isset($_GET['coupid']) ? (int)$_GET['coupid'] : 0;
 if (!($coupid > 0)) {
     redirect_header('index.php');
@@ -31,8 +31,8 @@ if (!($coupid > 0)) {
  */
 function PrintPage($coupid)
 {
-    global $xoopsModule, $xoopsTpl, $xoopsModuleConfig, $mydirname;
-    $couponHandler = xoops_getModuleHandler('coupon', $mydirname);
+    global $xoopsModule, $xoopsTpl, $xoopsModuleConfig, $moduleDirName;
+    $couponHandler = xoops_getModuleHandler('coupon', $moduleDirName);
     $couponHandler->increment($coupid);
     $coupon     = $couponHandler->getLinkedCoupon($coupid);
     $coupon_arr = $couponHandler->prepare2show($coupon);
@@ -43,6 +43,6 @@ function PrintPage($coupid)
 }
 
 //Smarty directory autodetect
-$smartydir = $mydirname;
+$smartydir = $moduleDirName;
 $xoopsTpl->assign('smartydir', $smartydir);
 PrintPage($coupid);

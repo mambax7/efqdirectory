@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
                    . ' dxc, '
                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat')
                    . " c WHERE c.cid=dxc.cid AND dt.dtypeid=dxc.dtypeid AND dt.fieldtypeid=ft.typeid AND c.dirid='$get_dirid' AND dt.activeyn='1'";
-    $result      = $xoopsDB->query($sql) || $eh->show('0013');
+    $result      = $xoopsDB->query($sql) or $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     $filter_arr  = array();
     while (list($dtypeid, $dtypetitle, $dtypeoptions, $fieldtype) = $xoopsDB->fetchRow($result)) {
@@ -215,7 +215,7 @@ if (isset($_POST['submit'])) {
                 //Save $items_arr_text and $page into DB
                 $newid = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_searchresults') . '_searchid_seq');
                 $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
-                $xoopsDB->query($sql) || $eh->show('0013');
+                $xoopsDB->query($sql) or $eh->show('0013');
                 if ($newid == 0) {
                     $itemid = $xoopsDB->getInsertId();
                 }
@@ -227,7 +227,7 @@ if (isset($_POST['submit'])) {
         if ($y != 0 && $page > 1) {
             $newid = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_searchresults') . '_searchid_seq');
             $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
-            $xoopsDB->query($sql) || $eh->show('0013');
+            $xoopsDB->query($sql) or $eh->show('0013');
             if ($newid == 0) {
                 $itemid = $xoopsDB->getInsertId();
             }
@@ -245,7 +245,7 @@ if (isset($_POST['submit'])) {
     //Query the saved results from the DB.
     $sql = 'SELECT searchid, searchnum, created, page, items, dirid, catid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_searchresults') . " WHERE searchnum='$get_searchnum' AND page='$get_page'";
 
-    $result      = $xoopsDB->query($sql) || $eh->show('0013');
+    $result      = $xoopsDB->query($sql) or $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     while (list($searchid, $searchnum, $created, $page, $items, $dirid, $catid) = $xoopsDB->fetchRow($result)) {
         //Split items and for each item, get item data.
@@ -319,7 +319,7 @@ if (isset($_POST['submit'])) {
                    . ' dxc, '
                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat')
                    . " c WHERE c.cid=dxc.cid AND dt.dtypeid=dxc.dtypeid AND dt.fieldtypeid=ft.typeid AND c.dirid='$get_dirid' AND dt.activeyn='1'";
-    $result      = $xoopsDB->query($sql) || $eh->show('0013');
+    $result      = $xoopsDB->query($sql) or $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
 
     $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
@@ -512,7 +512,7 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
     $items        = array();
     $intersection = array();
     for ($i = 0; $i < $n; ++$i) {
-        $result      = $xoopsDB->query(${'sql' . $i}) || $eh->show('0013');
+        $result      = $xoopsDB->query(${'sql' . $i}) or $eh->show('0013');
         $num_results = $xoopsDB->getRowsNum($result);
 
         if (!$result) {
@@ -561,7 +561,7 @@ function get_search_results($items = '')
         $split_items = explode(',', $items);
         foreach ($split_items as $item) {
             $sql         = 'SELECT i.itemid, i.title, i.uid, i.created, t.description FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' i, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text') . " t WHERE i.itemid=t.itemid AND i.itemid='$item'";
-            $result      = $xoopsDB->query($sql) || $eh->show('0013');
+            $result      = $xoopsDB->query($sql) or $eh->show('0013');
             $num_results = $xoopsDB->getRowsNum($result);
             while ($myrow = $xoopsDB->fetchArray($result)) {
                 $ret[$z]['itemid']      = $myrow['itemid'];
@@ -591,7 +591,7 @@ function getNumberOfResults($searchnum = 0, $limit = 10)
     global $xoopsDB, $eh;
     $block       = array();
     $sql         = 'SELECT MAX(page), items FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_searchresults') . " WHERE searchnum = '" . $searchnum . '\' GROUP BY page';
-    $result      = $xoopsDB->query($sql) || $eh->show('0013');
+    $result      = $xoopsDB->query($sql) or $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -638,7 +638,7 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0, $filter_arr)
         }
         $sql .= ') ';
     }
-    $result = $xoopsDB->query($sql) || $eh->show('0013');
+    $result = $xoopsDB->query($sql) or $eh->show('0013');
     list($count) = $xoopsDB->fetchRow($result);
 
     return $count;

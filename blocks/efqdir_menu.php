@@ -36,9 +36,9 @@ function b_efqdiralpha1_menu_show($options)
     if (isset($xoopsModule)) {
 
         //$moddir = $xoopsModule->getvar("dirname");
-        $dirname       = basename(dirname(__DIR__));
+        $moduleDirName       = basename(dirname(__DIR__));
         $moduleHandler = xoops_getHandler('module');
-        $module        = $moduleHandler->getByDirname($dirname);
+        $module        = $moduleHandler->getByDirname($moduleDirName);
         $moddir        = $module->getvar('dirname');
     } else {
         $info   = __DIR__;
@@ -50,7 +50,7 @@ function b_efqdiralpha1_menu_show($options)
     $block['lang_dirmenu'] = _MB_EFQDIR_MENU;
     $block['moddir']       = $moddir;
     $myts                  = MyTextSanitizer::getInstance();
-    $result                = $xoopsDB->query('SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE open='1' ORDER BY name") || $eh->show('0013');
+    $result                = $xoopsDB->query('SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE open='1' ORDER BY name") or $eh->show('0013');
     echo 'test';
     print_r($result);
     while ($myrow = $xoopsDB->fetchArray($result)) {
