@@ -63,7 +63,7 @@ class XoopsImageHandler extends XoopsObjectHandler
      * Create a new {@link XoopsImage}
      *
      * @param   boolean $isNew Flag the object as "new"
-     * @return  object
+     * @return  XoopsImage
      **/
     public function &create($isNew = true)
     {
@@ -78,7 +78,7 @@ class XoopsImageHandler extends XoopsObjectHandler
     /**
      * Write a {@link XoopsImage} object to the database
      *
-     * @param object|XoopsObject $image
+     * @param XoopsObject $image
      * @param string             $itemid
      * @return bool
      */
@@ -140,7 +140,7 @@ class XoopsImageHandler extends XoopsObjectHandler
     /**
      * Delete an image from the database
      *
-     * @param object|XoopsObject $image
+     * @param XoopsObject $image
      * @return bool
      */
     public function delete(XoopsObject $image)
@@ -162,12 +162,12 @@ class XoopsImageHandler extends XoopsObjectHandler
     /**
      * Load {@link XoopsImage}s from the database
      *
-     * @param   object  $criteria  {@link CriteriaElement}
+     * @param   $criteria  {@link CriteriaElement}
      * @param   boolean $id_as_key Use the ID as key into the array
      * @param   boolean $getbinary
      * @return  array   Array of {@link XoopsImage} objects
      **/
-    public function &getObjects($criteria = null, $id_as_key = false, $getbinary = false)
+    public function &getObjects(CriteriaElement $criteria = null, $id_as_key = false, $getbinary = false)
     {
         $ret   = array();
         $limit = $start = 0;
@@ -204,10 +204,10 @@ class XoopsImageHandler extends XoopsObjectHandler
     /**
      * Count some images
      *
-     * @param   object $criteria {@link CriteriaElement}
+     * @param   $criteria {@link CriteriaElement}
      * @return  int
      **/
-    public function getCount($criteria = null)
+    public function getCount(CriteriaElement $criteria = null)
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('image');
         if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {

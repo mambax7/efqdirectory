@@ -100,7 +100,7 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      * @copyright EFQ Consultancy (c) 2008
      * @version   1.0.0
      *
-     * @param   object $obj object
+     * @param   efqSubscriptionOffer $obj object
      *
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful

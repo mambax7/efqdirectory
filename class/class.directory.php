@@ -97,7 +97,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * create instance of directory class or reset the existing instance.
      *
      * @param bool $isNew
-     * @return object $directory
+     * @return efqDirectory $directory
      */
     public function &create($isNew = true)
     {
@@ -255,7 +255,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * @copyright EFQ Consultancy (c) 2008
      * @version   1.0.0
      *
-     * @param   object $obj object
+     * @param   efqDirectory $obj object
      *
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful

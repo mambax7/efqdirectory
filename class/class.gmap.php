@@ -283,7 +283,7 @@ class efqGmapHandler extends XoopsObjectHandler
      * create instance of efqGmap class or reset the existing instance.
      *
      * @param bool $isNew
-     * @return object $efqGmap
+     * @return efqGmap $efqGmap
      */
     public function &create($isNew = true)
     {
@@ -346,7 +346,7 @@ class efqGmapHandler extends XoopsObjectHandler
 
     /**
      * @param int $id
-     * @return bool|object
+     * @return bool|efqGmap
      */
     public function getByDataId($id = 0)
     {
@@ -375,7 +375,7 @@ class efqGmapHandler extends XoopsObjectHandler
      * @copyright EFQ Consultancy (c) 2008
      * @version   1.0.0
      *
-     * @param   object $obj object
+     * @param   efqGmap $obj object
      *
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
@@ -431,7 +431,7 @@ class efqGmapHandler extends XoopsObjectHandler
      * @copyright EFQ Consultancy (c) 2008
      * @version   1.0.0
      *
-     * @param   object $obj object
+     * @param   efqGmap $obj object
      *
      * @param bool     $forceQuery
      * @return bool true if update is succesful, false if unsuccesful

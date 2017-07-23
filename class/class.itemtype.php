@@ -90,7 +90,7 @@ class efqItemTypeHandler extends xoopsObject
      * @copyright EFQ Consultancy (c) 2008
      * @version   1.0.0
      *
-     * @param   object $obj object
+     * @param   efqItemType $obj object
      *
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful

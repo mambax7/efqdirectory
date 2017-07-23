@@ -164,7 +164,7 @@ class efqListingDataHandler extends XoopsObjectHandler
      * @param   object $obj object of type listing
      *
      * @param bool     $forceQuery
-     * @return bool true if update is succesful, false if unsuccesful
+     * @return bool true if update is successful, false if unsuccessful
      */
     public function updateListingData($obj, $forceQuery = false)
     {
