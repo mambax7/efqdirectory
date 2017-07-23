@@ -42,167 +42,172 @@
  */
 class efqXdirHandler extends xoopsObjectHandler
 {
-	
-	var $db; //Database reference
-	var $objXdir;
-	var $errors; //array();
-	var $categories; //array();
-	var $listings; //array();
-	var $xdir_cats; //array();
-	var $efq_dirid;
-	var $fieldtypes; //array();
-	var $datatypes; //array();
-		
+    public $db; //Database reference
+    public $objXdir;
+    public $errors; //array();
+    public $categories; //array();
+    public $listings; //array();
+    public $xdir_cats; //array();
+    public $efq_dirid;
+    public $fieldtypes; //array();
+    public $datatypes; //array();
+        
   /**
    * efqSubscriptionOfferHandler::efqItemTypeHandler()
    * 
    * @return
    */
-	function efqXdirHandler() {
-		$this->db = Database::getInstance();
-	}
-	
+    public function efqXdirHandler()
+    {
+        $this->db = Database::getInstance();
+    }
+    
 
-	function set_xdir_cats($arr) {
-		if (is_array($arr)) {
-			$this->xdir_cats = $arr;	
-		}		
-	}
-	
-	function get_xdir_cats() {
-		return $this->xdir_cats;	
-	}
-	
-	function get_errors() {
-		return $this->errors;
-	}	
-	
-	
-	
+    public function set_xdir_cats($arr)
+    {
+        if (is_array($arr)) {
+            $this->xdir_cats = $arr;
+        }
+    }
+    
+    public function get_xdir_cats()
+    {
+        return $this->xdir_cats;
+    }
+    
+    public function get_errors()
+    {
+        return $this->errors;
+    }
+    
+    
+    
   /**
    * getCategories_xdir()
    * 
    * Get xdir categories from database and return 
    * 
    * @return arr Array
-   */	
-	function setCategories_xdir() {
-		$arr = array();
-		$sql = 'SELECT cid, pid, title, imgurl FROM '.$this->db->prefix("efqdiralpha1_xdir_cat");
+   */
+    public function setCategories_xdir()
+    {
+        $arr = array();
+        $sql = 'SELECT cid, pid, title, imgurl FROM '.$this->db->prefix("efqdiralpha1_xdir_cat");
         $result = $this->db->query($sql);
         if (!$result) {
-        	return false;
+            return false;
         }
         $numrows = $this->db->getRowsNum($result);
-        if ( $numrows > 0 ) {
-	        while (list($cid, $pid, $title, $imgurl) = $this->db->fetchRow($result)) {
-				$arr[] = array('cid'=>$cid,'pid'=>$pid,'title'=>$title,'imgurl'=>$imgurl);
-	        }
-	    } else {
-			return false;
-		}
-		$this->set_xdir_cats($arr);
-		return true;
-	}
-	
-	function saveCategories($dirid=0) {
-		$tablename = "efqdiralpha1_cat";
-		$xdir_cats = $this->get_xdir_cats();
-		foreach ($xdir_cats as $xdir_cat) {
-			$cid = $xdir_cat['cid'];
-			$pid = $xdir_cat['pid'];
-			$title = $xdir_cat['title'];
-			$imgurl = $xdir_cat['imgurl'];
-			//Set fields and values
-			$strFields = 'cid,dirid,title,active,pid,img,allowlist';
-			$strValues = "$cid,$dirid,'$title',1,$pid,'$imgurl',1";
-			$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
-			if ($this->db->queryF($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;
-			}	
-		}
-	}
-	
-	/**
-	 * Function createDataTypes inserts datatypes into DB
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $obj object
-	 * 
-	 * @return	bool	true if insertion is succesful, false if unsuccesful
-	 */
-	function createDataTypes() {
-		$datatype_handler = new efqDataTypeHandler();
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_ADDRESS,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_ADDRESS2,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_CITY,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_STATE,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_ZIP,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_COUNTRY,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_PHONE,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_FAX,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_EMAIL,'fieldtype'=>_MD_XDIR_FIELDTYPE_EMAIL);
-		$arr[] = array('title'=>_MD_XDIR_DTYPE_URL,'fieldtype'=>_MD_XDIR_FIELDTYPE_URL);
-		foreach ($arr as $datatype) {
-			$objDataType = new efqFieldType;
-			$objDataType->setVar('title',$datatype['title']);
-			$objDataType->setVar('section',0);
-			$objDataType->setVar('uid',$xoopsUser->getVar('uid'));
-			$objDataType->setVar('defaultyn',1);
-			$objDataType->setVar('created',time());
-			$objDataType->setVar('activeyn',1);
-			$objDataType->setVar('fieldtypeid',$this->fieldtypes[$datatype['fieldtype']]);
-			$datatype_handler->insertDataType($objDataType,true);
-			$datatypes[$datatype['title']] = $objDataType->getVar('dtypeid');
-		}
-	}
-	
-	/**
-	 * Function createFieldTypes inserts field types into DB
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $obj object
-	 * 
-	 * @return	bool	true if insertion is succesful, false if unsuccesful
-	 */
-	function createFieldTypes() {
-		$fieldtype_handler = new efqFieldTypeHandler();
-		$arr[] = array('title'=>_MD_XDIR_FIELDTYPE_TEXTBOX,'fieldtype'=>'textbox');
-		$arr[] = array('title'=>_MD_XDIR_FIELDTYPE_EMAIL,'fieldtype'=>'email');
-		$arr[] = array('title'=>_MD_XDIR_FIELDTYPE_URL,'fieldtype'=>'url');
-		foreach ($arr as $fieldtype) {
-			$objFieldtype = new efqFieldType;
-			$objFieldtype->setVar('title',$fieldtype['title']);
-			$objFieldtype->setVar('fieldtype',$fieldtype['fieldtype']);
-			$objFieldtype->setVar('dirid',$this->efq_dirid);
-			$fieldtype_handler->insertFieldType($objFieldtype,true);
-			$fieldtypes[$fieldtype['title']] = $objFieldtype->getVar('typeid');
-		}
-	}
-	
-	/**
-	 * Function doMigrate migrates xDirectory to EFQ Directory
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $obj object
-	 * 
-	 * @return	bool	true if insertion is succesful, false if unsuccesful
-	 */	
-	function doMigrate($dirid=0) {
-		$this->setCategories_xdir();
-		$this->saveCategories($this->efq_dirid);
-		$this->createFieldTypes();
-		$this->createDataTypes();
-	}
-	
-	
+        if ($numrows > 0) {
+            while (list($cid, $pid, $title, $imgurl) = $this->db->fetchRow($result)) {
+                $arr[] = array('cid'=>$cid,'pid'=>$pid,'title'=>$title,'imgurl'=>$imgurl);
+            }
+        } else {
+            return false;
+        }
+        $this->set_xdir_cats($arr);
+        return true;
+    }
+    
+    public function saveCategories($dirid=0)
+    {
+        $tablename = "efqdiralpha1_cat";
+        $xdir_cats = $this->get_xdir_cats();
+        foreach ($xdir_cats as $xdir_cat) {
+            $cid = $xdir_cat['cid'];
+            $pid = $xdir_cat['pid'];
+            $title = $xdir_cat['title'];
+            $imgurl = $xdir_cat['imgurl'];
+            //Set fields and values
+            $strFields = 'cid,dirid,title,active,pid,img,allowlist';
+            $strValues = "$cid,$dirid,'$title',1,$pid,'$imgurl',1";
+            $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+            if ($this->db->queryF($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        }
+    }
+    
+    /**
+     * Function createDataTypes inserts datatypes into DB
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $obj object
+     * 
+     * @return	bool	true if insertion is succesful, false if unsuccesful
+     */
+    public function createDataTypes()
+    {
+        $datatype_handler = new efqDataTypeHandler();
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_ADDRESS,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_ADDRESS2,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_CITY,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_STATE,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_ZIP,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_COUNTRY,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_PHONE,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_FAX,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_EMAIL,'fieldtype'=>_MD_XDIR_FIELDTYPE_EMAIL);
+        $arr[] = array('title'=>_MD_XDIR_DTYPE_URL,'fieldtype'=>_MD_XDIR_FIELDTYPE_URL);
+        foreach ($arr as $datatype) {
+            $objDataType = new efqFieldType;
+            $objDataType->setVar('title', $datatype['title']);
+            $objDataType->setVar('section', 0);
+            $objDataType->setVar('uid', $xoopsUser->getVar('uid'));
+            $objDataType->setVar('defaultyn', 1);
+            $objDataType->setVar('created', time());
+            $objDataType->setVar('activeyn', 1);
+            $objDataType->setVar('fieldtypeid', $this->fieldtypes[$datatype['fieldtype']]);
+            $datatype_handler->insertDataType($objDataType, true);
+            $datatypes[$datatype['title']] = $objDataType->getVar('dtypeid');
+        }
+    }
+    
+    /**
+     * Function createFieldTypes inserts field types into DB
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $obj object
+     * 
+     * @return	bool	true if insertion is succesful, false if unsuccesful
+     */
+    public function createFieldTypes()
+    {
+        $fieldtype_handler = new efqFieldTypeHandler();
+        $arr[] = array('title'=>_MD_XDIR_FIELDTYPE_TEXTBOX,'fieldtype'=>'textbox');
+        $arr[] = array('title'=>_MD_XDIR_FIELDTYPE_EMAIL,'fieldtype'=>'email');
+        $arr[] = array('title'=>_MD_XDIR_FIELDTYPE_URL,'fieldtype'=>'url');
+        foreach ($arr as $fieldtype) {
+            $objFieldtype = new efqFieldType;
+            $objFieldtype->setVar('title', $fieldtype['title']);
+            $objFieldtype->setVar('fieldtype', $fieldtype['fieldtype']);
+            $objFieldtype->setVar('dirid', $this->efq_dirid);
+            $fieldtype_handler->insertFieldType($objFieldtype, true);
+            $fieldtypes[$fieldtype['title']] = $objFieldtype->getVar('typeid');
+        }
+    }
+    
+    /**
+     * Function doMigrate migrates xDirectory to EFQ Directory
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $obj object
+     * 
+     * @return	bool	true if insertion is succesful, false if unsuccesful
+     */
+    public function doMigrate($dirid=0)
+    {
+        $this->setCategories_xdir();
+        $this->saveCategories($this->efq_dirid);
+        $this->createFieldTypes();
+        $this->createDataTypes();
+    }
 }
-?>

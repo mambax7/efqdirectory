@@ -43,30 +43,30 @@
  */
 class efqDataType extends XoopsObject
 {
-	
+    
   /**
    * efqSubscriptionOffer::efqSubscriptionOffer()
    * 
    * @param bool $itemtype
    * @return
    */
-	function efqDataType($offer=false)
-	{
-		global $moddir;
-		$this->db = Database::getInstance();
-	    $this->initVar('dtypeid', XOBJ_DTYPE_INT, 0, false);
-	    $this->initVar('title', XOBJ_DTYPE_TXTBOX, null, true, 255);
-		$this->initVar('section', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('fieldtypeid', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('uid', XOBJ_DTYPE_INT, 0, true, 5);
-		$this->initVar('defaultyn', XOBJ_DTYPE_INT, 0, true, 2);
-	    $this->initVar('created', XOBJ_DTYPE_INT, 0, true, 10);
-	    $this->initVar('seq', XOBJ_DTYPE_INT, 0, true, 5);
-	    $this->initVar('options', XOBJ_DTYPE_TXTBOX, null, false, 10);
-		$this->initVar('activeyn', XOBJ_DTYPE_INT, 0, true, 2);		
-		$this->initVar('custom', XOBJ_DTYPE_TXTBOX, null, false, 10);
-		$this->initVar('icons', XOBJ_DTYPE_TXTBOX, null, false, 50);
-	}
+    public function efqDataType($offer=false)
+    {
+        global $moddir;
+        $this->db = Database::getInstance();
+        $this->initVar('dtypeid', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('title', XOBJ_DTYPE_TXTBOX, null, true, 255);
+        $this->initVar('section', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('fieldtypeid', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('uid', XOBJ_DTYPE_INT, 0, true, 5);
+        $this->initVar('defaultyn', XOBJ_DTYPE_INT, 0, true, 2);
+        $this->initVar('created', XOBJ_DTYPE_INT, 0, true, 10);
+        $this->initVar('seq', XOBJ_DTYPE_INT, 0, true, 5);
+        $this->initVar('options', XOBJ_DTYPE_TXTBOX, null, false, 10);
+        $this->initVar('activeyn', XOBJ_DTYPE_INT, 0, true, 2);
+        $this->initVar('custom', XOBJ_DTYPE_TXTBOX, null, false, 10);
+        $this->initVar('icons', XOBJ_DTYPE_TXTBOX, null, false, 50);
+    }
 }
 
 /**
@@ -80,122 +80,124 @@ class efqDataType extends XoopsObject
  */
 class efqDataTypeHandler extends xoopsObjectHandler
 {
-	
-	var $db; //Database reference
-	var $objDataType; // reference to object
-		
+    public $db; //Database reference
+    public $objDataType; // reference to object
+        
   /**
    * efqSubscriptionOfferHandler::efqItemTypeHandler()
    * 
    * @return
    */
-	function efqDataTypeHandler($obj=false) {
-		$this->db = Database::getInstance();
-		$this->objDataType = $obj;
-	}
-	
-	/**
-	 * Function insertOffer inserts record into DB
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $obj object
-	 * 
-	 * @return	bool	true if insertion is succesful, false if unsuccesful
-	 */
-	function insertDataType($obj, $forceQuery=false) {
-		$tablename = "efqdiralpha1_dtypes";
-		$keyName = "dtypeid";
-		$excludedVars = array();
-		if ($obj instanceof efqDataType) {
-			// Variable part of this function ends. From this line you can copy
-			// this function for similar object handling functions. 			
-			$obj->cleanVars();
-			$cleanvars = $obj->cleanVars;
-		} else {
-			return false;
-		}
-		$countVars = count($cleanvars);
-		$i = 1;
-		$strFields = "";
-		$strValues = "";
-		foreach ($cleanvars as $k => $v) {
-			if ( !in_array($k, $excludedVars) ) {
-				$strFields .= $k;
-				$strValues .= "'".$v."'";
-				if ($i < $countVars) {
-					$strFields .= ", ";
-					$strValues .= ", ";
-				}
-				$i++;
-			}
-		}
-		$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
-		if ($forceQuery) {
-			if ($this->db->queryF($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;
-			}	
-		} else {
-			if ($this->db->query($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;	
-			}
-		}		
-		return false;		
-	}
-	
-	/**
-	 * Function updateOffer updates subscription offer
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object
-	 * 
-	 * @return	bool	true if update is succesful, false if unsuccesful
-	 */
-	function updateDataType($obj, $forceQuery=false) {
-		$tablename = "efqdiralpha1_dtypes";
-		$keyName = "dtypeid";
-		$excludedVars = array();
-		if ($obj instanceof efqDataType) {
-			// Variable part of this function ends. From this line you can copy
-			// this function for similar object handling functions. 			
-			$obj->cleanVars();
-			$cleanvars = $obj->cleanVars;
-			$keyValue = $obj->getVar($keyName);
-		} else {
-			return false;
-		}
-		$countVars = count($cleanvars);
-		$i = 1;
-		$strSet = "";
-		$strValues = "";
-		foreach ($cleanvars as $k => $v) {
-			if ( !in_array($k, $excludedVars) ) {
-				if ($i < $countVars and $i > 1) {
-					$strSet .= ", ";
-				}
-				$strSet .= $k."="."'".$v."'";
-			}
-			$i++;		
-		}
-		$sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
-		if ($forceQuery) {
-			if ($this->db->queryF($sql)) {
-				return true;	
-			}	
-		} else {
-			if ($this->db->query($sql)) {
-				return true;	
-			}
-		}		
-		return false;		
-	}
+    public function efqDataTypeHandler($obj=false)
+    {
+        $this->db = Database::getInstance();
+        $this->objDataType = $obj;
+    }
+    
+    /**
+     * Function insertOffer inserts record into DB
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $obj object
+     * 
+     * @return	bool	true if insertion is succesful, false if unsuccesful
+     */
+    public function insertDataType($obj, $forceQuery=false)
+    {
+        $tablename = "efqdiralpha1_dtypes";
+        $keyName = "dtypeid";
+        $excludedVars = array();
+        if ($obj instanceof efqDataType) {
+            // Variable part of this function ends. From this line you can copy
+            // this function for similar object handling functions.
+            $obj->cleanVars();
+            $cleanvars = $obj->cleanVars;
+        } else {
+            return false;
+        }
+        $countVars = count($cleanvars);
+        $i = 1;
+        $strFields = "";
+        $strValues = "";
+        foreach ($cleanvars as $k => $v) {
+            if (!in_array($k, $excludedVars)) {
+                $strFields .= $k;
+                $strValues .= "'".$v."'";
+                if ($i < $countVars) {
+                    $strFields .= ", ";
+                    $strValues .= ", ";
+                }
+                $i++;
+            }
+        }
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        if ($forceQuery) {
+            if ($this->db->queryF($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        } else {
+            if ($this->db->query($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Function updateOffer updates subscription offer
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object
+     * 
+     * @return	bool	true if update is succesful, false if unsuccesful
+     */
+    public function updateDataType($obj, $forceQuery=false)
+    {
+        $tablename = "efqdiralpha1_dtypes";
+        $keyName = "dtypeid";
+        $excludedVars = array();
+        if ($obj instanceof efqDataType) {
+            // Variable part of this function ends. From this line you can copy
+            // this function for similar object handling functions.
+            $obj->cleanVars();
+            $cleanvars = $obj->cleanVars;
+            $keyValue = $obj->getVar($keyName);
+        } else {
+            return false;
+        }
+        $countVars = count($cleanvars);
+        $i = 1;
+        $strSet = "";
+        $strValues = "";
+        foreach ($cleanvars as $k => $v) {
+            if (!in_array($k, $excludedVars)) {
+                if ($i < $countVars and $i > 1) {
+                    $strSet .= ", ";
+                }
+                $strSet .= $k."="."'".$v."'";
+            }
+            $i++;
+        }
+        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        if ($forceQuery) {
+            if ($this->db->queryF($sql)) {
+                return true;
+            }
+        } else {
+            if ($this->db->query($sql)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
   /**
    * function setDataType()
@@ -204,39 +206,38 @@ class efqDataTypeHandler extends xoopsObjectHandler
    * 
    * @return bool true or false
    */
-	function setDataType($gpc_dtypeid=0) {
-		$sql = "SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=".intval($gpc_dtypeid);
+    public function setDataType($gpc_dtypeid=0)
+    {
+        $sql = "SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=".intval($gpc_dtypeid);
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
-        if ( $numrows > 0 ) {
-	        while (list($dtypeid,$title,$section,$fieldtypeid,$uid,$defaultyn, $activeyn,
-	                $options,$custom,$icon) = $this->db->fetchRow($result)) {
-				if (! $this->objDataType ) {
-					$this->objDataType = new efqDataType();
-				}
-				$this->objDataType->setVar('dtypeid', $dtypeid);
-				$this->objDataType->setVar('title', $title);
-				$this->objDataType->setVar('section', $section);
-				$this->objDataType->setVar('fieldtypeid', $fieldtypeid);
-				$this->objDataType->setVar('uid', $uid);
-				$this->objDataType->setVar('defaultyn', $defaultyn);
-				$this->objDataType->setVar('created', $created);
-				$this->objDataType->setVar('seq', $seq);
-				$this->objDataType->setVar('options', $options);
-				$this->objDataType->setVar('activeyn', $activeyn);
-				$this->objDataType->setVar('custom', $custom);
-				$this->objDataType->setVar('icon', $icon);
-	        }
-	    } else {
-			return false;
-		}
-		return true;
-	}
-	
-	function getDataType() {
-		return $this->objDataType;
-	}
-	
-	
+        if ($numrows > 0) {
+            while (list($dtypeid, $title, $section, $fieldtypeid, $uid, $defaultyn, $activeyn,
+                    $options, $custom, $icon) = $this->db->fetchRow($result)) {
+                if (! $this->objDataType) {
+                    $this->objDataType = new efqDataType();
+                }
+                $this->objDataType->setVar('dtypeid', $dtypeid);
+                $this->objDataType->setVar('title', $title);
+                $this->objDataType->setVar('section', $section);
+                $this->objDataType->setVar('fieldtypeid', $fieldtypeid);
+                $this->objDataType->setVar('uid', $uid);
+                $this->objDataType->setVar('defaultyn', $defaultyn);
+                $this->objDataType->setVar('created', $created);
+                $this->objDataType->setVar('seq', $seq);
+                $this->objDataType->setVar('options', $options);
+                $this->objDataType->setVar('activeyn', $activeyn);
+                $this->objDataType->setVar('custom', $custom);
+                $this->objDataType->setVar('icon', $icon);
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+    
+    public function getDataType()
+    {
+        return $this->objDataType;
+    }
 }
-?>

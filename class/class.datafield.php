@@ -39,16 +39,16 @@
  * @copyright EFQ Consultancy (c) 2007
  * @version 1.1.0
  */
-class efqDataField extends XoopsObject {
+class efqDataField extends XoopsObject
+{
 
-	/**
-	 * Constructor
-	 */
-	function efqDataField() {
-		// class constructor;
-
-	}	
-		
+    /**
+     * Constructor
+     */
+    public function efqDataField()
+    {
+        // class constructor;
+    }
 }
 
 /**
@@ -62,131 +62,131 @@ class efqDataField extends XoopsObject {
  */
 class efqDataFieldHandler extends XoopsObjectHandler
 {
-	var $errorhandler;
-	
-	function efqDataFieldHandler()
-	{
-		//Instantiate class
-		global $eh;
-		$this->db =& XoopsDatabaseFactory::getDatabaseConnection();
-		$this->errorhandler = $eh;
-	}
-	
-	function getDataFields( $itemid, $show=10, $min=0 ) {
-		$sql = "SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, d.customtitle, t.custom ";
+    public $errorhandler;
+    
+    public function efqDataFieldHandler()
+    {
+        //Instantiate class
+        global $eh;
+        $this->db =& XoopsDatabaseFactory::getDatabaseConnection();
+        $this->errorhandler = $eh;
+    }
+    
+    public function getDataFields($itemid, $show=10, $min=0)
+    {
+        $sql = "SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, d.customtitle, t.custom ";
         $sql .= "FROM ".$this->db->prefix("efqdiralpha1_item_x_cat")." ic, ".$this->db->prefix("efqdiralpha1_dtypes_x_cat")." xc, ".$this->db->prefix("efqdiralpha1_fieldtypes")." f, ".$this->db->prefix("efqdiralpha1_dtypes")." t ";
         $sql .= "LEFT JOIN ".$this->db->prefix("efqdiralpha1_data") .
             " d ON (t.dtypeid=d.dtypeid AND d.itemid=".$itemid.") ";
         $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=".$itemid."";
         $data_result = $this->db->query($sql) or $this->errorhandler->show("0013");
         //$numrows = $this->db->getRowsNum($data_result);
-		$arr = array();
-		while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $this->db->fetchRow($data_result)) {
-			$fieldvalue = $this->getFieldValue($fieldtype, $options, $value);
-			if ($icon != '') {
-				$iconurl = "<img src=\"uploads/$icon\" />";
-			} else { 
-				$iconurl = "";
-			}
-			if ($custom != '0' && $customtitle != "") {
-				$title = $customtitle;
-			}
-			$arr[] = array('dtypeid' => $dtypeid,
-				'title' => $title,
-				'section' => $section,
-				'icon' => $iconurl,
-				'ftypeid' => $ftypeid,
-				'fieldtype' => $fieldtype,
-				'ext' => $ext,
-				'options' => $options,
-				'custom' => $custom,
-				'itemid' => $itemid,
-				'value' => $fieldvalue,
-				'customtitle' => $customtitle );			
-		}
-		return $arr;
-	}
-	
-	function getFieldValue($fieldtype="", $options="", $value=0) {
-		global $myts, $moddir;
-		switch ($fieldtype) {
-		case "dhtml":
-			return $myts->makeTareaData4Show($value);
-			break;
-		//case "gmap":
-//			$gmapHandler = new efqGmapHandler();			
+        $arr = array();
+        while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $this->db->fetchRow($data_result)) {
+            $fieldvalue = $this->getFieldValue($fieldtype, $options, $value);
+            if ($icon != '') {
+                $iconurl = "<img src=\"uploads/$icon\" />";
+            } else {
+                $iconurl = "";
+            }
+            if ($custom != '0' && $customtitle != "") {
+                $title = $customtitle;
+            }
+            $arr[] = array('dtypeid' => $dtypeid,
+                'title' => $title,
+                'section' => $section,
+                'icon' => $iconurl,
+                'ftypeid' => $ftypeid,
+                'fieldtype' => $fieldtype,
+                'ext' => $ext,
+                'options' => $options,
+                'custom' => $custom,
+                'itemid' => $itemid,
+                'value' => $fieldvalue,
+                'customtitle' => $customtitle );
+        }
+        return $arr;
+    }
+    
+    public function getFieldValue($fieldtype="", $options="", $value=0)
+    {
+        global $myts, $moddir;
+        switch ($fieldtype) {
+        case "dhtml":
+            return $myts->makeTareaData4Show($value);
+            break;
+        //case "gmap":
+//			$gmapHandler = new efqGmapHandler();
 //			$gmap = new efqGmap();
 //			$gmap->setPointsJS($gmapHandler->getPointsJS($gmap));
 //			$gmap->generateMap();
 //			$ret = $gmap->showMap();
 //			unset($gmap);
 //			unset($gmapHandler);
-			//return $myts->makeTboxData4Show($value);
-			//break;
-		case "radio":
-			return $myts->makeTboxData4Show($value);
-			break;
-		case "rating":
-			$xoops_url = XOOPS_URL;
-			switch ($value) {
-				case 1:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_1.gif";
-					break;
-				case 2:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_2.gif";
-					break;
-				case 3:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_3.gif";
-					break;
-				case 4:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_4.gif";
-					break;
-				case 5:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_5.gif";
-					break;
-				case 6:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_6.gif";
-					break;
-				case 7:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_7.gif";
-					break;
-				case 8:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_8.gif";
-					break;
-				case 9:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_9.gif";
-					break;
-				case 10:
-					$src = "$xoops_url/modules/$moddir/assets/images/rating_10.gif";
-					break;
-				default:
-				$src = "";
-			}			
-			$rating = "<img src=\"$src\" />";
-			return $rating;
-			break;
-		case "select":
-			return $myts->makeTboxData4Show($value);
-			break;
-		case "textbox":
-			return $myts->makeTboxData4Show($value);
-			break;
-		case "url":
-			$link = explode('|',$value);
-			return '<a href="'.$myts->makeTboxData4Show($link[0]).'" title="'.$myts->makeTboxData4Show($link[1]).'">'.$myts->makeTboxData4Show($link[0]).'</a>';
-			break;
-		case "yesno":
-			if ($value == '1') {
-				return _YES;
-			} else {
-				return _NO;
-			}
-			break;
-		default:
-			return $myts->makeTboxData4Show($value);
-			break;
-		}
-	}
-	
+            //return $myts->makeTboxData4Show($value);
+            //break;
+        case "radio":
+            return $myts->makeTboxData4Show($value);
+            break;
+        case "rating":
+            $xoops_url = XOOPS_URL;
+            switch ($value) {
+                case 1:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_1.gif";
+                    break;
+                case 2:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_2.gif";
+                    break;
+                case 3:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_3.gif";
+                    break;
+                case 4:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_4.gif";
+                    break;
+                case 5:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_5.gif";
+                    break;
+                case 6:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_6.gif";
+                    break;
+                case 7:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_7.gif";
+                    break;
+                case 8:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_8.gif";
+                    break;
+                case 9:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_9.gif";
+                    break;
+                case 10:
+                    $src = "$xoops_url/modules/$moddir/assets/images/rating_10.gif";
+                    break;
+                default:
+                $src = "";
+            }
+            $rating = "<img src=\"$src\" />";
+            return $rating;
+            break;
+        case "select":
+            return $myts->makeTboxData4Show($value);
+            break;
+        case "textbox":
+            return $myts->makeTboxData4Show($value);
+            break;
+        case "url":
+            $link = explode('|', $value);
+            return '<a href="'.$myts->makeTboxData4Show($link[0]).'" title="'.$myts->makeTboxData4Show($link[1]).'">'.$myts->makeTboxData4Show($link[0]).'</a>';
+            break;
+        case "yesno":
+            if ($value == '1') {
+                return _YES;
+            } else {
+                return _NO;
+            }
+            break;
+        default:
+            return $myts->makeTboxData4Show($value);
+            break;
+        }
+    }
 }
-?>

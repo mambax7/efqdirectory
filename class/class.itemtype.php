@@ -43,23 +43,22 @@
  */
 class efqItemType extends XoopsObject
 {
-	
+    
   /**
    * efqItemType::efqItemType()
    * 
    * @param bool $itemtype
    * @return
    */
-	function efqItemType($obj=false)
-	{
-		global $moddir;
-		$this->db = Database::getInstance();
-	    $this->initVar('typeid', XOBJ_DTYPE_INT, 0, false);
-	    $this->initVar('typename', XOBJ_DTYPE_TXTBOX, null, false, 50);
-	    $this->initVar('level', XOBJ_DTYPE_INT, 0, true, 4);
-		$this->initVar('dirid', XOBJ_DTYPE_INT, 0, true, 5);
-
-	}
+    public function efqItemType($obj=false)
+    {
+        global $moddir;
+        $this->db = Database::getInstance();
+        $this->initVar('typeid', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('typename', XOBJ_DTYPE_TXTBOX, null, false, 50);
+        $this->initVar('level', XOBJ_DTYPE_INT, 0, true, 4);
+        $this->initVar('dirid', XOBJ_DTYPE_INT, 0, true, 5);
+    }
 }
 
 /**
@@ -73,121 +72,123 @@ class efqItemType extends XoopsObject
  */
 class efqItemTypeHandler extends xoopsObject
 {
-	
-	var $db; //Database reference
-	var $objItemType;
-		
+    public $db; //Database reference
+    public $objItemType;
+        
   /**
    * efqItemTypeHandler::efqItemTypeHandler()
    * 
    * @return
    */
-	function efqItemTypeHandler() {
-		$this->db = Database::getInstance();
-	}
-	
-	/**
-	 * Function insert inserts new record into DB
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $obj object
-	 * 
-	 * @return	bool	true if insertion is succesful, false if unsuccesful
-	 */
-	function insert($obj, $forceQuery=false) {
-		$tablename = "efqdiralpha1_itemtypes";
-		$keyName = "typeid";
-		$excludedVars = array();
-		if ($obj instanceof efqItemType) {
-			// Variable part of this function ends. From this line you can copy
-			// this function for similar object handling functions. 			
-			$obj->cleanVars();
-			$cleanvars = $obj->cleanVars;
-		} else {
-			return false;
-		}
-		$countVars = count($cleanvars);
-		$i = 1;
-		$strFields = "";
-		$strValues = "";
-		foreach ($cleanvars as $k => $v) {
-			if ( !in_array($k, $excludedVars) ) {
-				$strFields .= $k;
-				$strValues .= "'".$v."'";
-				if ($i < $countVars) {
-					$strFields .= ", ";
-					$strValues .= ", ";
-				}
-				$i++;
-			}
-		}
-		$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
-		if ($forceQuery) {
-			if ($this->db->queryF($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;
-			}	
-		} else {
-			if ($this->db->query($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;	
-			}
-		}		
-		return false;		
-	}
+    public function efqItemTypeHandler()
+    {
+        $this->db = Database::getInstance();
+    }
+    
+    /**
+     * Function insert inserts new record into DB
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $obj object
+     * 
+     * @return	bool	true if insertion is succesful, false if unsuccesful
+     */
+    public function insert($obj, $forceQuery=false)
+    {
+        $tablename = "efqdiralpha1_itemtypes";
+        $keyName = "typeid";
+        $excludedVars = array();
+        if ($obj instanceof efqItemType) {
+            // Variable part of this function ends. From this line you can copy
+            // this function for similar object handling functions.
+            $obj->cleanVars();
+            $cleanvars = $obj->cleanVars;
+        } else {
+            return false;
+        }
+        $countVars = count($cleanvars);
+        $i = 1;
+        $strFields = "";
+        $strValues = "";
+        foreach ($cleanvars as $k => $v) {
+            if (!in_array($k, $excludedVars)) {
+                $strFields .= $k;
+                $strValues .= "'".$v."'";
+                if ($i < $countVars) {
+                    $strFields .= ", ";
+                    $strValues .= ", ";
+                }
+                $i++;
+            }
+        }
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        if ($forceQuery) {
+            if ($this->db->queryF($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        } else {
+            if ($this->db->query($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Function update updates record in DB
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $objOffer object of type listing
-	 * 
-	 * @return	bool	true if update is succesful, false if unsuccesful
-	 */
-	function update($obj, $forceQuery=false) {
-		$tablename = "efqdiralpha1_itemtypes";
-		$keyName = "typeid";
-		$excludedVars = array();
-		if ($obj instanceof efqItemType) {
-			// Variable part of this function ends. From this line you can copy
-			// this function for similar object handling functions. 			
-			$obj->cleanVars();
-			$cleanvars = $obj->cleanVars;
-			$keyValue = $obj->getVar($keyName);
-		} else {
-			return false;
-		}
-		$countVars = count($cleanvars);
-		$i = 0;
-		$strSet = "";
-		$strValues = "";
-		foreach ($cleanvars as $k => $v) {
-			if ( !in_array($k, $excludedVars) ) {
-				if ($i < $countVars and $i > 0) {
-					$strSet .= ", ";
-				}
-				$strSet .= $k."="."'".$v."'";
-			}
-			$i++;		
-		}
-		$sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
-		if ($forceQuery) {
-			if ($this->db->queryF($sql)) {
-				return true;	
-			}	
-		} else {
-			if ($this->db->query($sql)) {
-				return true;	
-			}
-		}		
-		return false;		
-	}
+    /**
+     * Function update updates record in DB
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $objOffer object of type listing
+     * 
+     * @return	bool	true if update is succesful, false if unsuccesful
+     */
+    public function update($obj, $forceQuery=false)
+    {
+        $tablename = "efqdiralpha1_itemtypes";
+        $keyName = "typeid";
+        $excludedVars = array();
+        if ($obj instanceof efqItemType) {
+            // Variable part of this function ends. From this line you can copy
+            // this function for similar object handling functions.
+            $obj->cleanVars();
+            $cleanvars = $obj->cleanVars;
+            $keyValue = $obj->getVar($keyName);
+        } else {
+            return false;
+        }
+        $countVars = count($cleanvars);
+        $i = 0;
+        $strSet = "";
+        $strValues = "";
+        foreach ($cleanvars as $k => $v) {
+            if (!in_array($k, $excludedVars)) {
+                if ($i < $countVars and $i > 0) {
+                    $strSet .= ", ";
+                }
+                $strSet .= $k."="."'".$v."'";
+            }
+            $i++;
+        }
+        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        if ($forceQuery) {
+            if ($this->db->queryF($sql)) {
+                return true;
+            }
+        } else {
+            if ($this->db->query($sql)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
   /**
    * Function set()
@@ -196,71 +197,73 @@ class efqItemTypeHandler extends xoopsObject
    * 
    * @return bool true or false
    */
-	function set($typeid=0) {
-		$sql = "SELECT typeid,typename,level,dirid FROM ".$this->db->prefix("efqdiralpha1_itemtypes")." WHERE typeid=".intval($typeid)."";
+    public function set($typeid=0)
+    {
+        $sql = "SELECT typeid,typename,level,dirid FROM ".$this->db->prefix("efqdiralpha1_itemtypes")." WHERE typeid=".intval($typeid)."";
         $result = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
-        if ( $numrows > 0 ) {
-	        while (list($typeid, $typename, $level, $dirid) = $this->db->fetchRow($result)) {
-				if (! $this->objItemType) {
-					$this->objItemType = new efqSubscriptionOffer();
-				}
-				$this->objItemType->setVar('typeid', $typeid);
-				$this->objItemType->setVar('typename', $typename);
-				$this->objItemType->setVar('level', $level);
-				$this->objItemType->setVar('dirid', $dirid);
-	        }
-	    } else {
-			return false;
-		}
-		return true;
-	}
-	
-	function getObjItemType() {
-		return $this->objItemType;
-	}
-		
+        if ($numrows > 0) {
+            while (list($typeid, $typename, $level, $dirid) = $this->db->fetchRow($result)) {
+                if (! $this->objItemType) {
+                    $this->objItemType = new efqSubscriptionOffer();
+                }
+                $this->objItemType->setVar('typeid', $typeid);
+                $this->objItemType->setVar('typename', $typename);
+                $this->objItemType->setVar('level', $level);
+                $this->objItemType->setVar('dirid', $dirid);
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+    
+    public function getObjItemType()
+    {
+        return $this->objItemType;
+    }
+        
   /**
    * efqItemTypeHandler::getByDir()
    * 
    * @param integer $dirid
    * @return array $arr or boolean false
    */
-	function getByDir($dirid=0)	{
-		$arr = array();
-		$sql = "SELECT typeid,typename,level FROM ".$this->db->prefix("efqdiralpha1_itemtypes")." WHERE dirid=".intval($dirid)."";
+    public function getByDir($dirid=0)
+    {
+        $arr = array();
+        $sql = "SELECT typeid,typename,level FROM ".$this->db->prefix("efqdiralpha1_itemtypes")." WHERE dirid=".intval($dirid)."";
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-		$numrows = $this->db->getRowsNum($result);
-        while ( list($typeid,$typename,$level) = $this->db->fetchRow($result) ) {
-			$arr[$typeid] = array('typeid' => $typeid,'typename' => $typename,'level' => $level);
-		}
+        $numrows = $this->db->getRowsNum($result);
+        while (list($typeid, $typename, $level) = $this->db->fetchRow($result)) {
+            $arr[$typeid] = array('typeid' => $typeid,'typename' => $typename,'level' => $level);
+        }
         return $arr;
-	}
+    }
 
-	/**
-	 * Function delete: Delete record
-	 * 
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2007
-	 * @version 1.0.0
-	 * 
-	 * @param   int   $orderid - Default: '0' - Order ID
-	 * @return	array	$arr
-	 */	
-	function delete($obj) {
-		$tablename = "efqdiralpha1_itemtypes";
-		$keyName = "typeid";
-		$id = $obj->getVar($keyName);
-		if ( $id != 0 ) {
-			$sql = "DELETE FROM ".$this->db->prefix($tablename)." WHERE ".$keyName."=".intval($id)."";
-			$this->db->queryF($sql);
-			return true;
-		} else {
-			return false;
-		}		
-	}
-	
+    /**
+     * Function delete: Delete record
+     * 
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2007
+     * @version 1.0.0
+     * 
+     * @param   int   $orderid - Default: '0' - Order ID
+     * @return	array	$arr
+     */
+    public function delete($obj)
+    {
+        $tablename = "efqdiralpha1_itemtypes";
+        $keyName = "typeid";
+        $id = $obj->getVar($keyName);
+        if ($id != 0) {
+            $sql = "DELETE FROM ".$this->db->prefix($tablename)." WHERE ".$keyName."=".intval($id)."";
+            $this->db->queryF($sql);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
-?>

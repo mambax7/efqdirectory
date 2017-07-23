@@ -42,23 +42,23 @@
  */
 class efqDirectory extends XoopsObject
 {
-	function efqDirectory($directory = false)
-	{
-		global $moddir;
-		$this->db = Database::getInstance();
-	    $this->initVar('dirid', XOBJ_DTYPE_INT, null, false);
-	    $this->initVar('postfix', XOBJ_DTYPE_TXTBOX);
-		$this->initVar('open', XOBJ_DTYPE_INT, 0, false);
-		$this->initVar('name', XOBJ_DTYPE_TXTBOX);
-		$this->initVar('description', XOBJ_DTYPE_TXTAREA);
-		$this->initVar('img', XOBJ_DTYPE_TXTBOX);
-		$this->initVar('allowreview', XOBJ_DTYPE_INT, 0, false);
-		
-		if ($directory != false) {
-			if (is_array($directory)) {
+    public function efqDirectory($directory = false)
+    {
+        global $moddir;
+        $this->db = Database::getInstance();
+        $this->initVar('dirid', XOBJ_DTYPE_INT, null, false);
+        $this->initVar('postfix', XOBJ_DTYPE_TXTBOX);
+        $this->initVar('open', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('name', XOBJ_DTYPE_TXTBOX);
+        $this->initVar('description', XOBJ_DTYPE_TXTAREA);
+        $this->initVar('img', XOBJ_DTYPE_TXTBOX);
+        $this->initVar('allowreview', XOBJ_DTYPE_INT, 0, false);
+        
+        if ($directory != false) {
+            if (is_array($directory)) {
                 $this->assignVars($directory);
             } else {
-				$directory_handler = xoops_getmodulehandler('directory', $moddir);
+                $directory_handler = xoops_getmodulehandler('directory', $moddir);
                 $objDirectory =& $directory_handler->get($directory);
                 foreach ($objDirectory->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
@@ -66,7 +66,7 @@ class efqDirectory extends XoopsObject
                 unset($objDirectory);
             }
         }
-	}
+    }
 }
 
 /**
@@ -80,17 +80,17 @@ class efqDirectory extends XoopsObject
  */
 class efqDirectoryHandler extends XoopsObjectHandler
 {
-	function efqDirectoryHandler()
-	{
-		$this->db =& Database::getInstance();
-	}
-	
-	/**
+    public function efqDirectoryHandler()
+    {
+        $this->db =& Database::getInstance();
+    }
+    
+    /**
      * create instance of directory class or reset the existing instance.
      * 
      * @return object $directory
      */
-	function &create($isNew = true)
+    public function &create($isNew = true)
     {
         $directory = new efqDirectory();
         if ($isNew) {
@@ -105,7 +105,8 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * @param int $dirid ID of the directory
      * @return mixed reference to the {@link efqDirectory} object, FALSE if failed
      */
-    function &get($dirid = false) {
+    public function &get($dirid = false)
+    {
         if ($dirid == false) {
             return false;
         }
@@ -127,19 +128,20 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * 
      * @return mixed reference to the {@link efqDirectory} object, FALSE if failed
      */
-    function &getAll() {
+    public function &getAll()
+    {
         $sql = "SELECT dirid,postfix,open,name,descr,img FROM ".$this->db->prefix("efqdiralpha1_dir")."";
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-        while ( list($dirid,$postfix,$open,$name,$descr,$img) = $this->db->fetchRow($result) ) {
-			$arr[] = array('dirid' => $dirid,
-				'postfix' => $postfix,
-				'open' => $open,
-				'name' => $name,
-				'descr' => $descr,
-				'img' => $img );
-		}
+        while (list($dirid, $postfix, $open, $name, $descr, $img) = $this->db->fetchRow($result)) {
+            $arr[] = array('dirid' => $dirid,
+                'postfix' => $postfix,
+                'open' => $open,
+                'name' => $name,
+                'descr' => $descr,
+                'img' => $img );
+        }
         return $arr;
     }
     
@@ -149,14 +151,15 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * 
      * @return array $idarray
      */
-    function &getAllDirectoryIds($idarray = array()) {
+    public function &getAllDirectoryIds($idarray = array())
+    {
         $sql = "SELECT dirid FROM ".$this->db->prefix("efqdiralpha1_dir")."";
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-        while ( list($r_id) = $this->db->fetchRow($result) ) {
-			array_push($idarray, $r_id);
-		}
+        while (list($r_id) = $this->db->fetchRow($result)) {
+            array_push($idarray, $r_id);
+        }
         return $idarray;
     }
     
@@ -165,117 +168,119 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * 
      * @return array $idarray
      */
-    function &getAllDirectoryTitles($arr = array()) {
+    public function &getAllDirectoryTitles($arr = array())
+    {
         $sql = "SELECT dirid, name FROM ".$this->db->prefix("efqdiralpha1_dir")."";
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-        while ( list($r_id, $r_title) = $this->db->fetchRow($result) ) {
-			$result_arr[$r_id] = $r_title;
-			//array_push($arr, $result_arr);
-		}
+        while (list($r_id, $r_title) = $this->db->fetchRow($result)) {
+            $result_arr[$r_id] = $r_title;
+            //array_push($arr, $result_arr);
+        }
         return $result_arr;
     }
     
     
-	
-	/**
+    
+    /**
      * count number of directories and if count == 1, set directory.
      * 
      * @return mixed $result, FALSE if failed, 0 if count is 0.
      */
-	function countAll()
-	{		
-		global $xoopsDB;
-	    $block = array();
-		$myts =& MyTextSanitizer::getInstance();
-		$dirid = 0;
-	    $result = $xoopsDB->query("SELECT dirid FROM ".$xoopsDB->prefix("efqdiralpha1_dir")."");
-	    $num_results = $xoopsDB->getRowsNum($result);
-	    if (!$result) {
-	        return false;
-	    } else if ($num_results == 0) {
-	    	return 0;
-	    } else if ($num_results == 1) {
-	    	$row = mysql_fetch_array($result);
-	        $dirid = $row['dirid'];
-	        return $dirid;
-	    } else {
-	    	return false;
-	    }
-	}
-	
-	/**
+    public function countAll()
+    {
+        global $xoopsDB;
+        $block = array();
+        $myts =& MyTextSanitizer::getInstance();
+        $dirid = 0;
+        $result = $xoopsDB->query("SELECT dirid FROM ".$xoopsDB->prefix("efqdiralpha1_dir")."");
+        $num_results = $xoopsDB->getRowsNum($result);
+        if (!$result) {
+            return false;
+        } elseif ($num_results == 0) {
+            return 0;
+        } elseif ($num_results == 1) {
+            $row = mysql_fetch_array($result);
+            $dirid = $row['dirid'];
+            return $dirid;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
      * retrieve all directory ID's and names
      * 
      * @return array $array
      */
-	function directoryArray($dashes = false) {
-		$sql = "SELECT dirid, name FROM ".$this->db->prefix("efqdiralpha1_dir")." ORDER BY name ASC";
-		$result = $this->db->query($sql);
-		$numrows = $this->db->getRowsNum($result);
-		$result = $this->db->query($sql);
-		if ($dashes != false) {
-			$arr = array('0' => '---');
-		}
-		while ( list($dirid, $dirname) = $this->db->fetchRow($result) ) {
-			$arr[$dirid] = $dirname;
-		}
-		return $arr;
-	}
+    public function directoryArray($dashes = false)
+    {
+        $sql = "SELECT dirid, name FROM ".$this->db->prefix("efqdiralpha1_dir")." ORDER BY name ASC";
+        $result = $this->db->query($sql);
+        $numrows = $this->db->getRowsNum($result);
+        $result = $this->db->query($sql);
+        if ($dashes != false) {
+            $arr = array('0' => '---');
+        }
+        while (list($dirid, $dirname) = $this->db->fetchRow($result)) {
+            $arr[$dirid] = $dirname;
+        }
+        return $arr;
+    }
 
-	/**
-	 * Function insertDirectory inserts new record into DB
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $obj object
-	 * 
-	 * @return	bool	true if insertion is succesful, false if unsuccesful
-	 */	
-	function insertDirectory($obj, $forceQuery=false) {
-		$tablename = "efqdiralpha1_dir";
-		$keyName = "dirid";
-		$excludedVars = array();
-		if ($obj instanceof efqDirectory) {
-			// Variable part of this function ends. From this line you can copy
-			// this function for similar object handling functions. 			
-			$obj->cleanVars();
-			$cleanvars = $obj->cleanVars;
-		} else {
-			return false;
-		}
-		$countVars = count($cleanvars);
-		$i = 1;
-		$strFields = "";
-		$strValues = "";
-		foreach ($cleanvars as $k => $v) {
-			if ( !in_array($k, $excludedVars) ) {
-				$strFields .= $k;
-				$strValues .= "'".$v."'";
-				if ($i < $countVars) {
-					$strFields .= ", ";
-					$strValues .= ", ";
-				}
-				$i++;
-			}
-		}
-		$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
-		if ($forceQuery) {
-			if ($this->db->queryF($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;
-			}	
-		} else {
-			if ($this->db->query($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;	
-			}
-		}		
-		return false;
-	}
+    /**
+     * Function insertDirectory inserts new record into DB
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $obj object
+     * 
+     * @return	bool	true if insertion is succesful, false if unsuccesful
+     */
+    public function insertDirectory($obj, $forceQuery=false)
+    {
+        $tablename = "efqdiralpha1_dir";
+        $keyName = "dirid";
+        $excludedVars = array();
+        if ($obj instanceof efqDirectory) {
+            // Variable part of this function ends. From this line you can copy
+            // this function for similar object handling functions.
+            $obj->cleanVars();
+            $cleanvars = $obj->cleanVars;
+        } else {
+            return false;
+        }
+        $countVars = count($cleanvars);
+        $i = 1;
+        $strFields = "";
+        $strValues = "";
+        foreach ($cleanvars as $k => $v) {
+            if (!in_array($k, $excludedVars)) {
+                $strFields .= $k;
+                $strValues .= "'".$v."'";
+                if ($i < $countVars) {
+                    $strFields .= ", ";
+                    $strValues .= ", ";
+                }
+                $i++;
+            }
+        }
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        if ($forceQuery) {
+            if ($this->db->queryF($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        } else {
+            if ($this->db->query($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        }
+        return false;
+    }
 }
-?>

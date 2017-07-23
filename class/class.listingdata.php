@@ -39,50 +39,51 @@
  * @copyright EFQ Consultancy (c) 2007
  * @version 1.1.0
  */
-class efqListingData extends XoopsObject {
+class efqListingData extends XoopsObject
+{
+    public $_updated = false;
+    public $_inserted = false;
 
-	var $_updated = false;
-	var $_inserted = false;
-
-	/**
-	 * Constructor
-	 */
-	function efqListingData() {
-		// class constructor;
-		//$this->setCurrentUser();		
-		$this->initVar('dataid', XOBJ_DTYPE_INT, 0, true);
+    /**
+     * Constructor
+     */
+    public function efqListingData()
+    {
+        // class constructor;
+        //$this->setCurrentUser();
+        $this->initVar('dataid', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('itemid', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('dtypeid', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('itemid', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('value', XOBJ_DTYPE_TXTAREA, null, false);
-        $this->initVar('created', XOBJ_DTYPE_INT, 0, true); 
+        $this->initVar('created', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('customtitle', XOBJ_DTYPE_TXTBOX, null, false, 255);
-	}
-		
-	//Set variable $_updated to true of false (default)
-	function setUpdated($set=false) {
-		$this->_updated = $set;
-	}
-	
-	//Set variable $_inserted to true of false (default)
-	function setInserted($set=false) {
-		$this->_inserted = $set;
-	}
-	
-	function setListingData($arr)
-	{
-		if (is_array($arr)) {
-			$vars = $this->getVars();
-			foreach ($vars as $k => $v) {
-				$this->setVar($k, $arr[$k]);	
-			}
-			
-		} else {
-			return false;
-		}
-		return true;
-	}
-	
+    }
+        
+    //Set variable $_updated to true of false (default)
+    public function setUpdated($set=false)
+    {
+        $this->_updated = $set;
+    }
+    
+    //Set variable $_inserted to true of false (default)
+    public function setInserted($set=false)
+    {
+        $this->_inserted = $set;
+    }
+    
+    public function setListingData($arr)
+    {
+        if (is_array($arr)) {
+            $vars = $this->getVars();
+            foreach ($vars as $k => $v) {
+                $this->setVar($k, $arr[$k]);
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
 }
 
 /**
@@ -96,133 +97,132 @@ class efqListingData extends XoopsObject {
  */
 class efqListingDataHandler extends XoopsObjectHandler
 {
-	var $errorhandler;
-	
-	function efqListingDataHandler()
-	{
-		//Instantiate class
-		global $eh;
-		$this->db =& XoopsDatabaseFactory::getDatabaseConnection();
-		$this->errorhandler = $eh;
-	}
-	
-	function getData($itemid=0)
-	{
-		$arr = array();
-		$sql = "SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.dataid, d.itemid, d.value, d.created, t.custom ";
-	    $sql .= "FROM ".$this->db->prefix("efqdiralpha1_item_x_cat")." ic, ".$this->db->
-	        prefix("efqdiralpha1_dtypes_x_cat")." xc, ".$this->db->prefix("efqdiralpha1_fieldtypes")." f, ".$this->db->prefix("efqdiralpha1_dtypes")." t ";
-	    $sql .= "LEFT JOIN ".$this->db->prefix("efqdiralpha1_data") .
-	        " d ON (t.dtypeid=d.dtypeid AND d.itemid=".$itemid.") ";
-	    $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=".$itemid."";
-	    $data_result = $this->db->query($sql) or $eh->show("0013");
-	    while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $dataid, $itemid, $value, $created, $custom) = $this->db->fetchRow($data_result)) {
-	    	$arr[] = array('dtypeid'=>$dtypeid, 'title'=>$title, 'section'=>$section,
-				'ftypeid'=>$ftypeid, 'fieldtype'=>$fieldtype, 'ext'=>$ext,
-				'options'=>$options, 'dataid' => $dataid, 'itemid'=>$itemid,
-				'value'=>$value, 'created'=>$created, 'customtitle'=>$custom);
-	    }
-	    return $arr;
-	}
+    public $errorhandler;
+    
+    public function efqListingDataHandler()
+    {
+        //Instantiate class
+        global $eh;
+        $this->db =& XoopsDatabaseFactory::getDatabaseConnection();
+        $this->errorhandler = $eh;
+    }
+    
+    public function getData($itemid=0)
+    {
+        $arr = array();
+        $sql = "SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.dataid, d.itemid, d.value, d.created, t.custom ";
+        $sql .= "FROM ".$this->db->prefix("efqdiralpha1_item_x_cat")." ic, ".$this->db->
+            prefix("efqdiralpha1_dtypes_x_cat")." xc, ".$this->db->prefix("efqdiralpha1_fieldtypes")." f, ".$this->db->prefix("efqdiralpha1_dtypes")." t ";
+        $sql .= "LEFT JOIN ".$this->db->prefix("efqdiralpha1_data") .
+            " d ON (t.dtypeid=d.dtypeid AND d.itemid=".$itemid.") ";
+        $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=".$itemid."";
+        $data_result = $this->db->query($sql) or $eh->show("0013");
+        while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $dataid, $itemid, $value, $created, $custom) = $this->db->fetchRow($data_result)) {
+            $arr[] = array('dtypeid'=>$dtypeid, 'title'=>$title, 'section'=>$section,
+                'ftypeid'=>$ftypeid, 'fieldtype'=>$fieldtype, 'ext'=>$ext,
+                'options'=>$options, 'dataid' => $dataid, 'itemid'=>$itemid,
+                'value'=>$value, 'created'=>$created, 'customtitle'=>$custom);
+        }
+        return $arr;
+    }
 
-	
-	/**
-	 * Function updateListingData updates listing data
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $obj object of type listing
-	 * 
-	 * @return	bool	true if update is succesful, false if unsuccesful
-	 */
-	function updateListingData($obj, $forceQuery=false) {
-		$tablename = "efqdiralpha1_data";
-		$keyName = "dataid";
-		if ($obj instanceof efqListingData) {
-			// Variable part of this function ends. From this line you can copy
-			// this function for similar object handling functions. 			
-			$obj->cleanVars();
-			$cleanvars = $obj->cleanVars;
-			$keyValue = $obj->getVar($keyName);
-		} else {
-			return false;
-		}
-		$countVars = count($cleanvars);
-		$i = 1;
-		$strSet = "";
-		$strValues = "";
-		foreach ($cleanvars as $k => $v) {
-			$strSet .= $k."="."'".$v."'";
-			if ($i < $countVars) {
-				$strSet .= ", ";
-			}
-			$i++;
-		}
-		$sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
-		if ($forceQuery) {
-			if ($this->db->queryF($sql)) {
-				return true;	
-			}	
-		} else {
-			if ($this->db->query($sql)) {
-				return true;	
-			}
-		}		
-		return false;		
-	}
-	
-	/**
-	 * Function insertListingData inserts listing data into DB
-	 * @author EFQ Consultancy <info@efqconsultancy.com>
-	 * @copyright EFQ Consultancy (c) 2008
-	 * @version 1.0.0
-	 * 
-	 * @param   object   $objListing object of type listing
-	 * 
-	 * @return	bool	true if insertion is succesful, false if unsuccesful
-	 */
-	function insertListingData($obj, $forceQuery=false) {
-		$tablename = "efqdiralpha1_data";
-		$keyName = "dataid";
-		if ($obj instanceof efqListingData) {
-			// Variable part of this function ends. From this line you can copy
-			// this function for similar object handling functions. 			
-			$obj->cleanVars();
-			$cleanvars = $obj->cleanVars;
-		} else {
-			return false;
-		}
-		$countVars = count($cleanvars);
-		$i = 1;
-		$strFields = "";
-		$strValues = "";
-		foreach ($cleanvars as $k => $v) {
-			$strFields .= $k;
-			$strValues .= "'".$v."'";
-			if ($i < $countVars) {
-				$strFields .= ", ";
-				$strValues .= ", ";
-			}
-			$i++;
-		}
-		$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
-		if ($forceQuery) {
-			if ($this->db->queryF($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;
-			}	
-		} else {
-			if ($this->db->query($sql)) {
-				$itemid = $this->db->getInsertId();
-				$obj->setVar($keyName, $itemid);
-				return true;	
-			}
-		}		
-		return false;		
-	}
-	
-
+    
+    /**
+     * Function updateListingData updates listing data
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $obj object of type listing
+     * 
+     * @return	bool	true if update is succesful, false if unsuccesful
+     */
+    public function updateListingData($obj, $forceQuery=false)
+    {
+        $tablename = "efqdiralpha1_data";
+        $keyName = "dataid";
+        if ($obj instanceof efqListingData) {
+            // Variable part of this function ends. From this line you can copy
+            // this function for similar object handling functions.
+            $obj->cleanVars();
+            $cleanvars = $obj->cleanVars;
+            $keyValue = $obj->getVar($keyName);
+        } else {
+            return false;
+        }
+        $countVars = count($cleanvars);
+        $i = 1;
+        $strSet = "";
+        $strValues = "";
+        foreach ($cleanvars as $k => $v) {
+            $strSet .= $k."="."'".$v."'";
+            if ($i < $countVars) {
+                $strSet .= ", ";
+            }
+            $i++;
+        }
+        $sql = sprintf("UPDATE %s SET %s WHERE %s = %u", $this->db->prefix($tablename), $strSet, $keyName, $keyValue);
+        if ($forceQuery) {
+            if ($this->db->queryF($sql)) {
+                return true;
+            }
+        } else {
+            if ($this->db->query($sql)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Function insertListingData inserts listing data into DB
+     * @author EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2008
+     * @version 1.0.0
+     * 
+     * @param   object   $objListing object of type listing
+     * 
+     * @return	bool	true if insertion is succesful, false if unsuccesful
+     */
+    public function insertListingData($obj, $forceQuery=false)
+    {
+        $tablename = "efqdiralpha1_data";
+        $keyName = "dataid";
+        if ($obj instanceof efqListingData) {
+            // Variable part of this function ends. From this line you can copy
+            // this function for similar object handling functions.
+            $obj->cleanVars();
+            $cleanvars = $obj->cleanVars;
+        } else {
+            return false;
+        }
+        $countVars = count($cleanvars);
+        $i = 1;
+        $strFields = "";
+        $strValues = "";
+        foreach ($cleanvars as $k => $v) {
+            $strFields .= $k;
+            $strValues .= "'".$v."'";
+            if ($i < $countVars) {
+                $strFields .= ", ";
+                $strValues .= ", ";
+            }
+            $i++;
+        }
+        $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->db->prefix($tablename), $strFields, $strValues);
+        if ($forceQuery) {
+            if ($this->db->queryF($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        } else {
+            if ($this->db->query($sql)) {
+                $itemid = $this->db->getInsertId();
+                $obj->setVar($keyName, $itemid);
+                return true;
+            }
+        }
+        return false;
+    }
 }
-?>
