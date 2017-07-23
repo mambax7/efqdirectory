@@ -58,7 +58,7 @@ class efqDirectory extends XoopsObject
             if (is_array($directory)) {
                 $this->assignVars($directory);
             } else {
-                $directory_handler = xoops_getmodulehandler('directory', $moddir);
+                $directory_handler = xoops_getModuleHandler('directory', $moddir);
                 $objDirectory =& $directory_handler->get($directory);
                 foreach ($objDirectory->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);

@@ -45,7 +45,7 @@ include_once XOOPS_ROOT_PATH.'/class/module.errorhandler.php';
 $myts =& MyTextSanitizer::getInstance();
 $eh = new ErrorHandler;
 
-$moddir = $xoopsModule->getvar("dirname");
+$moddir = $xoopsModule->getVar("dirname");
 
 if (isset($_GET['dirid'])) {
     $get_dir = intval($_GET['dirid']);

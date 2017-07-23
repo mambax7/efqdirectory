@@ -74,7 +74,7 @@ class efqGmap extends XoopsObject
             if (is_array($gmap)) {
                 $this->assignVars($gmap);
             } else {
-                $$gmap_handler = xoops_getmodulehandler('gmap', $moddir);
+                $$gmap_handler = xoops_getModuleHandler('gmap', $moddir);
                 $objGmap =& $$gmap_handler->get($directory);
                 foreach ($objGmap->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
