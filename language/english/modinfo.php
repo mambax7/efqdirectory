@@ -1,30 +1,29 @@
 <?php
-// $Id: modinfo.php 2 2008-01-27 18:16:55Z wtravel $
-// Module Info for Listings module
 
 // The name of this module
-define("_MI_EFQDIR_NAME","Listings directory");
+define('_MI_EFQDIR_NAME', 'Listings directory');
 
 // A brief description of this module
-define("_MI_EFQDIR_DESC","Creates a listings section where directories of listings can be managed.");
+define('_MI_EFQDIR_DESC', 'Creates a listings section where directories of listings can be managed.');
 
 // Names of blocks for this module (Not every module has blocks)
-define("_MI_EFQDIR_BNAME1","Recent Listings");
-define("_MI_EFQDIR_BNAME2","Top Listings");
-define("_MI_EFQDIR_MENU","Directories");
+define('_MI_EFQDIR_BNAME1', 'Recent Listings');
+define('_MI_EFQDIR_BNAME2', 'Top Listings');
+define('_MI_EFQDIR_MENU', 'Directories');
 
 // Sub menu titles
-define("_MI_EFQDIR_SMNAME1","Submit");
-define("_MI_EFQDIR_SMNAME2","Popular");
-define("_MI_EFQDIR_SMNAME3","Top Rated");
+define('_MI_EFQDIR_SMNAME1', 'Submit');
+define('_MI_EFQDIR_SMNAME2', 'Popular');
+define('_MI_EFQDIR_SMNAME3', 'Top Rated');
 
 // Names of admin menu items
-define("_MI_EFQDIR_ADMENU2","Module admin home");
-define("_MI_EFQDIR_ADMENU3","Manage directories");
-define("_MI_EFQDIR_ADMENU4","Manage field types");
-define("_MI_EFQDIR_ADMENU5","Listings waiting for validation");
-define("_MI_EFQDIR_ADMENU6","Manage address types");
-define("_MI_EFQDIR_ADMENU7","Manage categories");
+define('_MI_EFQDIR_ADMENU2', 'Home');
+define('_MI_EFQDIR_ADMENU3', 'Directories');
+define('_MI_EFQDIR_ADMENU4', 'Field Types');
+define('_MI_EFQDIR_ADMENU5', 'Validations');
+define('_MI_EFQDIR_ADMENU6', 'Address Types');
+define('_MI_EFQDIR_ADMENU7', 'Subscriptions');
+define('_MI_EFQDIR_ADMENU8', 'Duplicate Data types');
 
 // Title of config items
 define('_MI_EFQDIR_POPULAR', 'Select the number of hits for listings to be marked as popular');
@@ -32,9 +31,8 @@ define('_MI_EFQDIR_NEWLISTINGS', 'Select the maximum number of new listings disp
 define('_MI_EFQDIR_PERPAGE', 'Select the maximum number of listings displayed in each page');
 define('_MI_EFQDIR_USESHOTS', 'Select yes to display screenshot images for each listing');
 define('_MI_EFQDIR_USEDESTMOD', 'Use this module in combination with the destinations module?');
-define('_MI_EFQDIR_ANONPOST','Allow anonymous users to post listings?');
-define('_MI_EFQDIR_AUTOAPPROVE','Auto approve new listings without admin intervention?');
-define('_MI_EFQDIR_AUTOAPPROVEADMIN','Auto approve new listings submitted by administrator?');
+define('_MI_EFQDIR_ANONPOST', 'Allow anonymous users to post listings?');
+define('_MI_EFQDIR_AUTOAPPROVE', 'Auto approve new listings without admin intervention?');
 define('_MI_EFQDIR_RESULTSPERPAGE', 'Select the number of search results per page.');
 define('_MI_EFQDIR_ANONVOTESWAITDAYS', 'Select the number of days before an anonymous user can vote for a listing again.');
 define('_MI_EFQDIR_AUTOSHOWONEDIR', 'Show directory automatically if there is only one active directory?');
@@ -53,14 +51,6 @@ define('_MI_EFQDIR_SHOW_DFIELDSINCAT', 'Show data fields in category view?');
 
 define('_MI_EFQDIR_ALLOW_SUBSCR', 'Allow subscriptions?');
 define('_MI_EFQDIR_SHOW_LINK_IMAGES', 'Show link icons in listings?');
-define('_MI_EFQDIR_GMAP_KEY', 'Enter the google maps developer\'s key');
-define('_MI_EFQDIR_CAT_IMGMAXSIZE', 'Maximum size of category icon images');
-define('_MI_EFQDIR_CAT_IMGMAXWIDTH', 'Maximum width of category icon images');
-define('_MI_EFQDIR_CAT_IMGMAXHEIGHT', 'Maximum height of category icon images');
-define('_MI_EFQDIR_DIR_IMGMAXSIZE', 'Maximum size of directory icon images');
-define('_MI_EFQDIR_DIR_IMGMAXWIDTH', 'Maximum width of directory icon images');
-define('_MI_EFQDIR_DIR_IMGMAXHEIGHT', 'Maximum height of directory icon images');
-define('_MI_EFQDIR_IMGMAXSIZE', 'Maximum size of images in listings');
 
 // Description of each config items
 define('_MI_EFQDIR_POPULARDSC', '');
@@ -68,8 +58,7 @@ define('_MI_EFQDIR_NEWLISTINGSDSC', '');
 define('_MI_EFQDIR_PERPAGEDSC', '');
 define('_MI_EFQDIR_USEDESTMODDSC', '');
 define('_MI_EFQDIR_SHOTWIDTHDSC', '');
-define('_MI_EFQDIR_AUTOAPPROVEDSC','');
-define('_MI_EFQDIR_AUTOAPPROVEADMINDSC','');
+define('_MI_EFQDIR_AUTOAPPROVEDSC', '');
 define('_MI_EFQDIR_RESULTSPERPAGE_DSC', '');
 define('_MI_EFQDIR_ANONVOTESWAITDAYS_DSC', '');
 define('_MI_EFQDIR_AUTOSHOWONEDIR_DSC', '');
@@ -84,15 +73,6 @@ define('_MI_EFQDIR_PAYPAL_TEST_DSC', '');
 define('_MI_EFQDIR_PAYPAL_SECURE_YN_DSC', '');
 define('_MI_EFQDIR_PAYPAL_BUS_MAIL_DSC', '');
 define('_MI_EFQDIR_SHOW_DFIELDSINCAT_DSC', '');
-define('_MI_EFQDIR_GMAP_KEY_DSC', '');
-define('_MI_EFQDIR_CAT_IMGMAXSIZE_DSC', '');
-define('_MI_EFQDIR_CAT_IMGMAXWIDTH_DSC', '');
-define('_MI_EFQDIR_CAT_IMGMAXHEIGHT_DSC', '');
-define('_MI_EFQDIR_DIR_IMGMAXSIZE_DSC', '');
-define('_MI_EFQDIR_DIR_IMGMAXWIDTH_DSC', '');
-define('_MI_EFQDIR_DIR_IMGMAXHEIGHT_DSC', '');
-define('_MI_EFQDIR_IMGMAXSIZE_DSC', '');
-
 
 // Text for notifications
 define('_MI_EFQDIR_GLOBAL_NOTIFY', 'Global');
@@ -143,5 +123,3 @@ define('_MI_EFQDIR_LISTING_APPROVE_NOTIFY', 'Listing Approved');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYCAP', 'Notify me when this listing is approved.');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYDSC', 'Receive notification when this listing is approved.');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-notify : Listing approved');
-
-?>

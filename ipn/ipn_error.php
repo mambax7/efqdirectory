@@ -15,15 +15,9 @@
 // this is an include file - no functionality when
 // called directly
 
-if(isset($paypal['business']))
-{
-//log error to file or database
-	echo "some kind of error occurred.";
+if (isset($paypal['business'])) {
+    //log error to file or database
+    echo 'some kind of error occurred.';
+} else {
+    die('This page is not directly accessible');
 }
-else
-{
-	die('This page is not directly accessible');
-}
-
-
-?>

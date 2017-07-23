@@ -13,27 +13,27 @@
  */
 
 //Configuration File
-include_once('../paypal_includes/config.inc.php'); 
+require_once __DIR__ . '/../paypal_includes/config.inc.php';
 
 //Global Configuration File
-include_once('../paypal_includes/global_config.inc.php');
+require_once __DIR__ . '/../paypal_includes/global_config.inc.php';
 
-?> 
+?>
 
 <html>
 <head><title>::PHP PayPal::</title></head>
 <body onLoad="document.paypal_form.submit();">
-<form method="post" name="paypal_form" action="<?=$paypal[url]?>">
+<form method="post" name="paypal_form" action="<?= $paypal[url] ?>">
 
-<?php 
-//show paypal hidden variables
+    <?php
+    //show paypal hidden variables
 
-showVariables(); 
+    showVariables();
 
-?> 
+    ?>
 
-<center><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="333333">Processing Transaction . . . </font></center>
+    <div style="text-align: center;"><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: x-small; color: 333333; ">Processing Transaction . . . </span></div>
 
 </form>
-</body>   
+</body>
 </html>

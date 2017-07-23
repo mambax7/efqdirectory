@@ -1,51 +1,45 @@
 <?php
-// $Id: printcoupon.php 2 2008-01-27 18:16:55Z wtravel $
-//  ------------------------------------------------------------------------ //
-//                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
-// ------------------------------------------------------------------------- //
-//  This program is free software; you can redistribute it and/or modify     //
-//  it under the terms of the GNU General Public License as published by     //
-//  the Free Software Foundation; either version 2 of the License, or        //
-//  (at your option) any later version.                                      //
-//                                                                           //
-//  You may not change or alter any portion of this comment or credits       //
-//  of supporting developers from this source code or any supporting         //
-//  source code which is considered copyrighted (c) material of the          //
-//  original comment or credit authors.                                      //
-//                                                                           //
-//  This program is distributed in the hope that it will be useful,          //
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
-//  GNU General Public License for more details.                             //
-//                                                                           //
-//  You should have received a copy of the GNU General Public License        //
-//  along with this program; if not, write to the Free Software              //
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
-//  ------------------------------------------------------------------------ //
-include '../../mainfile.php';
-include XOOPS_ROOT_PATH."/header.php";
-$mydirname = basename( dirname( __FILE__ ) ) ;
-$coupid = isset($_GET['coupid']) ? intval($_GET['coupid']) : 0;
-if (!($coupid > 0) ) {
-    redirect_header("index.php");
+/*
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright    {@link https://xoops.org/ XOOPS Project}
+ * @license      {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @package      efqdirectory
+ * @since
+ * @author       Martijn Hertog (aka wtravel)
+ * @author       XOOPS Development Team,
+ */
+
+include __DIR__ . '/../../mainfile.php';
+include XOOPS_ROOT_PATH . '/header.php';
+$mydirname = basename(__DIR__);
+$coupid    = isset($_GET['coupid']) ? (int)$_GET['coupid'] : 0;
+if (!($coupid > 0)) {
+    redirect_header('index.php');
 }
 
 function PrintPage($coupid)
 {
     global $xoopsModule, $xoopsTpl, $xoopsModuleConfig, $mydirname;
-    $coupon_handler =& xoops_getmodulehandler('coupon', $mydirname);
-    $coupon_handler->increment($coupid);
-    $coupon = $coupon_handler->getLinkedCoupon($coupid);
-    $coupon_arr = $coupon_handler->prepare2show($coupon);
+    $couponHandler = xoops_getModuleHandler('coupon', $mydirname);
+    $couponHandler->increment($coupid);
+    $coupon     = $couponHandler->getLinkedCoupon($coupid);
+    $coupon_arr = $couponHandler->prepare2show($coupon);
     //$xoopsTpl->assign('coupon_footer', $xoopsModuleConfig['coupon_footer']);
     $xoopsTpl->assign('coupon', $coupon_arr['items']['coupons'][0]);
-    $xoopsTpl->template_dir = XOOPS_ROOT_PATH."/modules/".$xoopsModule->dirname();
-    $xoopsTpl->display('db:efqdiralpha1_print_savings.html');
+    $xoopsTpl->template_dir = XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname();
+    $xoopsTpl->display('db:efqdiralpha1_print_savings.tpl');
 }
-	//Smarty directory autodetect
-	$smartydir = $mydirname;
-	$xoopsTpl->assign('smartydir', $smartydir);
+
+//Smarty directory autodetect
+$smartydir = $mydirname;
+$xoopsTpl->assign('smartydir', $smartydir);
 PrintPage($coupid);
-?>

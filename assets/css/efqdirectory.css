@@ -1,0 +1,200 @@
+.linkouter
+{
+}
+.linkhead
+{
+}
+.linkeven
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.linkodd
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.linkfoot
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-bottom: slategray 1px solid;
+}
+.sortby
+{
+    padding-right: 5px;
+    border-top: silver 1px double;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    width: 99%;
+    padding-top: 5px;
+    border-bottom: silver 2px solid;
+    text-align: right;
+}
+.subcategory
+{
+    font-weight: lighter;
+    font-size: 9pt;
+}
+.itemvaluestable
+{
+    border-right: aqua;
+    border-top: aqua;
+    border-left: aqua;
+    border-bottom: aqua;
+}
+.itemvaluestd
+{
+    border-right: darkseagreen 1px solid;
+    padding-right: 8px;
+    border-top: darkseagreen 1px solid;
+    padding-left: 8px;
+    padding-bottom: 5px;
+    border-left: darkseagreen 1px solid;
+    margin-right: 5px;
+    padding-top: 5px;
+    border-bottom: darkseagreen 1px solid;
+    height: 100%;
+    background-color: ivory;
+}
+.itemlabel
+{
+    font-weight: bolder;
+    margin-bottom: 5px;
+}
+.itemvaluestdsection2
+{
+    padding-right: 10px;
+    border-top: darkseagreen 1px solid;
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-bottom: 0px;
+    padding-top: 10px;
+    border-bottom: darkseagreen thin solid;
+}
+.itemvaluesection2
+{
+    margin-bottom: 5px;
+}
+.itemdescription
+{
+}
+.itemlogo
+{
+    width: 35px;
+    text-align: center;
+}
+.itemtable
+{
+    border-right: medium none;
+    border-top: medium none;
+    margin: 5px;
+    border-left: medium none;
+    border-bottom: medium none;
+    border-collapse: collapse;
+}
+.itemvaluestableheaderrow
+{
+    display: table-header-group;
+    font-weight: normal;
+}
+.itemtablelevel0
+{
+}
+.itemtablelevel2
+{
+    background-color: mistyrose;
+}
+.itemtablelevel3
+{
+    background-color: gold;
+}
+.itemtablelevel1
+{
+    background-color: seashell;
+}
+.itemtablecell
+{
+    border-right: #CCCCCC 1px;
+    padding-right: 2px;
+    border-top: #CCCCCC 1px;
+    margin-top: 10px;
+    padding-left: 2px;
+    margin-bottom: 10px;
+    padding-bottom: 0px;
+    vertical-align: middle;
+    border-left: #CCCCCC 1px;
+    padding-top: 0px;
+    border-bottom: #CCCCCC 1px;
+}
+.itemvalue
+{
+}
+.itemtitle
+{
+    padding-top: 10px;
+    border-bottom: navy 1px solid;
+}
+.itemtitlelarge
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 10px;
+    padding-bottom: 3px;
+    font-weight: bolder;
+    font-size: 20pt;
+    margin-bottom: 10px;
+    width: 99%;
+    color: darkblue;
+    background-color: #FFFFF0;
+    border-bottom: #228B22 1px solid;
+    border-top: #228B22 1px solid;
+    font-family: 'Century Gothic', Arial, 'Bradley Hand Itc', Vivaldi, Tahoma, 'Comic Sans MS', sans-serif;
+}
+.categoryheader
+{
+    padding-right: 5px;
+    padding-left: 5px;
+    background-image: none;
+    padding-bottom: 0px;
+    padding-top: 5px;
+    border-bottom: #CCCCCC 1px solid;
+    background-repeat: repeat;
+    font-family: Arial, sans-serif;
+    background-color: gainsboro;
+    text-align: left;
+}
+.formtitle
+{
+    font-size: 18pt;
+    color: midnightblue;
+}
+.categorytable
+{
+    background-color: whitesmoke;
+}
+.itemtitle a
+{
+    color: darkolivegreen;
+}
+.listing_top_left
+{
+    float:left; width: 50%; padding: 2px; margin-left: -4px; margin-right: -4px; line-height: 37px; display: table-cell;
+}
+.listing_top_right
+{
+    float:right; width: 50%; padding: 2px; text-align: right;
+}
+br.clear {clear: both;}
+.head {border: 1px solid grey; padding: 3px; cellspacing: 0px; background-color: #EECFA1;
+}
+.even {border: 1px solid grey; cellpadding: 3px; cellspacing: 0px; background-color: #F5F5DC;
+}
+.outer {border: 1px solid grey; cellpadding: 3px; cellspacing: 0px;
+}

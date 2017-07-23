@@ -1,532 +1,589 @@
--- phpMyAdmin SQL Dump
--- version 2.6.4-pl3
--- http://www.phpmyadmin.net
--- 
--- Host: localhost
--- Generation Time: Jul 16, 2006 at 09:57 PM
--- 
--- 
+# phpMyAdmin SQL Dump
+# version 2.6.4-pl3
+# http://www.phpmyadmin.net
+# 
+# Host: localhost
+# Generation Time: Jul 16, 2006 at 09:57 PM
+# 
+# 
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_address_types`
--- 
+# 
+# Table structure for table `efqdirectory_address_types`
+# 
 
-CREATE TABLE `efqdiralpha1_address_types` (
-  `typeid` int(4) NOT NULL auto_increment,
-  `defaultyn` tinyint(2) NOT NULL default '0',
-  `locid` int(11) NOT NULL default '0',
-  `address` tinyint(2) NOT NULL default '0',
-  `address2` tinyint(2) NOT NULL default '0',
-  `zip` tinyint(2) NOT NULL default '0',
-  `postcode` tinyint(2) NOT NULL default '0',
-  `lat` tinyint(2) NOT NULL default '0',
-  `lon` tinyint(2) NOT NULL default '0',
-  `phone` tinyint(2) NOT NULL,
-  `fax` tinyint(2) NOT NULL default '0',
-  `mobile` tinyint(2) NOT NULL default '0',
-  `city` tinyint(2) NOT NULL default '0',
-  `country` tinyint(2) NOT NULL,
-  `typename` varchar(255) NOT NULL,
-  `uselocyn` tinyint(2) NOT NULL default '0',
-  PRIMARY KEY  (`typeid`)
-) TYPE=MyISAM COMMENT='address types' AUTO_INCREMENT=2 ;
+CREATE TABLE `efqdirectory_address_types` (
+  `typeid`    INT(4)       NOT NULL AUTO_INCREMENT,
+  `defaultyn` TINYINT(2)   NOT NULL DEFAULT '0',
+  `locid`     INT(11)      NOT NULL DEFAULT '0',
+  `address`   TINYINT(2)   NOT NULL DEFAULT '0',
+  `address2`  TINYINT(2)   NOT NULL DEFAULT '0',
+  `zip`       TINYINT(2)   NOT NULL DEFAULT '0',
+  `postcode`  TINYINT(2)   NOT NULL DEFAULT '0',
+  `lat`       TINYINT(2)   NOT NULL DEFAULT '0',
+  `lon`       TINYINT(2)   NOT NULL DEFAULT '0',
+  `phone`     TINYINT(2)   NOT NULL,
+  `fax`       TINYINT(2)   NOT NULL DEFAULT '0',
+  `mobile`    TINYINT(2)   NOT NULL DEFAULT '0',
+  `city`      TINYINT(2)   NOT NULL DEFAULT '0',
+  `country`   TINYINT(2)   NOT NULL,
+  `typename`  VARCHAR(255) NOT NULL,
+  `uselocyn`  TINYINT(2)   NOT NULL DEFAULT '0',
+  PRIMARY KEY (`typeid`)
+)
+  ENGINE = MyISAM
+  COMMENT = 'address types'
+  AUTO_INCREMENT = 2;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_cat`
--- 
+# 
+# Table structure for table `efqdirectory_cat`
+# 
 
-CREATE TABLE `efqdiralpha1_cat` (
-  `cid` int(7) unsigned NOT NULL auto_increment,
-  `dirid` int(8) unsigned NOT NULL default '0',
-  `title` varchar(100) NOT NULL default '',
-  `active` tinyint(1) unsigned NOT NULL default '0',
-  `pid` int(7) unsigned NOT NULL default '0',
-  `img` varchar(60) NOT NULL default '',
-  `allowlist` tinyint(1) unsigned NOT NULL default '0',
-  `showpopular` tinyint(1) unsigned NOT NULL default '0',
-  `width` int(8) unsigned NOT NULL default '0',
-  `height` int(8) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`cid`),
+CREATE TABLE `efqdirectory_cat` (
+  `cid`         INT(7) UNSIGNED     NOT NULL AUTO_INCREMENT,
+  `dirid`       INT(8) UNSIGNED     NOT NULL DEFAULT '0',
+  `title`       VARCHAR(100)        NOT NULL DEFAULT '',
+  `active`      TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `pid`         INT(7) UNSIGNED     NOT NULL DEFAULT '0',
+  `img`         VARCHAR(60)         NOT NULL DEFAULT '',
+  `allowlist`   TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `showpopular` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `width`       INT(8) UNSIGNED     NOT NULL DEFAULT '0',
+  `height`      INT(8) UNSIGNED     NOT NULL DEFAULT '0',
+  PRIMARY KEY (`cid`),
   KEY `title` (`title`),
   KEY `active` (`active`),
   KEY `pid` (`pid`)
-) TYPE=MyISAM AUTO_INCREMENT=27 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 27;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_cat_tpl`
--- 
+# 
+# Table structure for table `efqdirectory_cat_tpl`
+# 
 
-CREATE TABLE `efqdiralpha1_cat_tpl` (
-  `xid` int(11) NOT NULL auto_increment,
-  `catid` int(11) NOT NULL default '0',
-  `tplid` int(5) NOT NULL default '0',
-  PRIMARY KEY  (`xid`)
-) TYPE=MyISAM COMMENT='Category x templates' AUTO_INCREMENT=1 ;
+CREATE TABLE `efqdirectory_cat_tpl` (
+  `xid`   INT(11) NOT NULL AUTO_INCREMENT,
+  `catid` INT(11) NOT NULL DEFAULT '0',
+  `tplid` INT(5)  NOT NULL DEFAULT '0',
+  PRIMARY KEY (`xid`)
+)
+  ENGINE = MyISAM
+  COMMENT = 'Category x templates'
+  AUTO_INCREMENT = 1;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_cat_txt`
--- 
+# 
+# Table structure for table `efqdirectory_cat_txt`
+# 
 
-CREATE TABLE `efqdiralpha1_cat_txt` (
-  `txtid` int(7) unsigned NOT NULL auto_increment,
-  `cid` int(7) unsigned NOT NULL default '0',
-  `text` text NOT NULL,
-  `active` tinyint(1) unsigned NOT NULL default '0',
-  `created` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`txtid`),
+CREATE TABLE `efqdirectory_cat_txt` (
+  `txtid`   INT(7) UNSIGNED     NOT NULL AUTO_INCREMENT,
+  `cid`     INT(7) UNSIGNED     NOT NULL DEFAULT '0',
+  `text`    TEXT               ,
+  `active`  TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `created` INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  PRIMARY KEY (`txtid`),
   KEY `active` (`active`),
   KEY `cid` (`cid`)
-) TYPE=MyISAM AUTO_INCREMENT=12 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 12;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_coupon`
--- 
+# 
+# Table structure for table `efqdirectory_coupon`
+# 
 
-CREATE TABLE `efqdiralpha1_coupon` (
-  `couponid` int(12) unsigned NOT NULL auto_increment,
-  `itemid` int(11) unsigned NOT NULL default '0',
-  `description` text NOT NULL,
-  `image` text NOT NULL,
-  `publish` int(10) unsigned NOT NULL default '0',
-  `expire` int(10) unsigned NOT NULL default '0',
-  `heading` text NOT NULL,
-  `lbr` int(1) NOT NULL default '0',
-  `counter` int(10) unsigned NOT NULL default '0',
-  `addrid` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`couponid`),
+CREATE TABLE `efqdirectory_coupon` (
+  `couponid`    INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `itemid`      INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `description` TEXT             ,
+  `image`       TEXT             ,
+  `publish`     INT(10) UNSIGNED NOT NULL DEFAULT '0',
+  `expire`      INT(10) UNSIGNED NOT NULL DEFAULT '0',
+  `heading`     TEXT             ,
+  `lbr`         INT(1)           NOT NULL DEFAULT '0',
+  `counter`     INT(10) UNSIGNED NOT NULL DEFAULT '0',
+  `addrid`      INT(10)          NOT NULL DEFAULT '0',
+  PRIMARY KEY (`couponid`),
   KEY `addrid` (`addrid`),
   KEY `itemid` (`itemid`)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 2;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_data`
--- 
+# 
+# Table structure for table `efqdirectory_data`
+# 
 
-CREATE TABLE `efqdiralpha1_data` (
-  `dataid` int(12) unsigned NOT NULL auto_increment,
-  `itemid` int(11) unsigned NOT NULL default '0',
-  `dtypeid` int(10) unsigned NOT NULL default '0',
-  `value` text NOT NULL,
-  `created` int(10) NOT NULL default '0',
-  `customtitle` varchar(255) NOT NULL,
-  PRIMARY KEY  (`dataid`),
+CREATE TABLE `efqdirectory_data` (
+  `dataid`      INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `itemid`      INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `dtypeid`     INT(10) UNSIGNED NOT NULL DEFAULT '0',
+  `value`       TEXT             ,
+  `created`     INT(10)          NOT NULL DEFAULT '0',
+  `customtitle` VARCHAR(255)     NOT NULL,
+  PRIMARY KEY (`dataid`),
   KEY `dtypeid` (`dtypeid`)
-) TYPE=MyISAM AUTO_INCREMENT=142 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 142;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_dir`
--- 
+# 
+# Table structure for table `efqdirectory_dir`
+# 
 
-CREATE TABLE `efqdiralpha1_dir` (
-  `dirid` int(5) unsigned NOT NULL auto_increment,
-  `postfix` varchar(20) NOT NULL default '',
-  `open` tinyint(2) NOT NULL default '0',
-  `name` varchar(100) NOT NULL default '',
-  `descr` longtext NOT NULL,
-  `img` varchar(50) NOT NULL default '',
-  `allowreview` tinyint(2) NOT NULL default '0',
-  PRIMARY KEY  (`dirid`)
-) TYPE=MyISAM COMMENT='Directories' AUTO_INCREMENT=5 ;
+CREATE TABLE `efqdirectory_dir` (
+  `dirid`       INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `postfix`     VARCHAR(20)     NOT NULL DEFAULT '',
+  `open`        TINYINT(2)      NOT NULL DEFAULT '0',
+  `name`        VARCHAR(100)    NOT NULL DEFAULT '',
+  `descr`       LONGTEXT        ,
+  `img`         VARCHAR(50)     NOT NULL DEFAULT '',
+  `allowreview` TINYINT(2)      NOT NULL DEFAULT '0',
+  PRIMARY KEY (`dirid`)
+)
+  ENGINE = MyISAM
+  COMMENT = 'Directories'
+  AUTO_INCREMENT = 5;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_dtypes`
--- 
+# 
+# Table structure for table `efqdirectory_dtypes`
+# 
 
-CREATE TABLE `efqdiralpha1_dtypes` (
-  `dtypeid` int(6) unsigned NOT NULL auto_increment,
-  `title` varchar(100) NOT NULL default '',
-  `section` smallint(3) NOT NULL default '0',
-  `fieldtypeid` smallint(3) unsigned NOT NULL default '0',
-  `uid` int(10) unsigned NOT NULL default '0',
-  `defaultyn` tinyint(1) NOT NULL default '0',
-  `created` int(10) NOT NULL default '0',
-  `seq` int(5) NOT NULL default '0',
-  `activeyn` tinyint(2) NOT NULL default '0',
-  `options` text NOT NULL,
-  `custom` tinyint(2) NOT NULL default '0',
-  `icon` varchar(100) NOT NULL,
-  PRIMARY KEY  (`dtypeid`),
+CREATE TABLE `efqdirectory_dtypes` (
+  `dtypeid`     INT(6) UNSIGNED      NOT NULL AUTO_INCREMENT,
+  `title`       VARCHAR(100)         NOT NULL DEFAULT '',
+  `section`     SMALLINT(3)          NOT NULL DEFAULT '0',
+  `fieldtypeid` SMALLINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `uid`         INT(10) UNSIGNED     NOT NULL DEFAULT '0',
+  `defaultyn`   TINYINT(1)           NOT NULL DEFAULT '0',
+  `created`     INT(10)              NOT NULL DEFAULT '0',
+  `seq`         INT(5)               NOT NULL DEFAULT '0',
+  `activeyn`    TINYINT(2)           NOT NULL DEFAULT '0',
+  `options`     TEXT                 ,
+  `custom`      TINYINT(2)           NOT NULL DEFAULT '0',
+  `icon`        VARCHAR(100)         NOT NULL,
+  PRIMARY KEY (`dtypeid`),
   KEY `typeid` (`fieldtypeid`)
-) TYPE=MyISAM AUTO_INCREMENT=51 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 51;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_dtypes_x_cat`
--- 
+# 
+# Table structure for table `efqdirectory_dtypes_x_cat`
+# 
 
-CREATE TABLE `efqdiralpha1_dtypes_x_cat` (
-  `xid` int(11) NOT NULL auto_increment,
-  `cid` int(11) NOT NULL default '0',
-  `dtypeid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`xid`)
-) TYPE=MyISAM COMMENT='Cross tabel categories linked to dtypes' AUTO_INCREMENT=106 ;
+CREATE TABLE `efqdirectory_dtypes_x_cat` (
+  `xid`     INT(11) NOT NULL AUTO_INCREMENT,
+  `cid`     INT(11) NOT NULL DEFAULT '0',
+  `dtypeid` INT(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`xid`)
+)
+  ENGINE = MyISAM
+  COMMENT = 'Cross tabel categories linked to dtypes'
+  AUTO_INCREMENT = 106;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_fieldtypes`
--- 
+# 
+# Table structure for table `efqdirectory_fieldtypes`
+# 
 
-CREATE TABLE `efqdiralpha1_fieldtypes` (
-  `typeid` smallint(3) unsigned NOT NULL auto_increment,
-  `dirid` int(5) NOT NULL default '0',
-  `title` varchar(100) NOT NULL default '',
-  `fieldtype` varchar(100) NOT NULL default '',
-  `descr` text NOT NULL,
-  `ext` varchar(255) NOT NULL default '',
-  `activeyn` tinyint(2) NOT NULL default '1',
-  PRIMARY KEY  (`typeid`)
-) TYPE=MyISAM COMMENT='Data field types' AUTO_INCREMENT=18 ;
+CREATE TABLE `efqdirectory_fieldtypes` (
+  `typeid`    SMALLINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title`     VARCHAR(100)         NOT NULL DEFAULT '',
+  `fieldtype` VARCHAR(100)         NOT NULL DEFAULT '',
+  `descr`     TEXT                 ,
+  `ext`       VARCHAR(255)         NOT NULL DEFAULT '',
+  `activeyn`  TINYINT(2)           NOT NULL DEFAULT '1',
+  PRIMARY KEY (`typeid`)
+)
+  ENGINE = MyISAM
+  COMMENT = 'Data field types'
+  AUTO_INCREMENT = 18;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_form_options`
--- 
+# 
+# Table structure for table `efqdirectory_form_options`
+# 
 
-CREATE TABLE `efqdiralpha1_form_options` (
-  `id` int(11) NOT NULL auto_increment,
-  `dtypeid` int(11) NOT NULL default '0',
-  `option` varchar(255) NOT NULL,
-  `activeyn` tinyint(1) NOT NULL default '0',
-  `seq` tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+CREATE TABLE `efqdirectory_form_options` (
+  `id`       INT(11)      NOT NULL AUTO_INCREMENT,
+  `dtypeid`  INT(11)      NOT NULL DEFAULT '0',
+  `option`   VARCHAR(255) NOT NULL,
+  `activeyn` TINYINT(1)   NOT NULL DEFAULT '0',
+  `seq`      TINYINT(4)   NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `dtypeid` (`dtypeid`)
-) TYPE=MyISAM COMMENT='Form options' AUTO_INCREMENT=1 ;
+)
+  ENGINE = MyISAM
+  COMMENT = 'Form options'
+  AUTO_INCREMENT = 1;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_item_img`
--- 
+# 
+# Table structure for table `efqdirectory_item_img`
+# 
 
-CREATE TABLE `efqdiralpha1_item_img` (
-  `id` int(11) NOT NULL auto_increment,
-  `dirid` int(6) unsigned NOT NULL default '0',
-  `itemid` int(11) unsigned NOT NULL default '0',
-  `dtypeid` int(6) unsigned NOT NULL default '0',
-  `created` varchar(10) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+CREATE TABLE `efqdirectory_item_img` (
+  `id`      INT(11)          NOT NULL AUTO_INCREMENT,
+  `dirid`   INT(6) UNSIGNED  NOT NULL DEFAULT '0',
+  `itemid`  INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `dtypeid` INT(6) UNSIGNED  NOT NULL DEFAULT '0',
+  `created` VARCHAR(10)      NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 1;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_item_text`
--- 
+# 
+# Table structure for table `efqdirectory_item_text`
+# 
 
-CREATE TABLE `efqdiralpha1_item_text` (
-  `itemid` int(11) unsigned NOT NULL default '0',
-  `description` text NOT NULL,
+CREATE TABLE `efqdirectory_item_text` (
+  `itemid`      INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `description` TEXT             ,
   KEY `itemid` (`itemid`)
-) TYPE=MyISAM ;
+)
+  ENGINE = MyISAM;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_item_x_cat`
--- 
+# 
+# Table structure for table `efqdirectory_item_x_cat`
+# 
 
-CREATE TABLE `efqdiralpha1_item_x_cat` (
-  `xid` int(11) unsigned NOT NULL auto_increment,
-  `cid` int(7) unsigned NOT NULL default '0',
-  `itemid` int(10) unsigned NOT NULL default '0',
-  `active` tinyint(1) unsigned NOT NULL default '0',
-  `created` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`xid`),
+CREATE TABLE `efqdirectory_item_x_cat` (
+  `xid`     INT(11) UNSIGNED    NOT NULL AUTO_INCREMENT,
+  `cid`     INT(7) UNSIGNED     NOT NULL DEFAULT '0',
+  `itemid`  INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `active`  TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `created` INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  PRIMARY KEY (`xid`),
   KEY `cid` (`cid`),
   KEY `itemid` (`itemid`),
   KEY `active` (`active`)
-) TYPE=MyISAM AUTO_INCREMENT=43 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 43;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_item_x_loc`
--- 
+# 
+# Table structure for table `efqdirectory_item_x_loc`
+# 
 
-CREATE TABLE `efqdiralpha1_item_x_loc` (
-  `locid` int(11) unsigned NOT NULL default '0',
-  `itemid` int(11) unsigned NOT NULL default '0',
-  `seq` tinyint(2) NOT NULL default '0',
+CREATE TABLE `efqdirectory_item_x_loc` (
+  `locid`  INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `itemid` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `seq`    TINYINT(2)       NOT NULL DEFAULT '0',
   KEY `locdestid` (`locid`),
   KEY `loctypeid` (`itemid`),
   KEY `loctypeid_2` (`itemid`)
-) TYPE=MyISAM COMMENT='Attach item to location';
+)
+  ENGINE = MyISAM
+  COMMENT = 'Attach item to location';
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_items`
--- 
+# 
+# Table structure for table `efqdirectory_items`
+# 
 
-CREATE TABLE `efqdiralpha1_items` (
-  `itemid` int(11) unsigned NOT NULL auto_increment,
-  `logourl` varchar(60) NOT NULL default '',
-  `uid` int(11) unsigned NOT NULL default '0',
-  `status` tinyint(2) NOT NULL default '0',
-  `created` int(10) NOT NULL default '0',
-  `title` varchar(100) NOT NULL default '',
-  `hits` int(11) NOT NULL default '0',
-  `rating` double(5,4) NOT NULL default '0.0000',
-  `votes` int(11) NOT NULL default '0',
-  `typeid` int(8) NOT NULL default '0',
-  `dirid` int(5) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`itemid`),
+CREATE TABLE `efqdirectory_items` (
+  `itemid`  INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `logourl` VARCHAR(60)      NOT NULL DEFAULT '',
+  `uid`     INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `status`  TINYINT(2)       NOT NULL DEFAULT '0',
+  `created` INT(10)          NOT NULL DEFAULT '0',
+  `title`   VARCHAR(100)     NOT NULL DEFAULT '',
+  `hits`    INT(11)          NOT NULL DEFAULT '0',
+  `rating`  DOUBLE(5, 4)     NOT NULL DEFAULT '0.0000',
+  `votes`   INT(11)          NOT NULL DEFAULT '0',
+  `typeid`  INT(8)           NOT NULL DEFAULT '0',
+  `dirid`   INT(5) UNSIGNED  NOT NULL DEFAULT '0',
+  PRIMARY KEY (`itemid`),
   KEY `status` (`status`),
   KEY `title` (`title`(50)),
   KEY `typeid` (`typeid`),
   KEY `dirid` (`dirid`)
-) TYPE=MyISAM AUTO_INCREMENT=38 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 38;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_itemtypes`
--- 
+# 
+# Table structure for table `efqdirectory_itemtypes`
+# 
 
-CREATE TABLE `efqdiralpha1_itemtypes` (
-  `typeid` int(3) unsigned NOT NULL auto_increment,
-  `typename` varchar(50) NOT NULL default '0',
-  `level` int(4) NOT NULL default '0',
-  `dirid` int(5) NOT NULL default '0',
-  PRIMARY KEY  (`typeid`)
-) TYPE=MyISAM AUTO_INCREMENT=5 ;
+CREATE TABLE `efqdirectory_itemtypes` (
+  `typeid`    INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `typename`  VARCHAR(50)     NOT NULL DEFAULT '',
+  `typelevel` TINYINT(2)      NOT NULL DEFAULT 0,
+  PRIMARY KEY (`typeid`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 5;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_loc`
--- 
+# 
+# Table structure for table `efqdirectory_loc`
+# 
 
-CREATE TABLE `efqdiralpha1_loc` (
-  `locid` int(7) unsigned NOT NULL auto_increment,
-  `name` varchar(100) NOT NULL default '',
-  `amazonname` varchar(100) default NULL,
-  `fullname` varchar(150) default NULL,
-  `searchname` varchar(150) NOT NULL default '',
-  `levelid` tinyint(2) NOT NULL default '0',
-  `plocid` int(7) unsigned NOT NULL default '0',
-  `loctypeid` int(3) unsigned NOT NULL default '0',
-  `icaoid` int(6) unsigned NOT NULL default '0',
-  `childloctypeid` int(3) unsigned NOT NULL default '0',
-  `featatrid` int(8) unsigned default '0',
-  `status` tinyint(1) NOT NULL default '0',
-  `popular` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`locid`),
+CREATE TABLE `efqdirectory_loc` (
+  `locid`          INT(7) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name`           VARCHAR(100)    NOT NULL DEFAULT '',
+  `amazonname`     VARCHAR(100)             DEFAULT NULL,
+  `fullname`       VARCHAR(150)             DEFAULT NULL,
+  `searchname`     VARCHAR(150)    NOT NULL DEFAULT '',
+  `levelid`        TINYINT(2)      NOT NULL DEFAULT '0',
+  `plocid`         INT(7) UNSIGNED NOT NULL DEFAULT '0',
+  `loctypeid`      INT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `icaoid`         INT(6) UNSIGNED NOT NULL DEFAULT '0',
+  `childloctypeid` INT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `featatrid`      INT(8) UNSIGNED          DEFAULT '0',
+  `status`         TINYINT(1)      NOT NULL DEFAULT '0',
+  `popular`        TINYINT(1)      NOT NULL DEFAULT '0',
+  PRIMARY KEY (`locid`),
   KEY `name` (`name`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 1;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_loc_types`
--- 
+# 
+# Table structure for table `efqdirectory_loc_types`
+# 
 
-CREATE TABLE `efqdiralpha1_loc_types` (
-  `loctypeid` int(3) unsigned NOT NULL auto_increment,
-  `typename` varchar(50) NOT NULL default '0',
-  `level` tinyint(2) NOT NULL default '0',
-  PRIMARY KEY  (`loctypeid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+CREATE TABLE `efqdirectory_loc_types` (
+  `loctypeid` INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `typename`  VARCHAR(50)     NOT NULL DEFAULT '0',
+  `typelevel` TINYINT(2)      NOT NULL DEFAULT '0',
+  PRIMARY KEY (`loctypeid`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 1;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_loc_x_loctype`
--- 
+# 
+# Table structure for table `efqdirectory_loc_x_loctype`
+# 
 
-CREATE TABLE `efqdiralpha1_loc_x_loctype` (
-  `locid` int(11) unsigned NOT NULL default '0',
-  `loctypeid` int(3) unsigned NOT NULL default '0',
-  `seq` tinyint(2) NOT NULL default '0',
+CREATE TABLE `efqdirectory_loc_x_loctype` (
+  `locid`     INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `loctypeid` INT(3) UNSIGNED  NOT NULL DEFAULT '0',
+  `seq`       TINYINT(2)       NOT NULL DEFAULT '0',
   KEY `locdestid` (`locid`),
   KEY `loctypeid` (`loctypeid`)
-) TYPE=MyISAM COMMENT='Attach levels to location';
+)
+  ENGINE = MyISAM
+  COMMENT = 'Attach levels to location';
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_searchresults`
--- 
+# 
+# Table structure for table `efqdirectory_searchresults`
+# 
 
-CREATE TABLE `efqdiralpha1_searchresults` (
-  `searchid` int(11) NOT NULL auto_increment,
-  `searchnum` varchar(50) NOT NULL,
-  `created` varchar(10) NOT NULL,
-  `page` smallint(4) NOT NULL,
-  `items` text NOT NULL,
-  `dirid` int(5) NOT NULL,
-  `catid` int(7) NOT NULL,
-  PRIMARY KEY  (`searchid`),
-  KEY `searchnum` (`searchnum`,`dirid`,`catid`)
-) TYPE=MyISAM AUTO_INCREMENT=33 ;
+CREATE TABLE `efqdirectory_searchresults` (
+  `searchid`  INT(11)     NOT NULL AUTO_INCREMENT,
+  `searchnum` VARCHAR(50) NOT NULL,
+  `created`   VARCHAR(10) NOT NULL,
+  `page`      SMALLINT(4) NOT NULL,
+  `items`     TEXT        ,
+  `dirid`     INT(5)      NOT NULL,
+  `catid`     INT(7)      NOT NULL,
+  PRIMARY KEY (`searchid`),
+  KEY `searchnum` (`searchnum`, `dirid`, `catid`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 33;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_subscr_notify`
--- 
+# 
+# Table structure for table `efqdirectory_subscr_notify`
+# 
 
-CREATE TABLE `efqdiralpha1_subscr_notify` (
-  `id` int(11) NOT NULL auto_increment,
-  `method` tinyint(2) NOT NULL default '0',
-  `datetime` varchar(10) NOT NULL,
-  `msg` int(5) NOT NULL,
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+CREATE TABLE `efqdirectory_subscr_notify` (
+  `id`       INT(11)     NOT NULL AUTO_INCREMENT,
+  `method`   TINYINT(2)  NOT NULL DEFAULT '0',
+  `datetime` VARCHAR(10) NOT NULL,
+  `msg`      INT(5)      NOT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 1;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_subscr_offers`
--- 
+# 
+# Table structure for table `efqdirectory_subscr_offers`
+# 
 
-CREATE TABLE `efqdiralpha1_subscr_offers` (
-  `offerid` int(5) NOT NULL auto_increment,
-  `dirid` int(5) NOT NULL default '0',
-  `typeid` int(5) NOT NULL default '0',
-  `title` varchar(255) NOT NULL,
-  `duration` int(5) NOT NULL default '0',
-  `count` int(5) NOT NULL default '0',
-  `price` double(5,2) NOT NULL default '0.00',
-  `activeyn` tinyint(2) NOT NULL default '0',
-  `currency` varchar(10) NOT NULL,
-  `descr` longtext NOT NULL,
-  PRIMARY KEY  (`offerid`)
-) TYPE=MyISAM AUTO_INCREMENT=3 ;
+CREATE TABLE `efqdirectory_subscr_offers` (
+  `offerid`  INT(5)       NOT NULL AUTO_INCREMENT,
+  `typeid`   INT(5)       NOT NULL DEFAULT '0',
+  `title`    VARCHAR(255) NOT NULL,
+  `duration` INT(5)       NOT NULL DEFAULT '0',
+  `count`    INT(5)       NOT NULL DEFAULT '0',
+  `price`    DOUBLE(5, 2) NOT NULL DEFAULT '0.00',
+  `activeyn` TINYINT(2)   NOT NULL DEFAULT '0',
+  `currency` VARCHAR(10)  NOT NULL,
+  `descr`    LONGTEXT     ,
+  PRIMARY KEY (`offerid`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 3;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_subscr_orders`
--- 
+# 
+# Table structure for table `efqdirectory_subscr_orders`
+# 
 
-CREATE TABLE `efqdiralpha1_subscr_orders` (
-  `orderid` int(10) NOT NULL auto_increment,
-  `uid` int(10) NOT NULL,
-  `offerid` int(10) NOT NULL,
-  `typeid` int(4) NOT NULL,
-  `startdate` varchar(10) NOT NULL,
-  `enddate` varchar(10) NOT NULL,
-  `billto` varchar(10) NOT NULL,
-  `status` tinyint(2) NOT NULL,
-  `itemid` int(10) NOT NULL,
-  `autorenew` tinyint(2) NOT NULL default '0',
-  PRIMARY KEY  (`orderid`)
-) TYPE=MyISAM AUTO_INCREMENT=33 ;
+CREATE TABLE `efqdirectory_subscr_orders` (
+  `orderid`   INT(10)     NOT NULL AUTO_INCREMENT,
+  `uid`       INT(10)     NOT NULL,
+  `offerid`   INT(10)     NOT NULL,
+  `typeid`    INT(4)      NOT NULL,
+  `startdate` VARCHAR(10) NOT NULL,
+  `enddate`   VARCHAR(10) NOT NULL,
+  `billto`    VARCHAR(10) NOT NULL,
+  `status`    TINYINT(2)  NOT NULL,
+  `itemid`    INT(10)     NOT NULL,
+  `autorenew` TINYINT(2)  NOT NULL DEFAULT '0',
+  PRIMARY KEY (`orderid`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 33;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_subscr_payments`
--- 
+# 
+# Table structure for table `efqdirectory_subscr_payments`
+# 
 
-CREATE TABLE `efqdiralpha1_subscr_payments` (
-  `id` int(12) NOT NULL auto_increment,
-  `txn_id` varchar(150) NOT NULL,
-  `txn_type` varchar(50) NOT NULL,
-  `orderid` int(10) NOT NULL,
-  `payer_business_name` varchar(200) NOT NULL,
-  `address_name` varchar(200) NOT NULL,
-  `address_street` varchar(200) NOT NULL,
-  `address_city` varchar(200) NOT NULL,
-  `address_state` varchar(200) NOT NULL,
-  `address_zip` varchar(200) NOT NULL,
-  `address_country` varchar(200) NOT NULL,
-  `address_status` varchar(200) NOT NULL,
-  `payer_email` varchar(200) NOT NULL,
-  `payer_id` varchar(200) NOT NULL,
-  `payer_status` varchar(200) NOT NULL,
-  `mc_currency` varchar(10) NOT NULL,
-  `mc_gross` double(10,2) NOT NULL,
-  `mc_fee` double(9,2) NOT NULL,
-  `created` varchar(10) NOT NULL,
-  `payment_date` varchar(50) NOT NULL,
-  `ref` varchar(255) NOT NULL,
-  `payment_status` varchar(50) NOT NULL,
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=25 ;
+CREATE TABLE `efqdirectory_subscr_payments` (
+  `id`                  INT(12)       NOT NULL AUTO_INCREMENT,
+  `txn_id`              VARCHAR(150)  NOT NULL,
+  `txn_type`            VARCHAR(50)   NOT NULL,
+  `orderid`             INT(10)       NOT NULL,
+  `payer_business_name` VARCHAR(200)  NOT NULL,
+  `address_name`        VARCHAR(200)  NOT NULL,
+  `address_street`      VARCHAR(200)  NOT NULL,
+  `address_city`        VARCHAR(200)  NOT NULL,
+  `address_state`       VARCHAR(200)  NOT NULL,
+  `address_zip`         VARCHAR(200)  NOT NULL,
+  `address_country`     VARCHAR(200)  NOT NULL,
+  `address_status`      VARCHAR(200)  NOT NULL,
+  `payer_email`         VARCHAR(200)  NOT NULL,
+  `payer_id`            VARCHAR(200)  NOT NULL,
+  `payer_status`        VARCHAR(200)  NOT NULL,
+  `mc_currency`         VARCHAR(10)   NOT NULL,
+  `mc_gross`            DOUBLE(10, 2) NOT NULL,
+  `mc_fee`              DOUBLE(9, 2)  NOT NULL,
+  `created`             VARCHAR(10)   NOT NULL,
+  `payment_date`        VARCHAR(50)   NOT NULL,
+  `ref`                 VARCHAR(255)  NOT NULL,
+  `payment_status`      VARCHAR(50)   NOT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 25;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_subscr_scheduler`
--- 
+# 
+# Table structure for table `efqdirectory_subscr_scheduler`
+# 
 
-CREATE TABLE `efqdiralpha1_subscr_scheduler` (
-  `id` int(11) NOT NULL auto_increment,
-  `startdate` int(10) NOT NULL,
-  `itemid` int(11) NOT NULL,
-  `newtypeid` int(6) NOT NULL,
-  `status` tinyint(2) NOT NULL,
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=3 ;
+CREATE TABLE `efqdirectory_subscr_scheduler` (
+  `id`        INT(11)    NOT NULL AUTO_INCREMENT,
+  `startdate` INT(10)    NOT NULL,
+  `itemid`    INT(11)    NOT NULL,
+  `newtypeid` INT(6)     NOT NULL,
+  `status`    TINYINT(2) NOT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 3;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_tpl`
--- 
+# 
+# Table structure for table `efqdirectory_tpl`
+# 
 
-CREATE TABLE `efqdiralpha1_tpl` (
-  `tplid` int(5) NOT NULL auto_increment,
-  `title` varchar(255) NOT NULL default '',
-  `name` varchar(50) NOT NULL default '',
-  `activeyn` tinyint(2) NOT NULL default '0',
-  PRIMARY KEY  (`tplid`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+CREATE TABLE `efqdirectory_tpl` (
+  `tplid`    INT(5)       NOT NULL AUTO_INCREMENT,
+  `title`    VARCHAR(255) NOT NULL DEFAULT '',
+  `name`     VARCHAR(50)  NOT NULL DEFAULT '',
+  `activeyn` TINYINT(2)   NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tplid`)
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 1;
 
--- --------------------------------------------------------
+# --------------------------------------------------------
 
--- 
--- Table structure for table `efqdiralpha1_votedata`
--- 
+# 
+# Table structure for table `efqdirectory_votedata`
+# 
 
-CREATE TABLE `efqdiralpha1_votedata` (
-  `ratingid` int(11) NOT NULL auto_increment,
-  `itemid` int(11) NOT NULL default '0',
-  `ratinguser` int(11) unsigned NOT NULL default '0',
-  `rating` tinyint(3) unsigned NOT NULL default '0',
-  `ratinghostname` varchar(60) NOT NULL default '',
-  `ratingtimestamp` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`ratingid`),
+CREATE TABLE `efqdirectory_votedata` (
+  `ratingid`        INT(11)             NOT NULL AUTO_INCREMENT,
+  `itemid`          INT(11)             NOT NULL DEFAULT '0',
+  `ratinguser`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
+  `rating`          TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `ratinghostname`  VARCHAR(60)         NOT NULL DEFAULT '',
+  `ratingtimestamp` INT(10)             NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ratingid`),
   KEY `ratinguser` (`ratinguser`),
   KEY `ratinghostname` (`ratinghostname`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+)
+  ENGINE = MyISAM
+  AUTO_INCREMENT = 1;
 
+#
+# Dumping data for table `efqdirectory_itemtypes`
+# 
 
--- 
--- Dumping data for table `efqdiralpha1_itemtypes`
--- 
+INSERT INTO `efqdirectory_itemtypes` (`typeid`, `typename`, `typelevel`) VALUES (1, 'Bronze', 1);
+INSERT INTO `efqdirectory_itemtypes` (`typeid`, `typename`, `typelevel`) VALUES (2, 'Silver', 2);
+INSERT INTO `efqdirectory_itemtypes` (`typeid`, `typename`, `typelevel`) VALUES (3, 'Gold', 3);
 
-INSERT INTO `efqdiralpha1_itemtypes` (`typeid`, `typename`, `level`) VALUES (1, 'Bronze', 1);
-INSERT INTO `efqdiralpha1_itemtypes` (`typeid`, `typename`, `level`) VALUES (2, 'Silver', 2);
-INSERT INTO `efqdiralpha1_itemtypes` (`typeid`, `typename`, `level`) VALUES (3, 'Gold', 3);
+# 
+# Dumping data for table `efqdirectory_fieldtypes`
+# 
 
--- 
--- Dumping data for table `efqdiralpha1_fieldtypes`
--- 
-
-INSERT INTO `efqdiralpha1_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (9, 'Textbox default (50 - 100)', 'textbox', 'Default text box', 'size=50|maxsize=100', 1);
-INSERT INTO `efqdiralpha1_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (10, 'Yes/No', 'yesno', 'Yes or no', '', 1);
-INSERT INTO `efqdiralpha1_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (11, 'Text Area (10 - 50)', 'textarea', 'Normal text area', 'rows=10|cols=50', 1);
-INSERT INTO `efqdiralpha1_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (12, 'Select box', 'select', 'Select a rating', '', 1);
-INSERT INTO `efqdiralpha1_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (13, 'DHTML text area', 'dhtml', 'Default DHTML area', 'rows=10|cols=50', 1);
+INSERT INTO `efqdirectory_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (9, 'Textbox default (50 - 100)', 'textbox', 'Default text box', 'size=50|maxsize=100', 1);
+INSERT INTO `efqdirectory_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (10, 'Yes/No', 'yesno', 'Yes or no', '', 1);
+INSERT INTO `efqdirectory_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (11, 'Text Area (10 - 50)', 'textarea', 'Normal text area', 'rows=10|cols=50', 1);
+INSERT INTO `efqdirectory_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (12, 'Select box', 'select', 'Select a rating', '', 1);
+INSERT INTO `efqdirectory_fieldtypes` (`typeid`, `title`, `fieldtype`, `descr`, `ext`, `activeyn`) VALUES (13, 'DHTML text area', 'dhtml', 'Default DHTML area', 'rows=10|cols=50', 1);

@@ -11,59 +11,49 @@
  * http://opensource.org/licenses/cpl.php
  *
  */
-include "../header.php";
-$myts =& MyTextSanitizer::getInstance();// MyTextSanitizer object
+include __DIR__ . '/../header.php';
+$myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
 
 $eh = new ErrorHandler;
 //get global configuration information
-include_once('../paypal_includes/global_config.inc.php'); 
+require_once __DIR__ . '/../paypal_includes/global_config.inc.php';
 
 //get pay pal configuration file
-include_once('../paypal_includes/config.inc.php'); 
-
+require_once __DIR__ . '/../paypal_includes/config.inc.php';
 
 //decide which post method to use
-switch($paypal[post_method]) { 
+switch ($paypal[post_method]) {
 
-case "libCurl": //php compiled with libCurl support
+    case 'libCurl': //php compiled with libCurl support
 
-$result=libCurlPost($paypal[url],$_POST); 
+        $result = libCurlPost($paypal[url], $_POST);
 
+        break;
 
-break;
+    case 'curl': //cURL via command line
 
+        $result = curlPost($paypal[url], $_POST);
+        //print_r($result);
+        break;
 
-case "curl": //cURL via command line
+    case 'fso': //php fsockopen();
 
-$result=curlPost($paypal[url],$_POST); 
-//print_r($result);
-break; 
+        $result = fsockPost($paypal[url], $_POST);
+        //print_r($result);
+        break;
 
+    default: //use the fsockopen method as default post method
 
-case "fso": //php fsockopen(); 
-
-$result=fsockPost($paypal[url],$_POST); 
-//print_r($result);
-break; 
-
-
-default: //use the fsockopen method as default post method
-
-$result=fsockPost($paypal[url],$_POST);
-//print_r($result);
-break;
+        $result = fsockPost($paypal[url], $_POST);
+        //print_r($result);
+        break;
 
 }
 
-
 //check the ipn result received back from paypal
 
-if(eregi("VERIFIED",$result)) {
-	include_once('./ipn_success.php'); 
+if (eregi('VERIFIED', $result)) {
+    require_once __DIR__ . '/ipn_success.php';
 } else {
-	include_once('./ipn_error.php'); 
-} 
-
-
-?>
-
+    require_once __DIR__ . '/ipn_error.php';
+}

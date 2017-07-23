@@ -1,0 +1,92 @@
+<h5>1.07 Beta 2  [NOT RELEASED]</h5>
+<hr>
+
+- XOOPS 2.5.9, PHP 7 (mamba)
+
+- Converted to XOOPS 2.5.8 Admin GUI (mamba)
+- removed @version (mamba)
+- PSR-2 code cosmetics (mamba)
+- addNavigation(basename(__FILE__))  (mamba)
+- dirname(__FILE__) to __DIR__ (mamba)
+- replaced < br /> with < br > (mamba)
+- Unnecessary double quotes (mamba)
+- reference mismatch (mamba)
+- Hardening to type safe (mamba)
+- update Help (mamba)
+- changed _handler to Handler (mamba)
+- removed '/' from void HTML elements (&lt;br&gt;, &lt;img&gt;, etc) (mamba)
+- HTML 5: removed 'selected' and 'checked' (mamba)
+- updated file headers for consistency (mamba)
+- renamed several $indexAdmin with $adminObject for consistency (mamba)
+- Updates for PayPal changes (zyspec)
+- added Contributing.md (mamba)
+- moved all images, CSS, and JS files to /assets (mamba)
+- renamed .html Smarty templates to .tpl (mamba)
+- include_once to require_once (mamba)
+- started conversion to XMF (mamba)
+    &nbsp;&nbsp;- updated addInfoBoxLine entries (mamba)
+    &nbsp;&nbsp;- displayNavigation(basename(__FILE__))  (mamba)
+    &nbsp;&nbsp;- changed to ->displayButton('left') (mamba)
+
+<h5>1.07 Beta 1  [2012-07-23]</h5>
+<hr>
+
+- Converted to XOOPS 2.5.5 Admin GUI (mamba)
+
+<h5>1.04</h5>
+<hr>
+
+Fixed issue #1892120: Class 'XoopsMediaUploader' not found
+Fixed issue #1887242: Multiple select does not get rendered correctly
+Added feature: #146410: Exclude admin and listing owner hits
+
+
+<h5>1.03</h5>
+<hr>
+
+Fixed problem with multiple child categories. Only one typelevel of child categories could be selected in the new listing form.
+
+File: advancedsearch.php
+- Added bug fix for searching on numbers bigger than or smaller than.
+
+File: upgrade_1_0_2_to_1_1_0.sql
+- Added dirid field to both: subscr_offers AND field_types
+
+File: class/class.datafieldmanager.php
+- Fixed default value for select box. When assigned in field it now is
+    shown in case value is empty or it concerns a new listing.
+
+
+<h5>Planned changes [2008]</h5>
+<hr>
+
+- Manage listings in admin panel
+    - Find listings
+        - By title, author, rating
+
+- Add to favorites
+- Virtual tour http://www.0-360.com/
+- Image gallery field type
+- Google map field type
+- Google map link field type
+- Define which fields will be shown in search results
+- Migrate from xDirectory
+    * Missing:
+        xdir_broken
+            Can work around by adding listing - datatypeid (case url) table
+        xdir_mod
+        - Edit listing -> request edit by user: clone listing + submit for approval
+    * Extra:
+        data types & field types
+
+- Import Cat/Subcat structure from text file (pipe delimited)
+    * Use import table with:
+        ID
+        impID
+        impPID
+
+- Create free subscription type
+- Remove subscription type/typelevel
+- When deleting link between datatype and category (deactivate) ask if datatype
+    needs to be removed from all categories within the directory.
+
