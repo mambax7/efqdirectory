@@ -59,12 +59,12 @@ class efqDirectory extends XoopsObject
         $this->initVar('img', XOBJ_DTYPE_TXTBOX);
         $this->initVar('allowreview', XOBJ_DTYPE_INT, 0, false);
 
-        if ($directory != false) {
+        if ($directory !== false) {
             if (is_array($directory)) {
                 $this->assignVars($directory);
             } else {
-                $directory_handler = xoops_getModuleHandler('directory', $moddir);
-                $objDirectory      = $directory_handler->get($directory);
+                $directoryHandler = xoops_getModuleHandler('directory', $moddir);
+                $objDirectory      = $directoryHandler->get($directory);
                 foreach ($objDirectory->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
                 }
@@ -118,7 +118,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function &get($dirid = false)
     {
-        if ($dirid == false) {
+        if ($dirid === false) {
             return false;
         }
         $dirid = (int)$dirid;
@@ -209,7 +209,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
     {
         global $xoopsDB;
         $block       = array();
-        $myts        =& MyTextSanitizer::getInstance();
+        $myts        = MyTextSanitizer::getInstance();
         $dirid       = 0;
         $result      = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . '');
         $num_results = $xoopsDB->getRowsNum($result);
@@ -218,7 +218,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         } elseif ($num_results == 0) {
             return 0;
         } elseif ($num_results == 1) {
-            $row   = mysql_fetch_array($result);
+            $row   = $GLOBALS['xoopsDB']->fetchBoth($result);
             $dirid = $row['dirid'];
 
             return $dirid;
@@ -239,7 +239,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         $result  = $this->db->query($sql);
-        if ($dashes != false) {
+        if ($dashes !== false) {
             $arr = array('0' => '---');
         }
         while (list($dirid, $dirname) = $this->db->fetchRow($result)) {

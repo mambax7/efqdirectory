@@ -26,7 +26,7 @@ xoops_cp_header();
 include __DIR__ . '/../include/functions.php';
 
 //adminmenu(-1);
-if (file_exists('../language/' . $xoopsConfig['language'] . '/main.php')) {
+if (file_exists(__DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php')) {
     include __DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php';
 } else {
     include __DIR__ . '/../language/english/main.php';

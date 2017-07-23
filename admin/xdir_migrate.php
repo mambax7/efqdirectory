@@ -29,20 +29,20 @@
 //	Purpose: Create a business directory for xoops.		 	 				 //
 //	Based upon the mylinks and the mxDirectory modules						 //
 // ------------------------------------------------------------------------- //
-include '../../../include/cp_header.php';
-if (file_exists('../language/' . $xoopsConfig['language'] . '/main.php')) {
-    include '../language/' . $xoopsConfig['language'] . '/main.php';
+include __DIR__ . '/../../../include/cp_header.php';
+if (file_exists(__DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php')) {
+    include __DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php';
 } else {
-    include '../language/english/main.php';
+    include __DIR__ . '/../language/english/main.php';
 }
-include '../include/functions.php';
-include '../class/class.fieldtype.php';
-include '../class/class.datatype.php';
-include '../class/class.directory.php';
-include '../class/class.xdir.php';
+include __DIR__ . '/../include/functions.php';
+include __DIR__ . '/../class/class.fieldtype.php';
+include __DIR__ . '/../class/class.datatype.php';
+include __DIR__ . '/../class/class.directory.php';
+include __DIR__ . '/../class/class.xdir.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-$myts =& MyTextSanitizer::getInstance();
+$myts = MyTextSanitizer::getInstance();
 $eh   = new ErrorHandler;
 
 $moddir = $xoopsModule->getVar('dirname');
@@ -87,8 +87,8 @@ function newDir()
     $directory = new efqDirectory;
     $directory->setVar('name', $p_dirname);
     $directory->setVar('open', $p_open);
-    $directory_handler = new efqDirectoryHandler;
-    $directory_handler->insertDirectory($directory);
+    $directoryHandler = new efqDirectoryHandler;
+    $directoryHandler->insertDirectory($directory);
     $db_dirid = $directory->getVar('dirid');
 
     if ($db_dirid > 0) {

@@ -153,7 +153,7 @@ class efqXdirHandler extends XoopsObjectHandler
      */
     public function createDataTypes()
     {
-        $datatype_handler = new efqDataTypeHandler();
+        $datatypeHandler = new efqDataTypeHandler();
         $arr[]            = array('title' => _MD_XDIR_DTYPE_ADDRESS, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
         $arr[]            = array('title' => _MD_XDIR_DTYPE_ADDRESS2, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
         $arr[]            = array('title' => _MD_XDIR_DTYPE_CITY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
@@ -173,7 +173,7 @@ class efqXdirHandler extends XoopsObjectHandler
             $objDataType->setVar('created', time());
             $objDataType->setVar('activeyn', 1);
             $objDataType->setVar('fieldtypeid', $this->fieldtypes[$datatype['fieldtype']]);
-            $datatype_handler->insertDataType($objDataType, true);
+            $datatypeHandler->insertDataType($objDataType, true);
             $datatypes[$datatype['title']] = $objDataType->getVar('dtypeid');
         }
     }
@@ -189,7 +189,7 @@ class efqXdirHandler extends XoopsObjectHandler
      */
     public function createFieldTypes()
     {
-        $fieldtype_handler = new efqFieldTypeHandler();
+        $fieldtypeHandler = new efqFieldTypeHandler();
         $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_TEXTBOX, 'fieldtype' => 'textbox');
         $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_EMAIL, 'fieldtype' => 'email');
         $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_URL, 'fieldtype' => 'url');
@@ -198,7 +198,7 @@ class efqXdirHandler extends XoopsObjectHandler
             $objFieldtype->setVar('title', $fieldtype['title']);
             $objFieldtype->setVar('fieldtype', $fieldtype['fieldtype']);
             $objFieldtype->setVar('dirid', $this->efq_dirid);
-            $fieldtype_handler->insertFieldType($objFieldtype, true);
+            $fieldtypeHandler->insertFieldType($objFieldtype, true);
             $fieldtypes[$fieldtype['title']] = $objFieldtype->getVar('typeid');
         }
     }

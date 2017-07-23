@@ -68,7 +68,7 @@ class efqDataFieldHandler extends XoopsObjectHandler
     {
         //Instantiate class
         global $eh;
-        $this->db           =& XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db           = XoopsDatabaseFactory::getDatabaseConnection();
         $this->errorhandler = $eh;
     }
 
@@ -115,7 +115,7 @@ class efqDataFieldHandler extends XoopsObjectHandler
         global $myts, $moddir;
         switch ($fieldtype) {
             case "dhtml":
-                return $myts->makeTareaData4Show($value);
+                return $myts->displayTarea($value);
                 break;
             //case "gmap":
             //			$gmapHandler = new efqGmapHandler();

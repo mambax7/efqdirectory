@@ -71,12 +71,12 @@ class efqGmap extends XoopsObject
         $this->initVar('lon', XOBJ_DTYPE_TXTBOX, null, true);
         $this->initVar('descr', XOBJ_DTYPE_TXTAREA);
 
-        if ($gmap != false) {
+        if ($gmap !== false) {
             if (is_array($gmap)) {
                 $this->assignVars($gmap);
             } else {
-                $$gmap_handler = xoops_getModuleHandler('gmap', $moddir);
-                $objGmap       =& $$gmap_handler->get($directory);
+                $$gmapHandler = xoops_getModuleHandler('gmap', $moddir);
+                $objGmap       =& $$gmapHandler->get($directory);
                 foreach ($objGmap->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
                 }
@@ -350,7 +350,7 @@ class efqGmapHandler extends XoopsObjectHandler
      */
     public function getByDataId($id = 0)
     {
-        if ($id == false) {
+        if ($id === false) {
             return false;
         }
         $id = (int)$id;
