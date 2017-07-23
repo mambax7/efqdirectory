@@ -52,7 +52,7 @@ switch ($paypal['post_method']) {
 
 //check the ipn result received back from paypal
 
-if (eregi('VERIFIED', $result)) {
+if (stripos('VERIFIED', $result)) {
     require_once __DIR__ . '/ipn_success.php';
 } else {
     require_once __DIR__ . '/ipn_error.php';

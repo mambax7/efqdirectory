@@ -55,7 +55,7 @@ switch ($paypal['post_method']) {
 
 //check the ipn result received back from paypal
 
-if (eregi('VERIFIED', $result)) {
+if (stripos('VERIFIED', $result)) {
     // Automatic update of the subscription is not yet included in the success page.
     // This will need to be done manually.
     require_once __DIR__ . '/ipn/ipn_success.php';
