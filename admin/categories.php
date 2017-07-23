@@ -615,7 +615,7 @@ function editDatatypes()
     $return     = '';
     $dtypes     = $_POST['dtypes'];
     $p_catid    = $_POST['catid'];
-    $dtypes_arr =explode('[|]', $dtypes);
+    $dtypes_arr = explode('[|]', $dtypes);
     foreach ($dtypes_arr as $dtype) {
         $p_section = $myts->makeTboxData4Save($_POST['section' . $dtype . '']);
         if (isset($_POST['defaultyn' . $dtype . ''])) {

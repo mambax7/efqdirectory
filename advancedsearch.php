@@ -152,7 +152,7 @@ if (isset($_POST['submit'])) {
             $querystring = ltrim(substr_replace($querystring, '', $start, 1));
         }
     }
-    $queryarr   =explode(' ', $querystring);
+    $queryarr   = explode(' ', $querystring);
     $queryarr   = array_merge($specialarr, $queryarr);
     $emptyarr[] = '';
     $querydiff  = array_diff($queryarr, $emptyarr);
@@ -558,7 +558,7 @@ function get_search_results($items = '')
     if ($items != '') {
         $z           = 0;
         $ret         = array();
-        $split_items =explode(',', $items);
+        $split_items = explode(',', $items);
         foreach ($split_items as $item) {
             $sql         = 'SELECT i.itemid, i.title, i.uid, i.created, t.description FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' i, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text') . " t WHERE i.itemid=t.itemid AND i.itemid='$item'";
             $result      = $xoopsDB->query($sql) || $eh->show('0013');

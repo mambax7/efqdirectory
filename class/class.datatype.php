@@ -35,11 +35,11 @@
 /**
  * Class efqSubscriptionOffer
  * Manages operations for subscription offers
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2008
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqDataType extends XoopsObject
 {
@@ -50,7 +50,7 @@ class efqDataType extends XoopsObject
      * @param bool $offer
      * @internal param bool $itemtype
      */
-    public function __construct($offer=false)
+    public function __construct($offer = false)
     {
         global $moddir;
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
@@ -72,11 +72,11 @@ class efqDataType extends XoopsObject
 /**
  * Class efqFieldTypeHandler
  * Manages database operations for field types
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqDataTypeHandler extends xoopsObjectHandler
 {
@@ -88,9 +88,9 @@ class efqDataTypeHandler extends xoopsObjectHandler
      *
      * @param bool $obj
      */
-    public function __construct($obj=false)
+    public function __construct($obj = false)
     {
-        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db          = XoopsDatabaseFactory::getDatabaseConnection();
         $this->objDataType = $obj;
     }
 
@@ -105,10 +105,10 @@ class efqDataTypeHandler extends xoopsObjectHandler
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
-    public function insertDataType($obj, $forceQuery=false)
+    public function insertDataType($obj, $forceQuery = false)
     {
-        $tablename = 'efqdiralpha1_dtypes';
-        $keyName = 'dtypeid';
+        $tablename    = 'efqdiralpha1_dtypes';
+        $keyName      = 'dtypeid';
         $excludedVars = array();
         if ($obj instanceof efqDataType) {
             // Variable part of this function ends. From this line you can copy
@@ -119,13 +119,13 @@ class efqDataTypeHandler extends xoopsObjectHandler
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
+        $i         = 1;
         $strFields = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
-                $strValues .= "'".$v."'";
+                $strValues .= "'" . $v . "'";
                 if ($i < $countVars) {
                     $strFields .= ', ';
                     $strValues .= ', ';
@@ -138,15 +138,18 @@ class efqDataTypeHandler extends xoopsObjectHandler
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         } else {
             if ($this->db->query($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -162,23 +165,23 @@ class efqDataTypeHandler extends xoopsObjectHandler
      * @internal  param $object
      *
      */
-    public function updateDataType($obj, $forceQuery=false)
+    public function updateDataType($obj, $forceQuery = false)
     {
-        $tablename = 'efqdiralpha1_dtypes';
-        $keyName = 'dtypeid';
+        $tablename    = 'efqdiralpha1_dtypes';
+        $keyName      = 'dtypeid';
         $excludedVars = array();
         if ($obj instanceof efqDataType) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
             $obj->cleanVars();
             $cleanvars = $obj->cleanVars;
-            $keyValue = $obj->getVar($keyName);
+            $keyValue  = $obj->getVar($keyName);
         } else {
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
-        $strSet = '';
+        $i         = 1;
+        $strSet    = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
@@ -199,6 +202,7 @@ class efqDataTypeHandler extends xoopsObjectHandler
                 return true;
             }
         }
+
         return false;
     }
 
@@ -210,15 +214,14 @@ class efqDataTypeHandler extends xoopsObjectHandler
      * @param int $gpc_dtypeid
      * @return bool true or false
      */
-    public function setDataType($gpc_dtypeid=0)
+    public function setDataType($gpc_dtypeid = 0)
     {
-        $sql = 'SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=' . (int)$gpc_dtypeid;
-        $result = $this->db->query($sql);
+        $sql     = 'SELECT dtypeid,title,section,fieldtypeid,uid,defaultyn,created,seq,activeyn,options,custom,icon	WHERE dtypeid=' . (int)$gpc_dtypeid;
+        $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
-            while (list($dtypeid, $title, $section, $fieldtypeid, $uid, $defaultyn, $activeyn,
-                    $options, $custom, $icon) = $this->db->fetchRow($result)) {
-                if (! $this->objDataType) {
+            while (list($dtypeid, $title, $section, $fieldtypeid, $uid, $defaultyn, $activeyn, $options, $custom, $icon) = $this->db->fetchRow($result)) {
+                if (!$this->objDataType) {
                     $this->objDataType = new efqDataType();
                 }
                 $this->objDataType->setVar('dtypeid', $dtypeid);
@@ -237,6 +240,7 @@ class efqDataTypeHandler extends xoopsObjectHandler
         } else {
             return false;
         }
+
         return true;
     }
 

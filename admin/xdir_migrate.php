@@ -40,10 +40,10 @@ include '../class/class.fieldtype.php';
 include '../class/class.datatype.php';
 include '../class/class.directory.php';
 include '../class/class.xdir.php';
-include_once XOOPS_ROOT_PATH.'/class/xoopsformloader.php';
-include_once XOOPS_ROOT_PATH.'/class/module.errorhandler.php';
+include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 $myts =& MyTextSanitizer::getInstance();
-$eh = new ErrorHandler;
+$eh   = new ErrorHandler;
 
 $moddir = $xoopsModule->getVar('dirname');
 
@@ -90,7 +90,7 @@ function newDir()
     $directory_handler = new efqDirectoryHandler;
     $directory_handler->insertDirectory($directory);
     $db_dirid = $directory->getVar('dirid');
-    
+
     if ($db_dirid > 0) {
         $xdirHandler = new efqXdirHandler();
         $xdirHandler->doMigrate($db_dirid);
@@ -98,7 +98,7 @@ function newDir()
         if (count($migration_errors) > 0) {
             redirect_header('xdir_migrate.php', 2, _MD_XDIR_MIGRATION_FAILED);
         } else {
-            redirect_header('directories.php?op=moddir&dirid='.$db_dirid, 2, _MD_XDIR_MIGRATION_COMPLETED);
+            redirect_header('directories.php?op=moddir&dirid=' . $db_dirid, 2, _MD_XDIR_MIGRATION_COMPLETED);
         }
     } else {
         redirect_header('xdir_migrate.php', 2, _MD_XDIR_MIGRATION_FAILED);
@@ -112,10 +112,10 @@ if (!isset($_POST['op'])) {
 }
 switch ($op) {
 
-case 'newdir':
-    newDir();
-    break;
-default:
-    xdirConfig();
-    break;
+    case 'newdir':
+        newDir();
+        break;
+    default:
+        xdirConfig();
+        break;
 }

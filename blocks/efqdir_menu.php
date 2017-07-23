@@ -18,7 +18,6 @@
  * @author       XOOPS Development Team,
  */
 
-
 /******************************************************************************
  * Function: b_efqdiralpha1_menu_show
  * Input   : $options[0] = date for the most recent links

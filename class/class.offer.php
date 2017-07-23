@@ -35,11 +35,11 @@
 /**
  * Class efqSubscriptionOffer
  * Manages operations for subscription offers
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2008
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqSubscriptionOffer extends XoopsObject
 {
@@ -50,7 +50,7 @@ class efqSubscriptionOffer extends XoopsObject
      * @param bool $offer
      * @internal param bool $itemtype
      */
-    public function __construct($offer=false)
+    public function __construct($offer = false)
     {
         global $moddir;
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
@@ -72,11 +72,11 @@ class efqSubscriptionOffer extends XoopsObject
 /**
  * Class efqFieldTypeHandler
  * Manages database operations for field types
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqSubscriptionOfferHandler extends xoopsObjectHandler
 {
@@ -88,9 +88,9 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      *
      * @param bool $offer
      */
-    public function __construct($offer=false)
+    public function __construct($offer = false)
     {
-        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db       = XoopsDatabaseFactory::getDatabaseConnection();
         $this->objOffer = $offer;
     }
 
@@ -105,10 +105,10 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
-    public function insertOffer($obj, $forceQuery=false)
+    public function insertOffer($obj, $forceQuery = false)
     {
-        $tablename = 'efqdiralpha1_subscr_offers';
-        $keyName = 'offerid';
+        $tablename    = 'efqdiralpha1_subscr_offers';
+        $keyName      = 'offerid';
         $excludedVars = array('level', 'typename');
         if ($obj instanceof efqSubscriptionOffer) {
             // Variable part of this function ends. From this line you can copy
@@ -119,13 +119,13 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
+        $i         = 1;
         $strFields = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
-                $strValues .= "'".$v."'";
+                $strValues .= "'" . $v . "'";
                 if ($i < $countVars) {
                     $strFields .= ', ';
                     $strValues .= ', ';
@@ -138,15 +138,18 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         } else {
             if ($this->db->query($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -161,23 +164,23 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      * @return bool true if update is succesful, false if unsuccesful
      * @internal  param object $objOffer object of type listing
      */
-    public function updateOffer($obj, $forceQuery=false)
+    public function updateOffer($obj, $forceQuery = false)
     {
-        $tablename = 'efqdiralpha1_subscr_offers';
-        $keyName = 'offerid';
+        $tablename    = 'efqdiralpha1_subscr_offers';
+        $keyName      = 'offerid';
         $excludedVars = array('level', 'typename');
         if ($obj instanceof efqSubscriptionOffer) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
             $obj->cleanVars();
             $cleanvars = $obj->cleanVars;
-            $keyValue = $obj->getVar($keyName);
+            $keyValue  = $obj->getVar($keyName);
         } else {
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
-        $strSet = '';
+        $i         = 1;
+        $strSet    = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
@@ -198,6 +201,7 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
                 return true;
             }
         }
+
         return false;
     }
 
@@ -209,16 +213,21 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      * @param int $gpc_offerid
      * @return bool true or false
      */
-    public function setOffer($gpc_offerid=0)
+    public function setOffer($gpc_offerid = 0)
     {
-        $sql = 'SELECT o.offerid, o.title, o.typeid, o.duration, o.count, ' . 'o.price, o.activeyn, o.currency, o.descr, o.dirid, t.typename, t.level FROM ' .
-               $this->db->prefix('efqdiralpha1_itemtypes') . ' t, ' . $this->db->prefix('efqdiralpha1_subscr_offers') . ' o	WHERE o.typeid=t.typeid AND o.offerid=' . (int)$gpc_offerid . '';
-        $result = $this->db->query($sql);
+        $sql     = 'SELECT o.offerid, o.title, o.typeid, o.duration, o.count, '
+                   . 'o.price, o.activeyn, o.currency, o.descr, o.dirid, t.typename, t.level FROM '
+                   . $this->db->prefix('efqdiralpha1_itemtypes')
+                   . ' t, '
+                   . $this->db->prefix('efqdiralpha1_subscr_offers')
+                   . ' o	WHERE o.typeid=t.typeid AND o.offerid='
+                   . (int)$gpc_offerid
+                   . '';
+        $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
-            while (list($offerid, $offertitle, $typeid, $duration, $count, $price, $activeyn,
-                    $currency, $descr, $dirid, $typename, $level) = $this->db->fetchRow($result)) {
-                if (! $this->objOffer) {
+            while (list($offerid, $offertitle, $typeid, $duration, $count, $price, $activeyn, $currency, $descr, $dirid, $typename, $level) = $this->db->fetchRow($result)) {
+                if (!$this->objOffer) {
                     $this->objOffer = new efqSubscriptionOffer();
                 }
                 $this->objOffer->setVar('offerid', $offerid);
@@ -237,6 +246,7 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
         } else {
             return false;
         }
+
         return true;
     }
 

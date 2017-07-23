@@ -31,14 +31,15 @@
 //	Based upon the mylinks and the mxDirectory modules						 //
 // ------------------------------------------------------------------------- //
 */
+
 /**
  * Class efqDirectory
  * Manages operations for directories
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqDirectory extends XoopsObject
 {
@@ -57,13 +58,13 @@ class efqDirectory extends XoopsObject
         $this->initVar('description', XOBJ_DTYPE_TXTAREA);
         $this->initVar('img', XOBJ_DTYPE_TXTBOX);
         $this->initVar('allowreview', XOBJ_DTYPE_INT, 0, false);
-        
+
         if ($directory != false) {
             if (is_array($directory)) {
                 $this->assignVars($directory);
             } else {
                 $directory_handler = xoops_getModuleHandler('directory', $moddir);
-                $objDirectory = $directory_handler->get($directory);
+                $objDirectory      = $directory_handler->get($directory);
                 foreach ($objDirectory->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
                 }
@@ -76,11 +77,11 @@ class efqDirectory extends XoopsObject
 /**
  * Class efqDirectoryHandler
  * Manages database operations for directories
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqDirectoryHandler extends XoopsObjectHandler
 {
@@ -89,7 +90,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function __construct()
     {
-        $this->db =XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
 
     /**
@@ -104,6 +105,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         if ($isNew) {
             $directory->setNew();
         }
+
         return $directory;
     }
 
@@ -127,14 +129,16 @@ class efqDirectoryHandler extends XoopsObjectHandler
             }
             $directory =& $this->create(false);
             $directory->assignVars($this->db->fetchArray($result));
+
             return $directory;
         }
+
         return false;
     }
-     
-     /**
+
+    /**
      * retrieve all directories
-     * 
+     *
      * @return mixed reference to the {@link efqDirectory} object, FALSE if failed
      */
     public function &getAll()
@@ -144,13 +148,16 @@ class efqDirectoryHandler extends XoopsObjectHandler
             return false;
         }
         while (list($dirid, $postfix, $open, $name, $descr, $img) = $this->db->fetchRow($result)) {
-            $arr[] = array('dirid' => $dirid,
+            $arr[] = array(
+                'dirid'   => $dirid,
                 'postfix' => $postfix,
-                'open' => $open,
-                'name' => $name,
-                'descr' => $descr,
-                'img' => $img );
+                'open'    => $open,
+                'name'    => $name,
+                'descr'   => $descr,
+                'img'     => $img
+            );
         }
+
         return $arr;
     }
 
@@ -169,6 +176,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         while (list($r_id) = $this->db->fetchRow($result)) {
             array_push($idarray, $r_id);
         }
+
         return $idarray;
     }
 
@@ -188,31 +196,31 @@ class efqDirectoryHandler extends XoopsObjectHandler
             $result_arr[$r_id] = $r_title;
             //array_push($arr, $result_arr);
         }
+
         return $result_arr;
     }
-    
-    
-    
+
     /**
      * count number of directories and if count == 1, set directory.
-     * 
+     *
      * @return mixed $result, FALSE if failed, 0 if count is 0.
      */
     public function countAll()
     {
         global $xoopsDB;
-        $block = array();
-        $myts =& MyTextSanitizer::getInstance();
-        $dirid = 0;
-        $result = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . '');
+        $block       = array();
+        $myts        =& MyTextSanitizer::getInstance();
+        $dirid       = 0;
+        $result      = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . '');
         $num_results = $xoopsDB->getRowsNum($result);
         if (!$result) {
             return false;
         } elseif ($num_results == 0) {
             return 0;
         } elseif ($num_results == 1) {
-            $row = mysql_fetch_array($result);
+            $row   = mysql_fetch_array($result);
             $dirid = $row['dirid'];
+
             return $dirid;
         } else {
             return false;
@@ -227,16 +235,17 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function directoryArray($dashes = false)
     {
-        $sql = 'SELECT dirid, name FROM ' . $this->db->prefix('efqdiralpha1_dir') . ' ORDER BY name ASC';
-        $result = $this->db->query($sql);
+        $sql     = 'SELECT dirid, name FROM ' . $this->db->prefix('efqdiralpha1_dir') . ' ORDER BY name ASC';
+        $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
-        $result = $this->db->query($sql);
+        $result  = $this->db->query($sql);
         if ($dashes != false) {
             $arr = array('0' => '---');
         }
         while (list($dirid, $dirname) = $this->db->fetchRow($result)) {
             $arr[$dirid] = $dirname;
         }
+
         return $arr;
     }
 
@@ -251,10 +260,10 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
-    public function insertDirectory($obj, $forceQuery=false)
+    public function insertDirectory($obj, $forceQuery = false)
     {
-        $tablename = 'efqdiralpha1_dir';
-        $keyName = 'dirid';
+        $tablename    = 'efqdiralpha1_dir';
+        $keyName      = 'dirid';
         $excludedVars = array();
         if ($obj instanceof efqDirectory) {
             // Variable part of this function ends. From this line you can copy
@@ -265,13 +274,13 @@ class efqDirectoryHandler extends XoopsObjectHandler
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
+        $i         = 1;
         $strFields = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
-                $strValues .= "'".$v."'";
+                $strValues .= "'" . $v . "'";
                 if ($i < $countVars) {
                     $strFields .= ', ';
                     $strValues .= ', ';
@@ -284,15 +293,18 @@ class efqDirectoryHandler extends XoopsObjectHandler
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         } else {
             if ($this->db->query($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         }
+
         return false;
     }
 }

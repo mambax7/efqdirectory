@@ -35,11 +35,11 @@
 /**
  * Class efqItemType
  * Manages operations for item types
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqItemType extends XoopsObject
 {
@@ -50,7 +50,7 @@ class efqItemType extends XoopsObject
      * @param bool $obj
      * @internal param bool $itemtype
      */
-    public function __construct($obj=false)
+    public function __construct($obj = false)
     {
         global $moddir;
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
@@ -64,11 +64,11 @@ class efqItemType extends XoopsObject
 /**
  * Class efqFieldTypeHandler
  * Manages database operations for field types
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqItemTypeHandler extends xoopsObject
 {
@@ -95,10 +95,10 @@ class efqItemTypeHandler extends xoopsObject
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
-    public function insert($obj, $forceQuery=false)
+    public function insert($obj, $forceQuery = false)
     {
-        $tablename = 'efqdiralpha1_itemtypes';
-        $keyName = 'typeid';
+        $tablename    = 'efqdiralpha1_itemtypes';
+        $keyName      = 'typeid';
         $excludedVars = array();
         if ($obj instanceof efqItemType) {
             // Variable part of this function ends. From this line you can copy
@@ -109,13 +109,13 @@ class efqItemTypeHandler extends xoopsObject
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
+        $i         = 1;
         $strFields = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
                 $strFields .= $k;
-                $strValues .= "'".$v."'";
+                $strValues .= "'" . $v . "'";
                 if ($i < $countVars) {
                     $strFields .= ', ';
                     $strValues .= ', ';
@@ -128,15 +128,18 @@ class efqItemTypeHandler extends xoopsObject
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         } else {
             if ($this->db->query($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -151,23 +154,23 @@ class efqItemTypeHandler extends xoopsObject
      * @return bool true if update is succesful, false if unsuccesful
      * @internal  param object $objOffer object of type listing
      */
-    public function update($obj, $forceQuery=false)
+    public function update($obj, $forceQuery = false)
     {
-        $tablename = 'efqdiralpha1_itemtypes';
-        $keyName = 'typeid';
+        $tablename    = 'efqdiralpha1_itemtypes';
+        $keyName      = 'typeid';
         $excludedVars = array();
         if ($obj instanceof efqItemType) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
             $obj->cleanVars();
             $cleanvars = $obj->cleanVars;
-            $keyValue = $obj->getVar($keyName);
+            $keyValue  = $obj->getVar($keyName);
         } else {
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 0;
-        $strSet = '';
+        $i         = 0;
+        $strSet    = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if (!in_array($k, $excludedVars)) {
@@ -188,6 +191,7 @@ class efqItemTypeHandler extends xoopsObject
                 return true;
             }
         }
+
         return false;
     }
 
@@ -199,14 +203,14 @@ class efqItemTypeHandler extends xoopsObject
      * @param int $typeid
      * @return bool true or false
      */
-    public function set($typeid=0)
+    public function set($typeid = 0)
     {
-        $sql = 'SELECT typeid,typename,level,dirid FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE typeid=' . (int)$typeid . '';
-        $result = $this->db->query($sql);
+        $sql     = 'SELECT typeid,typename,level,dirid FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE typeid=' . (int)$typeid . '';
+        $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
             while (list($typeid, $typename, $level, $dirid) = $this->db->fetchRow($result)) {
-                if (! $this->objItemType) {
+                if (!$this->objItemType) {
                     $this->objItemType = new efqSubscriptionOffer();
                 }
                 $this->objItemType->setVar('typeid', $typeid);
@@ -217,6 +221,7 @@ class efqItemTypeHandler extends xoopsObject
         } else {
             return false;
         }
+
         return true;
     }
 
@@ -227,14 +232,14 @@ class efqItemTypeHandler extends xoopsObject
     {
         return $this->objItemType;
     }
-        
-  /**
-   * efqItemTypeHandler::getByDir()
-   * 
-   * @param integer $dirid
-   * @return array $arr or boolean false
-   */
-    public function getByDir($dirid=0)
+
+    /**
+     * efqItemTypeHandler::getByDir()
+     *
+     * @param integer $dirid
+     * @return array $arr or boolean false
+     */
+    public function getByDir($dirid = 0)
     {
         $arr = array();
         $sql = 'SELECT typeid,typename,level FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE dirid=' . (int)$dirid . '';
@@ -243,8 +248,9 @@ class efqItemTypeHandler extends xoopsObject
         }
         $numrows = $this->db->getRowsNum($result);
         while (list($typeid, $typename, $level) = $this->db->fetchRow($result)) {
-            $arr[$typeid] = array('typeid' => $typeid,'typename' => $typename,'level' => $level);
+            $arr[$typeid] = array('typeid' => $typeid, 'typename' => $typename, 'level' => $level);
         }
+
         return $arr;
     }
 
@@ -262,11 +268,12 @@ class efqItemTypeHandler extends xoopsObject
     public function delete($obj)
     {
         $tablename = 'efqdiralpha1_itemtypes';
-        $keyName = 'typeid';
-        $id = $obj->getVar($keyName);
+        $keyName   = 'typeid';
+        $id        = $obj->getVar($keyName);
         if ($id != 0) {
             $sql = 'DELETE FROM ' . $this->db->prefix($tablename) . ' WHERE ' . $keyName . '=' . (int)$id . '';
             $this->db->queryF($sql);
+
             return true;
         } else {
             return false;

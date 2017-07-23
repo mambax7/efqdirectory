@@ -17,7 +17,6 @@
  * @author       Martijn Hertog (aka wtravel)
  * @author       XOOPS Development Team,
  */
-
 class efqSubscription extends XoopsObject
 {
     /**
@@ -163,7 +162,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         $orderid = 0;
         if ($itemid != 0) {
             if (isset($_POST['typeofferid'])) {
-                $typeofferid =explode('_', $_POST['typeofferid']);
+                $typeofferid = explode('_', $_POST['typeofferid']);
                 $typeid      = $typeofferid[0];
                 $offerid     = $typeofferid[1];
             } else {

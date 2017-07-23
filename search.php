@@ -78,7 +78,7 @@ if (!empty($_GET['q'])) {
             $querystring = ltrim(substr_replace($querystring, '', $start, 1));
         }
     }
-    $queryarr   =explode(' ', $querystring);
+    $queryarr   = explode(' ', $querystring);
     $queryarr   = array_merge($specialarr, $queryarr);
     $emptyarr[] = '';
     $querydiff  = array_diff($queryarr, $emptyarr);

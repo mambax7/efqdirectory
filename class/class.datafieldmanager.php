@@ -17,8 +17,6 @@
  * @author       Martijn Hertog (aka wtravel)
  * @author       XOOPS Development Team,
  */
-
-
 class efqDataFieldManager extends XoopsFormElement
 {
     public $_options  = array();
@@ -45,9 +43,9 @@ class efqDataFieldManager extends XoopsFormElement
         }
         $multiple = false;
         if ($ext != '') {
-            $ext_arr =explode('[|]', $ext);
+            $ext_arr = explode('[|]', $ext);
             foreach ($ext_arr as $ext_item) {
-                $ext_item_arr   =explode('[=]', $ext_item);
+                $ext_item_arr   = explode('[=]', $ext_item);
                 $ext_item_name  = $ext_item_arr[0];
                 $ext_item_value = $ext_item_arr[1];
 
@@ -107,7 +105,7 @@ class efqDataFieldManager extends XoopsFormElement
                 $form->addElement(new XoopsFormRadioyn($title, $name, $value, _YES, _NO));
                 break;
             case 'radio':
-                $options_arr =explode('[|]', $options);
+                $options_arr = explode('[|]', $options);
                 $form_radio  = new XoopsFormRadio($title, $name, $value, 1);
                 foreach ($options_arr as $option) {
                     $form_radio->addOption($option, $option);
@@ -115,7 +113,7 @@ class efqDataFieldManager extends XoopsFormElement
                 $form->addElement($form_radio);
                 break;
             case 'checkbox':
-                $options_arr   =explode('[|]', $options);
+                $options_arr   = explode('[|]', $options);
                 $form_checkbox = new XoopsFormCheckbox($title, $name, $value, 1);
                 foreach ($options_arr as $option) {
                     $form_checkbox->addOption($option, $option);
@@ -123,8 +121,8 @@ class efqDataFieldManager extends XoopsFormElement
                 $form->addElement($form_checkbox);
                 break;
             case 'select':
-                $options_arr =explode('[|]', $options);
-                $value_arr   =explode('[|]', $value);
+                $options_arr = explode('[|]', $options);
+                $value_arr   = explode('[|]', $value);
                 $form_select = new XoopsFormSelect($title, $name, $value, $size, $multiple);
                 $form_select->addOption('-', '----');
                 $form_select->setValue($value_arr);
@@ -441,7 +439,7 @@ class efqDataFieldManager extends XoopsFormElement
     public function createSearchField_checkbox($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
-        $options_arr   =explode('[|]', $options);
+        $options_arr   = explode('[|]', $options);
         $countoptions  = count($options_arr) + 1;
         $form_checkbox = new XoopsFormCheckBox($title, $name, $value);
         foreach ($options_arr as $optionname) {
@@ -453,7 +451,7 @@ class efqDataFieldManager extends XoopsFormElement
     public function createSearchField_select($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
-        $options_arr        =explode('[|]', $options);
+        $options_arr        = explode('[|]', $options);
         $options_arr_constr = array('equal' => _MD_EQUAL_TO, 'notequal' => _MD_NOT_EQUAL_TO);
         $form_tray          = new XoopsFormElementTray($title, '', $name);
         $form_tray->addElement(new XoopsFormLabel('', '<table><tr><td width="150">'));
@@ -483,7 +481,7 @@ class efqDataFieldManager extends XoopsFormElement
     public function createSearchField_rating2($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
-        $options_arr    =explode('[|]', $options);
+        $options_arr    = explode('[|]', $options);
         $rating_options = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         $form_rating    = new XoopsFormSelect($title, $name, $value, 1);
         $form_rating->addOption('0', '----');
@@ -496,7 +494,7 @@ class efqDataFieldManager extends XoopsFormElement
     public function createSearchField_rating($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
-        $options_arr        =explode('[|]', $options);
+        $options_arr        = explode('[|]', $options);
         $rating_options     = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         $options_arr_constr = array(
             'equal'    => _MD_EQUAL_TO,

@@ -275,7 +275,7 @@ function mergeDuplicates()
     global $xoopsDB, $eh;
     if (isset($_POST['merge'])) {
         $merge            = $_POST['merge'];
-        $merge_arr        =explode('[|]', $merge);
+        $merge_arr        = explode('[|]', $merge);
         $replacements_arr = array_slice($merge_arr, 1);
         $replacements     = '';
         foreach ($replacements_arr as $key => $value) {

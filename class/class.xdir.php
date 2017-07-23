@@ -31,14 +31,15 @@
 //	Based upon the mylinks and the mxDirectory modules						 //
 // ------------------------------------------------------------------------- //
 */
+
 /**
  * Class efqXdirHandler
  * Manages database operations for migration from the xDirectory module
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqXdirHandler extends xoopsObjectHandler
 {
@@ -86,20 +87,18 @@ class efqXdirHandler extends xoopsObjectHandler
     {
         return $this->errors;
     }
-    
-    
-    
-  /**
-   * getCategories_xdir()
-   * 
-   * Get xdir categories from database and return 
-   * 
-   * @return arr Array
-   */
+
+    /**
+     * getCategories_xdir()
+     *
+     * Get xdir categories from database and return
+     *
+     * @return arr Array
+     */
     public function setCategories_xdir()
     {
-        $arr = array();
-        $sql = 'SELECT cid, pid, title, imgurl FROM '.$this->db->prefix('efqdiralpha1_xdir_cat');
+        $arr    = array();
+        $sql    = 'SELECT cid, pid, title, imgurl FROM ' . $this->db->prefix('efqdiralpha1_xdir_cat');
         $result = $this->db->query($sql);
         if (!$result) {
             return false;
@@ -107,12 +106,13 @@ class efqXdirHandler extends xoopsObjectHandler
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
             while (list($cid, $pid, $title, $imgurl) = $this->db->fetchRow($result)) {
-                $arr[] = array('cid'=>$cid,'pid'=>$pid,'title'=>$title,'imgurl'=>$imgurl);
+                $arr[] = array('cid' => $cid, 'pid' => $pid, 'title' => $title, 'imgurl' => $imgurl);
             }
         } else {
             return false;
         }
         $this->set_xdir_cats($arr);
+
         return true;
     }
 
@@ -120,22 +120,23 @@ class efqXdirHandler extends xoopsObjectHandler
      * @param int $dirid
      * @return bool
      */
-    public function saveCategories($dirid=0)
+    public function saveCategories($dirid = 0)
     {
         $tablename = 'efqdiralpha1_cat';
         $xdir_cats = $this->get_xdir_cats();
         foreach ($xdir_cats as $xdir_cat) {
-            $cid = $xdir_cat['cid'];
-            $pid = $xdir_cat['pid'];
-            $title = $xdir_cat['title'];
+            $cid    = $xdir_cat['cid'];
+            $pid    = $xdir_cat['pid'];
+            $title  = $xdir_cat['title'];
             $imgurl = $xdir_cat['imgurl'];
             //Set fields and values
             $strFields = 'cid,dirid,title,active,pid,img,allowlist';
             $strValues = "$cid,$dirid,'$title',1,$pid,'$imgurl',1";
-            $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
+            $sql       = sprintf('INSERT INTO %s (%s) VALUES (%s)', $this->db->prefix($tablename), $strFields, $strValues);
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         }
@@ -153,16 +154,16 @@ class efqXdirHandler extends xoopsObjectHandler
     public function createDataTypes()
     {
         $datatype_handler = new efqDataTypeHandler();
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_ADDRESS,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_ADDRESS2,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_CITY,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_STATE,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_ZIP,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_COUNTRY,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_PHONE,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_FAX,'fieldtype'=>_MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_EMAIL,'fieldtype'=>_MD_XDIR_FIELDTYPE_EMAIL);
-        $arr[] = array('title'=>_MD_XDIR_DTYPE_URL,'fieldtype'=>_MD_XDIR_FIELDTYPE_URL);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_ADDRESS, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_ADDRESS2, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_CITY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_STATE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_ZIP, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_COUNTRY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_PHONE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_FAX, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_EMAIL, 'fieldtype' => _MD_XDIR_FIELDTYPE_EMAIL);
+        $arr[]            = array('title' => _MD_XDIR_DTYPE_URL, 'fieldtype' => _MD_XDIR_FIELDTYPE_URL);
         foreach ($arr as $datatype) {
             $objDataType = new efqFieldType;
             $objDataType->setVar('title', $datatype['title']);
@@ -189,9 +190,9 @@ class efqXdirHandler extends xoopsObjectHandler
     public function createFieldTypes()
     {
         $fieldtype_handler = new efqFieldTypeHandler();
-        $arr[] = array('title'=>_MD_XDIR_FIELDTYPE_TEXTBOX,'fieldtype'=>'textbox');
-        $arr[] = array('title'=>_MD_XDIR_FIELDTYPE_EMAIL,'fieldtype'=>'email');
-        $arr[] = array('title'=>_MD_XDIR_FIELDTYPE_URL,'fieldtype'=>'url');
+        $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_TEXTBOX, 'fieldtype' => 'textbox');
+        $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_EMAIL, 'fieldtype' => 'email');
+        $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_URL, 'fieldtype' => 'url');
         foreach ($arr as $fieldtype) {
             $objFieldtype = new efqFieldType;
             $objFieldtype->setVar('title', $fieldtype['title']);
@@ -213,7 +214,7 @@ class efqXdirHandler extends xoopsObjectHandler
      * @internal  param object $obj object
      *
      */
-    public function doMigrate($dirid=0)
+    public function doMigrate($dirid = 0)
     {
         $this->setCategories_xdir();
         $this->saveCategories($this->efq_dirid);

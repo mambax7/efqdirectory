@@ -202,7 +202,7 @@ if (!empty($_POST['submit'])) {
             if (is_array($_POST["$dtypeid"])) {
                 $post_value_array       = $_POST["$dtypeid"];
                 $post_value             = '';
-                $options_arr            =explode('[|]', $options);
+                $options_arr            = explode('[|]', $options);
                 $options_arr[]          = '-';
                 $count_post_value_array = count($post_value_array);
                 for ($i = 0; $i < $count_post_value_array; ++$i) {

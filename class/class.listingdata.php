@@ -33,15 +33,15 @@
 /**
  * Class efqListing
  * Manages operations for listings
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqListingData extends XoopsObject
 {
-    public $_updated = false;
+    public $_updated  = false;
     public $_inserted = false;
 
     /**
@@ -59,23 +59,23 @@ class efqListingData extends XoopsObject
         $this->initVar('created', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('customtitle', XOBJ_DTYPE_TXTBOX, null, false, 255);
     }
-        
+
     //Set variable $_updated to true of false (default)
 
     /**
      * @param bool $set
      */
-    public function setUpdated($set=false)
+    public function setUpdated($set = false)
     {
         $this->_updated = $set;
     }
-    
+
     //Set variable $_inserted to true of false (default)
 
     /**
      * @param bool $set
      */
-    public function setInserted($set=false)
+    public function setInserted($set = false)
     {
         $this->_inserted = $set;
     }
@@ -94,6 +94,7 @@ class efqListingData extends XoopsObject
         } else {
             return false;
         }
+
         return true;
     }
 }
@@ -101,11 +102,11 @@ class efqListingData extends XoopsObject
 /**
  * Class efqListingHandler
  * Manages database operations for listings
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqListingDataHandler extends XoopsObjectHandler
 {
@@ -118,7 +119,7 @@ class efqListingDataHandler extends XoopsObjectHandler
     {
         //Instantiate class
         global $eh;
-        $this->db = XoopsDatabaseFactory::getDatabaseConnection();
+        $this->db           = XoopsDatabaseFactory::getDatabaseConnection();
         $this->errorhandler = $eh;
     }
 
@@ -126,21 +127,31 @@ class efqListingDataHandler extends XoopsObjectHandler
      * @param int $itemid
      * @return array
      */
-    public function getData($itemid=0)
+    public function getData($itemid = 0)
     {
         $arr = array();
         $sql = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.dataid, d.itemid, d.value, d.created, t.custom ';
-        $sql .= 'FROM ' . $this->db->prefix('efqdiralpha1_item_x_cat') . ' ic, ' . $this->db->
-            prefix('efqdiralpha1_dtypes_x_cat') . ' xc, ' . $this->db->prefix('efqdiralpha1_fieldtypes') . ' f, ' . $this->db->prefix('efqdiralpha1_dtypes') . ' t ';
+        $sql .= 'FROM ' . $this->db->prefix('efqdiralpha1_item_x_cat') . ' ic, ' . $this->db->prefix('efqdiralpha1_dtypes_x_cat') . ' xc, ' . $this->db->prefix('efqdiralpha1_fieldtypes') . ' f, ' . $this->db->prefix('efqdiralpha1_dtypes') . ' t ';
         $sql .= 'LEFT JOIN ' . $this->db->prefix('efqdiralpha1_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
-        $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=".$itemid . '';
+        $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . '';
         $data_result = $this->db->query($sql) or $eh->show('0013');
         while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $dataid, $itemid, $value, $created, $custom) = $this->db->fetchRow($data_result)) {
-            $arr[] = array('dtypeid'=>$dtypeid, 'title'=>$title, 'section'=>$section,
-                'ftypeid'=>$ftypeid, 'fieldtype'=>$fieldtype, 'ext'=>$ext,
-                'options'=>$options, 'dataid' => $dataid, 'itemid'=>$itemid,
-                'value'=>$value, 'created'=>$created, 'customtitle'=>$custom);
+            $arr[] = array(
+                'dtypeid'     => $dtypeid,
+                'title'       => $title,
+                'section'     => $section,
+                'ftypeid'     => $ftypeid,
+                'fieldtype'   => $fieldtype,
+                'ext'         => $ext,
+                'options'     => $options,
+                'dataid'      => $dataid,
+                'itemid'      => $itemid,
+                'value'       => $value,
+                'created'     => $created,
+                'customtitle' => $custom
+            );
         }
+
         return $arr;
     }
 
@@ -155,22 +166,22 @@ class efqListingDataHandler extends XoopsObjectHandler
      * @param bool     $forceQuery
      * @return bool true if update is succesful, false if unsuccesful
      */
-    public function updateListingData($obj, $forceQuery=false)
+    public function updateListingData($obj, $forceQuery = false)
     {
         $tablename = 'efqdiralpha1_data';
-        $keyName = 'dataid';
+        $keyName   = 'dataid';
         if ($obj instanceof efqListingData) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
             $obj->cleanVars();
             $cleanvars = $obj->cleanVars;
-            $keyValue = $obj->getVar($keyName);
+            $keyValue  = $obj->getVar($keyName);
         } else {
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
-        $strSet = '';
+        $i         = 1;
+        $strSet    = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             $strSet .= $k . '=' . "'" . $v . "'";
@@ -189,6 +200,7 @@ class efqListingDataHandler extends XoopsObjectHandler
                 return true;
             }
         }
+
         return false;
     }
 
@@ -203,10 +215,10 @@ class efqListingDataHandler extends XoopsObjectHandler
      * @return bool true if insertion is succesful, false if unsuccesful
      * @internal  param object $objListing object of type listing
      */
-    public function insertListingData($obj, $forceQuery=false)
+    public function insertListingData($obj, $forceQuery = false)
     {
         $tablename = 'efqdiralpha1_data';
-        $keyName = 'dataid';
+        $keyName   = 'dataid';
         if ($obj instanceof efqListingData) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -216,12 +228,12 @@ class efqListingDataHandler extends XoopsObjectHandler
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
+        $i         = 1;
         $strFields = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             $strFields .= $k;
-            $strValues .= "'".$v."'";
+            $strValues .= "'" . $v . "'";
             if ($i < $countVars) {
                 $strFields .= ', ';
                 $strValues .= ', ';
@@ -233,15 +245,18 @@ class efqListingDataHandler extends XoopsObjectHandler
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         } else {
             if ($this->db->query($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         }
+
         return false;
     }
 }

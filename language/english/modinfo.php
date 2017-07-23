@@ -126,7 +126,7 @@ define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-n
 
 //Help
 define('_MI_EFQDIR_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_EFQDIR_HELP_HEADER', __DIR__.'/help/helpheader.html');
+define('_MI_EFQDIR_HELP_HEADER', __DIR__ . '/help/helpheader.html');
 define('_MI_EFQDIR_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_EFQDIR_OVERVIEW', 'Overview');
 

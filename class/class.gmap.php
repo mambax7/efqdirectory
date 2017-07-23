@@ -36,11 +36,11 @@
 /**
  * Class efqGmap
  * Manages operations for google maps
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqGmap extends XoopsObject
 {
@@ -63,20 +63,20 @@ class efqGmap extends XoopsObject
         $key = $xoopsModuleConfig['gmapkey'];
         $this->setKey($key);
         $this->setPointsJS('');
-        
+
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
         $this->initVar('id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('dataid', XOBJ_DTYPE_INT, null, true);
         $this->initVar('lat', XOBJ_DTYPE_TXTBOX, null, true);
         $this->initVar('lon', XOBJ_DTYPE_TXTBOX, null, true);
         $this->initVar('descr', XOBJ_DTYPE_TXTAREA);
-        
+
         if ($gmap != false) {
             if (is_array($gmap)) {
                 $this->assignVars($gmap);
             } else {
                 $$gmap_handler = xoops_getModuleHandler('gmap', $moddir);
-                $objGmap =& $$gmap_handler->get($directory);
+                $objGmap       =& $$gmap_handler->get($directory);
                 foreach ($objGmap->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
                 }
@@ -88,7 +88,7 @@ class efqGmap extends XoopsObject
     /**
      * @param string $key
      */
-    public function setKey($key='')
+    public function setKey($key = '')
     {
         $this->_key = $key;
     }
@@ -100,12 +100,12 @@ class efqGmap extends XoopsObject
     public function setPointsJS($pointsJS)
     {
         $this->_jsPointsArray = $pointsJS;
-        $this->_map = '';
+        $this->_map           = '';
     }
-    
+
     /**
-     * Get the value of the script that triggers the points to be added to the google map. 
-    */
+     * Get the value of the script that triggers the points to be added to the google map.
+     */
     public function getPointsJS()
     {
         return $this->_jsPointsArray;
@@ -118,7 +118,7 @@ class efqGmap extends XoopsObject
     {
         return $this->_map;
     }
-    
+
     public function generateMap()
     {
         $this->_map .= $this->printPlaceHolder();
@@ -131,9 +131,9 @@ class efqGmap extends XoopsObject
      * @param int $height
      * @return string
      */
-    public function printPlaceHolder($width=700, $height=500)
+    public function printPlaceHolder($width = 700, $height = 500)
     {
-        return '<div id="map" style="width:'.$width.'px; height:'.$height.'px"></div>';
+        return '<div id="map" style="width:' . $width . 'px; height:' . $height . 'px"></div>';
     }
 
     /**
@@ -141,10 +141,10 @@ class efqGmap extends XoopsObject
      * @param string $key
      * @return string
      */
-    public function printScript($jsPointsArray='', $key='')
+    public function printScript($jsPointsArray = '', $key = '')
     {
         global $icmsPreloadHandler;
-        
+
         $icmsPreloadHandler->addPreloadEvents('gmap.php');
         $gmapScript = <<<EOH
 <script type="text/javascript">
@@ -206,12 +206,13 @@ function mapClick(marker, point) {
 }
 </script>\n
 EOH;
+
         return $gmapScript;
     }
-    
+
     /**
-     * Adds a script which triggers the other javascript code to execute 
-    */
+     * Adds a script which triggers the other javascript code to execute
+     */
     public function printTrigger()
     {
         $trigger = <<<EOH
@@ -252,6 +253,7 @@ EOH;
         } else {
             return false;
         }
+
         return true;
     }
 }
@@ -259,11 +261,11 @@ EOH;
 /**
  * Class efqGmapHandler
  * Manages database operations for google maps
- * 
- * @package efqDirectory
- * @author EFQ Consultancy <info@efqconsultancy.com>
+ *
+ * @package   efqDirectory
+ * @author    EFQ Consultancy <info@efqconsultancy.com>
  * @copyright EFQ Consultancy (c) 2007
- * @version 1.1.0
+ * @version   1.1.0
  */
 class efqGmapHandler extends XoopsObjectHandler
 {
@@ -289,6 +291,7 @@ class efqGmapHandler extends XoopsObjectHandler
         if ($isNew) {
             $gmap->setNew();
         }
+
         return $gmap;
     }
 
@@ -305,11 +308,11 @@ class efqGmapHandler extends XoopsObjectHandler
         if (!is_object($gmap)) {
             return false;
         }
-        $sql = 'SELECT * FROM '.$this->db->prefix('efqdiralpha1_gmaps');
+        $sql = 'SELECT * FROM ' . $this->db->prefix('efqdiralpha1_gmaps');
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-        $gmap =& $this->create(false);
+        $gmap       =& $this->create(false);
         $javaScript = '';
         while ($row = $this->db->fetchArray($result)) {
             //$row{'descr'} = addslashes($row{'descr'});
@@ -318,9 +321,10 @@ class efqGmapHandler extends XoopsObjectHandler
             $row['descr'] = str_replace(';', ',', $row['descr']);
             //$javaScript .= "mArray.push('{$row{'lat'}};{$row{'lon'}};{$row{'descr'}}')\n";
             //echo $row['lat'];
-            $javaScript .= "mArray.push('{".$row['lat'] . '};{' . $row['lon'] . '};{' . $row['descr'] . "}')\n";
+            $javaScript .= "mArray.push('{" . $row['lat'] . '};{' . $row['lon'] . '};{' . $row['descr'] . "}')\n";
         }
         $gmap->setPointsJS($javaScript);
+
         return true;
     }
 
@@ -328,15 +332,15 @@ class efqGmapHandler extends XoopsObjectHandler
      * @param int $id
      * @return array
      */
-    public function getGmapById($id=0)
+    public function getGmapById($id = 0)
     {
         $arr = array();
-        $sql = sprintf('SELECT * FROM %s WHERE id=%u',
-                       $this->db->prefix('efqdiralpha1_gmaps'), (int)$id);
+        $sql = sprintf('SELECT * FROM %s WHERE id=%u', $this->db->prefix('efqdiralpha1_gmaps'), (int)$id);
         $result = $this->db->query($sql) or $eh->show('0013');
         while (list($id, $lat, $lon, $descr, $dataid) = $this->db->fetchRow($result)) {
-            $arr = array('id'=>$id, 'lat'=>$lat, 'lon'=>$lon, 'descr'=>$descr, 'dataid'=>$dataid);
+            $arr = array('id' => $id, 'lat' => $lat, 'lon' => $lon, 'descr' => $descr, 'dataid' => $dataid);
         }
+
         return $arr;
     }
 
@@ -344,7 +348,7 @@ class efqGmapHandler extends XoopsObjectHandler
      * @param int $id
      * @return bool|object
      */
-    public function getByDataId($id=0)
+    public function getByDataId($id = 0)
     {
         if ($id == false) {
             return false;
@@ -352,14 +356,16 @@ class efqGmapHandler extends XoopsObjectHandler
         $id = (int)$id;
         echo $id;
         if ($id > 0) {
-            $sql = 'SELECT * FROM '.$this->db->prefix('efqdiralpha1_gmaps') . ' WHERE dataid=' . (int)$id;
+            $sql = 'SELECT * FROM ' . $this->db->prefix('efqdiralpha1_gmaps') . ' WHERE dataid=' . (int)$id;
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
             $gmap =& $this->create(false);
             $gmap->assignVars($this->db->fetchArray($result));
+
             return $gmap;
         }
+
         return false;
     }
 
@@ -374,10 +380,10 @@ class efqGmapHandler extends XoopsObjectHandler
      * @param bool     $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
-    public function insertGmap($obj, $forceQuery=false)
+    public function insertGmap($obj, $forceQuery = false)
     {
         $tablename = 'efqdiralpha1_gmaps';
-        $keyName = 'id';
+        $keyName   = 'id';
         if ($obj instanceof efqGmap) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -387,12 +393,12 @@ class efqGmapHandler extends XoopsObjectHandler
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
+        $i         = 1;
         $strFields = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             $strFields .= $k;
-            $strValues .= "'".$v."'";
+            $strValues .= "'" . $v . "'";
             if ($i < $countVars) {
                 $strFields .= ', ';
                 $strValues .= ', ';
@@ -404,15 +410,18 @@ class efqGmapHandler extends XoopsObjectHandler
             if ($this->db->queryF($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         } else {
             if ($this->db->query($sql)) {
                 $itemid = $this->db->getInsertId();
                 $obj->setVar($keyName, $itemid);
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -427,22 +436,22 @@ class efqGmapHandler extends XoopsObjectHandler
      * @param bool     $forceQuery
      * @return bool true if update is succesful, false if unsuccesful
      */
-    public function updateGmap($obj, $forceQuery=false)
+    public function updateGmap($obj, $forceQuery = false)
     {
         $tablename = 'efqdiralpha1_gmaps';
-        $keyName = 'id';
+        $keyName   = 'id';
         if ($obj instanceof efqGmap) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
             $obj->cleanVars();
             $cleanvars = $obj->cleanVars;
-            $keyValue = $obj->getVar($keyName);
+            $keyValue  = $obj->getVar($keyName);
         } else {
             return false;
         }
         $countVars = count($cleanvars);
-        $i = 1;
-        $strSet = '';
+        $i         = 1;
+        $strSet    = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
             if ($k != 'id') {
@@ -463,6 +472,7 @@ class efqGmapHandler extends XoopsObjectHandler
                 return true;
             }
         }
+
         return false;
     }
 }
