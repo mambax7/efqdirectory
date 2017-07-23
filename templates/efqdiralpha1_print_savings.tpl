@@ -36,11 +36,11 @@
             <td valign='top'>
                 <table border='0' cellspacing='0' cellpadding='2' width='100%'>
                     <tr>
-                        <td align='right'><span style="font-size: x-small; font-family: arial, helvetica, sans-sarif; ">No. <span style="font-weight: bold;"><span style="color: #ff0000; "><{$coupon.counter}><{$coupon.couponid}></span></span></b></td>
+                        <td align='right'><span style="font-size: x-small; font-family: arial, helvetica, sans-serif; ">No. <span style="font-weight: bold;"><span style="color: #ff0000; "><{$coupon.counter}><{$coupon.couponid}></span></span></b></td>
 
                     </tr>
                     <tr>
-                        <td><span style="font-family: arial, helvetica, sans-sarif; color: #ff0000; font-size: medium;  font-weight: bold; font-weight: bold;"><b><{$coupon.heading}></b></span><br><span style="font-weight: bold;"><{$coupon.linkTitle}></span></td>
+                        <td><span style="font-family: arial, helvetica, sans-serif; color: #ff0000; font-size: medium;  font-weight: bold; font-weight: bold;"><b><{$coupon.heading}></b></span><br><span style="font-weight: bold;"><{$coupon.linkTitle}></span></td>
                     </tr>
                      <tr><td><!-- nothing --></td></tr>
                     <tr>
