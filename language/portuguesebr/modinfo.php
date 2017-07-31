@@ -1,29 +1,45 @@
 <?php
+/**
+ * Translation for Portuguese users - default UTF-8
+ * $Id: modinfo.php,v 1.03 2008-06-14  06:14:00 GibaPhp Exp $
+ * @Module     : contact
+ * @Dependences:
+ * @Version    : 1.03
+ * @Release    Date:
+ * @Author     : Martijn Hertog (EFQ Consultancy) aka wtravel
+ * @Co-Authors : Team ImpressCMS
+ * @Language   : Portuguesebr
+ * @Translators: GibaPhp /
+ * @Revision   :
+ * @Support    : http://br.impresscms.org - Team Brazilian.
+ * @Licence    : GNU
+ */
+
+// $Id: modinfo.php 680 2008-01-22 19:41:44Z gibaphp $
+// Module Info for Listings module
 
 // The name of this module
-define('_MI_EFQDIR_NAME', 'Listings directory');
+define('_MI_EFQDIR_NAME', 'Listagem de diretório'); //GibaPhp
 
 // A brief description of this module
-define('_MI_EFQDIR_DESC', 'Creates a listings section where directories of listings can be managed.');
+define('_MI_EFQDIR_DESC', 'Cria uma seção onde as listagens de diretórios poderão ser geridas.');
 
 // Names of blocks for this module (Not every module has blocks)
-define('_MI_EFQDIR_BNAME1', 'Recent Listings');
-define('_MI_EFQDIR_BNAME2', 'Top Listings');
-define('_MI_EFQDIR_MENU', 'Directories');
+define('_MI_EFQDIR_BNAME1', 'Recentes Listagens');
+define('_MI_EFQDIR_BNAME2', 'Melhores Listagens');
+define('_MI_EFQDIR_MENU', 'Diretórios');
 
 // Sub menu titles
-define('_MI_EFQDIR_SMNAME1', 'Submit');
+define('_MI_EFQDIR_SMNAME1', 'Ok!');
 define('_MI_EFQDIR_SMNAME2', 'Popular');
-define('_MI_EFQDIR_SMNAME3', 'Top Rated');
+define('_MI_EFQDIR_SMNAME3', 'Melhores Avaliações');
 
 // Names of admin menu items
-define('_MI_EFQDIR_ADMENU2', 'Home');
-define('_MI_EFQDIR_ADMENU3', 'Directories');
-define('_MI_EFQDIR_ADMENU4', 'Field Types');
-define('_MI_EFQDIR_ADMENU5', 'Validations');
-define('_MI_EFQDIR_ADMENU6', 'Address Types');
-define('_MI_EFQDIR_ADMENU7', 'Subscriptions');
-define('_MI_EFQDIR_ADMENU8', 'Duplicate Data types');
+define('_MI_EFQDIR_ADMENU2', 'Administração do Módulo');
+define('_MI_EFQDIR_ADMENU3', 'Gestor de Diretórios');
+define('_MI_EFQDIR_ADMENU4', 'Gestor para Tipos de Campos');
+define('_MI_EFQDIR_ADMENU5', 'Listagem à espera de validação');
+define('_MI_EFQDIR_ADMENU6', 'Gerir tipos de endereço');
 
 // Title of config items
 define('_MI_EFQDIR_POPULAR', 'Select the number of hits for listings to be marked as popular');
@@ -76,15 +92,15 @@ define('_MI_EFQDIR_SHOW_DFIELDSINCAT_DSC', '');
 
 // Text for notifications
 define('_MI_EFQDIR_GLOBAL_NOTIFY', 'Global');
-define('_MI_EFQDIR_GLOBAL_NOTIFYDSC', 'Global links notification options.');
+define('_MI_EFQDIR_GLOBAL_NOTIFYDSC', 'Opções de Notificações Globais.');
 
-define('_MI_EFQDIR_CATEGORY_NOTIFY', 'Category');
-define('_MI_EFQDIR_CATEGORY_NOTIFYDSC', 'Notification options that apply to the current link category.');
+define('_MI_EFQDIR_CATEGORY_NOTIFY', 'Categoria');
+define('_MI_EFQDIR_CATEGORY_NOTIFYDSC', 'Opções de Notificação que se aplicam à atual categoria de links/diretórios.');
 
-define('_MI_EFQDIR_LISTING_NOTIFY', 'Listing');
-define('_MI_EFQDIR_LISTING_NOTIFYDSC', 'Notification options that aply to the current listing.');
+define('_MI_EFQDIR_LISTING_NOTIFY', 'Listagem');
+define('_MI_EFQDIR_LISTING_NOTIFYDSC', 'Opções de Notificação que se aplicam à atual listagem.');
 
-define('_MI_EFQDIR_GLOBAL_NEWCATEGORY_NOTIFY', 'New Category');
+define('_MI_EFQDIR_GLOBAL_NEWCATEGORY_NOTIFY', 'Nova Categoria');
 define('_MI_EFQDIR_GLOBAL_NEWCATEGORY_NOTIFYCAP', 'Notify me when a new listing category is created.');
 define('_MI_EFQDIR_GLOBAL_NEWCATEGORY_NOTIFYDSC', 'Receive notification when a new listing category is created.');
 define('_MI_EFQDIR_GLOBAL_NEWCATEGORY_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-notify : New listing category');
@@ -123,16 +139,3 @@ define('_MI_EFQDIR_LISTING_APPROVE_NOTIFY', 'Listing Approved');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYCAP', 'Notify me when this listing is approved.');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYDSC', 'Receive notification when this listing is approved.');
 define('_MI_EFQDIR_LISTING_APPROVE_NOTIFYSBJ', '[{X_SITENAME}] {X_MODULE} auto-notify : Listing approved');
-
-//Help
-define('_MI_EFQDIR_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_EFQDIR_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
-define('_MI_EFQDIR_BACK_2_ADMIN', 'Back to Administration of ');
-define('_MI_EFQDIR_OVERVIEW', 'Overview');
-
-//define('_MI_EFQDIR_HELP_DIR', __DIR__);
-
-//help multi-page
-define('_MI_EFQDIR_DISCLAIMER', 'Disclaimer');
-define('_MI_EFQDIR_LICENSE', 'License');
-define('_MI_EFQDIR_SUPPORT', 'Support');
