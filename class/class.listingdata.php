@@ -134,7 +134,7 @@ class efqListingDataHandler extends XoopsObjectHandler
         $sql .= 'FROM ' . $this->db->prefix('efqdiralpha1_item_x_cat') . ' ic, ' . $this->db->prefix('efqdiralpha1_dtypes_x_cat') . ' xc, ' . $this->db->prefix('efqdiralpha1_fieldtypes') . ' f, ' . $this->db->prefix('efqdiralpha1_dtypes') . ' t ';
         $sql .= 'LEFT JOIN ' . $this->db->prefix('efqdiralpha1_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
         $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . '';
-        $data_result = $this->db->query($sql) or $eh->show('0013');
+        $data_result = $this->db->query($sql) || $eh->show('0013');
         while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $dataid, $itemid, $value, $created, $custom) = $this->db->fetchRow($data_result)) {
             $arr[] = array(
                 'dtypeid'     => $dtypeid,

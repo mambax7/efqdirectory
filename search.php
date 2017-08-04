@@ -153,7 +153,7 @@ function mod_search($queryarray, $andor, $limit, $offset)
     }
     $sql .= 'ORDER BY i.created DESC';
 
-    $result      = $xoopsDB->query($sql, $limit, $offset) or $eh->show('0013');
+    $result      = $xoopsDB->query($sql, $limit, $offset) || $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -204,7 +204,7 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0)
         }
         $sql .= ') ';
     }
-    $result = $xoopsDB->query($sql) or $eh->show('0013');
+    $result = $xoopsDB->query($sql) || $eh->show('0013');
     list($count) = $xoopsDB->fetchRow($result);
 
     return $count;

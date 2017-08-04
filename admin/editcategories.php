@@ -96,16 +96,16 @@ if (!empty($_POST['submit'])) {
         if (!in_array($cat, $allitemcats)) {
             $newid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat') . '_xid_seq');
             $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat'), $newid, $cat, $post_itemid, 1, time());
-            $xoopsDB->query($sql) or $eh->show('0013');
+            $xoopsDB->query($sql) || $eh->show('0013');
         } elseif (!in_array($cat, $activeitemcats)) {
             $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat') . " SET active = '1' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
-            $xoopsDB->query($sql) or $eh->show('0013');
+            $xoopsDB->query($sql) || $eh->show('0013');
         }
     }
     foreach ($allitemcats as $cat) {
         if (!in_array($cat, $postedcats)) {
             $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat') . " SET active = '0' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
-            $xoopsDB->query($sql) or $eh->show('0013');
+            $xoopsDB->query($sql) || $eh->show('0013');
         }
     }
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/editcategories.php?item=" . $post_itemid . '', 2, _MD_CATEGORIES_UPDATED);

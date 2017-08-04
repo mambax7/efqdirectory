@@ -300,7 +300,7 @@ function showExtFields($type = 'text', $ext = '')
     echo '<body onload="ext_initial_adv(\'submitform\', \'ext\', \'field_type\')">';
     echo "<table border='0' width='100%' cellspacing='0' cellpadding='0'>
         <tr>
-        <td bgcolor='#2F5376'><a href='http://www.xoops.org/' target='_blank'><img src='" . XOOPS_URL . "/images/logo.gif' alt='" . $GLOBALS['xoopsConfig']['sitename'] . "'></a></td>
+        <td bgcolor='#2F5376'><a href='https://xoops.org/' target='_blank'><img src='" . XOOPS_URL . "/images/logo.gif' alt='" . $GLOBALS['xoopsConfig']['sitename'] . "'></a></td>
         <td align='right' bgcolor='#2F5376'><img src='" . XOOPS_URL . "/images/logo.gif' alt=''></td>
         </tr><tr><td colspan='2'><div class='content'><br>";
     $form = new XoopsThemeForm(_MD_EXTMANAGER, 'ext_manager', 'fieldtypes.php');

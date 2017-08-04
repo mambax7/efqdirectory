@@ -50,7 +50,7 @@ function b_efqdiralpha1_menu_show($options)
     $block['lang_dirmenu'] = _MB_EFQDIR_MENU;
     $block['moddir']       = $moddir;
     $myts                  = MyTextSanitizer::getInstance();
-    $result                = $xoopsDB->query('SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE open='1' ORDER BY name") or $eh->show('0013');
+    $result                = $xoopsDB->query('SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE open='1' ORDER BY name") || $eh->show('0013');
     echo 'test';
     print_r($result);
     while ($myrow = $xoopsDB->fetchArray($result)) {

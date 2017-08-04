@@ -23,7 +23,7 @@ if (isset($paypal['business'])) {
         $sql   = 'INSERT INTO ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_subscr_payments') . "
             (id, txn_id, txn_type, orderid, payer_business_name, address_name, address_street, address_city, address_state, address_zip, address_country, address_status, payer_email, payer_id, payer_status, mc_currency, mc_gross, mc_fee, created, payment_date, ref, payment_status) VALUES
             ($newid, '$values[txn_id]', '$values[txn_type]', '$orderid', '$values[payer_business_name]', '$values[address_name]', '$values[address_street]', '$values[address_city]', '$values[address_state]', '$values[address_zip]', '$values[address_country]', '$values[address_status]', '$values[payer_email]', '$values[payer_id]', '$values[payer_status]', '$values[mc_currency]', '$values[mc_gross]', '$values[mc_fee]', $now, '$values[payment_date]', '$values[custom]', '$values[payment_status]')";
-        $xoopsDB->queryF($sql) or $eh->show('0013');
+        $xoopsDB->queryF($sql) || $eh->show('0013');
 
         if ($newid == 0) {
             $paymentid = $xoopsDB->getInsertId();

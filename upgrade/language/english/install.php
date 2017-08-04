@@ -52,7 +52,7 @@ define('_INSTALL_L58', 'Virtual path to your main XOOPS directory WITHOUT traili
 define('_INSTALL_L31', 'Could not create database. Contact the server administrator for details.');
 define('_INSTALL_L32', 'Installation Complete');
 define('_INSTALL_L33', "Click <a href='../index.php'>HERE</a> to see the home page of your site.");
-define('_INSTALL_L35', "If you had any errors, please contact the dev team at <a href='http://www.xoops.org/' target='_blank'>XOOPS.org</a>");
+define('_INSTALL_L35', "If you had any errors, please contact the dev team at <a href='https://xoops.org/' target='_blank'>XOOPS.org</a>");
 define('_INSTALL_L36', "Please choose your site admin's name and password.");
 define('_INSTALL_L37', 'Admin Name');
 define('_INSTALL_L38', 'Admin Email');

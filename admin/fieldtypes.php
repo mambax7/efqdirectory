@@ -65,7 +65,7 @@ function fieldtypesConfig()
     //adminmenu(2, _MD_A_FTYPESADMIN);
     echo '<h4>' . _MD_FTYPECONF . '</h4>';
     echo "<table width='100%' border='0' cellspacing='1' class='outer'>";
-    $result  = $xoopsDB->query('SELECT typeid, title, fieldtype, descr, ext, activeyn FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes') . ' ORDER BY fieldtype ASC') or $eh->show('0013');
+    $result  = $xoopsDB->query('SELECT typeid, title, fieldtype, descr, ext, activeyn FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes') . ' ORDER BY fieldtype ASC') || $eh->show('0013');
     $numrows = $xoopsDB->getRowsNum($result);
     echo '<tr><th>' . _MD_TITLE . '</th><th>' . _MD_TYPE . '</th><th>' . _MD_EXT . '</th><th>' . _MD_ACTIVE . "</th></tr>\n";
     if ($numrows > 0) {
@@ -141,7 +141,7 @@ function viewFieldtype()
     //adminmenu(2, _MD_A_FTYPESADMIN);
     echo '<h4>' . _MD_VIEW_FIELDTYPE . '</h4>';
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-    $result  = $xoopsDB->query('SELECT typeid, title, fieldtype, descr, ext, activeyn FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes') . " WHERE typeid='" . $get_typeid . '\'') or $eh->show('0013');
+    $result  = $xoopsDB->query('SELECT typeid, title, fieldtype, descr, ext, activeyn FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes') . " WHERE typeid='" . $get_typeid . '\'') || $eh->show('0013');
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
         while (list($typeid, $title, $fieldtype, $descr, $ext, $activeyn) = $xoopsDB->fetchRow($result)) {
@@ -210,7 +210,7 @@ function addFieldtype()
     }
     $newid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes') . '_typeid_seq');
     $sql   = sprintf("INSERT INTO %s (typeid, title, fieldtype, descr, ext, activeyn) VALUES (%u, '%s', '%s', '%s', '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes'), $newid, $p_title, $p_fieldtype, $p_descr, $p_ext, $p_status);
-    $xoopsDB->query($sql) or $eh->show('0013');
+    $xoopsDB->query($sql) || $eh->show('0013');
     redirect_header('fieldtypes.php', 2, _MD_SAVED);
     exit();
 }
@@ -237,7 +237,7 @@ function editFieldtype()
         $p_status = 0;
     }
     $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes') . " SET title = '$p_title', fieldtype='$p_fieldtype', ext='$p_ext', activeyn='$p_status' WHERE typeid = $p_typeid";
-    $xoopsDB->query($sql) or $eh->show('0013');
+    $xoopsDB->query($sql) || $eh->show('0013');
     redirect_header("fieldtypes.php?op=view&typeid=$p_typeid", 2, _MD_SAVED);
     exit();
 }
@@ -263,14 +263,14 @@ function newCat()
     $newid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat') . '_cid_seq');
     $sql   = sprintf("INSERT INTO %s (cid, dirid, title, active, pid) VALUES (%u, %u, '%s', %u, %u)", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat'), $newid, $p_dirid, $p_title, $p_active, $p_pid);
     //echo $sql;
-    $xoopsDB->query($sql) or $eh->show('0013');
+    $xoopsDB->query($sql) || $eh->show('0013');
     if ($newid == 0) {
         $cid = $xoopsDB->getInsertId();
     }
     $newid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat_txt') . '_txtid_seq');
     $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat_txt'), $newid, $cid, $p_descr, '1', time());
     //echo $sql2;
-    $xoopsDB->query($sql2) or $eh->show('0013');
+    $xoopsDB->query($sql2) || $eh->show('0013');
     redirect_header("categories.php?op=edit&cid=$newid", 0, _MD_CAT_UPDATED);
     exit();
 }

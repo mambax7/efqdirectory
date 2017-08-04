@@ -116,13 +116,13 @@ if (!empty($_POST['submit'])) {
                     } else {
                         $sql = 'UPDATE ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . " SET title = '" . $p_title . '\', logourl = \'' . $savedfilename . '\' WHERE itemid = \'' . $post_itemid . '\'';
                     }
-                    $xoopsDB->query($sql) or $eh->show('0013');
+                    $xoopsDB->query($sql) || $eh->show('0013');
                 }
             } else {
                 if ($p_title != $p_ini_title) {
                     $sql = 'UPDATE ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . " SET title = '" . $p_title . '\' WHERE itemid = \'' . $post_itemid . '\'';
                 }
-                $xoopsDB->query($sql) or $eh->show('0013');
+                $xoopsDB->query($sql) || $eh->show('0013');
             }
         }
     } else {
@@ -143,11 +143,11 @@ if (!empty($_POST['submit'])) {
         if ($_POST['description_set'] == '1') {
             if ($p_ini_description != $p_description) {
                 $sql = 'UPDATE ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
-                $xoopsDB->query($sql) or $eh->show('0013');
+                $xoopsDB->query($sql) || $eh->show('0013');
             }
         } elseif ($p_description != null or $p_description !== '') {
             $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text'), $post_itemid, $p_description);
-            $xoopsDB->query($sql) or $eh->show('0013');
+            $xoopsDB->query($sql) || $eh->show('0013');
         }
     }
 
@@ -162,14 +162,14 @@ if (!empty($_POST['submit'])) {
                 if (!in_array($cid, $linkedcats)) {
                     $newid = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . '_xid_seq');
                     $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat'), $newid, $cid, $post_itemid, 1, time());
-                    $xoopsDB->query($sql) or $eh->show('0013');
+                    $xoopsDB->query($sql) || $eh->show('0013');
                 }
 
                 ++$count;
             } else {
                 if (in_array($cid, $linkedcats)) {
                     $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat'), $cid, $post_itemid);
-                    $xoopsDB->query($sql) or $eh->show('0013');
+                    $xoopsDB->query($sql) || $eh->show('0013');
                 }
             }
         }
@@ -196,7 +196,7 @@ if (!empty($_POST['submit'])) {
                     . ' t ';
     $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $post_itemid . ') ';
     $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $post_itemid . '';
-    $data_result = $xoopsDB->query($sql) or $eh->show('0013');
+    $data_result = $xoopsDB->query($sql) || $eh->show('0013');
     while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $custom) = $xoopsDB->fetchRow($data_result)) {
         if (isset($_POST["$dtypeid"])) {
             if (is_array($_POST["$dtypeid"])) {
@@ -243,11 +243,11 @@ if (!empty($_POST['submit'])) {
             //That means there was not any value, so a new record should be added to the data table.
             $newid = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_data') . '_dataid_seq');
             $sql   = sprintf("INSERT INTO %s (dataid, itemid, dtypeid, VALUE, created, customtitle) VALUES (%u, %u, %u, '%s', '%s', '%s')", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data'), $newid, $post_itemid, $dtypeid, $post_value, time(), $post_customtitle);
-            $xoopsDB->query($sql) or $eh->show('0013');
+            $xoopsDB->query($sql) || $eh->show('0013');
         } else {
             if ($value != $post_value) {
                 $sql = 'UPDATE ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data') . " SET value = '$post_value', customtitle = '$post_customtitle' WHERE dtypeid = '$dtypeid' AND itemid = '$post_itemid'";
-                $xoopsDB->query($sql) or $eh->show('0013');
+                $xoopsDB->query($sql) || $eh->show('0013');
             }
         }
     }
@@ -319,7 +319,7 @@ if (!empty($_POST['submit'])) {
                             . ' t ';
             $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $get_itemid . ') ';
             $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $get_itemid . '';
-            $data_result = $xoopsDB->query($sql) or $eh->show('0013');
+            $data_result = $xoopsDB->query($sql) || $eh->show('0013');
             $numrows     = $xoopsDB->getRowsNum($data_result);
 
             ob_start();

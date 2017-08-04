@@ -86,7 +86,7 @@ function showsubscription()
                         . ' p ON (o.orderid=p.orderid) WHERE o.typeid = t.typeid AND o.itemid=p.ref AND o.itemid=i.itemid AND i.itemid='
                         . $get_itemid
                         . ' ORDER BY t.typelevel ASC';
-    $item_result      = $xoopsDB->query($sql) or $eh->show('0013');
+    $item_result      = $xoopsDB->query($sql) || $eh->show('0013');
     $numrows          = $xoopsDB->getRowsNum($item_result);
     $order_exists     = false;
     if ($numrows > 0) {
@@ -217,7 +217,7 @@ function orderpayment()
                     . ' f WHERE o.offerid=f.offerid AND o.orderid='
                     . $get_orderid
                     . '';
-    $order_result = $xoopsDB->query($sql) or $eh->show('0013');
+    $order_result = $xoopsDB->query($sql) || $eh->show('0013');
     $numrows      = $xoopsDB->getRowsNum($order_result);
     if ($numrows > 0) {
         while (list($orderid, $uid, $offerid, $typeid, $startdate, $billto, $status, $itemid, $autorenew, $price, $currency) = $xoopsDB->fetchRow($order_result)) {
