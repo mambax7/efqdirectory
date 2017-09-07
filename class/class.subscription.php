@@ -40,7 +40,7 @@ class efqSubscription extends XoopsObject
      */
     public static function durationArray()
     {
-        $arr = array('0' => '---', '1' => _MD_DAYS, '2' => _MD_WEEKS, '3' => _MD_MONTHS, '4' => _MD_QUARTERS, '5' => _MD_YEARS);
+        $arr = ['0' => '---', '1' => _MD_DAYS, '2' => _MD_WEEKS, '3' => _MD_MONTHS, '4' => _MD_QUARTERS, '5' => _MD_YEARS];
 
         return $arr;
     }
@@ -57,7 +57,7 @@ class efqSubscription extends XoopsObject
      */
     public function durationSingleArray()
     {
-        $arr = array('0' => '---', '1' => _MD_DAY, '2' => _MD_WEEK, '3' => _MD_MONTH, '4' => _MD_QUARTER, '5' => _MD_YEAR);
+        $arr = ['0' => '---', '1' => _MD_DAY, '2' => _MD_WEEK, '3' => _MD_MONTH, '4' => _MD_QUARTER, '5' => _MD_YEAR];
 
         return $arr;
     }
@@ -74,7 +74,7 @@ class efqSubscription extends XoopsObject
     public function currencyArray()
     {
         //create array of options for duration selbox: months, weeks, year, days etc.
-        $arr = array('0' => '---', 'USD' => _MD_CURR_USD, 'AUD' => _MD_CURR_AUD, 'EUR' => _MD_CURR_EUR, 'GBP' => _MD_CURR_GBP, 'YEN' => _MD_CURR_YEN);
+        $arr = ['0' => '---', 'USD' => _MD_CURR_USD, 'AUD' => _MD_CURR_AUD, 'EUR' => _MD_CURR_EUR, 'GBP' => _MD_CURR_GBP, 'YEN' => _MD_CURR_YEN];
 
         return $arr;
     }
@@ -307,7 +307,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         }
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
-        $arr     = array();
+        $arr     = [];
         $arr     = $this->db->fetchArray($result);
         while (list($count, $duration) = $this->db->fetchRow($result)) {
             $arr['count']    = $count;
@@ -381,7 +381,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         if ($dashes == '0') {
-            $arr = array('0' => '---');
+            $arr = ['0' => '---'];
         }
         while (list($offerid, $duration, $count, $price, $currency, $descr, $typeid, $typename) = $this->db->fetchRow($result)) {
             if ($count == '1') {
@@ -435,7 +435,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         $numrows = $this->db->getRowsNum($result);
         $result  = $this->db->query($sql);
         if ($dashes == '0') {
-            $arr = array('0' => '---');
+            $arr = ['0' => '---'];
         }
         while (list($typeid, $typename) = $this->db->fetchRow($result)) {
             $arr[$typeid] = $typename;

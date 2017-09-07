@@ -41,7 +41,6 @@ if (!empty($_POST['submit'])) {
     // Check if Rating is Null
     if ($p_rating == '--') {
         redirect_header('ratelisting.php?catid=' . $p_catid . '&amp;item=' . $itemid . '', 2, _MD_NORATING);
-        exit();
     }
 
     // Check if Link POSTER is voting (UNLESS Anonymous users allowed to post)
@@ -50,7 +49,6 @@ if (!empty($_POST['submit'])) {
         while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header('index.php', 4, _MD_CANTVOTEOWN);
-                exit();
             }
         }
 
@@ -59,7 +57,6 @@ if (!empty($_POST['submit'])) {
         while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header('index.php', 4, _MD_VOTEONCE2);
-                exit();
             }
         }
     } else {
@@ -70,7 +67,6 @@ if (!empty($_POST['submit'])) {
         list($anonvotecount) = $xoopsDB->fetchRow($result);
         if ($anonvotecount > 0) {
             redirect_header('index.php', 4, _MD_VOTEONCE2);
-            exit();
         }
     }
     if ($rating > 10) {
@@ -102,7 +98,6 @@ if (!empty($_POST['submit'])) {
     }
     $ratemessage = _MD_VOTEAPPRE . '<br>' . sprintf(_MD_THANKURATE, $xoopsConfig['sitename']);
     redirect_header('index.php?dirid=' . $dirid . '', 2, $ratemessage);
-    exit();
 } else {
     $GLOBALS['xoopsOption']['template_main'] = 'efqdiralpha1_ratelisting.tpl';
     include XOOPS_ROOT_PATH . '/header.php';
@@ -119,7 +114,7 @@ if (!empty($_POST['submit'])) {
 
     $result = $xoopsDB->query('select title from ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_listings') . " where itemid=$get_itemid");
     list($title) = $xoopsDB->fetchRow($result);
-    $xoopsTpl->assign('listing', array('itemid' => $get_itemid, 'catid' => $get_catid, 'title' => $myts->htmlSpecialChars($title)));
+    $xoopsTpl->assign('listing', ['itemid' => $get_itemid, 'catid' => $get_catid, 'title' => $myts->htmlSpecialChars($title)]);
     $xoopsTpl->assign('moddir', $moddir);
     $xoopsTpl->assign('lang_voteonce', _MD_VOTEONCE);
     $xoopsTpl->assign('lang_ratingscale', _MD_RATINGSCALE);

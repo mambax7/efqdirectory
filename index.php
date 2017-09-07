@@ -33,8 +33,8 @@ $moddir           = $xoopsModule->getVar('dirname');
 
 $eh = new ErrorHandler;
 
-$mytree  = new XoopsTree($xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
-$efqtree = new efqTree($xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
+$mytree  = new XoopsTree($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
+$efqtree = new efqTree($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
 
 //Check if any option in URL
 if (!empty($_GET['op'])) {
@@ -59,7 +59,7 @@ if (!empty($_GET['dirid'])) {
 
 if ($get_dirid == '0' && $get_catid == '0') {
     //Show an overview of directories with directory title, image and description for each directory.
-    $result      = $xoopsDB->query('SELECT dirid, name, descr, img FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE open = '1' ORDER BY name") || $eh->show('0013');
+    $result      = $xoopsDB->query('SELECT dirid, name, descr, img FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dir') . " WHERE open = '1' ORDER BY name") || $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     if ($num_results == 1) {
         if ($xoopsModuleConfig['autoshowonedir'] == 1) {
@@ -78,7 +78,7 @@ if ($get_dirid == '0' && $get_catid == '0') {
                 } else {
                     $img = XOOPS_URL . "/modules/$moddir/assets/images/nopicture.gif";
                 }
-                $xoopsTpl->append('directories', array('image' => $img, 'id' => $dirid, 'title' => $name, 'descr' => $descr));
+                $xoopsTpl->append('directories', ['image' => $img, 'id' => $dirid, 'title' => $name, 'descr' => $descr]);
             }
         }
     } elseif ($num_results >= 2) {
@@ -93,11 +93,10 @@ if ($get_dirid == '0' && $get_catid == '0') {
             } else {
                 $img = XOOPS_URL . "/modules/$moddir/assets/images/nopicture.gif";
             }
-            $xoopsTpl->append('directories', array('image' => $img, 'id' => $dirid, 'title' => $name, 'descr' => $descr));
+            $xoopsTpl->append('directories', ['image' => $img, 'id' => $dirid, 'title' => $name, 'descr' => $descr]);
         }
     } else {
         redirect_header(XOOPS_URL, 2, _MD_NOACTIVEDIRECTORIES);
-        exit();
     }
 }
 if ($get_dirid != 0 || $get_catid != 0) {
@@ -128,9 +127,9 @@ if ($get_dirid != 0 || $get_catid != 0) {
     }
 
     if ($get_catid == 0) {
-        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat') . " WHERE pid = '0' AND dirid = '" . $get_dirid . '\' ORDER BY title') || $eh->show('0013');
+        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat') . " WHERE pid = '0' AND dirid = '" . $get_dirid . '\' ORDER BY title') || $eh->show('0013');
     } else {
-        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat') . " WHERE pid = '" . $get_catid . '\' ORDER BY title') || $eh->show('0013');
+        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat') . " WHERE pid = '" . $get_catid . '\' ORDER BY title') || $eh->show('0013');
     }
     $num_results = $GLOBALS['xoopsDB']->getRowsNum($result);
     if ($num_results == 0 && isset($_GET['dirid'])) {
@@ -143,7 +142,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
             if ($myrow['img'] && $myrow['img'] != '') {
                 $img = XOOPS_URL . "/modules/$moddir/uploads/" . $myts->htmlSpecialChars($myrow['img']);
             }
-            $arr           = array();
+            $arr           = [];
             $arr           = $efqtree->getFirstChild($myrow['cid'], 'title');
             $space         = 0;
             $chcount       = 0;
@@ -162,7 +161,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                 ++$chcount;
             }
             $cattitle = '<a href="' . XOOPS_URL . "/modules/$moddir/index.php?catid=" . $myrow['cid'] . '">' . $myrow['title'] . '</a>';
-            $xoopsTpl->append('categories', array('image' => $img, 'id' => $myrow['cid'], 'title' => $cattitle, 'subcategories' => $subcategories, 'totallisting' => $totallisting, 'count' => $count));
+            $xoopsTpl->append('categories', ['image' => $img, 'id' => $myrow['cid'], 'title' => $cattitle, 'subcategories' => $subcategories, 'totallisting' => $totallisting, 'count' => $count]);
             ++$count;
         }
 
@@ -194,16 +193,16 @@ if ($get_dirid != 0 || $get_catid != 0) {
         $xoopsTpl->assign('lang_listings', _MD_LATESTLIST);
         $xoopsTpl->assign('lang_category', _MD_CATEGORYC);
         $xoopsTpl->assign('lang_visit', _MD_VISIT);
-        $sections = array();
+        $sections = [];
         if ($get_catid == 0) {
             $sql    = 'SELECT l.itemid, l.logourl, l.uid, l.status, l.created, l.title, l.hits, l.rating, l.votes, l.typeid, l.dirid, t.description FROM '
-                      . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat')
+                      . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat')
                       . ' c, '
-                      . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                      . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat')
                       . ' x, '
-                      . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items')
+                      . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items')
                       . ' l LEFT JOIN '
-                      . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text')
+                      . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_text')
                       . " t ON (l.itemid=t.itemid) WHERE x.cid=c.cid AND l.itemid=x.itemid AND c.showpopular=1 AND l.status='2' AND l.dirid = '"
                       . $get_dirid
                       . '\' ORDER BY l.created DESC';
@@ -225,22 +224,22 @@ if ($get_dirid != 0 || $get_catid != 0) {
                     $xoopsTpl->assign('showdatafieldsincat', true);
                     $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
                     $sql         .= 'FROM '
-                                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                                    . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat')
                                     . ' ic, '
-                                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dtypes_x_cat')
+                                    . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes_x_cat')
                                     . ' xc, '
-                                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_fieldtypes')
+                                    . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes')
                                     . ' f, '
-                                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dtypes')
+                                    . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes')
                                     . ' t ';
-                    $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
+                    $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
                     $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . ' ORDER BY t.seq ASC';
                     $data_result = $xoopsDB->query($sql) || $eh->show('0013');
                     $numrows     = $xoopsDB->getRowsNum($data_result);
                     if ($numrows > 0) {
                         $xoopsTpl->assign('datatypes', true);
                     }
-                    $sections = array();
+                    $sections = [];
                     while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $custom, $ditemid, $value, $customtitle) = $xoopsDB->fetchRow($data_result)) {
                         $fieldvalue = $datafieldmanager->getFieldValue($fieldtype, $options, $value);
                         if ($icon != '') {
@@ -252,7 +251,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                             $title = $customtitle;
                         }
                         if ($section == '0' or '1') {
-                            $sections[] = array('icon' => $iconurl, 'label' => $title, 'value' => $fieldvalue, 'fieldtype' => $fieldtype);
+                            $sections[] = ['icon' => $iconurl, 'label' => $title, 'value' => $fieldvalue, 'fieldtype' => $fieldtype];
                         }
                     }
                 }
@@ -264,7 +263,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                 $path          = str_replace('/', " <img src='" . XOOPS_URL . '/modules/' . $moddir . "/assets/images/arrow.gif' board='0' alt=''> ", $path);
                 $new           = newlinkgraphic($created, $status);
                 $pop           = popgraphic($hits);
-                $xoopsTpl->append('listings', array(
+                $xoopsTpl->append('listings', [
                     'fields'       => $sections,
                     'coupons'      => $coupons,
                     'catid'        => $get_catid,
@@ -279,7 +278,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                     'votes'        => $votestring,
                     'mail_subject' => rawurlencode(sprintf(_MD_INTERESTING_LISTING, $xoopsConfig['sitename'])),
                     'mail_body'    => rawurlencode(sprintf(_MD_INTERESTING_LISTING_FOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/' . $moddir . '/singleitem.php?cid=' . $get_catid . '&amp;item=' . $itemid)
-                ));
+                ]);
             }
         } else {
             if (isset($_GET['show'])) {
@@ -296,7 +295,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
             } else {
                 $orderby = 'typelevel DESC';
             }
-            $fullcountresult = $xoopsDB->query('select count(*) from ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' i, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . " x WHERE i.itemid=x.itemid AND x.cid=$get_catid AND i.status='2'");
+            $fullcountresult = $xoopsDB->query('select count(*) from ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items') . ' i, ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat') . " x WHERE i.itemid=x.itemid AND x.cid=$get_catid AND i.status='2'");
             list($numrows) = $xoopsDB->fetchRow($fullcountresult);
             $totalcount = $numrows;
             $page_nav   = '';
@@ -327,14 +326,14 @@ if ($get_dirid != 0 || $get_catid != 0) {
                 $xoopsTpl->assign('lang_visit', _MD_VISIT);
                 $xoopsTpl->assign('show_listings', true);
                 $sql     = 'SELECT i.itemid, i.logourl, i.uid, i.status, i.created, i.title, i.hits, i.rating, i.votes, i.typeid, i.dirid, t.typelevel, txt.description, x.cid FROM '
-                           . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                           . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat')
                            . ' x, '
-                           . $xoopsDB->prefix($module->getVar('dirname', 'n')
+                           . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n')
                                               . '_items')
                            . ' i LEFT JOIN '
-                           . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_itemtypes')
+                           . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_itemtypes')
                            . ' t ON (t.typeid=i.typeid) LEFT JOIN '
-                           . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text')
+                           . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_text')
                            . " txt ON (txt.itemid=i.itemid) WHERE i.itemid=x.itemid AND x.cid=$get_catid AND x.active='1' AND i.status='2' ORDER BY $orderby";
                 $result  = $xoopsDB->query($sql, $show, $min) || $eh->show('0013');
                 $numrows = $xoopsDB->getRowsNum($result);
@@ -375,22 +374,22 @@ if ($get_dirid != 0 || $get_catid != 0) {
                         $xoopsTpl->assign('showdatafieldsincat', true);
                         $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
                         $sql         .= 'FROM '
-                                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                                        . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat')
                                         . ' ic, '
-                                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dtypes_x_cat')
+                                        . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes_x_cat')
                                         . ' xc, '
-                                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_fieldtypes')
+                                        . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes')
                                         . ' f, '
-                                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dtypes')
+                                        . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes')
                                         . ' t ';
-                        $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
+                        $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
                         $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . ' ORDER BY t.seq ASC';
                         $data_result = $xoopsDB->query($sql) || $eh->show('0013');
                         $numrows     = $xoopsDB->getRowsNum($data_result);
                         if ($numrows > 0) {
                             $xoopsTpl->assign('datatypes', true);
                         }
-                        $sections = array();
+                        $sections = [];
                         while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $custom, $ditemid, $value, $customtitle) = $xoopsDB->fetchRow($data_result)) {
                             $fieldvalue = $datafieldmanager->getFieldValue($fieldtype, $options, $value);
                             if ($icon != '') {
@@ -402,7 +401,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                                 $title = $customtitle;
                             }
                             if ($section == '1' or '1') {
-                                $sections[] = array('icon' => $iconurl, 'label' => $title, 'value' => $fieldvalue, 'fieldtype' => $fieldtype);
+                                $sections[] = ['icon' => $iconurl, 'label' => $title, 'value' => $fieldvalue, 'fieldtype' => $fieldtype];
                             }
                         }
                     }
@@ -429,7 +428,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                             $class = 'itemTableLevel3';
                             break;
                     }
-                    $xoopsTpl->append('listings', array(
+                    $xoopsTpl->append('listings', [
                         'fields'       => $sections,
                         'id'           => $itemid,
                         'catid'        => $get_catid,
@@ -447,7 +446,7 @@ if ($get_dirid != 0 || $get_catid != 0) {
                         'class'        => $class,
                         'mail_subject' => rawurlencode(sprintf(_MD_INTERESTING_LISTING, $xoopsConfig['sitename'])),
                         'mail_body'    => rawurlencode(sprintf(_MD_INTERESTING_LISTING_FOUND, $xoopsConfig['sitename']) . ':  ' . XOOPS_URL . '/modules/' . $moddir . '/listing.php?catid=' . $get_catid . '&amp;item=' . $itemid)
-                    ));
+                    ]);
                 }
                 $orderby = convertorderbyout($orderby);
                 //Calculates how many pages exist.  Which page one should be on, etc...

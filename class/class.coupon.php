@@ -54,7 +54,7 @@ if (!class_exists('Coupon')) {
 
         public function toArray()
         {
-            $ret = array();
+            $ret = [];
             foreach ($this->vars as $k => $v) {
                 $ret[$k] = $v['value'];
             }
@@ -194,7 +194,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
      */
     public function &getObjects($criteria = null, $as_objects = true, $id_as_key = false)
     {
-        $ret   = array();
+        $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT l.title AS listingTitle, coup.couponid, coup.heading, coup.counter, l.itemid, l.logourl, coup.description, coup.image, coup.lbr, coup.publish, coup.expire
             FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . ' coup, ' . $this->db->prefix($module->getVar('dirname', 'n') . '_items') . ' l
@@ -239,7 +239,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
     public function &getByLink($itemid)
     {
         global $eh;
-        $ret    = array();
+        $ret    = [];
         $limit  = $start = 0;
         $now    = time();
         $sql    = 'SELECT l.title AS listingTitle, coup.couponid, coup.heading, coup.counter, l.itemid, l.logourl, coup.description, coup.image, coup.lbr, coup.publish, coup.expire
@@ -286,7 +286,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
      */
     public function &getLinkedCoupon($coupid)
     {
-        $ret    = array();
+        $ret    = [];
         $limit  = $start = 0;
         $now    = time();
         $sql    = 'SELECT l.title AS listingTitle, coup.couponid, coup.heading, coup.counter, l.itemid, l.logourl, coup.description,  coup.image, coup.lbr, coup.publish, coup.expire
@@ -313,7 +313,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
     public function prepare2show($array)
     {
         $myts = MyTextSanitizer::getInstance();
-        $ret  = array();
+        $ret  = [];
         foreach ($array as $key => $myrow) {
             $description = $myts->displayTarea($myrow['description'], 1, 1, 1, 1, $myrow['lbr']);
             if ($myrow['expire'] > 0) {
@@ -321,7 +321,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
             } else {
                 $expire = 0;
             }
-            $ret ['items']['coupons'][]    = array(
+            $ret ['items']['coupons'][]    = [
                 'itemid'      => $myrow['itemid'],
                 'couponid'    => $myrow['couponid'],
                 'heading'     => $myts->htmlSpecialChars($myrow['heading']),
@@ -330,7 +330,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
                 'publish'     => formatTimestamp($myrow['publish'], 's'),
                 'expire'      => $expire,
                 'counter'     => (int)$myrow['counter']
-            );
+            ];
             $ret ['items']['listingTitle'] = $myts->displayTarea($myrow['listingTitle']);
             $ret ['items']['itemid']       = $myrow['itemid'];
         }

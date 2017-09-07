@@ -17,7 +17,7 @@
  * @author       XOOPS Development Team,
  */
 
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 $moduleDirName = basename(__DIR__);
 
 $modversion['version']       = 1.07;
@@ -43,13 +43,13 @@ $modversion['module_website_name'] = 'XOOPS';
 $modversion['min_php']             = '5.5';
 $modversion['min_xoops']           = '2.5.9';
 $modversion['min_admin']           = '1.2';
-$modversion['min_db']              = array('mysql' => '5.5');
+$modversion['min_db']              = ['mysql' => '5.5'];
 
 // ------------------- Mysql ------------------- //
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 
 // Tables created by sql file (without prefix!)
-$modversion['tables'] = array(
+$modversion['tables'] = [
     $moduleDirName . '_' . 'cat',
     $moduleDirName . '_' . 'cat_txt',
     $moduleDirName . '_' . 'data',
@@ -79,7 +79,7 @@ $modversion['tables'] = array(
     $moduleDirName . '_' . 'subscr_notify',
     $moduleDirName . '_' . 'cat_tpl',
     $moduleDirName . '_' . 'tpl',
-);
+];
 
 // Admin things
 $modversion['hasAdmin']    = 1;
@@ -88,12 +88,12 @@ $modversion['adminindex']  = 'admin/main.php';
 $modversion['adminmenu']   = 'admin/menu.php';
 
 // ------------------- Help files ------------------- //
-$modversion['helpsection'] = array(
+$modversion['helpsection'] = [
     ['name' => _MI_EFQDIR_OVERVIEW, 'link' => 'page=help'],
     ['name' => _MI_EFQDIR_DISCLAIMER, 'link' => 'page=disclaimer'],
     ['name' => _MI_EFQDIR_LICENSE, 'link' => 'page=license'],
     ['name' => _MI_EFQDIR_SUPPORT, 'link' => 'page=support'],
-);
+];
 
 // Blocks
 $modversion['blocks'][1]['file']        = 'efqdiralpha1_menu.php';
@@ -116,7 +116,7 @@ $modversion['search']['func'] = 'links_search';
 $modversion['hasComments']             = 0;
 $modversion['comments']['itemName']    = 'itemid';
 $modversion['comments']['pageName']    = 'listing.php';
-$modversion['comments']['extraParams'] = array('cid');
+$modversion['comments']['extraParams'] = ['cid'];
 // Comment callback functions
 $modversion['comments']['callbackFile']        = 'include/comment_functions.php';
 $modversion['comments']['callback']['approve'] = 'listings_com_approve';
@@ -179,7 +179,7 @@ $modversion['config'][1]['default'] = 100;
 // options to be displayed in selection box
 // required and valid for 'select' or 'select_multi' formtype option only
 // language constants can be used for both array keys and values
-$modversion['config'][1]['options'] = array('5' => 5, '10' => 10, '50' => 50, '100' => 100, '200' => 200, '500' => 500, '1000' => 1000);
+$modversion['config'][1]['options'] = ['5' => 5, '10' => 10, '50' => 50, '100' => 100, '200' => 200, '500' => 500, '1000' => 1000];
 
 $modversion['config'][2]['name']        = 'newlistings';
 $modversion['config'][2]['title']       = '_MI_EFQDIR_NEWLISTINGS';
@@ -187,7 +187,7 @@ $modversion['config'][2]['description'] = '_MI_EFQDIR_NEWLISTINGSDSC';
 $modversion['config'][2]['formtype']    = 'select';
 $modversion['config'][2]['valuetype']   = 'int';
 $modversion['config'][2]['default']     = 10;
-$modversion['config'][2]['options']     = array('5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50);
+$modversion['config'][2]['options']     = ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50];
 
 $modversion['config'][3]['name']        = 'perpage';
 $modversion['config'][3]['title']       = '_MI_EFQDIR_PERPAGE';
@@ -195,7 +195,7 @@ $modversion['config'][3]['description'] = '_MI_EFQDIR_PERPAGEDSC';
 $modversion['config'][3]['formtype']    = 'select';
 $modversion['config'][3]['valuetype']   = 'int';
 $modversion['config'][3]['default']     = 10;
-$modversion['config'][3]['options']     = array('5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50);
+$modversion['config'][3]['options']     = ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50];
 
 /*$modversion['config'][4]['name'] = 'anonpost';
 $modversion['config'][4]['title'] = '_MI_EFQDIR_ANONPOST';
@@ -231,7 +231,7 @@ $modversion['config'][7]['description'] = '_MI_EFQDIR_RESULTSPERPAGE_DSC';
 $modversion['config'][7]['formtype']    = 'select';
 $modversion['config'][7]['valuetype']   = 'int';
 $modversion['config'][7]['default']     = 10;
-$modversion['config'][7]['options']     = array('5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50);
+$modversion['config'][7]['options']     = ['5' => 5, '10' => 10, '15' => 15, '20' => 20, '25' => 25, '30' => 30, '50' => 50];
 
 $modversion['config'][8]['name']        = 'anonvotes_waitdays';
 $modversion['config'][8]['title']       = '_MI_EFQDIR_ANONVOTESWAITDAYS';
@@ -239,7 +239,7 @@ $modversion['config'][8]['description'] = '_MI_EFQDIR_ANONVOTESWAITDAYS_DSC';
 $modversion['config'][8]['formtype']    = 'select';
 $modversion['config'][8]['valuetype']   = 'int';
 $modversion['config'][8]['default']     = 1;
-$modversion['config'][8]['options']     = array('1' => 1, '2' => 2, '3' => 3, '7' => 7, '14' => 14, '30' => 30, '365' => 365);
+$modversion['config'][8]['options']     = ['1' => 1, '2' => 2, '3' => 3, '7' => 7, '14' => 14, '30' => 30, '365' => 365];
 
 $modversion['config'][9]['name']        = 'autoshowonedir';
 $modversion['config'][9]['title']       = '_MI_EFQDIR_AUTOSHOWONEDIR';

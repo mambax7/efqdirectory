@@ -19,8 +19,8 @@
  */
 function create_local_variables()
 {
-    $array_name = array();
-    $variables  = array(
+    $array_name = [];
+    $variables  = [
         'business',
         'receiver_email',
         'receiver_id',
@@ -70,7 +70,7 @@ function create_local_variables()
         'payer_status',
         'notify_version',
         'verify_sign'
-    );
+    ];
 
     foreach ($variables as $k => $v) {
         if (isset($_POST[$v])) {

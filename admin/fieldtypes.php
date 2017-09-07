@@ -39,7 +39,7 @@ if (isset($_GET['dirid'])) {
 if (isset($_GET['typeid'])) {
     $get_typeid = (int)$_GET['typeid'];
 }
-$fieldtypes = array(
+$fieldtypes = [
     '0'        => '---',
     'textbox'  => _MD_FIELDNAMES_TEXTBOX,
     'textarea' => _MD_FIELDNAMES_TEXTAREA,
@@ -54,7 +54,7 @@ $fieldtypes = array(
     'rating'   => _MD_FIELDNAMES_RATING,
     'url'      => _MD_FIELDNAMES_URL
     //'gallery' => _MD_FIELDNAMES_GALLERY
-);
+];
 
 function fieldtypesConfig()
 {
@@ -212,7 +212,6 @@ function addFieldtype()
     $sql   = sprintf("INSERT INTO %s (typeid, title, fieldtype, descr, ext, activeyn) VALUES (%u, '%s', '%s', '%s', '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes'), $newid, $p_title, $p_fieldtype, $p_descr, $p_ext, $p_status);
     $xoopsDB->query($sql) || $eh->show('0013');
     redirect_header('fieldtypes.php', 2, _MD_SAVED);
-    exit();
 }
 
 function editFieldtype()
@@ -239,7 +238,6 @@ function editFieldtype()
     $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes') . " SET title = '$p_title', fieldtype='$p_fieldtype', ext='$p_ext', activeyn='$p_status' WHERE typeid = $p_typeid";
     $xoopsDB->query($sql) || $eh->show('0013');
     redirect_header("fieldtypes.php?op=view&typeid=$p_typeid", 2, _MD_SAVED);
-    exit();
 }
 
 function newCat()
@@ -272,7 +270,6 @@ function newCat()
     //echo $sql2;
     $xoopsDB->query($sql2) || $eh->show('0013');
     redirect_header("categories.php?op=edit&cid=$newid", 0, _MD_CAT_UPDATED);
-    exit();
 }
 
 if (!isset($_POST['op'])) {

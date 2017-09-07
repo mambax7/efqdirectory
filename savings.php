@@ -50,7 +50,7 @@ $xoopsTpl->assign('itemid', $item);
 
 foreach ($coupons as $coup) {
     //echo $coup['descr'];
-    $xoopsTpl->append('coupons', array(
+    $xoopsTpl->append('coupons', [
         'couponid' => $coup['couponid'],
         'itemid'   => $coup['itemid'],
         'descr'    => $myts->displayTarea($coup['descr']),
@@ -59,7 +59,7 @@ foreach ($coupons as $coup) {
         'expire'   => $coup['expire'],
         'heading'  => $coup['heading'],
         'lbr'      => $coup['lbr']
-    ));
+    ]);
 }
 if ($xoopsUser) {
     $xoopsTpl->assign('admin', $xoopsUser->isAdmin($xoopsModule->mid()));

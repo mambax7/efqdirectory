@@ -16,7 +16,7 @@
 class efqCouponHandler
 {
     public $db;
-    public $coupon = array();
+    public $coupon = [];
     public $couponid;
     public $descr;
     public $itemid;
@@ -171,7 +171,7 @@ class efqCouponHandler
                     $expire = formatTimestamp($expire, 's');
                 }
                 $publish = formatTimestamp($publish, 's');
-                $ret[]   = array('couponid' => $couponid, 'itemid' => $itemid, 'descr' => $descr, 'image' => $image, 'publish' => $publish, 'expire' => $expire, 'heading' => $heading, 'lbr' => $lbr);
+                $ret[]   = ['couponid' => $couponid, 'itemid' => $itemid, 'descr' => $descr, 'image' => $image, 'publish' => $publish, 'expire' => $expire, 'heading' => $heading, 'lbr' => $lbr];
             }
 
             return $ret;

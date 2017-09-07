@@ -24,14 +24,14 @@ class XoopsFormImage extends XoopsFormElement
      * @var array
      * @access private
      */
-    public $_options  = array();
+    public $_options  = [];
     public $_multiple = false;
     public $_size;
 
     public $_height;
     public $_width;
     public $_src;
-    public $_value = array();
+    public $_value = [];
 
     /**
      * Constructor

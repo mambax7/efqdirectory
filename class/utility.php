@@ -119,7 +119,7 @@ class EfqDirectoryUtility extends XoopsObject
             }
         }
 
-        if (!$success) {
+        if (false === $success) {
             $module->setErrors(sprintf(_AM_EFQDIR_ERROR_BAD_XOOPS, $requiredVer, $currentVer));
         }
 

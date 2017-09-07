@@ -109,7 +109,7 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
     {
         $tablename    = 'efqdiralpha1_subscr_offers';
         $keyName      = 'offerid';
-        $excludedVars = array('level', 'typename');
+        $excludedVars = ['level', 'typename'];
         if ($obj instanceof efqSubscriptionOffer) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -168,7 +168,7 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
     {
         $tablename    = 'efqdiralpha1_subscr_offers';
         $keyName      = 'offerid';
-        $excludedVars = array('level', 'typename');
+        $excludedVars = ['level', 'typename'];
         if ($obj instanceof efqSubscriptionOffer) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.

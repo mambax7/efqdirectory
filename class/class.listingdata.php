@@ -129,14 +129,14 @@ class efqListingDataHandler extends XoopsObjectHandler
      */
     public function getData($itemid = 0)
     {
-        $arr = array();
+        $arr = [];
         $sql = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.dataid, d.itemid, d.value, d.created, t.custom ';
         $sql .= 'FROM ' . $this->db->prefix('efqdiralpha1_item_x_cat') . ' ic, ' . $this->db->prefix('efqdiralpha1_dtypes_x_cat') . ' xc, ' . $this->db->prefix('efqdiralpha1_fieldtypes') . ' f, ' . $this->db->prefix('efqdiralpha1_dtypes') . ' t ';
         $sql .= 'LEFT JOIN ' . $this->db->prefix('efqdiralpha1_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
         $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . '';
         $data_result = $this->db->query($sql) || $eh->show('0013');
         while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $dataid, $itemid, $value, $created, $custom) = $this->db->fetchRow($data_result)) {
-            $arr[] = array(
+            $arr[] = [
                 'dtypeid'     => $dtypeid,
                 'title'       => $title,
                 'section'     => $section,
@@ -149,7 +149,7 @@ class efqListingDataHandler extends XoopsObjectHandler
                 'value'       => $value,
                 'created'     => $created,
                 'customtitle' => $custom
-            );
+            ];
         }
 
         return $arr;

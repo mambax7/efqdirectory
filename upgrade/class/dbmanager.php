@@ -32,8 +32,8 @@ require_once XOOPS_ROOT_PATH . '/class/database/sqlutility.php';
  **/
 class db_manager
 {
-    public $s_tables = array();
-    public $f_tables = array();
+    public $s_tables = [];
+    public $f_tables = [];
     public $db;
 
     /**
@@ -81,7 +81,7 @@ class db_manager
     public function queryFromFile($sql_file_path)
     {
         global $pieces;
-        $tables = array();
+        $tables = [];
 
         if (!file_exists($sql_file_path)) {
             return false;
@@ -276,7 +276,7 @@ class db_manager
     public function deleteTables($tables)
     {
         global $ct;
-        $deleted = array();
+        $deleted = [];
         $this->db->connect();
         foreach ($tables as $key => $val) {
             if (!$this->db->query('DROP TABLE ' . $this->db->prefix($key))) {

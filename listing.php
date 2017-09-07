@@ -50,7 +50,6 @@ if (!empty($_GET['item'])) {
     $get_itemid = (int)$_GET['item'];
 } else {
     redirect_header('index.php', 2, _MD_NOVALIDITEM);
-    exit();
 }
 
 $moddir         = $xoopsModule->getVar('dirname');
@@ -129,7 +128,7 @@ if (count($listing->_datatypes) > 0) {
     xoops_debug('o, o');
     $xoopsTpl->assign('datatypes', true);
     foreach ($listing->_datatypes as $datatype) {
-        $xoopsTpl->append('section' . $datatype['section'] . '', array('icon' => $datatype['icon'], 'label' => $datatype['title'], 'value' => $datatype['value'], 'fieldtype' => $datatype['fieldtype']));
+        $xoopsTpl->append('section' . $datatype['section'] . '', ['icon' => $datatype['icon'], 'label' => $datatype['title'], 'value' => $datatype['value'], 'fieldtype' => $datatype['fieldtype']]);
     }
 }
 

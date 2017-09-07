@@ -42,7 +42,6 @@ if (isset($_GET['op'])) {
 
 if (empty($xoopsUser) and !$xoopsModuleConfig['anonpost']) {
     redirect_header(XOOPS_URL . '/user.php', 2, _MD_MUSTREGFIRST);
-    exit();
 }
 
 if (!empty($_POST['submit'])) {
@@ -80,11 +79,9 @@ if (!empty($_POST['submit'])) {
         }
         if ($count == 0) {
             redirect_header(XOOPS_URL . "/modules/$moddir/submit.php?dirid=" . $post_dirid . '', 2, _MD_NOCATEGORYMATCH);
-            exit();
         }
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/submit.php?dirid=" . $post_dirid . '', 2, _MD_NOCATEGORIESAVAILABLE);
-        exit();
     }
 
     /* // RMV-NEW
@@ -107,7 +104,6 @@ if (!empty($_POST['submit'])) {
     }*/
 
     redirect_header(XOOPS_URL . "/modules/$moddir/edit.php?item=" . $itemid . '', 2, _MD_SAVED);
-    exit();
 } else {
     if (isset($_GET['dirid'])) {
         $get_dirid = (int)$_GET['dirid'];

@@ -68,10 +68,8 @@ if (isset($paypal['business'])) {
             $subscription->updateOrder($orderid, '1', $ordervalues['startdate'], $billto);
         }
         redirect_header('subscriptions.php?item=' . $values['custom'] . '', 5, _MD_ORDER_PROCESSED);
-        exit();
     } else {
         redirect_header('subscriptions.php?item=' . $values['custom'] . '', 10, _MD_ORDER_ALREADY_PROCESSED);
-        exit();
     }
 } else {
     die('This page is not directly accessible');
@@ -85,7 +83,7 @@ if (isset($paypal['business'])) {
 function checkDuplicateTrx($txn_id = '0', $payment_status = '0')
 {
     global $xoopsDB;
-    $block       = array();
+    $block       = [];
     $myts        = MyTextSanitizer::getInstance();
     $userid      = 0;
     $sql         = 'SELECT txn_id, payment_status FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_subscr_payments') . " WHERE txn_id='$txn_id' AND payment_status='$payment_status'";

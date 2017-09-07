@@ -43,20 +43,20 @@ function b_efqdiralpha1_menu_show($options)
     $module        = $moduleHandler->getByDirname($dirname);
     $moddir        = $module->getvar('dirname');
 
-    $block                 = array();
+    $block                 = [];
     $block['lang_dirmenu'] = _MB_EFQDIR_MENU;
     $block['moddir']       = $moddir;
     $myts                  = MyTextSanitizer::getInstance();
     $result                = $xoopsDB->query('SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE open='1' ORDER BY name") || $eh->show('0013');
     while ($myrow = $xoopsDB->fetchArray($result)) {
-        $directory              = array();
+        $directory              = [];
         $name                   = $myts->htmlSpecialChars($myrow['name']);
         $directory['dirid']     = $myrow['dirid'];
         $directory['name']      = $name;
         $directory['descr']     = $myrow['descr'];
         $block['directories'][] = $directory;
     }
-    $sublink = array();
+    $sublink = [];
 
     return $block;
 }

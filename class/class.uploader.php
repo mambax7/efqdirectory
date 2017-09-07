@@ -86,7 +86,7 @@ class XoopsMediaUploader
 
     public $uploadDir = '';
 
-    public $allowedMimeTypes = array();
+    public $allowedMimeTypes = [];
 
     public $maxFileSize = 0;
     public $maxWidth;
@@ -96,13 +96,13 @@ class XoopsMediaUploader
 
     public $prefix;
 
-    public $errors = array();
+    public $errors = [];
 
     public $savedDestination;
 
     public $savedFileName;
 
-    public $extensionToMime = array();
+    public $extensionToMime = [];
 
     /**
      * Constructor
@@ -118,7 +118,7 @@ class XoopsMediaUploader
     {
         @$this->extensionToMime = include XOOPS_ROOT_PATH . '/class/mimetypes.inc.php';
         if (!is_array($this->extensionToMime)) {
-            $this->extensionToMime = array();
+            $this->extensionToMime = [];
 
             return false;
         }
@@ -177,8 +177,8 @@ class XoopsMediaUploader
                 //trigger_error( "XoopsMediaUploader: Set mediaRealType to {$this->mediaRealType} (file extension is $ext)", E_USER_NOTICE );
             }
         }
-        $this->errors = array();
-        if ($ext && in_array($ext, array('gif', 'jpg', 'jpeg', 'png', 'bmp', 'xbm'))) {
+        $this->errors = [];
+        if ($ext && in_array($ext, ['gif', 'jpg', 'jpeg', 'png', 'bmp', 'xbm'])) {
             // Prevent sending of invalid images that would crash IE
             if (!($info = getimagesize($this->mediaTmpName))) {
                 $this->setErrors('Invalid file content');
@@ -341,7 +341,7 @@ class XoopsMediaUploader
      */
     public function _copyFile($chmod)
     {
-        $matched = array();
+        $matched = [];
         if (!preg_match("/\.([a-zA-Z0-9]+)$/", $this->mediaName, $matched)) {
             return false;
         }

@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
                    . " c WHERE c.cid=dxc.cid AND dt.dtypeid=dxc.dtypeid AND dt.fieldtypeid=ft.typeid AND c.dirid='$get_dirid' AND dt.activeyn='1'";
     $result      = $xoopsDB->query($sql) || $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
-    $filter_arr  = array();
+    $filter_arr  = [];
     while (list($dtypeid, $dtypetitle, $dtypeoptions, $fieldtype) = $xoopsDB->fetchRow($result)) {
         switch ($fieldtype) {
             case 'textbox':
@@ -97,7 +97,7 @@ if (isset($_POST['submit'])) {
                     foreach ($selectarr as $arr) {
                         $selectarray[] = $arr['postvalue'];
                     }
-                    $filter_arr[] = array('dtypeid' => $dtypeid, 'constr' => 'equal', 'postvalue' => $selectarr['postvalue'], 'selectfields' => $selectarray, 'addressfields' => 0);
+                    $filter_arr[] = ['dtypeid' => $dtypeid, 'constr' => 'equal', 'postvalue' => $selectarr['postvalue'], 'selectfields' => $selectarray, 'addressfields' => 0];
                 }
                 break;
             case 'dhtml':
@@ -105,13 +105,13 @@ if (isset($_POST['submit'])) {
                 break;
             case 'address':
                 $addressarr   = getPostedValue_address($dtypeid);
-                $addressarray = array();
+                $addressarray = [];
                 //$countarr = count($address
                 if (is_array($addressarray) && count($addressarray) >= 1) {
                     foreach ($addressarr as $arr) {
-                        $addressarray[] = array($arr['field'] => $arr['postvalue']);
+                        $addressarray[] = [$arr['field'] => $arr['postvalue']];
                     }
-                    $filter_arr[] = array('dtypeid' => $dtypeid, 'constr' => 'equal', 'postvalue' => $arr['postvalue'], 'selectfields' => 0, 'addressfields' => $addressarray);
+                    $filter_arr[] = ['dtypeid' => $dtypeid, 'constr' => 'equal', 'postvalue' => $arr['postvalue'], 'selectfields' => 0, 'addressfields' => $addressarray];
                 }
                 break;
             case 'rating':
@@ -124,7 +124,7 @@ if (isset($_POST['submit'])) {
                         $selectarray[] = $arr;
                     }
                     //echo $selectarr['postvalue'];
-                    $filter_arr[] = array('dtypeid' => $dtypeid, 'constr' => $selectarr['constr'], 'postvalue' => $selectarr['postvalue'], 'selectfields' => '', 'addressfields' => 0);
+                    $filter_arr[] = ['dtypeid' => $dtypeid, 'constr' => $selectarr['constr'], 'postvalue' => $selectarr['postvalue'], 'selectfields' => '', 'addressfields' => 0];
                 }
                 break;
             case 'date':
@@ -140,7 +140,7 @@ if (isset($_POST['submit'])) {
         $querystring = '';
     }
     $poscount   = substr_count($querystring, '"') / 2;
-    $specialarr = array();
+    $specialarr = [];
     for ($i = 0; $i < $poscount; ++$i) {
         $start = strpos($querystring, '"', 0);
         $end   = strpos($querystring, '"', $start + 1);
@@ -508,9 +508,9 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
     //Getting the results into an array.
     $z = 0;
 
-    $ret          = array();
-    $items        = array();
-    $intersection = array();
+    $ret          = [];
+    $items        = [];
+    $intersection = [];
     for ($i = 0; $i < $n; ++$i) {
         $result      = $xoopsDB->query(${'sql' . $i}) || $eh->show('0013');
         $num_results = $xoopsDB->getRowsNum($result);
@@ -539,7 +539,7 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
     }
 
     $i        = 0;
-    $item_arr = array();
+    $item_arr = [];
     foreach ($intersection as $value) {
         $item_arr[$i] = $ret['' . findKeyValuePair($ret, 'itemid', $value, false) . ''];
         ++$i;
@@ -557,7 +557,7 @@ function get_search_results($items = '')
     global $xoopsDB, $eh;
     if ($items !== '') {
         $z           = 0;
-        $ret         = array();
+        $ret         = [];
         $split_items = explode(',', $items);
         foreach ($split_items as $item) {
             $sql         = 'SELECT i.itemid, i.title, i.uid, i.created, t.description FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' i, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text') . " t WHERE i.itemid=t.itemid AND i.itemid='$item'";
@@ -589,7 +589,7 @@ function get_search_results($items = '')
 function getNumberOfResults($searchnum = 0, $limit = 10)
 {
     global $xoopsDB, $eh;
-    $block       = array();
+    $block       = [];
     $sql         = 'SELECT MAX(page), items FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_searchresults') . " WHERE searchnum = '" . $searchnum . '\' GROUP BY page';
     $result      = $xoopsDB->query($sql) || $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
@@ -651,7 +651,7 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0, $filter_arr)
 function getPostedValue_text($dtypeid = 0)
 {
     global $_POST;
-    $postedvalues = array();
+    $postedvalues = [];
     if (isset($_POST["$dtypeid"])) {
         if (isset($_POST['' . $dtypeid . 'constr'])) {
             $constrvalue = $_POST['' . $dtypeid . 'constr'];
@@ -659,7 +659,7 @@ function getPostedValue_text($dtypeid = 0)
             $constrvalue = '';
         }
         $postvalue    = $_POST["$dtypeid"];
-        $postedvalues = array('dtypeid' => $dtypeid, 'constr' => $constrvalue, 'postvalue' => $postvalue, 'selectfields' => 0, 'addressfields' => 0);
+        $postedvalues = ['dtypeid' => $dtypeid, 'constr' => $constrvalue, 'postvalue' => $postvalue, 'selectfields' => 0, 'addressfields' => 0];
     }
 
     return $postedvalues;
@@ -673,12 +673,12 @@ function getPostedValue_address($dtypeid = 0)
 {
     global $_POST;
     $addressfields = getAddressFields('0');
-    $postedvalues  = array();
+    $postedvalues  = [];
     foreach ($addressfields['addressfields'] as $field => $fieldvalue) {
         if (isset($_POST["$dtypeid$field"])) {
             $addressfield = $_POST["$dtypeid$field"];
             if ($addressfield !== '') {
-                $postedvalues[] = array('field' => $field, 'postvalue' => $addressfield);
+                $postedvalues[] = ['field' => $field, 'postvalue' => $addressfield];
             }
         }
     }
@@ -693,7 +693,7 @@ function getPostedValue_address($dtypeid = 0)
 function getPostedValue_array($dtypeid = 0)
 {
     global $_POST;
-    $postvalues_arr = array();
+    $postvalues_arr = [];
     if (isset($_POST["$dtypeid"])) {
         if (isset($_POST['' . $dtypeid . 'constr'])) {
             $constrvalue = $_POST['' . $dtypeid . 'constr'];
@@ -701,7 +701,7 @@ function getPostedValue_array($dtypeid = 0)
             $constrvalue = '';
         }
         $postvalue    = $_POST["$dtypeid"];
-        $postedvalues = array('dtypeid' => $dtypeid, 'constr' => $constrvalue, 'postvalue' => $postvalue, 'selectfields' => 0, 'addressfields' => 0);
+        $postedvalues = ['dtypeid' => $dtypeid, 'constr' => $constrvalue, 'postvalue' => $postvalue, 'selectfields' => 0, 'addressfields' => 0];
     }
 
     //print_r($postedvalues);

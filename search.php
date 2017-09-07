@@ -66,7 +66,7 @@ if (!empty($_GET['q'])) {
         redirect_header(XOOPS_URL . "/modules/$moddir/search.php", 2, _MD_NO_SEARCH_STRING_SELECTED);
     }
     $poscount   = substr_count($querystring, '"') / 2;
-    $specialarr = array();
+    $specialarr = [];
     for ($i = 0; $i < $poscount; ++$i) {
         $start = strpos($querystring, '"', 0);
         $end   = strpos($querystring, '"', $start + 1);
@@ -160,7 +160,7 @@ function mod_search($queryarray, $andor, $limit, $offset)
     } elseif ($num_results == 0) {
         return 0;
     } else {
-        $ret = array();
+        $ret = [];
         $i   = 0;
         while ($myrow = $xoopsDB->fetchArray($result)) {
             $ret[$i]['image']       = 'images/home.gif';

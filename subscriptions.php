@@ -59,7 +59,6 @@ if ($xoopsUser->getVar('uid') == $owner) {
 } else {
     $editrights = '0';
     redirect_header("listing.php?itemid=$get_itemid", 2, _MD_EDITRIGHTS);
-    exit();
 }
 
 function showsubscription()
@@ -68,7 +67,6 @@ function showsubscription()
     //Check if item selected.
     if ($get_itemid == '0') {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
-        exit();
     }
 
     //Default function (if listing type is normal) would be to view the possible subscriptions.
@@ -115,7 +113,7 @@ function showsubscription()
                 $startdate = date('d-M-Y', $startdate);
             }
             $xoopsTpl->assign('lang_subscr_offers_header', _MD_LANG_SUBSCR_ACTIVE_ORDERS_HEADER);
-            $xoopsTpl->append('active_orders', array(
+            $xoopsTpl->append('active_orders', [
                 'orderid'       => $orderid,
                 'ordername'     => $ordername,
                 'offerid'       => $offerid,
@@ -131,7 +129,7 @@ function showsubscription()
                 'renewal_url'   => "subscriptions.php?op=renew&order=$orderid&item=$get_itemid",
                 'terminate_url' => "subscriptions.php?op=terminate&order=$orderid&item=$get_itemid",
                 'terminate_on'  => $terminate_on
-            ));
+            ]);
             $xoopsTpl->assign('lang_current_subscr', _MD_LANG_CURRENT_SUBSCR);
             $xoopsTpl->assign('current_subscr', $typename);
             $xoopsTpl->assign('lang_terminate_order', _MD_LANG_TERMINATE_ORDER);
@@ -181,19 +179,15 @@ function orderselect()
     global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
     if ($get_itemid == '0') {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
-        exit();
     }
     $orderid = $subscription->createOrder($get_itemid);
     if ($orderid === false) {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_SUBSCR_TYPE_NOTSELECTED);
-        exit();
     }
     if ($orderid != 0) {
         redirect_header("subscriptions.php?item=$get_itemid&op=orderpayment&orderid=$orderid", 2, _MD_SAVED);
-        exit();
     } else {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_ITEM_NOT_EXIST);
-        exit();
     }
 }
 
@@ -208,7 +202,6 @@ function orderpayment()
         $get_orderid = (int)$_GET['orderid'];
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
-        exit();
     }
     $sql          = 'SELECT o.orderid, o.uid, o.offerid, o.typeid, o.startdate, o.billto, o.status, o.itemid, o.autorenew, f.price, f.currency FROM '
                     . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_subscr_orders')
@@ -262,7 +255,6 @@ function orderpayment()
     } else {
         //Else this item cannot be found in the database.
         redirect_header("listing.php?itemid=$get_itemid", 2, _MD_ITEM_NOT_EXIST);
-        exit();
     }
 }
 
@@ -273,7 +265,6 @@ function terminate()
         $get_orderid = (int)$_GET['order'];
     } else {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_NOVALIDORDER);
-        exit();
     }
     if ($editrights == '1') {
         $form = new XoopsThemeForm(_MD_CONFIRM_TERMINATE_TITLE, 'terminateform', 'subscriptions.php?item=' . $get_itemid . '');
@@ -284,7 +275,6 @@ function terminate()
         $form->display();
     } else {
         redirect_header("subscriptions.php?itemid=$get_itemid", 2, _MD_NORIGHTS);
-        exit();
     }
 }
 
@@ -295,11 +285,9 @@ function terminate_confirm()
         $post_orderid = (int)$_POST['orderid'];
         if ($subscription->delete($post_orderid)) {
             redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_ORDER_DELETED);
-            exit();
         }
     } else {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_NOVALIDORDER);
-        exit();
     }
 }
 
@@ -310,11 +298,9 @@ function renew()
         $get_orderid = (int)$_GET['order'];
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
-        exit();
     }
     if ($editrights == '1') {
         redirect_header("subscriptions.php?item=$get_itemid&op=orderpayment&orderid=$get_orderid", 2, _MD_FORWARDED_PAYMENT_PAGE);
-        exit();
     }
 }
 

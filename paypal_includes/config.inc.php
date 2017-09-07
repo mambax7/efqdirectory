@@ -12,7 +12,7 @@
  *
  */
 
-$vars = array(
+$vars = [
     'item_name',
     'item_number',
     'receiver_id',
@@ -38,9 +38,9 @@ $vars = array(
     'phone3',
     'custom',
     'amount'
-);
+];
 
-$paypal = array();
+$paypal = [];
 
 foreach ($vars as $k => $v) {
     if (isset($_POST[$v])) {

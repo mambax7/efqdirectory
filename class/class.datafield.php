@@ -80,7 +80,7 @@ class efqDataFieldHandler extends XoopsObjectHandler
         $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . "";
         $data_result = $this->db->query($sql) or $this->errorhandler->show("0013");
         //$numrows = $this->db->getRowsNum($data_result);
-        $arr = array();
+        $arr = [];
         while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $this->db->fetchRow($data_result)) {
             $fieldvalue = $this->getFieldValue($fieldtype, $options, $value);
             if ($icon != '') {
@@ -91,7 +91,7 @@ class efqDataFieldHandler extends XoopsObjectHandler
             if ($custom != '0' && $customtitle != "") {
                 $title = $customtitle;
             }
-            $arr[] = array(
+            $arr[] = [
                 'dtypeid'     => $dtypeid,
                 'title'       => $title,
                 'section'     => $section,
@@ -104,7 +104,7 @@ class efqDataFieldHandler extends XoopsObjectHandler
                 'itemid'      => $itemid,
                 'value'       => $fieldvalue,
                 'customtitle' => $customtitle
-            );
+            ];
         }
 
         return $arr;

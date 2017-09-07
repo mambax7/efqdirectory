@@ -109,7 +109,6 @@ function listNewListings() //completed
         xoops_cp_footer();
     } else {
         redirect_header('' . XOOPS_URL . '/modules/' . $moddir . '/admin/main.php?op=listings', 1, _MD_NONEW_LISTINGS);
-        exit();
     }
 }
 
@@ -122,7 +121,6 @@ function delVote()
     $xoopsDB->query($sql) || $eh->show('0013');
     updaterating($get_itemid);
     redirect_header('index.php', 1, _MD_VOTEDELETED);
-    exit();
 }
 
 function delListingConfirm()
@@ -157,7 +155,6 @@ function delListing()
     xoops_comment_delete($xoopsModule->getVar('mid'), (int)$_POST['itemid']);
     xoops_notification_deletebyitem($xoopsModule->getVar('mid'), 'listing', (int)$_POST['itemid']);
     redirect_header('index.php', 1, _MD_LISTINGDELETED);
-    exit();
 }
 
 function approve()
@@ -201,7 +198,7 @@ function listDuplicateDataTypes()
         while (list($dtypeid, $title, $fieldtypeid) = $xoopsDB->fetchRow($result)) {
             $dtypetitle     = $myts->htmlSpecialChars($title);
             $result_arr[]   = $dtypeid . $dtypetitle . $fieldtypeid;
-            $result_array[] = array($dtypeid, $dtypetitle, $fieldtypeid);
+            $result_array[] = [$dtypeid, $dtypetitle, $fieldtypeid];
         }
         $checkKeysUniqueComparison = create_function('$value', 'if ($value > 1) return true;');
         $duplicate_results         = array_keys(array_filter(array_count_values($result_arr), $checkKeysUniqueComparison));
@@ -414,7 +411,6 @@ switch ($op) {
                 $post_itemid = (int)$_POST['itemid'];
             } else {
                 redirect_header('index.php', 2, _MD_NOVALIDITEM);
-                exit();
             }
             if (isset($_POST['itemtitle'])) {
                 $p_title     = $myts->makeTboxData4Save($_POST['itemtitle']);
@@ -426,7 +422,6 @@ switch ($op) {
                 }
             } else {
                 redirect_header('index.php', 2, _MD_NOVALIDITEM);
-                exit();
             }
             if (!empty($_POST['dirid'])) {
                 $post_dirid = (int)$_POST['dirid'];
@@ -487,7 +482,7 @@ switch ($op) {
                     $post_customtitle = '';
                 }
                 if ($fieldtype == 'address') {
-                    $addressfields = array('address', 'address2', 'zip', 'postcode', 'phone', 'lat', 'lon', 'phone', 'fax', 'mobile', 'city', 'country', 'uselocyn', 'main', 'active');
+                    $addressfields = ['address', 'address2', 'zip', 'postcode', 'phone', 'lat', 'lon', 'phone', 'fax', 'mobile', 'city', 'country', 'uselocyn', 'main', 'active'];
                     foreach ($addressfields as $field) {
                         if (isset($_POST["$dtypeid$field"])) {
                             ${'post_' . $field} = $myts->makeTboxData4Save($_POST["$dtypeid$field"]);
@@ -501,9 +496,26 @@ switch ($op) {
                         if ($itemid == null || $post_value == '') {
                             //That means there was not any value, so a new record should be added to the data table.
                             $newaddrid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_addresses') . '_addrid_seq');
-                            $sql       = sprintf("INSERT INTO %s (addrid, itemid, dtypeid, address, address2, zip, postcode, phone, lat, lon, main, active, fax, mobile, city, country) VALUES (%u, %u, %u, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %u, %u, '%s', '%s', '%s', '%s')",
-                                                 $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_addresses'), $newaddrid, $post_itemid, $dtypeid, $post_address, $post_address2, $post_zip, $post_postcode, $post_phone, $post_lat, $post_lon, $post_main, $post_active, $post_fax, $post_mobile,
-                                                 $post_city, $post_country);
+                            $sql       = sprintf(
+                                "INSERT INTO %s (addrid, itemid, dtypeid, address, address2, zip, postcode, phone, lat, lon, main, active, fax, mobile, city, country) VALUES (%u, %u, %u, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %u, %u, '%s', '%s', '%s', '%s')",
+                                                 $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_addresses'),
+                                $newaddrid,
+                                $post_itemid,
+                                $dtypeid,
+                                $post_address,
+                                $post_address2,
+                                $post_zip,
+                                $post_postcode,
+                                $post_phone,
+                                $post_lat,
+                                $post_lon,
+                                $post_main,
+                                $post_active,
+                                $post_fax,
+                                $post_mobile,
+                                                 $post_city,
+                                $post_country
+                            );
                             //echo $sql."<br><br>";
                             $xoopsDB->query($sql) || $eh->show('0013');
                             $post_value = $xoopsDB->getInsertId();
@@ -556,15 +568,12 @@ switch ($op) {
                 }
                 if ($count == 0) {
                     redirect_header(XOOPS_URL . "/modules/$moddir/admin/main.php?op=edit&item=" . $post_itemid . '', 2, _MD_NOCATEGORYMATCH);
-                    exit();
                 }
             } else {
                 redirect_header(XOOPS_URL . "/modules/$moddir/admin/main.php?op=edit&item=" . $post_itemid . '', 2, _MD_NOCATEGORIESAVAILABLE);
-                exit();
             }
 
             redirect_header("main.php?op=edit&amp;item=$post_itemid", 2, _MD_ITEM_UPDATED);
-            exit();
         }
         break;
     default:
@@ -577,7 +586,7 @@ function unique_events($array)
     //checks $array for duplicate values and returns an
     //array containing the keys of duplicates
     $count  = array_intersect_assoc($array, array_flip(array_count_values($array)));
-    $return = array();
+    $return = [];
     foreach ($array as $key => $value) {
         if (in_array($value, $count)) {
             $return[$value][] = $key;

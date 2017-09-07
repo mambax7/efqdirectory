@@ -31,9 +31,9 @@ class efqListing extends XoopsObject
 {
     public $_editrights = false;
     public $_currentuser;
-    public $_value      = array();
-    public $_postdata   = array();
-    public $_datatypes  = array();
+    public $_value      = [];
+    public $_postdata   = [];
+    public $_datatypes  = [];
 
     /**
      * Constructor
@@ -65,7 +65,7 @@ class efqListing extends XoopsObject
      *
      * @param   array $listing Array with listing details
      */
-    public function setListingVars($listing = array())
+    public function setListingVars($listing = [])
     {
         if (is_array($listing)) {
             $this->setVar('itemid', $listing['itemid']);
@@ -83,7 +83,7 @@ class efqListing extends XoopsObject
         }
     }
 
-    public function setDataTypes($arr = array())
+    public function setDataTypes($arr = [])
     {
         $this->_datatypes = $arr;
     }
@@ -202,7 +202,7 @@ class efqListingHandler extends XoopsObjectHandler
                    . '\' AND c.active=\'1\'';
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
-        $arr     = array();
+        $arr     = [];
         if ($numrows > 0) {
             while (list($cid, $active) = $this->db->fetchRow($result)) {
                 $arr[] = $cid;
@@ -227,7 +227,7 @@ class efqListingHandler extends XoopsObjectHandler
     {
         $sql    = 'SELECT i.*, t.description FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_items') . ' i LEFT JOIN ' . $this->db->prefix($module->getVar('dirname', 'n') . '_item_text') . ' t ON (i.itemid=t.itemid) WHERE i.itemid=' . (int)$itemid;
         $result = $this->db->query($sql);
-        $arr    = array();
+        $arr    = [];
         if (!$result) {
             return $arr;
         } else {
@@ -260,7 +260,7 @@ class efqListingHandler extends XoopsObjectHandler
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         //$arr = $this->db->fetchArray($result);
-        $arr = array();
+        $arr = [];
         while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $custom, $itemid, $value, $customtitle) = $this->db->fetchRow($result)) {
             $fieldvalue = $datafieldmanager->getFieldValue($fieldtype, $options, $value);
             if ($icon != '') {
@@ -271,7 +271,7 @@ class efqListingHandler extends XoopsObjectHandler
             if ($custom != '0' && $customtitle != '') {
                 $title = $customtitle;
             }
-            $arr[] = array(
+            $arr[] = [
                 'dtypeid'     => $dtypeid,
                 'title'       => $title,
                 'section'     => $section,
@@ -284,7 +284,7 @@ class efqListingHandler extends XoopsObjectHandler
                 'itemid'      => $itemid,
                 'value'       => $fieldvalue,
                 'customtitle' => $customtitle
-            );
+            ];
         }
 
         return $arr;

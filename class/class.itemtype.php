@@ -99,7 +99,7 @@ class efqItemTypeHandler extends xoopsObject
     {
         $tablename    = 'efqdiralpha1_itemtypes';
         $keyName      = 'typeid';
-        $excludedVars = array();
+        $excludedVars = [];
         if ($obj instanceof efqItemType) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -158,7 +158,7 @@ class efqItemTypeHandler extends xoopsObject
     {
         $tablename    = 'efqdiralpha1_itemtypes';
         $keyName      = 'typeid';
-        $excludedVars = array();
+        $excludedVars = [];
         if ($obj instanceof efqItemType) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -241,14 +241,14 @@ class efqItemTypeHandler extends xoopsObject
      */
     public function getByDir($dirid = 0)
     {
-        $arr = array();
+        $arr = [];
         $sql = 'SELECT typeid,typename,level FROM ' . $this->db->prefix('efqdiralpha1_itemtypes') . ' WHERE dirid=' . (int)$dirid . '';
         if (!$result = $this->db->query($sql)) {
             return false;
         }
         $numrows = $this->db->getRowsNum($result);
         while (list($typeid, $typename, $level) = $this->db->fetchRow($result)) {
-            $arr[$typeid] = array('typeid' => $typeid, 'typename' => $typename, 'level' => $level);
+            $arr[$typeid] = ['typeid' => $typeid, 'typename' => $typename, 'level' => $level];
         }
 
         return $arr;

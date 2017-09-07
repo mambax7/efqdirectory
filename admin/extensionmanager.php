@@ -306,7 +306,7 @@ function showExtFields($type = 'text', $ext = '')
     $form = new XoopsThemeForm(_MD_EXTMANAGER, 'ext_manager', 'fieldtypes.php');
 
     //TO DO: change type field to drop down field, based on available types.
-    $fieldtypes = array(
+    $fieldtypes = [
         '0'            => '---',
         'checkbox'     => _MD_FIELDNAMES_CHECKBOX,
         'date'         => _MD_FIELDNAMES_DATE,
@@ -318,7 +318,7 @@ function showExtFields($type = 'text', $ext = '')
         'dhtml'        => _MD_FIELDNAMES_DHTMLTEXTAREA,
         'textbox'      => _MD_FIELDNAMES_TEXTBOX,
         'yesno'        => _MD_FIELDNAMES_YESNO
-    );
+    ];
 
     $form->addElement(new XoopsFormText(_MD_WIDTH, 'width', 10, 20, ''));
     $form->addElement(new XoopsFormText(_MD_HEIGHT, 'height', 10, 20, ''));

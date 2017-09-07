@@ -109,7 +109,7 @@ class efqDataTypeHandler extends XoopsObjectHandler
     {
         $tablename    = 'efqdiralpha1_dtypes';
         $keyName      = 'dtypeid';
-        $excludedVars = array();
+        $excludedVars = [];
         if ($obj instanceof efqDataType) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.
@@ -169,7 +169,7 @@ class efqDataTypeHandler extends XoopsObjectHandler
     {
         $tablename    = 'efqdiralpha1_dtypes';
         $keyName      = 'dtypeid';
-        $excludedVars = array();
+        $excludedVars = [];
         if ($obj instanceof efqDataType) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.

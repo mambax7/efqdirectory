@@ -19,14 +19,14 @@
  */
 class efqDataFieldManager extends XoopsFormElement
 {
-    public $_options  = array();
+    public $_options  = [];
     public $_multiple = false;
     public $_size;
 
     public $_height;
     public $_width;
     public $_src;
-    public $_value = array();
+    public $_value = [];
 
     /**
      * Constructor
@@ -65,6 +65,7 @@ class efqDataFieldManager extends XoopsFormElement
                     case 'multiple':
                         $multiple = true;
                         $size     = 5;
+                        // no break
                     case 'value':
                         if ($ext_item_value != '' and $value == '') {
                             $value = $ext_item_value;
@@ -149,7 +150,7 @@ class efqDataFieldManager extends XoopsFormElement
                 $addressfields = getAddressFields('0');
                 $addressvalues = getAddressValues($value);
                 $form->addElement(new XoopsFormLabel('', '<strong>' . $title . '</strong>'));
-                $fieldtitles = array(
+                $fieldtitles = [
                     'address'  => _MD_DF_ADDRESS,
                     'address2' => _MD_DF_ADDRESS2,
                     'zip'      => _MD_DF_ZIP,
@@ -163,7 +164,7 @@ class efqDataFieldManager extends XoopsFormElement
                     'country'  => _MD_DF_COUNTRY,
                     'typename' => _MD_DF_TYPENAME,
                     'uselocyn' => _MD_DF_USELOCYN
-                );
+                ];
                 foreach ($addressfields['addressfields'] as $field => $fieldvalue) {
                     $storedvalue = $addressvalues["$field"];
                     if ($fieldvalue == 1) {
@@ -176,7 +177,7 @@ class efqDataFieldManager extends XoopsFormElement
                 $form->addElement(new XoopsFormHidden('addrid', $value));
                 break;
             case 'rating':
-                $rating_options = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+                $rating_options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                 $form_rating    = new XoopsFormSelect($title, $name, $value, 1);
                 $form_rating->addOption('0', '----');
                 foreach ($rating_options as $option) {
@@ -191,7 +192,7 @@ class efqDataFieldManager extends XoopsFormElement
                 if ($value != '') {
                     $link = explode('|', $value);
                 } else {
-                    $link    = array();
+                    $link    = [];
                     $link[0] = '';
                     $link[1] = '';
                 }
@@ -270,7 +271,7 @@ class efqDataFieldManager extends XoopsFormElement
 
                 return $rating;
             case 'address':
-                $fieldtitles   = array(
+                $fieldtitles   = [
                     'address'  => _MD_DF_ADDRESS,
                     'address2' => _MD_DF_ADDRESS2,
                     'zip'      => _MD_DF_ZIP,
@@ -282,7 +283,7 @@ class efqDataFieldManager extends XoopsFormElement
                     'mobile'   => _MD_DF_MOBILE,
                     'city'     => _MD_DF_CITY,
                     'country'  => _MD_DF_COUNTRY
-                );
+                ];
                 $addressfields = getAddressFields('0');
                 $addressvalues = getAddressValues($value);
                 $address       = '';
@@ -405,6 +406,7 @@ class efqDataFieldManager extends XoopsFormElement
                 break;
             case 'url':
                 $this->createSearchField_text($title, $name, $value, $options);
+                // no break
             default:
                 echo $fieldtype . ' geen bekend veldtype ';
                 break;
@@ -414,14 +416,14 @@ class efqDataFieldManager extends XoopsFormElement
     public function createSearchField_text($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
-        $options_arr_constr = array(
+        $options_arr_constr = [
             'equal'      => _MD_EQUAL_TO,
             'notequal'   => _MD_NOT_EQUAL_TO,
             'contains'   => _MD_CONTAINS,
             'begins'     => _MD_BEGINSWITH,
             'ends'       => _MD_ENDSWITH,
             'notcontain' => _MD_NOTCONTAIN
-        );
+        ];
         $form_tray          = new XoopsFormElementTray($title, '', $name);
         $form_tray->addElement(new XoopsFormLabel('', '<table><tr><td width="150">'));
         $form_select_constr = new XoopsFormSelect('', $name . 'constr', $value, 1);
@@ -452,7 +454,7 @@ class efqDataFieldManager extends XoopsFormElement
     {
         global $form, $myts;
         $options_arr        = explode('[|]', $options);
-        $options_arr_constr = array('equal' => _MD_EQUAL_TO, 'notequal' => _MD_NOT_EQUAL_TO);
+        $options_arr_constr = ['equal' => _MD_EQUAL_TO, 'notequal' => _MD_NOT_EQUAL_TO];
         $form_tray          = new XoopsFormElementTray($title, '', $name);
         $form_tray->addElement(new XoopsFormLabel('', '<table><tr><td width="150">'));
         $form_select_constr = new XoopsFormSelect('', $name, $value, 1);
@@ -482,7 +484,7 @@ class efqDataFieldManager extends XoopsFormElement
     {
         global $form, $myts;
         $options_arr    = explode('[|]', $options);
-        $rating_options = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        $rating_options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         $form_rating    = new XoopsFormSelect($title, $name, $value, 1);
         $form_rating->addOption('0', '----');
         foreach ($rating_options as $option) {
@@ -495,13 +497,13 @@ class efqDataFieldManager extends XoopsFormElement
     {
         global $form, $myts;
         $options_arr        = explode('[|]', $options);
-        $rating_options     = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        $options_arr_constr = array(
+        $rating_options     = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        $options_arr_constr = [
             'equal'    => _MD_EQUAL_TO,
             'notequal' => _MD_NOT_EQUAL_TO,
             'smaller'  => _MD_SMALLER_THAN,
             'bigger'   => _MD_GREATER_THAN
-        );
+        ];
         $form_tray          = new XoopsFormElementTray($title, '', $name);
         $form_tray->addElement(new XoopsFormLabel('', '<table><tr><td width="150">'));
         $form_select_constr = new XoopsFormSelect('', $name . 'constr', $value, 1);

@@ -182,7 +182,6 @@ function edittype()
     global $xoopsDB, $eh, $myts, $get_typeid, $xoopsUser;
     if ($get_typeid == 0) {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_INVALID_TYPEID);
-        exit();
     }
     xoops_cp_header();
     $adminObject = \Xmf\Module\Admin::getInstance();
@@ -208,7 +207,6 @@ function edittype()
         }
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_INVALID_TYPEID);
-        exit();
     }
     xoops_cp_footer();
 }
@@ -218,7 +216,6 @@ function editoffer()
     global $xoopsDB, $eh, $xoopsUser, $subscription, $subscriptionhandler, $get_offerid, $itemtypes;
     if ($get_offerid == 0) {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_INVALID_OFFERID);
-        exit();
     }
     xoops_cp_header();
     $adminObject = \Xmf\Module\Admin::getInstance();
@@ -272,7 +269,6 @@ function editoffer()
         }
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_INVALID_OFFERID);
-        exit();
     }
     xoops_cp_footer();
 }
@@ -308,12 +304,22 @@ function addoffer()
     }
 
     $gen_offerid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_subscr_offers') . '_offerid_seq');
-    $sql         = sprintf("INSERT INTO %s (offerid, title, typeid, duration, COUNT, price, activeyn, currency, descr) VALUES (%u, '%s', %u, %u, %u, '%s', %u, '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_subscr_offers'), $gen_offerid, $post_title, $post_typeid,
-                           $post_duration, $post_count, $post_price, $post_activeyn, $post_currency, $post_descr);
+    $sql         = sprintf(
+        "INSERT INTO %s (offerid, title, typeid, duration, COUNT, price, activeyn, currency, descr) VALUES (%u, '%s', %u, %u, %u, '%s', %u, '%s', '%s')",
+        $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_subscr_offers'),
+        $gen_offerid,
+        $post_title,
+        $post_typeid,
+                           $post_duration,
+        $post_count,
+        $post_price,
+        $post_activeyn,
+        $post_currency,
+        $post_descr
+    );
     $xoopsDB->query($sql) || $eh->show('0013');
     $gen_offerid = $xoopsDB->getInsertId();
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php?offerid=" . $gen_offerid . '', 2, _MD_SAVED);
-    exit();
 }
 
 function saveoffer()
@@ -345,7 +351,6 @@ function saveoffer()
     $xoopsDB->query($sql) || $eh->show('0013');
     $gen_offerid = $xoopsDB->getInsertId();
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php?offerid=" . $post_offerid . '', 2, _MD_SAVED);
-    exit();
 }
 
 function addtype()
@@ -358,7 +363,6 @@ function addtype()
     $sql        = sprintf("INSERT INTO %s (typeid, typename, typelevel) VALUES (%u, '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_itemtypes'), $newid, $p_typename, $p_level);
     $xoopsDB->query($sql) || $eh->show('0013');
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_SAVED);
-    exit();
 }
 
 function deltype()
@@ -369,17 +373,14 @@ function deltype()
         $g_typeid = (int)$_GET['typeid'];
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_ERR_ITEMTYPE_DELETE);
-        exit();
     }
 
     if ($subscriptionhandler->countSubscriptionsForType($g_typeid) > 0) {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 3, _MD_ERR_ITEMTYPE_LINKED_TO_LISTINGS);
-        exit();
     }
     $sql = sprintf('DELETE FROM %s WHERE typeid=%u', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_itemtypes'), $g_typeid);
     $xoopsDB->queryF($sql) || $eh->show('0013');
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 1, _MD_ITEMTYPE_DELETED);
-    exit();
 }
 
 //function to save an existing subscription type
@@ -392,7 +393,6 @@ function savetype()
     $sql        = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_itemtypes') . " SET typename='$p_typename', typelevel='$p_level' WHERE typeid='$post_typeid'";
     $xoopsDB->query($sql) || $eh->show('0013');
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_SAVED);
-    exit();
 }
 
 //function to delete an existing subscription type

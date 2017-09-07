@@ -46,7 +46,6 @@ $datafieldmanager = new efqDataFieldManager();
 // not allowed, redirect and exit.
 if (empty($xoopsUser) and !$xoopsModuleConfig['anonpost']) {
     redirect_header(XOOPS_URL . '/user.php', 2, _MD_MUSTREGFIRST);
-    exit();
 }
 
 // Check if user has adminrights or not;
@@ -65,7 +64,6 @@ if (!empty($_POST['submit'])) {
         $post_itemid = (int)$_POST['itemid'];
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM_IDMISSING);
-        exit();
     }
     if (isset($_POST['op'])) {
         $op = $_POST['op'];
@@ -91,9 +89,9 @@ if (!empty($_POST['submit'])) {
         $p_ini_title = $myts->makeTboxData4Save($_POST['ini_itemtitle']);
         // Start uploading up file;
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-        $uploader = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/modules/' . $moddir . '/init_uploads', array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png', 'image/jpg'), 300000, 250, 250);
+        $uploader = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/modules/' . $moddir . '/init_uploads', ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png', 'image/jpg'], 300000, 250, 250);
         $uploader->setPrefix('logo');
-        $err    = array();
+        $err    = [];
         $ucount = count($_POST['xoops_upload_file']);
         for ($i = 0; $i < $ucount; ++$i) {
             if ($_POST['xoops_upload_file'][$i] !== '') {
@@ -127,7 +125,6 @@ if (!empty($_POST['submit'])) {
         }
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM_TITLEMISSING);
-        exit();
     }
     if (isset($_POST['ini_description'])) {
         $p_ini_description = $myts->makeTareaData4Save($_POST['ini_description']);
@@ -175,11 +172,9 @@ if (!empty($_POST['submit'])) {
         }
         if ($count == 0) {
             redirect_header(XOOPS_URL . "/modules/$moddir/submit.php?dirid=" . $post_dirid . '', 2, _MD_NOCATEGORYMATCH);
-            exit();
         }
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/submit.php?dirid=" . $post_dirid . '', 2, _MD_NOCATEGORIESAVAILABLE);
-        exit();
     }
 
     // Get all datatypes that can be associated with this listing.
@@ -252,7 +247,6 @@ if (!empty($_POST['submit'])) {
         }
     }
     redirect_header("edit.php?item=$post_itemid", 1, _MD_ITEM_UPDATED);
-    exit();
 } else {
     // Prepare page for showing listing edit form.
     if (!empty($_GET['item'])) {
@@ -260,7 +254,6 @@ if (!empty($_POST['submit'])) {
         $get_dirid  = getDirIdFromItem($get_itemid);
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM_GET_IDMISSING);
-        exit();
     }
 
     $GLOBALS['xoopsOption']['template_main'] = 'efqdiralpha1_editlisting.tpl';
@@ -300,7 +293,6 @@ if (!empty($_POST['submit'])) {
                 // Only admin is allowed to edit a listing after approval (status = 2)
                 // in case autoapprove is off.
                 redirect_header('listing.php?item=' . $itemid, 2, _MD_ONLYADMIN_ALLOWED_TO_EDIT);
-                exit();
             }
             if ($logourl !== '') {
                 $picture = "uploads/$logourl";
@@ -367,7 +359,7 @@ include XOOPS_ROOT_PATH . '/footer.php';
 function GetLevelid($locdestid)
 {
     global $xoopsDB;
-    $block        = array();
+    $block        = [];
     $myts         = MyTextSanitizer::getInstance();
     $result2      = $xoopsDB->query('SELECT locid, levelid FROM ' . $xoopsDB->prefix('dst_loc') . ' WHERE locid = ' . $locdestid . '');
     $num_results2 = $GLOBALS['xoopsDB']->getRowsNum($result2);
@@ -389,7 +381,7 @@ function GetLevelid($locdestid)
 function GetLocName($locdestid)
 {
     global $xoopsDB;
-    $block       = array();
+    $block       = [];
     $myts        = MyTextSanitizer::getInstance();
     $result      = $xoopsDB->query('SELECT locid, name FROM ' . $xoopsDB->prefix('dst_loc') . ' WHERE locid = ' . $locdestid . '');
     $num_results = $GLOBALS['xoopsDB']->getRowsNum($result);

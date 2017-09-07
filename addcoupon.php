@@ -50,7 +50,6 @@ if (isset($_POST['itemid'])) {
 
 if (empty($xoopsUser) || !$xoopsUser->isAdmin($xoopsModule->mid()) || ($itemid == 0 && empty($_POST['delete']))) {
     redirect_header('index.php', 3, _NOPERM);
-    exit();
 }
 
 if (isset($_POST['lbr'])) {
@@ -106,22 +105,19 @@ if (!empty($_POST['submit'])) {
         $coupon->message = _MD_ERR_ADDCOUPON;
     }
     redirect_header('listing.php?item=' . $itemid, 2, $coupon->message);
-    exit();
 } elseif (!empty($_POST['delete'])) {
     if (!empty($_POST['ok'])) {
         if (empty($_POST['couponid'])) {
             redirect_header('index.php', 2, _MD_ERR_COUPONIDMISSING);
-            exit();
         }
         $coupon   = new efqCouponHandler();
         $couponid = (int)$_POST['couponid'];
         if ($coupon->delete($couponid)) {
             redirect_header('listing.php?item=' . $itemid, 2, _MD_COUPONDELETED);
-            exit();
         }
     } else {
         include XOOPS_ROOT_PATH . '/header.php';
-        xoops_confirm(array('delete' => 'yes', 'couponid' => $couponid, 'ok' => 1), 'addcoupon.php?item=' . $itemid . '', _MD_COUPONRUSURE);
+        xoops_confirm(['delete' => 'yes', 'couponid' => $couponid, 'ok' => 1], 'addcoupon.php?item=' . $itemid . '', _MD_COUPONRUSURE);
         require_once XOOPS_ROOT_PATH . '/footer.php';
         exit();
     }

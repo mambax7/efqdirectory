@@ -148,14 +148,14 @@ class efqDirectoryHandler extends XoopsObjectHandler
             return false;
         }
         while (list($dirid, $postfix, $open, $name, $descr, $img) = $this->db->fetchRow($result)) {
-            $arr[] = array(
+            $arr[] = [
                 'dirid'   => $dirid,
                 'postfix' => $postfix,
                 'open'    => $open,
                 'name'    => $name,
                 'descr'   => $descr,
                 'img'     => $img
-            );
+            ];
         }
 
         return $arr;
@@ -167,7 +167,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * @param array $idarray
      * @return array|bool
      */
-    public function &getAllDirectoryIds($idarray = array())
+    public function &getAllDirectoryIds($idarray = [])
     {
         $sql = 'SELECT dirid FROM ' . $this->db->prefix('efqdiralpha1_dir') . '';
         if (!$result = $this->db->query($sql)) {
@@ -186,7 +186,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      * @param array $arr
      * @return array|bool
      */
-    public function &getAllDirectoryTitles($arr = array())
+    public function &getAllDirectoryTitles($arr = [])
     {
         $sql = 'SELECT dirid, name FROM ' . $this->db->prefix('efqdiralpha1_dir') . '';
         if (!$result = $this->db->query($sql)) {
@@ -208,7 +208,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
     public function countAll()
     {
         global $xoopsDB;
-        $block       = array();
+        $block       = [];
         $myts        = MyTextSanitizer::getInstance();
         $dirid       = 0;
         $result      = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . '');
@@ -240,7 +240,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         $numrows = $this->db->getRowsNum($result);
         $result  = $this->db->query($sql);
         if ($dashes !== false) {
-            $arr = array('0' => '---');
+            $arr = ['0' => '---'];
         }
         while (list($dirid, $dirname) = $this->db->fetchRow($result)) {
             $arr[$dirid] = $dirname;
@@ -264,7 +264,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
     {
         $tablename    = 'efqdiralpha1_dir';
         $keyName      = 'dirid';
-        $excludedVars = array();
+        $excludedVars = [];
         if ($obj instanceof efqDirectory) {
             // Variable part of this function ends. From this line you can copy
             // this function for similar object handling functions.

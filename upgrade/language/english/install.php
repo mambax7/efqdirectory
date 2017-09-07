@@ -1,8 +1,10 @@
 <?php
 
 define('_INSTALL_L0', 'Welcome to the Install Wizard for XOOPS 2.0');
-define('_INSTALL_L70',
-       'Please change the file permission for mainfile.php so that it is writeable by the server (i.e. chmod 777 mainfile.php on a UNIX/LINUX server, or check the properties of the file and make sure the read-only flag is not set on a Windows server ). Reload this page once you have changed the permission setting.');
+define(
+    '_INSTALL_L70',
+       'Please change the file permission for mainfile.php so that it is writeable by the server (i.e. chmod 777 mainfile.php on a UNIX/LINUX server, or check the properties of the file and make sure the read-only flag is not set on a Windows server ). Reload this page once you have changed the permission setting.'
+);
 //define("_INSTALL_L71","Click on the button below to begin the installation.");
 define('_INSTALL_L1', 'Open mainfile.php with your text editor and find the following codes on line 31:');
 define('_INSTALL_L2', 'Now, change this line to:');
@@ -70,8 +72,10 @@ define('_INSTALL_L43', 'Database %s created!');
 define('_INSTALL_L44', 'Unable to make %s');
 define('_INSTALL_L45', 'Table %s created.');
 
-define('_INSTALL_L46',
-       "In order for the modules included in the package to work correctly, the following files must be writeable by the server. Please change the permission setting for these files. (i.e. 'chmod 666 file_name' and 'chmod 777 dir_name' on a UNIX/LINUX server, or check the properties of the file and make sure the read-only flag is not set on a Windows server)");
+define(
+    '_INSTALL_L46',
+       "In order for the modules included in the package to work correctly, the following files must be writeable by the server. Please change the permission setting for these files. (i.e. 'chmod 666 file_name' and 'chmod 777 dir_name' on a UNIX/LINUX server, or check the properties of the file and make sure the read-only flag is not set on a Windows server)"
+);
 define('_INSTALL_L47', 'Next');
 
 define('_INSTALL_L53', 'Please confirm the following submitted data:');

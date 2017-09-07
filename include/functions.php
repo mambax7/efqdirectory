@@ -167,7 +167,7 @@ function getTotalItems($sel_id, $status = 0)
 {
     global $xoopsDB, $mytree;
     $count = 0;
-    $arr   = array();
+    $arr   = [];
     $query = 'SELECT DISTINCT l.itemid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' l, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . ' x WHERE x.itemid=l.itemid AND x.cid=' . $sel_id . '';
     if ($status !== '') {
         $query .= " AND l.status>='$status'";
@@ -211,7 +211,7 @@ function getTotalItems2($sel_id, $status = '', $locdestid)
 {
     global $xoopsDB, $mytree;
     $count = 0;
-    $arr   = array();
+    $arr   = [];
     $query = 'SELECT count(*) FROM ' . $xoopsDB->prefix('links_links') . ' t, ' . $xoopsDB->prefix('links_x_loc_dest') . ' x  WHERE x.ldestid=t.lid AND x.locdestid=' . $locdestid . ' AND t.cid=' . $sel_id . '';
     //  $query = "select DISTINCT count(lid) from ".$xoopsDB->prefix("links_links")." t, ".$xoopsDB->prefix("links_x_loc_dest")." x  where x.ldestid=t.lid AND x.locdestid=".$locdestid." AND t.cid=".$sel_id."";
     //  $query = "select count(*) from ".$xoopsDB->prefix("links_links")." where cid=".$sel_id."";
@@ -320,7 +320,7 @@ function getCategoriesPaths($get_itemid)
 function adminmenu($currentoption = 0, $breadcrumb)
 {
     global $xoopsModule, $xoopsConfig;
-    $tblColors                 = array();
+    $tblColors                 = [];
     $tblColors[0]              = $tblColors[1] = $tblColors[2] = $tblColors[3] = $tblColors[4] = $tblColors[5] = $tblColors[6] = $tblColors[7] = '#DDE';
     $tblColors[$currentoption] = 'white';
     echo "<table width=100% class='outer'><tr><td align=right>
@@ -548,7 +548,7 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
 function getDirIdFromItem($item = 0)
 {
     global $xoopsDB;
-    $block       = array();
+    $block       = [];
     $myts        = MyTextSanitizer::getInstance();
     $dirid       = 0;
     $result      = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' WHERE itemid = ' . $item . '');
@@ -571,7 +571,7 @@ function getDirIdFromItem($item = 0)
 function getUserIdFromItem($item = 0)
 {
     global $xoopsDB;
-    $block       = array();
+    $block       = [];
     $myts        = MyTextSanitizer::getInstance();
     $userid      = 0;
     $result      = $xoopsDB->query('SELECT uid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' WHERE itemid = ' . $item . '');
@@ -614,10 +614,10 @@ function updaterating($sel_id)
 function getAddressFields($typeid = '0')
 {
     global $xoopsDB;
-    $block        = array();
+    $block        = [];
     $myts         = MyTextSanitizer::getInstance();
     $dirid        = 0;
-    $addressarray = array();
+    $addressarray = [];
     if ($typeid == '0') {
         $result = $xoopsDB->query('SELECT typeid, address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country, typename, uselocyn FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_address_types') . " WHERE defaultyn = '1'");
     } else {
@@ -628,11 +628,11 @@ function getAddressFields($typeid = '0')
         return 0;
     }
     while (list($typeid, $address, $address2, $zip, $postcode, $lat, $lon, $phone, $fax, $mobile, $city, $country, $typename, $uselocyn) = $xoopsDB->fetchRow($result)) {
-        $addressarray = array(
+        $addressarray = [
             'typeid'        => $typeid,
             'typename'      => $typename,
             'uselocyn'      => $uselocyn,
-            'addressfields' => array(
+            'addressfields' => [
                 'address'  => $address,
                 'address2' => $address2,
                 'zip'      => $zip,
@@ -644,8 +644,8 @@ function getAddressFields($typeid = '0')
                 'mobile'   => $mobile,
                 'city'     => $city,
                 'country'  => $country
-            )
-        );
+            ]
+        ];
     }
 
     return $addressarray;
@@ -659,14 +659,14 @@ function getAddressValues($addrid = '0')
 {
     global $xoopsDB;
     $myts         = MyTextSanitizer::getInstance();
-    $addressarray = array();
+    $addressarray = [];
     $result       = $xoopsDB->query('SELECT address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_addresses') . " WHERE addrid = '$addrid'");
     $num_results  = $xoopsDB->getRowsNum($result);
     if ($num_results == 0) {
-        $addressarray = array('address' => '', 'address2' => '', 'zip' => '', 'postcode' => '', 'lat' => '', 'lon' => '', 'phone' => '', 'fax' => '', 'mobile' => '', 'city' => '', 'country' => '');
+        $addressarray = ['address' => '', 'address2' => '', 'zip' => '', 'postcode' => '', 'lat' => '', 'lon' => '', 'phone' => '', 'fax' => '', 'mobile' => '', 'city' => '', 'country' => ''];
     }
     while (list($address, $address2, $zip, $postcode, $lat, $lon, $phone, $fax, $mobile, $city, $country) = $xoopsDB->fetchRow($result)) {
-        $addressarray = array(
+        $addressarray = [
             'address'  => $address,
             'address2' => $address2,
             'zip'      => $zip,
@@ -678,7 +678,7 @@ function getAddressValues($addrid = '0')
             'mobile'   => $mobile,
             'city'     => $city,
             'country'  => $country
-        );
+        ];
     }
 
     return $addressarray;
@@ -724,7 +724,6 @@ function getCatSelectArea2()
         }
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/index.php?dirid=$get_dirid", 2, _MD_NOACTIVECATEGORIES);
-        exit();
         //$output = ""._MD_NORESULTS."";
     }
     if ($isadmin) {
@@ -733,7 +732,6 @@ function getCatSelectArea2()
     $output .= '</table>';
     if ($selectablecat === false) {
         redirect_header(XOOPS_URL . "/modules/$moddir/index.php?dirid=$get_dirid", 2, _MD_NOACTIVECATEGORIES);
-        exit();
     }
 
     return $output;

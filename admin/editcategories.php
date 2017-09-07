@@ -61,7 +61,7 @@ if (!empty($_POST['submit'])) {
     $allitemcatsresult = $xoopsDB->query($sql);
     $numrows           = $xoopsDB->getRowsNum($allitemcatsresult);
     $count             = 0;
-    $allitemcats       = array();
+    $allitemcats       = [];
     if ($numrows > 0) {
         while (list($cid) = $xoopsDB->fetchRow($allitemcatsresult)) {
             $allitemcats[] = $cid;
@@ -70,7 +70,7 @@ if (!empty($_POST['submit'])) {
     $activeitemcatsresult = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat') . " WHERE itemid='" . $post_itemid . '\' AND active=\'1\'');
     $numrows              = $xoopsDB->getRowsNum($activeitemcatsresult);
     $count                = 0;
-    $activeitemcats       = array();
+    $activeitemcats       = [];
     if ($numrows > 0) {
         while (list($cid) = $xoopsDB->fetchRow($activeitemcatsresult)) {
             $activeitemcats[] = $cid;
@@ -78,8 +78,8 @@ if (!empty($_POST['submit'])) {
     }
     $allcatsresult = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat') . " WHERE active='1'");
     $numrows       = $xoopsDB->getRowsNum($allcatsresult);
-    $allcats       = array();
-    $postedcats    = array();
+    $allcats       = [];
+    $postedcats    = [];
     if ($numrows > 0) {
         while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
             $allcats[] = $cid;
@@ -109,7 +109,6 @@ if (!empty($_POST['submit'])) {
         }
     }
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/editcategories.php?item=" . $post_itemid . '', 2, _MD_CATEGORIES_UPDATED);
-    exit();
 } else {
     xoops_cp_header();
     $dirid = getDirIdFromItem($get_itemid);

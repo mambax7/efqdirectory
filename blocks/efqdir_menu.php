@@ -46,7 +46,7 @@ function b_efqdiralpha1_menu_show($options)
         $count  = count($split) - 2;
         $moddir = $split[$count];
     }
-    $block                 = array();
+    $block                 = [];
     $block['lang_dirmenu'] = _MB_EFQDIR_MENU;
     $block['moddir']       = $moddir;
     $myts                  = MyTextSanitizer::getInstance();
@@ -54,14 +54,14 @@ function b_efqdiralpha1_menu_show($options)
     echo 'test';
     print_r($result);
     while ($myrow = $xoopsDB->fetchArray($result)) {
-        $directory              = array();
+        $directory              = [];
         $name                   = $myts->htmlSpecialChars($myrow['name']);
         $directory['dirid']     = $myrow['dirid'];
         $directory['name']      = $name;
         $directory['descr']     = $myrow['descr'];
         $block['directories'][] = $directory;
     }
-    $sublink = array();
+    $sublink = [];
 
     return $block;
 }

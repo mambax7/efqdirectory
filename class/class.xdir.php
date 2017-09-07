@@ -97,7 +97,7 @@ class efqXdirHandler extends XoopsObjectHandler
      */
     public function setCategories_xdir()
     {
-        $arr    = array();
+        $arr    = [];
         $sql    = 'SELECT cid, pid, title, imgurl FROM ' . $this->db->prefix('efqdiralpha1_xdir_cat');
         $result = $this->db->query($sql);
         if (!$result) {
@@ -106,7 +106,7 @@ class efqXdirHandler extends XoopsObjectHandler
         $numrows = $this->db->getRowsNum($result);
         if ($numrows > 0) {
             while (list($cid, $pid, $title, $imgurl) = $this->db->fetchRow($result)) {
-                $arr[] = array('cid' => $cid, 'pid' => $pid, 'title' => $title, 'imgurl' => $imgurl);
+                $arr[] = ['cid' => $cid, 'pid' => $pid, 'title' => $title, 'imgurl' => $imgurl];
             }
         } else {
             return false;
@@ -154,16 +154,16 @@ class efqXdirHandler extends XoopsObjectHandler
     public function createDataTypes()
     {
         $datatypeHandler = new efqDataTypeHandler();
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_ADDRESS, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_ADDRESS2, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_CITY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_STATE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_ZIP, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_COUNTRY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_PHONE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_FAX, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_EMAIL, 'fieldtype' => _MD_XDIR_FIELDTYPE_EMAIL);
-        $arr[]            = array('title' => _MD_XDIR_DTYPE_URL, 'fieldtype' => _MD_XDIR_FIELDTYPE_URL);
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_ADDRESS, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_ADDRESS2, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_CITY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_STATE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_ZIP, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_COUNTRY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_PHONE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_FAX, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_EMAIL, 'fieldtype' => _MD_XDIR_FIELDTYPE_EMAIL];
+        $arr[]            = ['title' => _MD_XDIR_DTYPE_URL, 'fieldtype' => _MD_XDIR_FIELDTYPE_URL];
         foreach ($arr as $datatype) {
             $objDataType = new efqFieldType;
             $objDataType->setVar('title', $datatype['title']);
@@ -190,9 +190,9 @@ class efqXdirHandler extends XoopsObjectHandler
     public function createFieldTypes()
     {
         $fieldtypeHandler = new efqFieldTypeHandler();
-        $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_TEXTBOX, 'fieldtype' => 'textbox');
-        $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_EMAIL, 'fieldtype' => 'email');
-        $arr[]             = array('title' => _MD_XDIR_FIELDTYPE_URL, 'fieldtype' => 'url');
+        $arr[]             = ['title' => _MD_XDIR_FIELDTYPE_TEXTBOX, 'fieldtype' => 'textbox'];
+        $arr[]             = ['title' => _MD_XDIR_FIELDTYPE_EMAIL, 'fieldtype' => 'email'];
+        $arr[]             = ['title' => _MD_XDIR_FIELDTYPE_URL, 'fieldtype' => 'url'];
         foreach ($arr as $fieldtype) {
             $objFieldtype = new efqFieldType;
             $objFieldtype->setVar('title', $fieldtype['title']);
