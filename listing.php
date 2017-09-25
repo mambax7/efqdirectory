@@ -20,7 +20,7 @@
 
 include __DIR__ . '/header.php';
 $myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
-require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
@@ -28,7 +28,7 @@ require_once __DIR__ . '/class/class.listing.php';
 require_once __DIR__ . '/class/class.datafieldmanager.php';
 require_once __DIR__ . '/class/class.couponhandler.php';
 
-$mytree           = new XoopsTree($xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
+$mytree           = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
 $datafieldmanager = new efqDataFieldManager();
 $eh               = new ErrorHandler;
 
@@ -75,11 +75,11 @@ $pathstring .= $mytree->getNicePathFromId($get_catid, 'title', 'index.php?dirid=
 
 $editlink = '<a href="edit.php?item=' . $get_itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/' . $xoopsConfig['language'] . '/listing-edit.gif" alt="' . _MD_EDIT_LISTING . '" title="' . _MD_EDIT_LISTING . '"></a>';
 
-if (isset($xoopsUser) && $xoopsUser !== null) {
+if (isset($xoopsUser) && null !== $xoopsUser) {
     if ($xoopsUser->getVar('uid') == $listing->getVar('uid')) {
         $islistingowner = true;
         $xoopsTpl->assign('listingowner', '1');
-        if ($listing->getVar('status') == '2' and $xoopsModuleConfig['autoapprove'] == 1) {
+        if ('2' == $listing->getVar('status') and 1 == $xoopsModuleConfig['autoapprove']) {
             $editrights = '1';
         } else {
             $editrights = '0';
@@ -94,7 +94,7 @@ if (!$islistingowner and !$isadmin) {
 
 $type     = getTypeFromId($listing->getVar('typeid'));
 $template = getTemplateFromCatid($get_catid);
-if ($listing->getVar('logourl') !== '') {
+if ('' !== $listing->getVar('logourl')) {
     $logourl = '<img src="' . XOOPS_URL . '/modules/' . $moddir . '/uploads/' . $listing->getVar('logourl') . '">';
 } else {
     $logourl = '';
@@ -132,14 +132,14 @@ if (count($listing->_datatypes) > 0) {
     }
 }
 
-if ($xoopsModuleConfig['allowcoupons'] == '0') {
+if ('0' == $xoopsModuleConfig['allowcoupons']) {
     $xoopsTpl->assign('couponsallowed', '0');
 } else {
     $xoopsTpl->assign('couponsallowed', '1');
     $xoopsTpl->assign('lang_addcoupon', _MD_ADDCOUPON);
     $xoopsTpl->assign('coupons', $coupon->getCountByLink($get_itemid));
 }
-if ($xoopsModuleConfig['allowsubscr'] == '0') {
+if ('0' == $xoopsModuleConfig['allowsubscr']) {
     $xoopsTpl->assign('subscrallowed', '0');
 } else {
     $xoopsTpl->assign('subscrallowed', '1');

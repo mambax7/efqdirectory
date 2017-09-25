@@ -25,7 +25,7 @@
 
 include __DIR__ . '/header.php';
 $myts = MyTextSanitizer::getInstance(); // MyTextSanitizer object
-require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
@@ -36,7 +36,7 @@ require_once __DIR__ . '/class/class.couponhandler.php';
 $eh = new ErrorHandler; //ErrorHandler object
 
 $moddir = $xoopsModule->getVar('dirname');
-$mytree = new XoopsTree($xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
+$mytree = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
 
 //$moddir = $xoopsModule->getvar("dirname");
 $couponid = isset($_GET['couponid']) ? (int)$_GET['couponid'] : 0;
@@ -48,7 +48,7 @@ if (isset($_POST['itemid'])) {
     $itemid = 0;
 }
 
-if (empty($xoopsUser) || !$xoopsUser->isAdmin($xoopsModule->mid()) || ($itemid == 0 && empty($_POST['delete']))) {
+if (empty($xoopsUser) || !$xoopsUser->isAdmin($xoopsModule->mid()) || (0 == $itemid && empty($_POST['delete']))) {
     redirect_header('index.php', 3, _NOPERM);
 }
 

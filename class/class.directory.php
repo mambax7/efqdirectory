@@ -59,12 +59,12 @@ class efqDirectory extends XoopsObject
         $this->initVar('img', XOBJ_DTYPE_TXTBOX);
         $this->initVar('allowreview', XOBJ_DTYPE_INT, 0, false);
 
-        if ($directory !== false) {
+        if (false !== $directory) {
             if (is_array($directory)) {
                 $this->assignVars($directory);
             } else {
                 $directoryHandler = xoops_getModuleHandler('directory', $moddir);
-                $objDirectory      = $directoryHandler->get($directory);
+                $objDirectory     = $directoryHandler->get($directory);
                 foreach ($objDirectory->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
                 }
@@ -118,7 +118,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      */
     public function &get($dirid = false)
     {
-        if ($dirid === false) {
+        if (false === $dirid) {
             return false;
         }
         $dirid = (int)$dirid;
@@ -211,13 +211,14 @@ class efqDirectoryHandler extends XoopsObjectHandler
         $block       = [];
         $myts        = MyTextSanitizer::getInstance();
         $dirid       = 0;
-        $result      = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . '');
+        $sql         = 'SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . ' ';
+        $result      = $xoopsDB->query($sql);
         $num_results = $xoopsDB->getRowsNum($result);
         if (!$result) {
             return false;
-        } elseif ($num_results == 0) {
+        } elseif (0 == $num_results) {
             return 0;
-        } elseif ($num_results == 1) {
+        } elseif (1 == $num_results) {
             $row   = $GLOBALS['xoopsDB']->fetchBoth($result);
             $dirid = $row['dirid'];
 
@@ -239,7 +240,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         $result  = $this->db->query($sql);
-        if ($dashes !== false) {
+        if (false !== $dashes) {
             $arr = ['0' => '---'];
         }
         while (list($dirid, $dirname) = $this->db->fetchRow($result)) {
@@ -257,7 +258,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
      *
      * @param   efqDirectory $obj object
      *
-     * @param bool     $forceQuery
+     * @param bool           $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertDirectory($obj, $forceQuery = false)

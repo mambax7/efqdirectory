@@ -39,13 +39,14 @@ if (!empty($_POST['submit'])) {
     $p_rating     = (int)$_POST['rating'];
 
     // Check if Rating is Null
-    if ($p_rating == '--') {
+    if ('--' == $p_rating) {
         redirect_header('ratelisting.php?catid=' . $p_catid . '&amp;item=' . $itemid . '', 2, _MD_NORATING);
     }
 
     // Check if Link POSTER is voting (UNLESS Anonymous users allowed to post)
-    if ($ratinguser != 0) {
-        $result = $xoopsDB->query('select submitter from ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . " where itemid=$p_itemid");
+    if (0 != $ratinguser) {
+        $sql    = 'select submitter from ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " where itemid=$p_itemid";
+        $result = $xoopsDB->query($sql);
         while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header('index.php', 4, _MD_CANTVOTEOWN);
@@ -53,7 +54,8 @@ if (!empty($_POST['submit'])) {
         }
 
         // Check if REG user is trying to vote twice.
-        $result = $xoopsDB->query('select ratinguser from ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_votedata') . " where itemid=$p_itemid");
+        $sql    = 'select ratinguser from ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_votedata') . " where itemid=$p_itemid";
+        $result = $xoopsDB->query($sql);
         while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header('index.php', 4, _MD_VOTEONCE2);
@@ -63,7 +65,7 @@ if (!empty($_POST['submit'])) {
 
         // Check if ANONYMOUS user is trying to vote more than once per day.
         $yesterday = (time() - (86400 * $anonwaitdays));
-        $result    = $xoopsDB->query('select count(*) FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_votedata') . " WHERE itemid=$p_itemid AND ratinguser=0 AND ratinghostname = '$ip' AND ratingtimestamp > $yesterday");
+        $result    = $xoopsDB->query('select count(*) FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_votedata') . " WHERE itemid=$p_itemid AND ratinguser=0 AND ratinghostname = '$ip' AND ratingtimestamp > $yesterday");
         list($anonvotecount) = $xoopsDB->fetchRow($result);
         if ($anonvotecount > 0) {
             redirect_header('index.php', 4, _MD_VOTEONCE2);
@@ -74,10 +76,10 @@ if (!empty($_POST['submit'])) {
     }
 
     //Add to Line Item Rate to DB.
-    $newid    = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_votedata') . '_ratingid_seq');
+    $newid    = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_votedata') . '_ratingid_seq');
     $datetime = time();
-    $sql      = sprintf("INSERT INTO %s (ratingid, itemid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_votedata'), $newid, $p_itemid, $ratinguser, $p_rating, $ip, $datetime);
-    $xoopsDB->query($sql) || $eh->show('0013');
+    $sql      = sprintf("INSERT INTO %s (ratingid, itemid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix($efqdirectory->getDirname() . '_votedata'), $newid, $p_itemid, $ratinguser, $p_rating, $ip, $datetime);
+    $xoopsDB->query($sql) ; //|| $eh->show('0013');
 
     //Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
     updaterating($p_itemid);
@@ -91,7 +93,7 @@ if (!empty($_POST['submit'])) {
     } else {
         $p_dirid = 0;
     }
-    if ($p_dirid == 0) {
+    if (0 == $p_dirid) {
         $dirid = getDirIdFromItem($p_itemid);
     } else {
         $dirid = $p_dirid;
@@ -112,7 +114,8 @@ if (!empty($_POST['submit'])) {
         $get_catid = '0';
     }
 
-    $result = $xoopsDB->query('select title from ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_listings') . " where itemid=$get_itemid");
+    $sql    = 'select title from ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_listings') . " where itemid=$get_itemid";
+    $result = $xoopsDB->query($sql);
     list($title) = $xoopsDB->fetchRow($result);
     $xoopsTpl->assign('listing', ['itemid' => $get_itemid, 'catid' => $get_catid, 'title' => $myts->htmlSpecialChars($title)]);
     $xoopsTpl->assign('moddir', $moddir);

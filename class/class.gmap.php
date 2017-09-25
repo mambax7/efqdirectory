@@ -71,12 +71,12 @@ class efqGmap extends XoopsObject
         $this->initVar('lon', XOBJ_DTYPE_TXTBOX, null, true);
         $this->initVar('descr', XOBJ_DTYPE_TXTAREA);
 
-        if ($gmap !== false) {
+        if (false !== $gmap) {
             if (is_array($gmap)) {
                 $this->assignVars($gmap);
             } else {
                 $$gmapHandler = xoops_getModuleHandler('gmap', $moddir);
-                $objGmap       =& $$gmapHandler->get($directory);
+                $objGmap      =& $$gmapHandler->get($directory);
                 foreach ($objGmap->vars as $k => $v) {
                     $this->assignVar($k, $v['value']);
                 }
@@ -269,7 +269,7 @@ EOH;
  */
 class efqGmapHandler extends XoopsObjectHandler
 {
-//    public $db;
+    //    public $db;
 
     /**
      * efqGmapHandler constructor.
@@ -334,9 +334,9 @@ class efqGmapHandler extends XoopsObjectHandler
      */
     public function getGmapById($id = 0)
     {
-        $arr = [];
-        $sql = sprintf('SELECT * FROM %s WHERE id=%u', $this->db->prefix('efqdiralpha1_gmaps'), (int)$id);
-        $result = $this->db->query($sql) || $eh->show('0013');
+        $arr    = [];
+        $sql    = sprintf('SELECT * FROM %s WHERE id=%u', $this->db->prefix('efqdiralpha1_gmaps'), (int)$id);
+        $result = $this->db->query($sql) ; //|| $eh->show('0013');
         while (list($id, $lat, $lon, $descr, $dataid) = $this->db->fetchRow($result)) {
             $arr = ['id' => $id, 'lat' => $lat, 'lon' => $lon, 'descr' => $descr, 'dataid' => $dataid];
         }
@@ -350,7 +350,7 @@ class efqGmapHandler extends XoopsObjectHandler
      */
     public function getByDataId($id = 0)
     {
-        if ($id === false) {
+        if (false === $id) {
             return false;
         }
         $id = (int)$id;
@@ -377,7 +377,7 @@ class efqGmapHandler extends XoopsObjectHandler
      *
      * @param   efqGmap $obj object
      *
-     * @param bool     $forceQuery
+     * @param bool      $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertGmap($obj, $forceQuery = false)
@@ -433,7 +433,7 @@ class efqGmapHandler extends XoopsObjectHandler
      *
      * @param   efqGmap $obj object
      *
-     * @param bool     $forceQuery
+     * @param bool      $forceQuery
      * @return bool true if update is succesful, false if unsuccesful
      */
     public function updateGmap($obj, $forceQuery = false)
@@ -454,7 +454,7 @@ class efqGmapHandler extends XoopsObjectHandler
         $strSet    = '';
         $strValues = '';
         foreach ($cleanvars as $k => $v) {
-            if ($k !== 'id') {
+            if ('id' !== $k) {
                 $strSet .= $k . '=' . "'" . $v . "'";
                 if ($i < $countVars) {
                     $strSet .= ', ';

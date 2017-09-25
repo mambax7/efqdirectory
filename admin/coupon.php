@@ -65,7 +65,7 @@ foreach ($coupons as $catid => $category) {
         </th>
         </tr>';
     foreach ($category['coupons'] as $key => $coupon) {
-        if (!isset($class) || ($class !== 'odd')) {
+        if (!isset($class) || ('odd' !== $class)) {
             $class = 'odd';
         } else {
             $class = 'even';

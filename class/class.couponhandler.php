@@ -13,6 +13,9 @@
 --------------------------------------------------------------------------- //
 */
 
+/**
+ * Class efqCouponHandler
+ */
 class efqCouponHandler
 {
     public $db;
@@ -32,6 +35,9 @@ class efqCouponHandler
         $this->db = XoopsDatabaseFactory::getDatabaseConnection();
     }
 
+    /**
+     * @return bool
+     */
     public function create()
     {
         global $myts;
@@ -39,7 +45,7 @@ class efqCouponHandler
         $this->image   = $myts->makeTboxData4Save($_POST['image']);
         $this->itemid  = (int)$_POST['itemid'];
         $this->publish = strtotime($_POST['publish']['date']) + $_POST['publish']['time'];
-        if (isset($_POST['expire_enable']) && ($_POST['expire_enable'] == 1)) {
+        if (isset($_POST['expire_enable']) && (1 == $_POST['expire_enable'])) {
             $this->expire = strtotime($_POST['expire']['date']) + $_POST['expire']['time'];
         } else {
             $this->expire = 0;
@@ -65,9 +71,12 @@ class efqCouponHandler
         }
     }
 
+    /**
+     * @return bool
+     */
     public function insert()
     {
-        $sql = 'INSERT INTO ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . '
+        $sql = 'INSERT INTO ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . '
             (itemid, description, image, publish, expire, heading, lbr) VALUES
             (' . $this->itemid . ', ' . $this->db->quoteString($this->descr) . ', ' . $this->db->quoteString($this->image) . ', ' . $this->publish . ', ' . $this->expire . ', ' . $this->db->quoteString($this->heading) . ', ' . $this->lbr . ')';
         if ($this->db->query($sql)) {
@@ -79,9 +88,12 @@ class efqCouponHandler
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function update()
     {
-        $sql = 'UPDATE ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . ' SET
+        $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' SET
             description = ' . $this->db->quoteString($this->descr) . ',
             image = ' . $this->db->quoteString($this->image) . ',
             publish = ' . $this->publish . ',
@@ -93,15 +105,19 @@ class efqCouponHandler
         return true;
     }
 
+    /**
+     * @param bool $couponid
+     * @return bool
+     */
     public function get($couponid = false)
     {
-        if ($couponid === false) {
+        if (false === $couponid) {
             //echo 'couponid is false';
             return false;
         }
         //$couponid = (int)($couponid);
         if ($couponid > 0) {
-            $sql = 'SELECT itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . ' WHERE couponid=' . $couponid;
+            $sql = 'SELECT itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE couponid=' . $couponid;
             //echo $sql;
             if (!$result = $this->db->query($sql)) {
                 return false;
@@ -122,9 +138,13 @@ class efqCouponHandler
         return false;
     }
 
+    /**
+     * @param $couponid
+     * @return bool
+     */
     public function delete($couponid)
     {
-        $sql = 'DELETE FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . ' WHERE couponid=' . (int)$couponid;
+        $sql = 'DELETE FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE couponid=' . (int)$couponid;
         $this->db->query($sql);
 
         return true;
@@ -136,11 +156,15 @@ class efqCouponHandler
     *
     * @return
     */
+    /**
+     * @param int $itemid
+     * @return bool|int
+     */
     public function getCountByLink($itemid = 0)
     {
         $ret = 0;
         $now = time();
-        $sql = 'SELECT count(*) FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . ' WHERE itemid=' . $itemid . ' AND publish < ' . $now . ' AND (expire = 0 OR expire > ' . $now . ')';
+        $sql = 'SELECT count(*) FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE itemid=' . $itemid . ' AND publish < ' . $now . ' AND (expire = 0 OR expire > ' . $now . ')';
         //echo $sql;
         if (!$result = $this->db->query($sql)) {
             return false;
@@ -150,21 +174,25 @@ class efqCouponHandler
         return $ret;
     }
 
+    /**
+     * @param int $itemid
+     * @return array|bool
+     */
     public function getByItem($itemid = 0)
     {
-        if ($itemid === false) {
+        if (false === $itemid) {
             //echo 'couponid is false';
             return false;
         }
         //$couponid = (int)($couponid);
         if ($itemid > 0) {
-            $sql = 'SELECT couponid, itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_coupon') . ' WHERE itemid=' . $itemid;
+            $sql = 'SELECT couponid, itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE itemid=' . $itemid;
             //echo $sql;
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
             while (list($couponid, $itemid, $descr, $image, $publish, $expire, $heading, $lbr) = $this->db->fetchRow($result)) {
-                if ($publish == 0) {
+                if (0 == $publish) {
                     $publish = time();
                 }
                 if ($expire > 0) {

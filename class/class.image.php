@@ -79,13 +79,13 @@ class XoopsImageHandler extends XoopsObjectHandler
      * Write a {@link XoopsImage} object to the database
      *
      * @param XoopsObject $image
-     * @param string             $itemid
+     * @param string      $itemid
      * @return bool
      */
     public function insert(XoopsObject $image, $itemid = '0')
     {
         global $image_name;
-        if ($itemid == '0') {
+        if ('0' == $itemid) {
             return false;
         }
         //if (strtolower(get_class($image)) != 'xoopsimage') {
@@ -102,7 +102,7 @@ class XoopsImageHandler extends XoopsObjectHandler
         }
         if ($image->isNew()) {
             $image_id = $this->db->genId('image_image_id_seq');
-            $sql      = sprintf('INSERT INTO %s WHERE itemid=' . $itemid . ' (logourl) VALUES (%s)', $this->db->prefix($module->getVar('dirname', 'n') . '_items'), $this->db->quoteString($image_name));
+            $sql      = sprintf('INSERT INTO %s WHERE itemid=' . $itemid . ' (logourl) VALUES (%s)', $this->db->prefix($efqdirectory->getDirname() . '_items'), $this->db->quoteString($image_name));
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
@@ -120,7 +120,7 @@ class XoopsImageHandler extends XoopsObjectHandler
             } */
             /* $image->assignVar('image_id', $image_id); */
         } else {
-            $sql = sprintf('UPDATE %s SET image_name = %s WHERE itemid = %u', $this->db->prefix($module->getVar('dirname', 'n') . '_items'), $this->db->quoteString($image_name));
+            $sql = sprintf('UPDATE %s SET image_name = %s WHERE itemid = %u', $this->db->prefix($efqdirectory->getDirname() . '_items'), $this->db->quoteString($image_name));
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
@@ -145,7 +145,7 @@ class XoopsImageHandler extends XoopsObjectHandler
      */
     public function delete(XoopsObject $image)
     {
-        if (strtolower(get_class($image)) !== 'xoopsimage') {
+        if ('xoopsimage' !== strtolower(get_class($image))) {
             return false;
         }
         $id  = $image->getVar('image_id');
@@ -162,7 +162,7 @@ class XoopsImageHandler extends XoopsObjectHandler
     /**
      * Load {@link XoopsImage}s from the database
      *
-     * @param   $criteria  {@link CriteriaElement}
+     * @param           $criteria  {@link CriteriaElement}
      * @param   boolean $id_as_key Use the ID as key into the array
      * @param   boolean $getbinary
      * @return  array   Array of {@link XoopsImage} objects

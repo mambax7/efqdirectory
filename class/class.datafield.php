@@ -45,7 +45,7 @@ class efqDataField extends XoopsObject
     /**
      * Constructor
      */
-    public function efqDataField()
+    public function __construct()
     {
         // class constructor;
     }
@@ -64,7 +64,7 @@ class efqDataFieldHandler extends XoopsObjectHandler
 {
     public $errorhandler;
 
-    public function efqDataFieldHandler()
+    public function __construct()
     {
         //Instantiate class
         global $eh;
@@ -72,23 +72,29 @@ class efqDataFieldHandler extends XoopsObjectHandler
         $this->errorhandler = $eh;
     }
 
+    /**
+     * @param     $itemid
+     * @param int $show
+     * @param int $min
+     * @return array
+     */
     public function getDataFields($itemid, $show = 10, $min = 0)
     {
-        $sql = "SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, d.customtitle, t.custom ";
-        $sql .= "FROM " . $this->db->prefix("efqdiralpha1_item_x_cat") . " ic, " . $this->db->prefix("efqdiralpha1_dtypes_x_cat") . " xc, " . $this->db->prefix("efqdiralpha1_fieldtypes") . " f, " . $this->db->prefix("efqdiralpha1_dtypes") . " t ";
-        $sql .= "LEFT JOIN " . $this->db->prefix("efqdiralpha1_data") . " d ON (t.dtypeid=d.dtypeid AND d.itemid=" . $itemid . ") ";
-        $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . "";
-        $data_result = $this->db->query($sql) or $this->errorhandler->show("0013");
+        $sql = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, d.customtitle, t.custom ';
+        $sql .= 'FROM ' . $this->db->prefix('efqdiralpha1_item_x_cat') . ' ic, ' . $this->db->prefix('efqdiralpha1_dtypes_x_cat') . ' xc, ' . $this->db->prefix('efqdiralpha1_fieldtypes') . ' f, ' . $this->db->prefix('efqdiralpha1_dtypes') . ' t ';
+        $sql .= 'LEFT JOIN ' . $this->db->prefix('efqdiralpha1_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
+        $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . '';
+        $data_result = $this->db->query($sql) or $this->errorhandler->show('0013');
         //$numrows = $this->db->getRowsNum($data_result);
         $arr = [];
         while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $this->db->fetchRow($data_result)) {
             $fieldvalue = $this->getFieldValue($fieldtype, $options, $value);
-            if ($icon != '') {
+            if ('' != $icon) {
                 $iconurl = "<img src=\"uploads/$icon\" />";
             } else {
-                $iconurl = "";
+                $iconurl = '';
             }
-            if ($custom != '0' && $customtitle != "") {
+            if ('0' != $custom && '' != $customtitle) {
                 $title = $customtitle;
             }
             $arr[] = [
@@ -110,11 +116,17 @@ class efqDataFieldHandler extends XoopsObjectHandler
         return $arr;
     }
 
-    public function getFieldValue($fieldtype = "", $options = "", $value = 0)
+    /**
+     * @param string $fieldtype
+     * @param string $options
+     * @param int    $value
+     * @return mixed|string
+     */
+    public function getFieldValue($fieldtype = '', $options = '', $value = 0)
     {
         global $myts, $moddir;
         switch ($fieldtype) {
-            case "dhtml":
+            case 'dhtml':
                 return $myts->displayTarea($value);
                 break;
             //case "gmap":
@@ -127,10 +139,10 @@ class efqDataFieldHandler extends XoopsObjectHandler
             //			unset($gmapHandler);
             //return $myts->makeTboxData4Show($value);
             //break;
-            case "radio":
+            case 'radio':
                 return $myts->makeTboxData4Show($value);
                 break;
-            case "rating":
+            case 'rating':
                 $xoops_url = XOOPS_URL;
                 switch ($value) {
                     case 1:
@@ -164,25 +176,25 @@ class efqDataFieldHandler extends XoopsObjectHandler
                         $src = "$xoops_url/modules/$moddir/assets/images/rating_10.gif";
                         break;
                     default:
-                        $src = "";
+                        $src = '';
                 }
                 $rating = "<img src=\"$src\" />";
 
                 return $rating;
                 break;
-            case "select":
+            case 'select':
                 return $myts->makeTboxData4Show($value);
                 break;
-            case "textbox":
+            case 'textbox':
                 return $myts->makeTboxData4Show($value);
                 break;
-            case "url":
+            case 'url':
                 $link = explode('|', $value);
 
                 return '<a href="' . $myts->makeTboxData4Show($link[0]) . '" title="' . $myts->makeTboxData4Show($link[1]) . '">' . $myts->makeTboxData4Show($link[0]) . '</a>';
                 break;
-            case "yesno":
-                if ($value == '1') {
+            case 'yesno':
+                if ('1' == $value) {
                     return _YES;
                 } else {
                     return _NO;

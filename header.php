@@ -18,7 +18,8 @@
  * @author       XOOPS Development Team,
  */
 
-include __DIR__ . '/../../mainfile.php';
+require_once __DIR__ . '/../../mainfile.php';
 $moduleDirName = basename(__DIR__);
-include __DIR__ . '/include/functions.php';
+require_once __DIR__ . '/include/functions.php';
+require_once __DIR__ . '/include/common.php';
 $xoops_module_header = '<link rel="stylesheet" type="text/css" href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/efqdirectory.css">';

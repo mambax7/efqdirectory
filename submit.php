@@ -18,14 +18,15 @@
  * @author       XOOPS Development Team,
  */
 
-include __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 $myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
-require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
 $moddir = $xoopsModule->getVar('dirname');
+$efqdirectory = Efqdirectory::getInstance();
 if (isset($_POST['dirid'])) {
     $dirid = (int)$_POST['dirid'];
 } elseif (isset($_GET['dirid'])) {
@@ -47,37 +48,38 @@ if (empty($xoopsUser) and !$xoopsModuleConfig['anonpost']) {
 if (!empty($_POST['submit'])) {
     //Get all selectable categories and put the prefix 'selectcat' in front of the catid.
     //With all results check if the result has a corresponding $_POST value.
-    if ($_POST['title'] === '') {
+    if ('' === $_POST['title']) {
         $eh->show('1001');
     }
     $title = $myts->makeTboxData4Save($_POST['title']);
     $date  = time();
-    $newid = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . '_itemid_seq');
-    if ($xoopsModuleConfig['autoapprove'] == 1) {
+    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_items') . '_itemid_seq');
+    if (1 == $xoopsModuleConfig['autoapprove']) {
         $status = 1;
     } else {
         $status = 0;
     }
     //itemtype = bronze, silver, gold etc., start with 0 as default.
     $submitter = $xoopsUser->getVar('uid');
-    $newid     = $xoopsDB->genId($xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . '_itemid_seq');
-    $sql       = sprintf("INSERT INTO %s (itemid, uid, STATUS, created, title, hits, rating, votes, typeid, dirid) VALUES (%u, %u, %u, '%s', '%s', %u, %u, %u, '%s', %u)", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items'), $newid, $submitter, $status, time(), $title, 0, 0, 0, 0, $dirid);
-    $xoopsDB->query($sql) || $eh->show('0013');
-    if ($newid == 0) {
+    $newid     = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_items') . '_itemid_seq');
+    $sql       = sprintf("INSERT INTO %s (itemid, uid, STATUS, created, title, hits, rating, votes, typeid, dirid) VALUES (%u, %u, %u, '%s', '%s', %u, %u, %u, '%s', %u)", $xoopsDB->prefix($efqdirectory->getDirname() . '_items'), $newid, $submitter, $status, time(), $title, 0, 0, 0, 0, $dirid);
+    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (0 == $newid) {
         $itemid = $xoopsDB->getInsertId();
     }
-    $allcatsresult = $xoopsDB->query('SELECT cid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat') . " WHERE dirid='" . $dirid . '\' AND active=\'1\'');
+    $sql           = 'SELECT cid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $dirid . '\' AND active=\'1\'';
+    $allcatsresult = $xoopsDB->query($sql);
     $numrows       = $xoopsDB->getRowsNum($allcatsresult);
     $count         = 0;
     if ($numrows > 0) {
         while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
             if (isset($_POST['selected' . $cid . ''])) {
-                $sql = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat'), $newid, $cid, $itemid, 1, time());
-                $xoopsDB->query($sql) || $eh->show('0013');
+                $sql = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $newid, $cid, $itemid, 1, time());
+                $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 ++$count;
             }
         }
-        if ($count == 0) {
+        if (0 == $count) {
             redirect_header(XOOPS_URL . "/modules/$moddir/submit.php?dirid=" . $post_dirid . '', 2, _MD_NOCATEGORYMATCH);
         }
     } else {

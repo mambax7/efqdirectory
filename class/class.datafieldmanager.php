@@ -35,14 +35,24 @@ class efqDataFieldManager extends XoopsFormElement
     {
     }
 
+    /**
+     * @param string $title
+     * @param string $name
+     * @param string $fieldtype
+     * @param string $ext
+     * @param string $options
+     * @param string $value
+     * @param string $custom
+     * @param null   $customtitle
+     */
     public function createField($title = '', $name = '', $fieldtype = '', $ext = '', $options = '', $value = '', $custom = '0', $customtitle = null)
     {
         global $form, $myts, $moddir;
-        if ($customtitle == null) {
+        if (null == $customtitle) {
             $customtitle = '';
         }
         $multiple = false;
-        if ($ext != '') {
+        if ('' != $ext) {
             $ext_arr = explode('[|]', $ext);
             foreach ($ext_arr as $ext_item) {
                 $ext_item_arr   = explode('[=]', $ext_item);
@@ -65,9 +75,9 @@ class efqDataFieldManager extends XoopsFormElement
                     case 'multiple':
                         $multiple = true;
                         $size     = 5;
-                        // no break
+                    // no break
                     case 'value':
-                        if ($ext_item_value != '' and $value == '') {
+                        if ('' != $ext_item_value and '' == $value) {
                             $value = $ext_item_value;
                         }
                         break;
@@ -77,7 +87,7 @@ class efqDataFieldManager extends XoopsFormElement
 
         switch ($fieldtype) {
             case 'textbox':
-                if ($custom == '1') {
+                if ('1' == $custom) {
                     $form_text_tray = new XoopsFormElementTray($title, '', $name);
                     $form_text_tray->addElement(new XoopsFormLabel('', '<table><tr><td>'));
                     $form_text_tray->addElement(new XoopsFormText('<b>' . _MD_CUSTOM_TITLE . '</b></td><td>', 'custom' . $name, 50, 250, $customtitle));
@@ -90,7 +100,7 @@ class efqDataFieldManager extends XoopsFormElement
                 }
                 break;
             case 'textarea':
-                if ($custom == '1') {
+                if ('1' == $custom) {
                     $form_textarea_tray = new XoopsFormElementTray($title, '', $name);
                     $form_textarea_tray->addElement(new XoopsFormLabel('', '<table><tr><td>'));
                     $form_textarea_tray->addElement(new XoopsFormText('<b>' . _MD_CUSTOM_TITLE . '</b></td><td>', 'custom' . $name, 50, 250, $customtitle));
@@ -133,7 +143,7 @@ class efqDataFieldManager extends XoopsFormElement
                 $form->addElement($form_select);
                 break;
             case 'dhtml':
-                if ($custom == '1') {
+                if ('1' == $custom) {
                     $form_dhtmlarea_tray = new XoopsFormElementTray($title, '', $name);
                     $form_dhtmlarea_tray->addElement(new XoopsFormLabel('', '<table><tr><td>'));
                     $form_dhtmlarea_tray->addElement(new XoopsFormText('<b>' . _MD_CUSTOM_TITLE . '</b></td><td>', 'custom' . $name, 50, 250, $customtitle));
@@ -167,7 +177,7 @@ class efqDataFieldManager extends XoopsFormElement
                 ];
                 foreach ($addressfields['addressfields'] as $field => $fieldvalue) {
                     $storedvalue = $addressvalues["$field"];
-                    if ($fieldvalue == 1) {
+                    if (1 == $fieldvalue) {
                         $title = $fieldtitles["$field"];
                         $form->addElement(new XoopsFormText($title, $name . $field, 50, 250, $myts->htmlSpecialChars($storedvalue)));
                     }
@@ -189,7 +199,7 @@ class efqDataFieldManager extends XoopsFormElement
                 $form->addElement(new XoopsFormText($title, $name, 10, 10, $value));
                 break;
             case 'url':
-                if ($value != '') {
+                if ('' != $value) {
                     $link = explode('|', $value);
                 } else {
                     $link    = [];
@@ -210,6 +220,12 @@ class efqDataFieldManager extends XoopsFormElement
         }
     }
 
+    /**
+     * @param string $fieldtype
+     * @param string $options
+     * @param int    $value
+     * @return mixed|string
+     */
     public function getFieldValue($fieldtype = '', $options = '', $value = 0)
     {
         global $form, $myts, $moddir;
@@ -218,7 +234,7 @@ class efqDataFieldManager extends XoopsFormElement
                 return $myts->htmlSpecialChars($value);
                 break;
             case 'yesno':
-                if ($value == '1') {
+                if ('1' == $value) {
                     return _YES;
                 } else {
                     return _NO;
@@ -290,7 +306,7 @@ class efqDataFieldManager extends XoopsFormElement
 
                 foreach ($addressfields['addressfields'] as $field => $fieldvalue) {
                     $storedvalue = $addressvalues["$field"];
-                    if ($fieldvalue == '1' && $storedvalue != '') {
+                    if ('1' == $fieldvalue && '' != $storedvalue) {
                         $title = $fieldtitles["$field"];
 
                         switch ($field) {
@@ -330,9 +346,9 @@ class efqDataFieldManager extends XoopsFormElement
                 if (!isset($country)) {
                     $country = '';
                 }
-                if ($country == 'United States') {
+                if ('United States' === $country) {
                     $countrycode = 'us';
-                } elseif ($country == 'Canada') {
+                } elseif ('Canada' === $country) {
                     $countrycode = 'ca';
                 }
                 if (isset($countrycode) && isset($city) && isset($street)) {
@@ -357,6 +373,16 @@ class efqDataFieldManager extends XoopsFormElement
         }
     }
 
+    /**
+     * @param string $title
+     * @param string $name
+     * @param string $fieldtype
+     * @param string $ext
+     * @param string $options
+     * @param string $value
+     * @param string $custom
+     * @param null   $customtitle
+     */
     public function createSearchField($title = '', $name = '', $fieldtype = '', $ext = '', $options = '', $value = '', $custom = '0', $customtitle = null)
     {
         global $form, $myts;
@@ -406,13 +432,19 @@ class efqDataFieldManager extends XoopsFormElement
                 break;
             case 'url':
                 $this->createSearchField_text($title, $name, $value, $options);
-                // no break
+            // no break
             default:
                 echo $fieldtype . ' geen bekend veldtype ';
                 break;
         }
     }
 
+    /**
+     * @param string $title
+     * @param string $name
+     * @param string $value
+     * @param string $options
+     */
     public function createSearchField_text($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
@@ -438,6 +470,12 @@ class efqDataFieldManager extends XoopsFormElement
         $form->addElement($form_tray);
     }
 
+    /**
+     * @param string $title
+     * @param string $name
+     * @param string $value
+     * @param string $options
+     */
     public function createSearchField_checkbox($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
@@ -450,6 +488,12 @@ class efqDataFieldManager extends XoopsFormElement
         $form->addElement($form_checkbox);
     }
 
+    /**
+     * @param string $title
+     * @param string $name
+     * @param string $value
+     * @param string $options
+     */
     public function createSearchField_select($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
@@ -480,6 +524,12 @@ class efqDataFieldManager extends XoopsFormElement
         $form->addElement($form_tray);
     }
 
+    /**
+     * @param string $title
+     * @param string $name
+     * @param string $value
+     * @param string $options
+     */
     public function createSearchField_rating2($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
@@ -493,6 +543,12 @@ class efqDataFieldManager extends XoopsFormElement
         $form->addElement($form_rating);
     }
 
+    /**
+     * @param string $title
+     * @param string $name
+     * @param string $value
+     * @param string $options
+     */
     public function createSearchField_rating($title = '', $name = '', $value = '', $options = '')
     {
         global $form, $myts;
@@ -529,16 +585,25 @@ class efqDataFieldManager extends XoopsFormElement
         $form->addElement($form_tray);
     }
 
+    /**
+     * @return mixed
+     */
     public function getWidth()
     {
         return $this->_width;
     }
 
+    /**
+     * @return mixed
+     */
     public function getHeight()
     {
         return $this->_height;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSrc()
     {
         return $this->_src;
@@ -549,6 +614,9 @@ class efqDataFieldManager extends XoopsFormElement
     *
     * @return bool
     */
+    /**
+     * @return bool
+     */
     public function isMultiple()
     {
         return $this->_multiple;
@@ -598,7 +666,7 @@ class efqDataFieldManager extends XoopsFormElement
      */
     public function addOption($value, $name = '')
     {
-        if ($name != '') {
+        if ('' != $name) {
             $this->_options[$value] = $name;
         } else {
             $this->_options[$value] = $value;

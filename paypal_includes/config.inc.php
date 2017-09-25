@@ -62,9 +62,9 @@ $paypal['return_method'] = '2'; //1=GET 2=POST
 $paypal['currency_code'] = 'EUR'; //[USD,GBP,JPY,CAD,EUR]
 $paypal['lc']            = 'US';
 
-if ($xoopsModuleConfig['paypal_test'] == '1') {
+if ('1' == $xoopsModuleConfig['paypal_test']) {
     $paypal['url'] = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
-} elseif ($xoopsModuleConfig['paypal_secure_yn'] == '0') {
+} elseif ('0' == $xoopsModuleConfig['paypal_secure_yn']) {
     $paypal['url'] = 'http://www.paypal.com/cgi-bin/webscr';
 } else {
     $paypal['url'] = 'https://www.paypal.com/cgi-bin/webscr';

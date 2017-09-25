@@ -20,7 +20,7 @@
 
 include __DIR__ . '/header.php';
 $myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
-require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
@@ -65,7 +65,7 @@ function showsubscription()
 {
     global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
     //Check if item selected.
-    if ($get_itemid == '0') {
+    if ('0' == $get_itemid) {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
 
@@ -74,17 +74,17 @@ function showsubscription()
     //Show current subscription order for listing
     $defaultstartdate = time();
     $sql              = 'SELECT i.title, i.typeid, o.orderid, o.offerid, o.startdate, o.enddate, o.billto, o.status, o.itemid, o.autorenew, t.typename, p.ref, p.payment_status FROM '
-                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_itemtypes')
+                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes')
                         . ' t,  '
-                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items')
+                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
                         . ' i, '
-                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_subscr_orders')
+                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_orders')
                         . ' o LEFT JOIN '
-                        . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_subscr_payments')
+                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_payments')
                         . ' p ON (o.orderid=p.orderid) WHERE o.typeid = t.typeid AND o.itemid=p.ref AND o.itemid=i.itemid AND i.itemid='
                         . $get_itemid
                         . ' ORDER BY t.typelevel ASC';
-    $item_result      = $xoopsDB->query($sql) || $eh->show('0013');
+    $item_result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows          = $xoopsDB->getRowsNum($item_result);
     $order_exists     = false;
     if ($numrows > 0) {
@@ -93,23 +93,23 @@ function showsubscription()
             //Assign the text of the label for subscription type.
             $ordername = $subscription->getOrderItemName($offerid);
 
-            if ($paymentstatus == '') {
+            if ('' == $paymentstatus) {
                 $paymentstatus = _MD_LANG_INCOMPLETE;
                 $terminate_on  = '1';
             } else {
                 $terminate_on = null;
                 $order_exists = true;
             }
-            if ($orderstatus == '1') {
+            if ('1' == $orderstatus) {
                 $defaultstartdate = $billto;
             }
-            if ($billto != '') {
+            if ('' != $billto) {
                 $billto = date('d-M-Y', $billto);
             }
-            if ($enddate != '') {
+            if ('' != $enddate) {
                 $enddate = date('d-M-Y', $enddate);
             }
-            if ($startdate != '') {
+            if ('' != $startdate) {
                 $startdate = date('d-M-Y', $startdate);
             }
             $xoopsTpl->assign('lang_subscr_offers_header', _MD_LANG_SUBSCR_ACTIVE_ORDERS_HEADER);
@@ -177,14 +177,14 @@ function orderselect()
 {
     //function to update subscription by creating an order or updating an order.
     global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
-    if ($get_itemid == '0') {
+    if ('0' == $get_itemid) {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
     $orderid = $subscription->createOrder($get_itemid);
-    if ($orderid === false) {
+    if (false === $orderid) {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_SUBSCR_TYPE_NOTSELECTED);
     }
-    if ($orderid != 0) {
+    if (0 != $orderid) {
         redirect_header("subscriptions.php?item=$get_itemid&op=orderpayment&orderid=$orderid", 2, _MD_SAVED);
     } else {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_ITEM_NOT_EXIST);
@@ -204,13 +204,13 @@ function orderpayment()
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
     $sql          = 'SELECT o.orderid, o.uid, o.offerid, o.typeid, o.startdate, o.billto, o.status, o.itemid, o.autorenew, f.price, f.currency FROM '
-                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_subscr_orders')
+                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_orders')
                     . ' o, '
-                    . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_subscr_offers')
+                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers')
                     . ' f WHERE o.offerid=f.offerid AND o.orderid='
                     . $get_orderid
                     . '';
-    $order_result = $xoopsDB->query($sql) || $eh->show('0013');
+    $order_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows      = $xoopsDB->getRowsNum($order_result);
     if ($numrows > 0) {
         while (list($orderid, $uid, $offerid, $typeid, $startdate, $billto, $status, $itemid, $autorenew, $price, $currency) = $xoopsDB->fetchRow($order_result)) {
@@ -266,7 +266,7 @@ function terminate()
     } else {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_NOVALIDORDER);
     }
-    if ($editrights == '1') {
+    if ('1' == $editrights) {
         $form = new XoopsThemeForm(_MD_CONFIRM_TERMINATE_TITLE, 'terminateform', 'subscriptions.php?item=' . $get_itemid . '');
         $form->addElement(new XoopsFormLabel(_MD_CONFIRMATION, _MD_CONFIRM_TERMINATION_TEXT));
         $form->addElement(new XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
@@ -299,7 +299,7 @@ function renew()
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
-    if ($editrights == '1') {
+    if ('1' == $editrights) {
         redirect_header("subscriptions.php?item=$get_itemid&op=orderpayment&orderid=$get_orderid", 2, _MD_FORWARDED_PAYMENT_PAGE);
     }
 }

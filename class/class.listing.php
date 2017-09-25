@@ -83,11 +83,17 @@ class efqListing extends XoopsObject
         }
     }
 
+    /**
+     * @param array $arr
+     */
     public function setDataTypes($arr = [])
     {
         $this->_datatypes = $arr;
     }
 
+    /**
+     * @return array
+     */
     public function getDataTypes()
     {
         return $this->_datatypes;
@@ -99,11 +105,17 @@ class efqListing extends XoopsObject
         $this->_currentuser = !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
     }
 
+    /**
+     * @param bool $value
+     */
     public function setEditRights($value = false)
     {
         $this->_editrights = $value;
     }
 
+    /**
+     * @param $arr
+     */
     public function addPostDataArray($arr)
     {
         $this->_postdata[] = $arr;
@@ -151,7 +163,8 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function updateStatus($itemid = 0, $newstatus = '1')
     {
-        $sql = 'UPDATE ' . $this->db->prefix($module->getVar('dirname', 'n') . '_items') . ' SET status = ' . $newstatus . ' WHERE itemid = ' . (int)$itemid . '';
+        $efqdirectory = Efqdirectory::getInstance();
+        $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' SET status = ' . $newstatus . ' WHERE itemid = ' . (int)$itemid . '';
         if ($this->db->query($sql)) {
             return true;
         }
@@ -171,7 +184,8 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function incrementHits($itemid = 0)
     {
-        $sql = sprintf('UPDATE %s SET hits = hits+1 WHERE itemid = %u AND STATUS = 2', $this->db->prefix($module->getVar('dirname', 'n') . '_items'), (int)$itemid);
+        $efqdirectory = Efqdirectory::getInstance();
+        $sql = sprintf('UPDATE %s SET hits = hits+1 WHERE itemid = %u AND STATUS = 2', $this->db->prefix($efqdirectory->getDirname() . '_items'), (int)$itemid);
         if ($this->db->queryF($sql)) {
             return true;
         }
@@ -191,10 +205,11 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function getLinkedCatsArray($itemid = '0', $dirid = '0')
     {
+        $efqdirectory = Efqdirectory::getInstance();
         $sql     = 'SELECT c.cid, x.active FROM '
-                   . $this->db->prefix($module->getVar('dirname', 'n') . '_cat')
+                   . $this->db->prefix($efqdirectory->getDirname() . '_cat')
                    . ' c, '
-                   . $this->db->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                   . $this->db->prefix($efqdirectory->getDirname() . '_item_x_cat')
                    . ' x WHERE c.cid=x.cid AND x.itemid='
                    . (int)$itemid
                    . " AND c.dirid='"
@@ -225,14 +240,15 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function getListing($itemid)
     {
-        $sql    = 'SELECT i.*, t.description FROM ' . $this->db->prefix($module->getVar('dirname', 'n') . '_items') . ' i LEFT JOIN ' . $this->db->prefix($module->getVar('dirname', 'n') . '_item_text') . ' t ON (i.itemid=t.itemid) WHERE i.itemid=' . (int)$itemid;
+        $efqdirectory = Efqdirectory::getInstance();
+        $sql    = 'SELECT i.*, t.description FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' i LEFT JOIN ' . $this->db->prefix($efqdirectory->getDirname() . '_item_text') . ' t ON (i.itemid=t.itemid) WHERE i.itemid=' . (int)$itemid;
         $result = $this->db->query($sql);
         $arr    = [];
         if (!$result) {
             return $arr;
         } else {
             $numrows = $this->db->getRowsNum($result);
-            if ($numrows == 0) {
+            if (0 == $numrows) {
                 return $arr;
             } else {
                 $arr = $this->db->fetchArray($result);
@@ -242,20 +258,25 @@ class efqListingHandler extends XoopsObjectHandler
         return $arr;
     }
 
+    /**
+     * @param $itemid
+     * @return array
+     */
     public function getDataTypes($itemid)
     {
         global $datafieldmanager;
+        $efqdirectory = Efqdirectory::getInstance();
         $sql     = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
         $sql     .= 'FROM '
-                    . $this->db->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                    . $this->db->prefix($efqdirectory->getDirname() . '_item_x_cat')
                     . ' ic, '
-                    . $this->db->prefix($module->getVar('dirname', 'n') . '_dtypes_x_cat')
+                    . $this->db->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
                     . ' xc, '
-                    . $this->db->prefix($module->getVar('dirname', 'n') . '_fieldtypes')
+                    . $this->db->prefix($efqdirectory->getDirname() . '_fieldtypes')
                     . ' f, '
-                    . $this->db->prefix($module->getVar('dirname', 'n') . '_dtypes')
+                    . $this->db->prefix($efqdirectory->getDirname() . '_dtypes')
                     . ' t ';
-        $sql     .= 'LEFT JOIN ' . $this->db->prefix($module->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . (int)$itemid . ') ';
+        $sql     .= 'LEFT JOIN ' . $this->db->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . (int)$itemid . ') ';
         $sql     .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . (int)$itemid . ' ORDER BY t.seq ASC';
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
@@ -263,12 +284,12 @@ class efqListingHandler extends XoopsObjectHandler
         $arr = [];
         while (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $custom, $itemid, $value, $customtitle) = $this->db->fetchRow($result)) {
             $fieldvalue = $datafieldmanager->getFieldValue($fieldtype, $options, $value);
-            if ($icon != '') {
+            if ('' != $icon) {
                 $iconurl = "<img src=\"uploads/$icon\">";
             } else {
                 $iconurl = '';
             }
-            if ($custom != '0' && $customtitle != '') {
+            if ('0' != $custom && '' != $customtitle) {
                 $title = $customtitle;
             }
             $arr[] = [

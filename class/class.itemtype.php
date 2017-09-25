@@ -70,7 +70,7 @@ class efqItemType extends XoopsObject
  * @copyright EFQ Consultancy (c) 2007
  * @version   1.1.0
  */
-class efqItemTypeHandler extends xoopsObject
+class efqItemTypeHandler extends XoopsObject
 {
     public $db; //Database reference
     public $objItemType;
@@ -92,7 +92,7 @@ class efqItemTypeHandler extends xoopsObject
      *
      * @param   efqItemType $obj object
      *
-     * @param bool     $forceQuery
+     * @param bool          $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insert($obj, $forceQuery = false)
@@ -270,7 +270,7 @@ class efqItemTypeHandler extends xoopsObject
         $tablename = 'efqdiralpha1_itemtypes';
         $keyName   = 'typeid';
         $id        = $obj->getVar($keyName);
-        if ($id != 0) {
+        if (0 != $id) {
             $sql = 'DELETE FROM ' . $this->db->prefix($tablename) . ' WHERE ' . $keyName . '=' . (int)$id . '';
             $this->db->queryF($sql);
 

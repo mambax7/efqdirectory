@@ -21,7 +21,7 @@
 require_once __DIR__ . '/admin_header.php';
 
 require_once __DIR__ . '/../include/functions.php';
-require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+require_once __DIR__ . '/../class/xoopstree.php';
 //require_once XOOPS_ROOT_PATH.'/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
@@ -29,12 +29,12 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 global $xoopsModule;
 //$myts   = MyTextSanitizer::getInstance();
 $eh     = new ErrorHandler;
-$mytree = new XoopsTree($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
+$mytree = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
 require_once __DIR__ . '/../class/class.datafieldmanager.php';
 require_once __DIR__ . '/../class/class.subscription.php';
 require_once __DIR__ . '/../class/class.efqtree.php';
 require_once __DIR__ . '/../class/class.listing.php';
-$efqtree          = new EfqTree($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat'), 'cid', 'pid');
+$efqtree          = new EfqTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
 $datafieldmanager = new efqDataFieldManager();
 
 $listinghandler      = new efqListingHandler;
@@ -55,7 +55,9 @@ function listings()
     echo "<table width='100%' border='0' cellspacing='1' class='outer'>" . '<tr class="odd"><td>';
     //$result = $xoopsDB->query("select count(*) from ".$xoopsDB->prefix("efqdiralpha1_broken")."");
     //list($totalbrokenlinks) = $xoopsDB->fetchRow($result);
-    $result3 = $xoopsDB->query('SELECT count(*) FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items') . " WHERE status='1'");
+    $efqdirectory = Efqdirectory::getInstance();
+    $sql     = 'SELECT count(*) FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " WHERE status='1'";
+    $result3 = $xoopsDB->query($sql);
     list($totalnewlistings) = $xoopsDB->fetchRow($result3);
     if ($totalnewlistings > 0) {
         $totalnewlistings = "<span style='color: #ff0000; font-weight: bold'>$totalnewlistings</span>";
@@ -70,7 +72,8 @@ function listings()
     //  echo "<br><br>";
     //  echo " - <a href=main.php?op=duplicateDataTypes>"._MD_DUPLICATE_DATATYPES."</a>";
     //  echo "<br><br>";
-    $result = $xoopsDB->query('SELECT count(*) FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items') . ' WHERE status>0');
+    $sql    = 'SELECT count(*) FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' WHERE status>0';
+    $result = $xoopsDB->query($sql);
     list($numrows) = $xoopsDB->fetchRow($result);
     echo '<br /<div>';
     printf(_MD_THEREARE, $numrows);
@@ -82,7 +85,9 @@ function listings()
 function listNewListings() //completed
 {
     global $xoopsDB, $xoopsModule, $xoopsConfig, $myts, $eh, $mytree, $mytree2, $moddir;
-    $sql     = 'SELECT i.itemid, i.logourl, i.uid, i.status, i.created, i.title, i.typeid FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items') . " i WHERE i.status='1'";
+    $debug     = false;
+    $efqdirectory = Efqdirectory::getInstance();
+    $sql     = 'SELECT i.itemid, i.logourl, i.uid, i.status, i.created, i.title, i.typeid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " i WHERE i.status='1'";
     $result  = $xoopsDB->query($sql, 10, 0);
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
@@ -118,7 +123,7 @@ function delVote()
     $rid        = $_GET['rid'];
     $get_itemid = (int)$_GET['itemid'];
     $sql        = sprintf('DELETE FROM %s WHERE ratingid = %u', $xoopsDB->prefix('listings_votedata'), $rid);
-    $xoopsDB->query($sql) || $eh->show('0013');
+    $xoopsDB->query($sql) ; //|| $eh->show('0013');
     updaterating($get_itemid);
     redirect_header('index.php', 1, _MD_VOTEDELETED);
 }
@@ -142,16 +147,16 @@ function delListingConfirm()
 function delListing()
 {
     global $xoopsDB, $eh, $xoopsModule;
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items'), (int)$_POST['itemid']);//EDIT-RC10
-    $xoopsDB->queryF($sql) || $eh->show('0013');
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_text'), (int)$_POST['itemid']);//EDIT-RC10
-    $xoopsDB->queryF($sql) || $eh->show('0013');
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_img'), (int)$_POST['itemid']);//EDIT-RC10
-    $xoopsDB->queryF($sql) || $eh->show('0013');
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat'), (int)$_POST['itemid']);//EDIT-RC10
-    $xoopsDB->queryF($sql) || $eh->show('0013');
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_loc'), (int)$_POST['itemid']);//EDIT-RC10
-    $xoopsDB->queryF($sql) || $eh->show('0013');
+    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_items'), (int)$_POST['itemid']);//EDIT-RC10
+    $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text'), (int)$_POST['itemid']);//EDIT-RC10
+    $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_item_img'), (int)$_POST['itemid']);//EDIT-RC10
+    $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), (int)$_POST['itemid']);//EDIT-RC10
+    $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_loc'), (int)$_POST['itemid']);//EDIT-RC10
+    $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     xoops_comment_delete($xoopsModule->getVar('mid'), (int)$_POST['itemid']);
     xoops_notification_deletebyitem($xoopsModule->getVar('mid'), 'listing', (int)$_POST['itemid']);
     redirect_header('index.php', 1, _MD_LISTINGDELETED);
@@ -160,8 +165,8 @@ function delListing()
 function approve()
 {
     global $xoopsConfig, $xoopsDB, $get_itemid, $eh;
-    $query = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items') . " set status='2' where itemid=" . $get_itemid . '';
-    $xoopsDB->queryF($query) || $eh->show('0013');
+    $query = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " set status='2' where itemid=" . $get_itemid . '';
+    $xoopsDB->queryF($query) ; //|| $eh->show('0013');
     redirect_header('main.php?op=listNewListings', 1, _MD_LISTINGAPPROVED);
 }
 
@@ -170,8 +175,8 @@ function updateItemType()
     global $xoopsConfig, $xoopsDB, $eh;
     $post_itemid = (int)$_POST['itemid'];
     $post_typeid = (int)$_POST['typeid'];
-    $query       = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items') . " SET typeid='$post_typeid' WHERE itemid=" . $post_itemid . '';
-    $xoopsDB->query($query) || $eh->show('0013');
+    $query       = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " SET typeid='$post_typeid' WHERE itemid=" . $post_itemid . '';
+    $xoopsDB->query($query) ; //|| $eh->show('0013');
     redirect_header("main.php?op=edit&amp;item=$post_itemid", 2, _MD_ITEM_UPDATED);
 }
 
@@ -182,13 +187,14 @@ function listDuplicateDataTypes()
     xoops_cp_header();
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation('main.php?op=duplicateDataTypes');
+    $efqdirectory = Efqdirectory::getInstance();
     //adminmenu(-1, _MD_DUPLICATE_DATATYPES);
     echo '<br>';
     $sql = 'SELECT dt1.dtypeid, dt1.title, dt1.fieldtypeid ';
-    $sql .= 'FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes') . ' dt1, ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes') . ' dt2 ';
+    $sql .= 'FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes') . ' dt1, ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes') . ' dt2 ';
     $sql .= 'WHERE dt1.title=dt2.title AND dt1.fieldtypeid=dt2.fieldtypeid ORDER BY dt1.title ASC, dt1.fieldtypeid ASC';
 
-    $result  = $xoopsDB->query($sql) || $eh->show('0013');
+    $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows = $xoopsDB->getRowsNum($result);
 
     if ($numrows > 0) {
@@ -224,7 +230,7 @@ function listDuplicateDataTypes()
                 echo "<td class=\"odd\">$arr[1]</td>";
                 echo "<td class=\"even\">$arr[2]</td>";
                 echo '</tr>';
-                if ($last_title == '' && $last_fieldtypeid == '0') {
+                if ('' == $last_title && '0' == $last_fieldtypeid) {
                     $last_title       = $arr[1];
                     $last_fieldtypeid = $arr[2];
                     $merge            .= $arr[0];
@@ -248,7 +254,7 @@ function listDuplicateDataTypes()
             }
             unset($match);
         }
-        if ($duplicates == '1') {
+        if ('1' == $duplicates) {
             echo "<tr><td colspan='3'>";
             echo "<form action='main.php' method='post'>";
             echo $GLOBALS['xoopsSecurity']->getTokenHTML();
@@ -271,6 +277,7 @@ function mergeDuplicates()
 {
     global $xoopsDB, $eh;
     if (isset($_POST['merge'])) {
+        $efqdirectory = Efqdirectory::getInstance();
         $merge            = $_POST['merge'];
         $merge_arr        = explode('[|]', $merge);
         $replacements_arr = array_slice($merge_arr, 1);
@@ -280,12 +287,12 @@ function mergeDuplicates()
         }
         $length       = strlen($replacements);
         $replacements = substr($replacements, 0, $length - 1);
-        $sql          = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes_x_cat') . ' SET dtypeid=' . $merge_arr[0] . ' WHERE dtypeid IN (' . $replacements . ')';
-        $xoopsDB->queryF($sql) || $eh->show('0013');
-        $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data') . ' SET dtypeid=' . $merge_arr[0] . ' WHERE dtypeid IN (' . $replacements . ')';
-        $xoopsDB->queryF($sql) || $eh->show('0013');
-        $sql = 'DELETE FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes') . ' WHERE dtypeid IN (' . $replacements . ')';
-        $xoopsDB->queryF($sql) || $eh->show('0013');
+        $sql          = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat') . ' SET dtypeid=' . $merge_arr[0] . ' WHERE dtypeid IN (' . $replacements . ')';
+        $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+        $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . ' SET dtypeid=' . $merge_arr[0] . ' WHERE dtypeid IN (' . $replacements . ')';
+        $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+        $sql = 'DELETE FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes') . ' WHERE dtypeid IN (' . $replacements . ')';
+        $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     } else {
         $merge = '';
     }
@@ -325,9 +332,9 @@ switch ($op) {
     case 'edit':
         global $xoopsDB, $xoopsConfig, $myts, $eh, $efqtree, $moddir, $xoopsUser, $datafieldmanager, $subscription, $subscriptionhandler;
         $sql         = 'SELECT i.itemid, i.logourl, i.uid, i.status, i.created, i.title, i.typeid, t.description FROM '
-                       . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items')
+                       . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
                        . ' i LEFT JOIN '
-                       . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_text')
+                       . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
                        . ' t ON (i.itemid=t.itemid) WHERE i.itemid='
                        . $get_itemid
                        . '';
@@ -337,7 +344,7 @@ switch ($op) {
         //adminmenu(-1, _MD_A_MODADMIN_HOME);
         echo "<hr size='1'><br>";
         while (list($itemid, $logourl, $submitter, $status, $created, $itemtitle, $typeid, $description) = $xoopsDB->fetchRow($item_result)) {
-            if ($status == '1') {
+            if ('1' == $status) {
                 echo '<input type="button" value="' . _MD_APPROVE . "\" onclick=\"location='main.php?op=approve&amp;item=$get_itemid'\">&nbsp;";
             }
             echo '&nbsp;<input type="button" value="'
@@ -352,17 +359,17 @@ switch ($op) {
 
             $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, d.customtitle, t.custom ';
             $sql         .= 'FROM '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
                             . ' ic, '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes_x_cat')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
                             . ' xc, '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
                             . ' f, '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
                             . ' t ';
-            $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $get_itemid . ') ';
+            $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $get_itemid . ') ';
             $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $get_itemid . '';
-            $data_result = $xoopsDB->query($sql) || $eh->show('0013');
+            $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
             $numrows     = $xoopsDB->getRowsNum($data_result);
 
             $form = new XoopsThemeForm(_MD_EDITITEM_FORM, 'editform', 'main.php');
@@ -382,7 +389,7 @@ switch ($op) {
             $form->addElement(new XoopsFormHidden('dirid', $get_dirid));
             $form->addElement(new XoopsFormHidden('ini_itemtitle', $itemtitle));
             $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
-            if ($description === false) {
+            if (false === $description) {
                 $form->addElement(new XoopsFormHidden('description_set', '0'));
             } else {
                 $form->addElement(new XoopsFormHidden('description_set', '1'));
@@ -417,8 +424,8 @@ switch ($op) {
                 $p_ini_title = $_POST['ini_itemtitle'];
                 if ($p_title != $p_ini_title) {
                     //If the posted title is different from the initial title the record should be updated.
-                    $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_items') . " SET title = '$p_title' WHERE itemid = $post_itemid";
-                    $xoopsDB->query($sql) || $eh->show('0013');
+                    $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " SET title = '$p_title' WHERE itemid = $post_itemid";
+                    $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 }
             } else {
                 redirect_header('index.php', 2, _MD_NOVALIDITEM);
@@ -439,35 +446,35 @@ switch ($op) {
                 $p_description = null;
             }
             if (isset($_POST['description_set'])) {
-                if ($_POST['description_set'] == '1') {
+                if ('1' == $_POST['description_set']) {
                     if ($p_ini_description != $p_description) {
-                        $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
-                        $xoopsDB->query($sql) || $eh->show('0013');
+                        $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
+                        $xoopsDB->query($sql) ; //|| $eh->show('0013');
                     }
-                } elseif (isset($_POST['description']) && $_POST['description'] != '') {
-                    if ($p_description != null) {
-                        $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_text'), $post_itemid, $p_description);
-                        $xoopsDB->query($sql) || $eh->show('0013');
+                } elseif (isset($_POST['description']) && '' != $_POST['description']) {
+                    if (null != $p_description) {
+                        $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text'), $post_itemid, $p_description);
+                        $xoopsDB->query($sql) ; //|| $eh->show('0013');
                     }
                 }
             }
             $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value ';
             $sql         .= 'FROM '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
                             . ' ic, '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes_x_cat')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
                             . ' xc, '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_fieldtypes')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
                             . ' f, '
-                            . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_dtypes')
+                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
                             . ' t ';
-            $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $post_itemid . ') ';
+            $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $post_itemid . ') ';
             $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND ic.itemid=" . $post_itemid . '';
-            $data_result = $xoopsDB->query($sql) || $eh->show('0013');
+            $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
             $numrows     = $xoopsDB->getRowsNum($data_result);
             while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value) = $xoopsDB->fetchRow($data_result)) {
                 if (isset($_POST["$dtypeid"])) {
-                    if ($fieldtype == 'textarea' || 'dhtml') {
+                    if ('textarea' === $fieldtype || 'dhtml') {
                         $post_value = $myts->makeTareaData4Save($_POST["$dtypeid"]);
                     } else {
                         $post_value = $myts->makeTboxData4Save($_POST["$dtypeid"]);
@@ -481,7 +488,7 @@ switch ($op) {
                 } else {
                     $post_customtitle = '';
                 }
-                if ($fieldtype == 'address') {
+                if ('address' === $fieldtype) {
                     $addressfields = ['address', 'address2', 'zip', 'postcode', 'phone', 'lat', 'lon', 'phone', 'fax', 'mobile', 'city', 'country', 'uselocyn', 'main', 'active'];
                     foreach ($addressfields as $field) {
                         if (isset($_POST["$dtypeid$field"])) {
@@ -493,12 +500,12 @@ switch ($op) {
                     //INSERT OF UPDATE address
                     //If INSERT, then get $newid and save it as the value in efqdiralpha1_data table
                     if (isset($_POST['submitaddress'])) {
-                        if ($itemid == null || $post_value == '') {
+                        if (null == $itemid || '' == $post_value) {
                             //That means there was not any value, so a new record should be added to the data table.
-                            $newaddrid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_addresses') . '_addrid_seq');
+                            $newaddrid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_addresses') . '_addrid_seq');
                             $sql       = sprintf(
                                 "INSERT INTO %s (addrid, itemid, dtypeid, address, address2, zip, postcode, phone, lat, lon, main, active, fax, mobile, city, country) VALUES (%u, %u, %u, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %u, %u, '%s', '%s', '%s', '%s')",
-                                                 $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_addresses'),
+                                                 $xoopsDB->prefix($efqdirectory->getDirname() . '_addresses'),
                                 $newaddrid,
                                 $post_itemid,
                                 $dtypeid,
@@ -517,26 +524,26 @@ switch ($op) {
                                 $post_country
                             );
                             //echo $sql."<br><br>";
-                            $xoopsDB->query($sql) || $eh->show('0013');
+                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
                             $post_value = $xoopsDB->getInsertId();
                         } else {
                             $sql = 'UPDATE '
-                                   . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_addresses')
+                                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_addresses')
                                    . " SET address = '$post_address', address2 = '$post_address2', zip = '$post_zip', postcode = '$post_postcode', lat = '$post_lat', lon = '$post_lon', main = '$post_main', active = '$post_active', fax = '$post_fax', mobile = '$post_mobile', city = '$post_city', country = '$post_country' WHERE addrid = '$post_value' AND itemid = '$post_itemid'";
                             //echo $sql."<br><br>";
-                            $xoopsDB->query($sql) || $eh->show('0013');
+                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
                         }
                     }
                 }
-                if ($itemid == null) {
+                if (null == $itemid) {
                     //That means there was not any value, so a new record should be added to the data table.
-                    $newid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data') . '_dataid_seq');
-                    $sql   = sprintf("INSERT INTO %s (dataid, itemid, dtypeid, VALUE, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data'), $newid, $post_itemid, $dtypeid, $post_value, time());
-                    $xoopsDB->query($sql) || $eh->show('0013');
+                    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_data') . '_dataid_seq');
+                    $sql   = sprintf("INSERT INTO %s (dataid, itemid, dtypeid, VALUE, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_data'), $newid, $post_itemid, $dtypeid, $post_value, time());
+                    $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 } else {
                     if ($value != $post_value) {
-                        $sql = 'UPDATE ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_data') . " SET value = '$post_value' WHERE dtypeid = $dtypeid AND itemid = $itemid";
-                        $xoopsDB->query($sql) || $eh->show('0013');
+                        $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . " SET value = '$post_value' WHERE dtypeid = $dtypeid AND itemid = $itemid";
+                        $xoopsDB->query($sql) ; //|| $eh->show('0013');
                     }
                 }
             }
@@ -544,7 +551,7 @@ switch ($op) {
             $efqlisting        = new efqListing();
             $efqlistinghandler = new efqListingHandler();
             $linkedcats        = $efqlistinghandler->getLinkedCatsArray($post_itemid, $post_dirid);
-            $sql               = 'SELECT cid FROM ' . $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_cat') . " WHERE dirid='" . $post_dirid . '\' AND active=\'1\'';
+            $sql               = 'SELECT cid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $post_dirid . '\' AND active=\'1\'';
             $allcatsresult     = $xoopsDB->query($sql);
 
             $numrows = $xoopsDB->getRowsNum($allcatsresult);
@@ -553,20 +560,20 @@ switch ($op) {
                 while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
                     if (isset($_POST['selected' . $cid . ''])) {
                         if (!in_array($cid, $linkedcats)) {
-                            $newid = $xoopsDB->genId($xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat') . '_xid_seq');
-                            $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat'), $newid, $cid, $post_itemid, 1, time());
-                            $xoopsDB->query($sql) || $eh->show('0013');
+                            $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . '_xid_seq');
+                            $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $newid, $cid, $post_itemid, 1, time());
+                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
                         }
 
                         ++$count;
                     } else {
                         if (in_array($cid, $linkedcats)) {
-                            $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($xoopsModule->getVar('dirname', 'n') . '_item_x_cat'), $cid, $post_itemid);
-                            $xoopsDB->query($sql) || $eh->show('0013');
+                            $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $cid, $post_itemid);
+                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
                         }
                     }
                 }
-                if ($count == 0) {
+                if (0 == $count) {
                     redirect_header(XOOPS_URL . "/modules/$moddir/admin/main.php?op=edit&item=" . $post_itemid . '', 2, _MD_NOCATEGORYMATCH);
                 }
             } else {
@@ -581,6 +588,10 @@ switch ($op) {
         break;
 }
 
+/**
+ * @param $array
+ * @return array
+ */
 function unique_events($array)
 {
     //checks $array for duplicate values and returns an

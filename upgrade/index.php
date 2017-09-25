@@ -7,7 +7,7 @@ require_once __DIR__ . '/class/efqdir_upgrade.php';
 $moddir = $xoopsModule->getVar('dirname');
 require_once XOOPS_ROOT_PATH . '/modules/' . $moddir . '/upgrade/language/' . $xoopsConfig['language'] . '/install.php';
 xoops_cp_header();
-set_magic_quotes_runtime(1);
+//set_magic_quotes_runtime(1);
 if (isset($_POST['submit'])) {
     switch ($_POST['submit']) {
         case 'Update':

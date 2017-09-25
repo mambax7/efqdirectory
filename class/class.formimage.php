@@ -140,7 +140,7 @@ class XoopsFormImage extends XoopsFormElement
      */
     public function addOption($value, $name = '')
     {
-        if ($name !== '') {
+        if ('' !== $name) {
             $this->_options[$value] = $name;
         } else {
             $this->_options[$value] = $value;
@@ -178,7 +178,7 @@ class XoopsFormImage extends XoopsFormElement
      */
     public function render()
     {
-        if ($this->getSrc() !== '') {
+        if ('' !== $this->getSrc()) {
             $ret = "<img src='" . $this->getSrc() . '\' width=\'' . $this->getWidth() . '\'  height=\'' . $this->getHeight() . '\'';
             $ret .= '>';
         } else {

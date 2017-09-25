@@ -20,10 +20,10 @@
 
 include __DIR__ . '/header.php';
 $myts = MyTextSanitizer::getInstance(); // MyTextSanitizer object
-require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 $myts   = MyTextSanitizer::getInstance();
-$mytree = new XoopsTree($xoopsDB->prefix('links_cat'), 'cid', 'pid');
+$mytree = new MyXoopsTree($xoopsDB->prefix('links_cat'), 'cid', 'pid');
 $eh     = new ErrorHandler;
 
 $moddir = $xoopsModule->getVar('dirname');
@@ -70,7 +70,7 @@ if (!empty($_GET['q'])) {
     for ($i = 0; $i < $poscount; ++$i) {
         $start = strpos($querystring, '"', 0);
         $end   = strpos($querystring, '"', $start + 1);
-        if ($end !== false) {
+        if (false !== $end) {
             $specialstring = ltrim(substr($querystring, $start, $end - $start), '"');
             $specialarr[]  = $specialstring;
             $querystring   = ltrim(substr_replace($querystring, '', $start, $end - $start + 1));
@@ -109,7 +109,7 @@ if (!empty($_GET['q'])) {
     }
 
     echo '<div class="itemTitleLarge">' . _MD_SEARCHRESULTS_TITLE . '</div><br>';
-    if ($searchresults == 0) {
+    if (0 == $searchresults) {
         echo '<div class="itemTitle">' . _MD_NORESULTS . '</div>';
     } else {
         foreach ($searchresults as $result) {
@@ -135,11 +135,11 @@ function mod_search($queryarray, $andor, $limit, $offset)
 {
     global $xoopsDB, $eh;
     $sql = 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-           . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data')
+           . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
            . ' d RIGHT JOIN '
-           . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items')
+           . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
            . ' i ON (d.itemid=i.itemid) LEFT JOIN '
-           . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text')
+           . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
            . " t ON (i.itemid=t.itemid) WHERE i.status='2'";
     // because count() returns 1 even if a supplied variable
     // is not an array, we must check if $queryarray is really an array
@@ -153,11 +153,11 @@ function mod_search($queryarray, $andor, $limit, $offset)
     }
     $sql .= 'ORDER BY i.created DESC';
 
-    $result      = $xoopsDB->query($sql, $limit, $offset) || $eh->show('0013');
+    $result      = $xoopsDB->query($sql, $limit, $offset) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
         return 0;
-    } elseif ($num_results == 0) {
+    } elseif (0 == $num_results) {
         return 0;
     } else {
         $ret = [];
@@ -188,11 +188,11 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0)
     global $xoopsDB, $eh;
     $count = 0;
     $sql   = 'SELECT COUNT(DISTINCT i.itemid) FROM '
-             . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_data')
+             . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
              . ' d, '
-             . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items')
+             . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
              . ' i LEFT JOIN '
-             . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_text')
+             . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
              . " t ON (i.itemid=t.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
     // because count() returns 1 even if a supplied variable
     // is not an array, we must check if $queryarray is really an array
@@ -204,7 +204,7 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0)
         }
         $sql .= ') ';
     }
-    $result = $xoopsDB->query($sql) || $eh->show('0013');
+    $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     list($count) = $xoopsDB->fetchRow($result);
 
     return $count;

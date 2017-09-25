@@ -131,7 +131,7 @@ class efqFormRadio extends XoopsFormElement
      */
     public function addOption($value, $name = '')
     {
-        if ($name !== '') {
+        if ('' !== $name) {
             $this->_options[$value] = $name;
         } else {
             $this->_options[$value] = $value;

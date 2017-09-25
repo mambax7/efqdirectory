@@ -43,7 +43,7 @@
  */
 class efqXdirHandler extends XoopsObjectHandler
 {
-//    public $db; //Database reference
+    //    public $db; //Database reference
     public $objXdir;
     public $errors; //array();
     public $categories; //array();
@@ -147,23 +147,22 @@ class efqXdirHandler extends XoopsObjectHandler
      * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
      * @version   1.0.0
-     * @return bool true if insertion is succesful, false if unsuccesful
+     * @return void true if insertion is succesful, false if unsuccesful
      * @internal  param object $obj object
-     *
      */
     public function createDataTypes()
     {
         $datatypeHandler = new efqDataTypeHandler();
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_ADDRESS, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_ADDRESS2, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_CITY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_STATE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_ZIP, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_COUNTRY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_PHONE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_FAX, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_EMAIL, 'fieldtype' => _MD_XDIR_FIELDTYPE_EMAIL];
-        $arr[]            = ['title' => _MD_XDIR_DTYPE_URL, 'fieldtype' => _MD_XDIR_FIELDTYPE_URL];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_ADDRESS, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_ADDRESS2, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_CITY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_STATE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_ZIP, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_COUNTRY, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_PHONE, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_FAX, 'fieldtype' => _MD_XDIR_FIELDTYPE_TEXTBOX];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_EMAIL, 'fieldtype' => _MD_XDIR_FIELDTYPE_EMAIL];
+        $arr[]           = ['title' => _MD_XDIR_DTYPE_URL, 'fieldtype' => _MD_XDIR_FIELDTYPE_URL];
         foreach ($arr as $datatype) {
             $objDataType = new efqFieldType;
             $objDataType->setVar('title', $datatype['title']);
@@ -183,16 +182,15 @@ class efqXdirHandler extends XoopsObjectHandler
      * @author    EFQ Consultancy <info@efqconsultancy.com>
      * @copyright EFQ Consultancy (c) 2008
      * @version   1.0.0
-     * @return bool true if insertion is succesful, false if unsuccesful
+     * @return void true if insertion is succesful, false if unsuccesful
      * @internal  param object $obj object
-     *
      */
     public function createFieldTypes()
     {
         $fieldtypeHandler = new efqFieldTypeHandler();
-        $arr[]             = ['title' => _MD_XDIR_FIELDTYPE_TEXTBOX, 'fieldtype' => 'textbox'];
-        $arr[]             = ['title' => _MD_XDIR_FIELDTYPE_EMAIL, 'fieldtype' => 'email'];
-        $arr[]             = ['title' => _MD_XDIR_FIELDTYPE_URL, 'fieldtype' => 'url'];
+        $arr[]            = ['title' => _MD_XDIR_FIELDTYPE_TEXTBOX, 'fieldtype' => 'textbox'];
+        $arr[]            = ['title' => _MD_XDIR_FIELDTYPE_EMAIL, 'fieldtype' => 'email'];
+        $arr[]            = ['title' => _MD_XDIR_FIELDTYPE_URL, 'fieldtype' => 'url'];
         foreach ($arr as $fieldtype) {
             $objFieldtype = new efqFieldType;
             $objFieldtype->setVar('title', $fieldtype['title']);
@@ -210,9 +208,8 @@ class efqXdirHandler extends XoopsObjectHandler
      * @version   1.0.0
      *
      * @param int $dirid
-     * @return bool true if insertion is succesful, false if unsuccesful
+     * @return void true if insertion is succesful, false if unsuccesful
      * @internal  param object $obj object
-     *
      */
     public function doMigrate($dirid = 0)
     {

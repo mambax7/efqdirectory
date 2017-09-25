@@ -21,7 +21,7 @@
 include __DIR__ . '/../../mainfile.php';
 include XOOPS_ROOT_PATH . '/header.php';
 $moduleDirName = basename(__DIR__);
-$coupid    = isset($_GET['coupid']) ? (int)$_GET['coupid'] : 0;
+$coupid        = isset($_GET['coupid']) ? (int)$_GET['coupid'] : 0;
 if (!($coupid > 0)) {
     redirect_header('index.php');
 }

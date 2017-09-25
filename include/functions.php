@@ -60,28 +60,28 @@ function convertOrderByIn($orderby)
 function convertorderbytrans($orderby)
 {
     $orderbyTrans = '';
-    if ($orderby === 'hits ASC') {
+    if ('hits ASC' === $orderby) {
         $orderbyTrans = '' . _MD_POPULARITYLTOM . '';
     }
-    if ($orderby === 'hits DESC') {
+    if ('hits DESC' === $orderby) {
         $orderbyTrans = '' . _MD_POPULARITYMTOL . '';
     }
-    if ($orderby === 'title ASC') {
+    if ('title ASC' === $orderby) {
         $orderbyTrans = '' . _MD_TITLEATOZ . '';
     }
-    if ($orderby === 'title DESC') {
+    if ('title DESC' === $orderby) {
         $orderbyTrans = '' . _MD_TITLEZTOA . '';
     }
-    if ($orderby === 'date ASC') {
+    if ('date ASC' === $orderby) {
         $orderbyTrans = '' . _MD_DATEOLD . '';
     }
-    if ($orderby === 'date DESC') {
+    if ('date DESC' === $orderby) {
         $orderbyTrans = '' . _MD_DATENEW . '';
     }
-    if ($orderby === 'rating ASC') {
+    if ('rating ASC' === $orderby) {
         $orderbyTrans = '' . _MD_RATINGLTOH . '';
     }
-    if ($orderby === 'rating DESC') {
+    if ('rating DESC' === $orderby) {
         $orderbyTrans = '' . _MD_RATINGHTOL . '';
     }
 
@@ -94,28 +94,28 @@ function convertorderbytrans($orderby)
  */
 function convertorderbyout($orderby)
 {
-    if ($orderby === 'title ASC') {
+    if ('title ASC' === $orderby) {
         $orderby = 'titleA';
     }
-    if ($orderby === 'date ASC') {
+    if ('date ASC' === $orderby) {
         $orderby = 'dateA';
     }
-    if ($orderby === 'hits ASC') {
+    if ('hits ASC' === $orderby) {
         $orderby = 'hitsA';
     }
-    if ($orderby === 'rating ASC') {
+    if ('rating ASC' === $orderby) {
         $orderby = 'ratingA';
     }
-    if ($orderby === 'title DESC') {
+    if ('title DESC' === $orderby) {
         $orderby = 'titleD';
     }
-    if ($orderby === 'date DESC') {
+    if ('date DESC' === $orderby) {
         $orderby = 'dateD';
     }
-    if ($orderby === 'hits DESC') {
+    if ('hits DESC' === $orderby) {
         $orderby = 'hitsD';
     }
-    if ($orderby === 'rating DESC') {
+    if ('rating DESC' === $orderby) {
         $orderby = 'ratingD';
     }
 
@@ -134,9 +134,9 @@ function newlinkgraphic($time, $status)
     $new       = '';
     $startdate = (time() - (86400 * $count));
     if ($startdate < $time) {
-        if ($status == 2) {
+        if (2 == $status) {
             $new = '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/assets/images/newred.gif\" alt=\"" . _MD_NEWTHISWEEK . '">';
-        } elseif ($status == 3) {
+        } elseif (3 == $status) {
             $new = '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/assets/images/update.gif\" alt=\"" . _MD_UPTHISWEEK . '">';
         }
     }
@@ -166,10 +166,11 @@ function popgraphic($hits)
 function getTotalItems($sel_id, $status = 0)
 {
     global $xoopsDB, $mytree;
+    $efqdirectory = Efqdirectory::getInstance();
     $count = 0;
     $arr   = [];
-    $query = 'SELECT DISTINCT l.itemid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' l, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . ' x WHERE x.itemid=l.itemid AND x.cid=' . $sel_id . '';
-    if ($status !== '') {
+    $query = 'SELECT DISTINCT l.itemid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' l, ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . ' x WHERE x.itemid=l.itemid AND x.cid=' . $sel_id . '';
+    if ('' !== $status) {
         $query .= " AND l.status>='$status'";
     } else {
         $query .= '';
@@ -186,8 +187,8 @@ function getTotalItems($sel_id, $status = 0)
     $arr  = $mytree->getAllChildId($sel_id);
     $size = count($arr);
     for ($i = 0; $i < $size; ++$i) {
-        $query2 = 'SELECT DISTINCT l.itemid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' l, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . ' x WHERE l.itemid=x.itemid AND x.cid=' . $arr[$i] . '';
-        if ($status !== '') {
+        $query2 = 'SELECT DISTINCT l.itemid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' l, ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . ' x WHERE l.itemid=x.itemid AND x.cid=' . $arr[$i] . '';
+        if ('' !== $status) {
             $query2 .= " AND l.status>='$status'";
         } else {
             $query2 .= '';
@@ -215,7 +216,7 @@ function getTotalItems2($sel_id, $status = '', $locdestid)
     $query = 'SELECT count(*) FROM ' . $xoopsDB->prefix('links_links') . ' t, ' . $xoopsDB->prefix('links_x_loc_dest') . ' x  WHERE x.ldestid=t.lid AND x.locdestid=' . $locdestid . ' AND t.cid=' . $sel_id . '';
     //  $query = "select DISTINCT count(lid) from ".$xoopsDB->prefix("links_links")." t, ".$xoopsDB->prefix("links_x_loc_dest")." x  where x.ldestid=t.lid AND x.locdestid=".$locdestid." AND t.cid=".$sel_id."";
     //  $query = "select count(*) from ".$xoopsDB->prefix("links_links")." where cid=".$sel_id."";
-    if ($status !== '') {
+    if ('' !== $status) {
         $query .= " and status>=$status";
     }
     $result = $xoopsDB->query($query);
@@ -225,7 +226,7 @@ function getTotalItems2($sel_id, $status = '', $locdestid)
     $size  = count($arr);
     for ($i = 0; $i < $size; ++$i) {
         $query2 = 'select count(*) ' . $xoopsDB->prefix('links_links') . ' t, ' . $xoopsDB->prefix('links_x_loc_dest') . ' x  where x.ldestid=t.lid AND x.locdestid=' . $locdestid . ' AND t.cid=' . $arr[$i] . '';
-        if ($status !== '') {
+        if ('' !== $status) {
             $query2 .= " and status>=$status";
         }
         $result2 = $xoopsDB->query($query2);
@@ -243,8 +244,10 @@ function getTotalItems2($sel_id, $status = '', $locdestid)
 function getDirNameFromId($dirid = 0)
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $myts        = MyTextSanitizer::getInstance();
-    $result      = $xoopsDB->query('SELECT name FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE dirid = '" . $dirid . '\'');
+    $sql         = 'SELECT name FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " WHERE dirid = '" . $dirid . '\'';
+    $result      = $xoopsDB->query($sql);
     $num_results = $GLOBALS['xoopsDB']->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -264,9 +267,11 @@ function getDirNameFromId($dirid = 0)
 function getCatTitleFromId($cid = 0)
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     //$block = array();
     $myts        = MyTextSanitizer::getInstance();
-    $result      = $xoopsDB->query('SELECT title FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat') . " WHERE cid = '" . $cid . '\'');
+    $sql         = 'SELECT title FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE cid = '" . $cid . '\'';
+    $result      = $xoopsDB->query($sql);
     $num_results = $GLOBALS['xoopsDB']->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -286,12 +291,14 @@ function getCatTitleFromId($cid = 0)
 function getCategoriesPaths($get_itemid)
 {
     global $efqtree, $xoopsDB, $get_itemid, $get_dirid, $xoopsUser, $xoopsModule;
+    $efqdirectory = Efqdirectory::getInstance();
     if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $isadmin = true;
     } else {
         $isadmin = false;
     }
-    $result      = $xoopsDB->query('SELECT xid, cid, itemid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat') . ' WHERE itemid = ' . $get_itemid . " AND active='1'");
+    $sql         = 'SELECT xid, cid, itemid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . ' WHERE itemid = ' . $get_itemid . " AND active='1'";
+    $result      = $xoopsDB->query($sql);
     $num_results = $GLOBALS['xoopsDB']->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -363,8 +370,10 @@ function adminmenu($currentoption = 0, $breadcrumb)
 function getTypeFromId($typeid = '0')
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $myts        = MyTextSanitizer::getInstance();
-    $result      = $xoopsDB->query('SELECT typename  FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_itemtypes') . " WHERE typeid = '" . $typeid . '\'');
+    $sql         = 'SELECT typename  FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes') . " WHERE typeid = '" . $typeid . '\'';
+    $result      = $xoopsDB->query($sql);
     $num_results = $xoopsDB->getRowsNum($result);
     $typename    = '';
     if (!$result) {
@@ -385,8 +394,10 @@ function getTypeFromId($typeid = '0')
 function getDirId($catid = '0')
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $myts        = MyTextSanitizer::getInstance();
-    $result      = $xoopsDB->query('SELECT dirid  FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat') . " WHERE cid = '" . $catid . '\'');
+    $sql         = 'SELECT dirid  FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE cid = '" . $catid . '\'';
+    $result      = $xoopsDB->query($sql);
     $num_results = $xoopsDB->getRowsNum($result);
     $dirid       = 0;
     if (!$result) {
@@ -407,8 +418,10 @@ function getDirId($catid = '0')
 function checkDescription($catid = '0')
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $myts        = MyTextSanitizer::getInstance();
-    $result      = $xoopsDB->query('SELECT txtid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat_txt') . " WHERE cid = '" . $catid . '\'');
+    $sql         = 'SELECT txtid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . " WHERE cid = '" . $catid . '\'';
+    $result      = $xoopsDB->query($sql);
     $num_results = $xoopsDB->getRowsNum($result);
     $txtid       = false;
     if (!$result) {
@@ -429,8 +442,9 @@ function checkDescription($catid = '0')
 function getTemplateFromCatid($get_catid = '0')
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $myts        = MyTextSanitizer::getInstance();
-    $result      = $xoopsDB->query('SELECT c.tplid, t.name  FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat_tpl') . ' c, ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_tpl') . " t WHERE c.tplid=t.tplid AND c.catid = '" . $get_catid . '\'');
+    $result      = $xoopsDB->query('SELECT c.tplid, t.name  FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_tpl') . ' c, ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_tpl') . " t WHERE c.tplid=t.tplid AND c.catid = '" . $get_catid . '\'');
     $num_results = $xoopsDB->getRowsNum($result);
     $tplname     = '';
     if (!$result) {
@@ -452,10 +466,11 @@ function getTemplateFromCatid($get_catid = '0')
 function getCatSelectArea($item = '0', $dirid = '0')
 {
     global $xoopsDB, $myts, $eh, $mytree, $moddir, $get_itemid;
+    $efqdirectory = Efqdirectory::getInstance();
     $sql        = 'SELECT c.cid, c.title, c.pid, c.allowlist, x.active FROM '
-                  . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat')
+                  . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat')
                   . ' c LEFT JOIN '
-                  . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                  . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
                   . ' x ON (c.cid=x.cid AND x.itemid='
                   . $item
                   . ")  WHERE c.dirid='"
@@ -471,8 +486,8 @@ function getCatSelectArea($item = '0', $dirid = '0')
         $tab    = '';
         while (list($cid, $title, $pid, $allowlist, $active) = $xoopsDB->fetchRow($mainresult)) {
             //For each cid, get all 'first children' using getFirstChildId() function
-            if ($allowlist != '0') {
-                if ($active == '1') {
+            if ('0' != $allowlist) {
+                if ('1' == $active) {
                     $checked = ' checked';
                 } else {
                     $checked = '';
@@ -500,6 +515,7 @@ function getCatSelectArea($item = '0', $dirid = '0')
 function getCatSelectAreaChildren($childid = '0', $level = '0')
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir, $get_itemid;
+    $efqdirectory = Efqdirectory::getInstance();
     $tab    = '&nbsp;';
     $level  = $level;
     $output = '';
@@ -508,9 +524,9 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
         $tab .= '&nbsp;&nbsp;&nbsp;&nbsp;';
     }
     $sql         = 'SELECT DISTINCT c.cid, c.title, c.pid, c.allowlist, x.active FROM '
-                   . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat')
+                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat')
                    . ' c LEFT JOIN '
-                   . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_item_x_cat')
+                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
                    . " x ON (c.cid=x.cid AND x.itemid='"
                    . $get_itemid
                    . '\')  WHERE c.dirid=\''
@@ -522,8 +538,8 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
     $numrows     = $xoopsDB->getRowsNum($childresult);
     if ($numrows > 0) {
         while (list($cid, $title, $pid, $allowlist, $active) = $xoopsDB->fetchRow($childresult)) {
-            if ($allowlist != '0') {
-                if ($active == '1') {
+            if ('0' != $allowlist) {
+                if ('1' == $active) {
                     $checked = ' checked';
                 } else {
                     $checked = '';
@@ -548,10 +564,12 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
 function getDirIdFromItem($item = 0)
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $block       = [];
     $myts        = MyTextSanitizer::getInstance();
     $dirid       = 0;
-    $result      = $xoopsDB->query('SELECT dirid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' WHERE itemid = ' . $item . '');
+    $sql         = 'SELECT dirid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' WHERE itemid = ' . $item . '';
+    $result      = $xoopsDB->query($sql);
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -571,10 +589,12 @@ function getDirIdFromItem($item = 0)
 function getUserIdFromItem($item = 0)
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $block       = [];
     $myts        = MyTextSanitizer::getInstance();
     $userid      = 0;
-    $result      = $xoopsDB->query('SELECT uid FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' WHERE itemid = ' . $item . '');
+    $sql         = 'SELECT uid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' WHERE itemid = ' . $item . '';
+    $result      = $xoopsDB->query($sql);
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -594,7 +614,8 @@ function getUserIdFromItem($item = 0)
 function updaterating($sel_id)
 {
     global $xoopsDB;
-    $query       = 'SELECT rating FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_votedata') . ' WHERE itemid = ' . $sel_id . '';
+    $efqdirectory = Efqdirectory::getInstance();
+    $query       = 'SELECT rating FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_votedata') . ' WHERE itemid = ' . $sel_id . '';
     $voteresult  = $xoopsDB->query($query);
     $votesDB     = $xoopsDB->getRowsNum($voteresult);
     $totalrating = 0;
@@ -603,7 +624,7 @@ function updaterating($sel_id)
     }
     $finalrating = $totalrating / $votesDB;
     $finalrating = number_format($finalrating, 4);
-    $query       = 'UPDATE ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . " SET rating=$finalrating, votes=$votesDB WHERE itemid = $sel_id";
+    $query       = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " SET rating=$finalrating, votes=$votesDB WHERE itemid = $sel_id";
     $xoopsDB->query($query) or exit();
 }
 
@@ -614,14 +635,15 @@ function updaterating($sel_id)
 function getAddressFields($typeid = '0')
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $block        = [];
     $myts         = MyTextSanitizer::getInstance();
     $dirid        = 0;
     $addressarray = [];
-    if ($typeid == '0') {
-        $result = $xoopsDB->query('SELECT typeid, address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country, typename, uselocyn FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_address_types') . " WHERE defaultyn = '1'");
+    if ('0' == $typeid) {
+        $result = $xoopsDB->query('SELECT typeid, address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country, typename, uselocyn FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_address_types') . " WHERE defaultyn = '1'");
     } else {
-        $result = $xoopsDB->query('SELECT typeid, address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country, typename, uselocyn FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_address_types') . " WHERE typeid = '$typeid'");
+        $result = $xoopsDB->query('SELECT typeid, address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country, typename, uselocyn FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_address_types') . " WHERE typeid = '$typeid'");
     }
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
@@ -658,11 +680,12 @@ function getAddressFields($typeid = '0')
 function getAddressValues($addrid = '0')
 {
     global $xoopsDB;
+    $efqdirectory = Efqdirectory::getInstance();
     $myts         = MyTextSanitizer::getInstance();
     $addressarray = [];
-    $result       = $xoopsDB->query('SELECT address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_addresses') . " WHERE addrid = '$addrid'");
+    $result       = $xoopsDB->query('SELECT address, address2, zip, postcode, lat, lon, phone, fax, mobile, city, country FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_addresses') . " WHERE addrid = '$addrid'");
     $num_results  = $xoopsDB->getRowsNum($result);
-    if ($num_results == 0) {
+    if (0 == $num_results) {
         $addressarray = ['address' => '', 'address2' => '', 'zip' => '', 'postcode' => '', 'lat' => '', 'lon' => '', 'phone' => '', 'fax' => '', 'mobile' => '', 'city' => '', 'country' => ''];
     }
     while (list($address, $address2, $zip, $postcode, $lat, $lon, $phone, $fax, $mobile, $city, $country) = $xoopsDB->fetchRow($result)) {
@@ -690,12 +713,13 @@ function getAddressValues($addrid = '0')
 function getCatSelectArea2()
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir, $xoopsUser, $xoopsModule;
+    $efqdirectory = Efqdirectory::getInstance();
     if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $isadmin = true;
     } else {
         $isadmin = false;
     }
-    $sql        = 'SELECT cid, title, pid, allowlist FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat') . " WHERE dirid='" . $get_dirid . '\' AND pid=\'0\' AND active=\'1\'';
+    $sql        = 'SELECT cid, title, pid, allowlist FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $get_dirid . '\' AND pid=\'0\' AND active=\'1\'';
     $mainresult = $xoopsDB->query($sql);
     $numrows    = $xoopsDB->getRowsNum($mainresult);
     $output     = '';
@@ -707,7 +731,7 @@ function getCatSelectArea2()
         $selectablecat = false;
         while (list($cid, $title, $pid, $allowlist) = $xoopsDB->fetchRow($mainresult)) {
             //For each cid, get all 'first children' using getFirstChildId() function
-            if ($allowlist != '0') {
+            if ('0' != $allowlist) {
                 $checkbox      = '<input type="checkbox" name="selected' . $cid . '"';
                 $selectablecat = true;
                 //$checked = "";
@@ -718,7 +742,7 @@ function getCatSelectArea2()
             //$cats .= $cid."|";
             $output .= '<tr><td><strong>' . $tab . '' . $title . "</strong></td><td>&nbsp;</td><td align=\"center\">$checkbox</td></tr>\n";
             $output .= getCatSelectAreaChildren2($cid);
-            if ($output !== '') {
+            if ('' !== $output) {
                 $selectablecat = true;
             }
         }
@@ -730,7 +754,7 @@ function getCatSelectArea2()
         $output .= '<tr><td><br><a href="admin/categories.php?dirid=' . $get_dirid . '">' . _MD_EDITCATEGORIES . '</a></td></tr>';
     }
     $output .= '</table>';
-    if ($selectablecat === false) {
+    if (false === $selectablecat) {
         redirect_header(XOOPS_URL . "/modules/$moddir/index.php?dirid=$get_dirid", 2, _MD_NOACTIVECATEGORIES);
     }
 
@@ -745,6 +769,7 @@ function getCatSelectArea2()
 function getCatSelectAreaChildren2($childid = '0', $level = '0')
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir;
+    $efqdirectory = Efqdirectory::getInstance();
     $tab    = '&nbsp;';
     $level  = $level;
     $output = '';
@@ -752,12 +777,12 @@ function getCatSelectAreaChildren2($childid = '0', $level = '0')
     for ($i = 0; $i < $level; ++$i) {
         $tab .= '&nbsp;&nbsp;&nbsp;&nbsp;';
     }
-    $sql         = 'SELECT cid, title, pid, allowlist FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_cat') . " WHERE dirid='" . (int)$get_dirid . '\' AND pid=\'' . (int)$childid . '\' AND active=\'1\'';
+    $sql         = 'SELECT cid, title, pid, allowlist FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . (int)$get_dirid . '\' AND pid=\'' . (int)$childid . '\' AND active=\'1\'';
     $childresult = $xoopsDB->query($sql);
     $numrows     = $xoopsDB->getRowsNum($childresult);
     if ($numrows > 0) {
         while (list($cid, $title, $pid, $allowlist) = $xoopsDB->fetchRow($childresult)) {
-            if ($allowlist != '0') {
+            if ('0' != $allowlist) {
                 $checkbox = '<input type="checkbox" name="selected' . $cid . '"';
             } else {
                 $checkbox = '&nbsp;';

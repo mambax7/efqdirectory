@@ -33,21 +33,21 @@
 function b_efqdiralpha1_menu_show($options)
 {
     global $xoopsDB, $xoopsModule, $eh;
+    $moduleDirName       = basename(dirname(__DIR__));
+    require_once __DIR__ .  '/../class/helper.php';
+    $efqdirectory = Efqdirectory::getInstance();
     //  $info = __DIR__;
     //  $split = preg_split("#[\\\]#", $info);
     //  $count = count($split) - 2;
     //  $moddir = $split[$count];
     //    $moddir = $xoopsModule->getvar("dirname");
-    $dirname       = basename(dirname(__DIR__));
-    $moduleHandler = xoops_getHandler('module');
-    $module        = $moduleHandler->getByDirname($dirname);
-    $moddir        = $module->getvar('dirname');
 
     $block                 = [];
     $block['lang_dirmenu'] = _MB_EFQDIR_MENU;
-    $block['moddir']       = $moddir;
+    $block['moddir']       = $moduleDirName;
     $myts                  = MyTextSanitizer::getInstance();
-    $result                = $xoopsDB->query('SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_dir') . " WHERE open='1' ORDER BY name") || $eh->show('0013');
+    $sql                   = 'SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " WHERE open='1' ORDER BY name";
+    $result                = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $directory              = [];
         $name                   = $myts->htmlSpecialChars($myrow['name']);
@@ -69,7 +69,7 @@ function b_efqdiralpha1_menu_edit($options)
 {
     $form = '' . _MB_EFQDIR_DISP . '&nbsp;';
     $form .= "<input type='hidden' name='options[]' value='";
-    if ($options[0] === 'date') {
+    if ('date' === $options[0]) {
         $form .= "date'";
     } else {
         $form .= "hits'";

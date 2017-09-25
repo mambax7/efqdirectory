@@ -17,13 +17,16 @@ define('_MI_EFQDIR_SMNAME2', 'Popular');
 define('_MI_EFQDIR_SMNAME3', 'Top Rated');
 
 // Names of admin menu items
-define('_MI_EFQDIR_ADMENU2', 'Home');
+define('_MI_EFQDIR_ADMENU1', 'Home');
+define('_MI_EFQDIR_ADMENU2', 'Categories');
 define('_MI_EFQDIR_ADMENU3', 'Directories');
 define('_MI_EFQDIR_ADMENU4', 'Field Types');
 define('_MI_EFQDIR_ADMENU5', 'Validations');
 define('_MI_EFQDIR_ADMENU6', 'Address Types');
 define('_MI_EFQDIR_ADMENU7', 'Subscriptions');
 define('_MI_EFQDIR_ADMENU8', 'Duplicate Data types');
+define('_AM_EFQDIR_HOME', 'Home');
+define('_AM_EFQDIR_ABOUT', 'About');
 
 // Title of config items
 define('_MI_EFQDIR_POPULAR', 'Select the number of hits for listings to be marked as popular');

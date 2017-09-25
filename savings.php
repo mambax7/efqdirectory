@@ -37,7 +37,7 @@ $coupon = new efqCouponHandler();
 if ($itemid) {
     $coupons = $coupon->getByItem($itemid);
 }
-$sql         = 'SELECT itemid, title FROM ' . $xoopsDB->prefix($module->getVar('dirname', 'n') . '_items') . ' WHERE itemid=' . $itemid . '';
+$sql         = 'SELECT itemid, title FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' WHERE itemid=' . $itemid . '';
 $item_result = $xoopsDB->query($sql);
 $numrows     = $xoopsDB->getRowsNum($item_result);
 //echo $numrows;

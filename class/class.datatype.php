@@ -80,7 +80,7 @@ class efqDataType extends XoopsObject
  */
 class efqDataTypeHandler extends XoopsObjectHandler
 {
-//    public $db; //Database reference
+    //    public $db; //Database reference
     public $objDataType; // reference to object
 
     /**
@@ -102,7 +102,7 @@ class efqDataTypeHandler extends XoopsObjectHandler
      *
      * @param   efqDataType $obj object
      *
-     * @param bool     $forceQuery
+     * @param bool          $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertDataType($obj, $forceQuery = false)

@@ -78,9 +78,9 @@ class efqSubscriptionOffer extends XoopsObject
  * @copyright EFQ Consultancy (c) 2007
  * @version   1.1.0
  */
-class efqSubscriptionOfferHandler extends xoopsObjectHandler
+class efqSubscriptionOfferHandler extends XoopsObjectHandler
 {
-//    public $db; //Database reference
+    //    public $db; //Database reference
     public $objOffer; // reference to object
 
     /**
@@ -102,7 +102,7 @@ class efqSubscriptionOfferHandler extends xoopsObjectHandler
      *
      * @param   efqSubscriptionOffer $obj object
      *
-     * @param bool     $forceQuery
+     * @param bool                   $forceQuery
      * @return bool true if insertion is succesful, false if unsuccesful
      */
     public function insertOffer($obj, $forceQuery = false)
