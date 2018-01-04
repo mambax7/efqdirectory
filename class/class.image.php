@@ -102,7 +102,7 @@ class XoopsImageHandler extends XoopsObjectHandler
         }
         if ($image->isNew()) {
             $image_id = $this->db->genId('image_image_id_seq');
-            $sql      = sprintf('INSERT INTO %s WHERE itemid=' . $itemid . ' (logourl) VALUES (%s)', $this->db->prefix($efqdirectory->getDirname() . '_items'), $this->db->quoteString($image_name));
+            $sql      = sprintf('INSERT INTO %s WHERE itemid=' . $itemid . ' (logourl) VALUES (%s)', $this->db->prefix($helper->getDirname() . '_items'), $this->db->quoteString($image_name));
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
@@ -120,7 +120,7 @@ class XoopsImageHandler extends XoopsObjectHandler
             } */
             /* $image->assignVar('image_id', $image_id); */
         } else {
-            $sql = sprintf('UPDATE %s SET image_name = %s WHERE itemid = %u', $this->db->prefix($efqdirectory->getDirname() . '_items'), $this->db->quoteString($image_name));
+            $sql = sprintf('UPDATE %s SET image_name = %s WHERE itemid = %u', $this->db->prefix($helper->getDirname() . '_items'), $this->db->quoteString($image_name));
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
@@ -176,7 +176,7 @@ class XoopsImageHandler extends XoopsObjectHandler
         } else {
             $sql = 'SELECT * FROM ' . $this->db->prefix('image');
         }
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql   .= ' ' . $criteria->renderWhere();
             $sort  = !in_array($criteria->getSort(), ['image_id', 'image_created', 'image_mimetype', 'image_display', 'image_weight']) ? 'image_weight' : $criteria->getSort();
             $sql   .= ' ORDER BY ' . $sort . ' ' . $criteria->getOrder();
@@ -210,7 +210,7 @@ class XoopsImageHandler extends XoopsObjectHandler
     public function getCount(CriteriaElement $criteria = null)
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('image');
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         if (!$result = $this->db->query($sql)) {

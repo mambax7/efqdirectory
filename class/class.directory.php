@@ -209,7 +209,7 @@ class efqDirectoryHandler extends XoopsObjectHandler
     {
         global $xoopsDB;
         $block       = [];
-        $myts        = MyTextSanitizer::getInstance();
+        $myts        = \MyTextSanitizer::getInstance();
         $dirid       = 0;
         $sql         = 'SELECT dirid FROM ' . $xoopsDB->prefix('efqdiralpha1_dir') . ' ';
         $result      = $xoopsDB->query($sql);

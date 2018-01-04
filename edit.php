@@ -19,7 +19,7 @@
  */
 
 include __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance(); // MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
@@ -34,8 +34,8 @@ require_once __DIR__ . '/class/class.listing.php';
 // Get module directory name;
 $moddir = $xoopsModule->getVar('dirname');
 // Prepare two tree classes;
-$mytree            = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
-$efqtree           = new efqTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
+$mytree            = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$efqtree           = new efqTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 $efqListing        = new efqListing();
 $efqListingHandler = new efqListingHandler();
 
@@ -85,8 +85,8 @@ if (!empty($_POST['submit'])) {
         $post_dirid = 0;
     }
     if (isset($_POST['itemtitle'])) {
-        $p_title     = $myts->makeTboxData4Save($_POST['itemtitle']);
-        $p_ini_title = $myts->makeTboxData4Save($_POST['ini_itemtitle']);
+        $p_title     = $myts->addSlashes($_POST['itemtitle']);
+        $p_ini_title = $myts->addSlashes($_POST['ini_itemtitle']);
         // Start uploading up file;
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         $uploader = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/modules/' . $moddir . '/init_uploads', ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png', 'image/jpg'], 300000, 250, 250);
@@ -110,15 +110,15 @@ if (!empty($_POST['submit'])) {
                         }
                     }
                     if ($p_title != $p_ini_title) {
-                        $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " SET logourl = '" . $savedfilename . '\' WHERE itemid = \'' . $post_itemid . '\'';
+                        $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET logourl = '" . $savedfilename . '\' WHERE itemid = \'' . $post_itemid . '\'';
                     } else {
-                        $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " SET title = '" . $p_title . '\', logourl = \'' . $savedfilename . '\' WHERE itemid = \'' . $post_itemid . '\'';
+                        $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET title = '" . $p_title . '\', logourl = \'' . $savedfilename . '\' WHERE itemid = \'' . $post_itemid . '\'';
                     }
                     $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 }
             } else {
                 if ($p_title != $p_ini_title) {
-                    $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " SET title = '" . $p_title . '\' WHERE itemid = \'' . $post_itemid . '\'';
+                    $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET title = '" . $p_title . '\' WHERE itemid = \'' . $post_itemid . '\'';
                 }
                 $xoopsDB->query($sql) ; //|| $eh->show('0013');
             }
@@ -127,29 +127,29 @@ if (!empty($_POST['submit'])) {
         redirect_header('index.php', 2, _MD_NOVALIDITEM_TITLEMISSING);
     }
     if (isset($_POST['ini_description'])) {
-        $p_ini_description = $myts->makeTareaData4Save($_POST['ini_description']);
+        $p_ini_description = $myts->addSlashes($_POST['ini_description']);
     } else {
         $p_ini_description = null;
     }
     if (isset($_POST['description'])) {
-        $p_description = $myts->makeTareaData4Save($_POST['description']);
+        $p_description = $myts->addSlashes($_POST['description']);
     } else {
         $p_description = null;
     }
     if (isset($_POST['description_set'])) {
         if ('1' == $_POST['description_set']) {
             if ($p_ini_description != $p_description) {
-                $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
+                $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
                 $xoopsDB->query($sql) ; //|| $eh->show('0013');
             }
         } elseif (null != $p_description or '' !== $p_description) {
-            $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text'), $post_itemid, $p_description);
+            $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_text'), $post_itemid, $p_description);
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
         }
     }
 
     $linkedcats    = $efqListingHandler->getLinkedCatsArray($post_itemid, $post_dirid);
-    $sql           = 'SELECT cid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $post_dirid . '\' AND active=\'1\'';
+    $sql           = 'SELECT cid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE dirid='" . $post_dirid . '\' AND active=\'1\'';
     $allcatsresult = $xoopsDB->query($sql);
     $numrows       = $xoopsDB->getRowsNum($allcatsresult);
     $count         = 0;
@@ -157,15 +157,15 @@ if (!empty($_POST['submit'])) {
         while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
             if (isset($_POST['selected' . $cid . ''])) {
                 if (!in_array($cid, $linkedcats)) {
-                    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . '_xid_seq');
-                    $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $newid, $cid, $post_itemid, 1, time());
+                    $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . '_xid_seq');
+                    $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cid, $post_itemid, 1, time());
                     $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 }
 
                 ++$count;
             } else {
                 if (in_array($cid, $linkedcats)) {
-                    $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $cid, $post_itemid);
+                    $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $cid, $post_itemid);
                     $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 }
             }
@@ -180,16 +180,16 @@ if (!empty($_POST['submit'])) {
     // Get all datatypes that can be associated with this listing.
     $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, t.custom ';
     $sql         .= 'FROM '
-                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                    . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat')
                     . ' ic, '
-                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+                    . $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat')
                     . ' xc, '
-                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+                    . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                     . ' f, '
-                    . $xoopsDB->prefix($efqdirectory->getDirname()
+                    . $xoopsDB->prefix($helper->getDirname()
                                        . '_dtypes')
                     . ' t ';
-    $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $post_itemid . ') ';
+    $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $post_itemid . ') ';
     $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $post_itemid . '';
     $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $custom) = $xoopsDB->fetchRow($data_result)) {
@@ -211,23 +211,23 @@ if (!empty($_POST['submit'])) {
                     }
                 }
             } else {
-                $post_value = $myts->makeTboxData4Save($_POST["$dtypeid"]);
+                $post_value = $myts->addSlashes($_POST["$dtypeid"]);
             }
         } else {
             $post_value = '';
         }
         if (isset($_POST['custom' . $dtypeid . ''])) {
-            $post_customtitle = $myts->makeTboxData4Save($_POST['custom' . $dtypeid . '']);
+            $post_customtitle = $myts->addSlashes($_POST['custom' . $dtypeid . '']);
         } else {
             $post_customtitle = '';
         }
         if (isset($_POST['url_title' . $dtypeid . ''])) {
-            $post_urltitle = $myts->makeTboxData4Save($_POST['url_title' . $dtypeid . '']);
+            $post_urltitle = $myts->addSlashes($_POST['url_title' . $dtypeid . '']);
         } else {
             $post_urltitle = '';
         }
         if (isset($_POST['url_link' . $dtypeid . ''])) {
-            $post_urllink = $myts->makeTboxData4Save($_POST['url_link' . $dtypeid . '']);
+            $post_urllink = $myts->addSlashes($_POST['url_link' . $dtypeid . '']);
         } else {
             $post_urllink = '';
         }
@@ -236,12 +236,12 @@ if (!empty($_POST['submit'])) {
         }
         if (null == $itemid) {
             //That means there was not any value, so a new record should be added to the data table.
-            $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_data') . '_dataid_seq');
-            $sql   = sprintf("INSERT INTO %s (dataid, itemid, dtypeid, VALUE, created, customtitle) VALUES (%u, %u, %u, '%s', '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_data'), $newid, $post_itemid, $dtypeid, $post_value, time(), $post_customtitle);
+            $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_data') . '_dataid_seq');
+            $sql   = sprintf("INSERT INTO %s (dataid, itemid, dtypeid, VALUE, created, customtitle) VALUES (%u, %u, %u, '%s', '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_data'), $newid, $post_itemid, $dtypeid, $post_value, time(), $post_customtitle);
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
         } else {
             if ($value != $post_value) {
-                $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . " SET value = '$post_value', customtitle = '$post_customtitle' WHERE dtypeid = '$dtypeid' AND itemid = '$post_itemid'";
+                $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_data') . " SET value = '$post_value', customtitle = '$post_customtitle' WHERE dtypeid = '$dtypeid' AND itemid = '$post_itemid'";
                 $xoopsDB->query($sql) ; //|| $eh->show('0013');
             }
         }
@@ -263,9 +263,9 @@ if (!empty($_POST['submit'])) {
     $xoopsTpl->assign('lang_cancel', _CANCEL);
 
     $sql         = 'SELECT i.itemid, i.logourl, i.uid, i.status, i.created, i.title, i.typeid, t.description FROM '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                   . $xoopsDB->prefix($helper->getDirname() . '_items')
                    . ' i LEFT JOIN '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                   . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                    . ' t ON (i.itemid=t.itemid) WHERE i.itemid='
                    . $get_itemid
                    . '';
@@ -301,15 +301,15 @@ if (!empty($_POST['submit'])) {
             }
             $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, d.customtitle, t.custom ';
             $sql         .= 'FROM '
-                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                            . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat')
                             . ' ic, '
-                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+                            . $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat')
                             . ' xc, '
-                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+                            . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                             . ' f, '
-                            . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                            . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                             . ' t ';
-            $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $get_itemid . ') ';
+            $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $get_itemid . ') ';
             $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $get_itemid . '';
             $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
             $numrows     = $xoopsDB->getRowsNum($data_result);
@@ -360,7 +360,7 @@ function GetLevelid($locdestid)
 {
     global $xoopsDB;
     $block        = [];
-    $myts         = MyTextSanitizer::getInstance();
+    $myts         = \MyTextSanitizer::getInstance();
     $sql          = 'SELECT locid, levelid FROM ' . $xoopsDB->prefix('dst_loc') . ' WHERE locid = ' . $locdestid . ' ';
     $result2      = $xoopsDB->query($sql);
     $num_results2 = $GLOBALS['xoopsDB']->getRowsNum($result2);
@@ -383,7 +383,7 @@ function GetLocName($locdestid)
 {
     global $xoopsDB;
     $block       = [];
-    $myts        = MyTextSanitizer::getInstance();
+    $myts        = \MyTextSanitizer::getInstance();
     $sql         = 'SELECT locid, name FROM ' . $xoopsDB->prefix('dst_loc') . ' WHERE locid = ' . $locdestid . ' ';
     $result      = $xoopsDB->query($sql);
     $num_results = $GLOBALS['xoopsDB']->getRowsNum($result);

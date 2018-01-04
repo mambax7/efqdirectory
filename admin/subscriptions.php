@@ -18,6 +18,8 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
 
@@ -28,12 +30,12 @@ require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once __DIR__ . '/../class/class.subscription.php';
-$myts                = MyTextSanitizer::getInstance();
+$myts                = \MyTextSanitizer::getInstance();
 $eh                  = new ErrorHandler;
-$itemtypes           = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes'), 'typeid', '');
+$itemtypes           = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_itemtypes'), 'typeid', '');
 $subscription        = new efqSubscription();
 $subscriptionhandler = new efqSubscriptionHandler();
-$efqdirectory = Efqdirectory::getInstance();
+$helper = Efqdirectory\Helper::getInstance();
 
 $moddir = $xoopsModule->getVar('dirname');
 if (isset($_GET['typeid'])) {
@@ -67,15 +69,15 @@ function listoffers()
     xoops_cp_header();
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation(basename(__FILE__));
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     //adminmenu(4, _MD_MANAGE_SUBSCRIPTION_OFFERS);
     echo '<br>';
 
     //list subscription offers
     $sql     = 'SELECT o.offerid, o.typeid, o.title, o.duration, o.count, o.price, o.activeyn, o.currency, o.descr, t.typename, t.typelevel FROM '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_itemtypes')
                . ' t, '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers')
+               . $xoopsDB->prefix($helper->getDirname() . '_subscr_offers')
                . ' o WHERE o.typeid=t.typeid';
     $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows = $xoopsDB->getRowsNum($result);
@@ -140,7 +142,7 @@ function listoffers()
     echo '</td></tr></table>';
 
     //Show item types
-    $sql     = 'SELECT typeid, typename, typelevel FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes') . '';
+    $sql     = 'SELECT typeid, typename, typelevel FROM ' . $xoopsDB->prefix($helper->getDirname() . '_itemtypes') . '';
     $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
@@ -190,7 +192,7 @@ function edittype()
     $adminObject->displayNavigation(basename(__FILE__));
     //adminmenu(4, _MD_MANAGE_SUBSCRIPTION_OFFERS);
     echo '<br>';
-    $sql     = 'SELECT typeid, typename, typelevel FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes') . " WHERE typeid=$get_typeid";
+    $sql     = 'SELECT typeid, typename, typelevel FROM ' . $xoopsDB->prefix($helper->getDirname() . '_itemtypes') . " WHERE typeid=$get_typeid";
     $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
@@ -222,13 +224,13 @@ function editoffer()
     xoops_cp_header();
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation(basename(__FILE__));
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     //adminmenu(4, _MD_MANAGE_SUBSCRIPTION_OFFERS);
     echo '<br>';
     $sql     = 'SELECT o.offerid, o.title, o.typeid, o.duration, o.count, o.price, o.activeyn, o.currency, o.descr, t.typename, t.typelevel FROM '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_itemtypes')
                . ' t, '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers')
+               . $xoopsDB->prefix($helper->getDirname() . '_subscr_offers')
                . ' o WHERE o.typeid=t.typeid AND o.offerid='
                . $get_offerid
                . '';
@@ -288,29 +290,29 @@ function viewtype()
 function addoffer()
 {
     global $xoopsDB, $eh, $myts, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     //Get POST variables;
-    $post_title    = $myts->makeTboxData4Save($_POST['title']);
+    $post_title    = $myts->addSlashes($_POST['title']);
     $post_typeid   = (int)$_POST['typeid'];
-    $post_duration = $myts->makeTboxData4Save($_POST['duration']);
-    $post_currency = $myts->makeTboxData4Save($_POST['currency']);
+    $post_duration = $myts->addSlashes($_POST['duration']);
+    $post_currency = $myts->addSlashes($_POST['currency']);
     $post_count    = (int)$_POST['count'];
-    $post_price    = $myts->makeTboxData4Save($_POST['price']);
+    $post_price    = $myts->addSlashes($_POST['price']);
     if (isset($activeyn)) {
         $post_activeyn = (int)$_POST['activeyn'];
     } else {
         $post_activeyn = 0;
     }
     if (isset($_POST['descr'])) {
-        $post_descr = $myts->makeTboxData4Save($_POST['descr']);
+        $post_descr = $myts->addSlashes($_POST['descr']);
     } else {
         $post_descr = '';
     }
 
-    $gen_offerid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers') . '_offerid_seq');
+    $gen_offerid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_subscr_offers') . '_offerid_seq');
     $sql         = sprintf(
         "INSERT INTO %s (offerid, title, typeid, duration, COUNT, price, activeyn, currency, descr) VALUES (%u, '%s', %u, %u, %u, '%s', %u, '%s', '%s')",
-        $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers'),
+        $xoopsDB->prefix($helper->getDirname() . '_subscr_offers'),
         $gen_offerid,
         $post_title,
         $post_typeid,
@@ -329,29 +331,29 @@ function addoffer()
 function saveoffer()
 {
     global $xoopsDB, $eh, $myts, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     //Get POST variables;
     $post_offerid  = (int)$_POST['offerid'];
-    $post_title    = $myts->makeTboxData4Save($_POST['title']);
+    $post_title    = $myts->addSlashes($_POST['title']);
     $post_typeid   = (int)$_POST['typeid'];
-    $post_duration = $myts->makeTboxData4Save($_POST['duration']);
-    $post_currency = $myts->makeTboxData4Save($_POST['currency']);
+    $post_duration = $myts->addSlashes($_POST['duration']);
+    $post_currency = $myts->addSlashes($_POST['currency']);
     $post_count    = (int)$_POST['count'];
-    $post_price    = $myts->makeTboxData4Save($_POST['price']);
+    $post_price    = $myts->addSlashes($_POST['price']);
     if (isset($_POST['activeyn'])) {
         $post_activeyn = (int)$_POST['activeyn'];
     } else {
         $post_activeyn = 0;
     }
     if (isset($_POST['descr'])) {
-        $post_descr = $myts->makeTboxData4Save($_POST['descr']);
+        $post_descr = $myts->addSlashes($_POST['descr']);
     } else {
         $post_descr = '';
     }
 
-    $gen_offerid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers') . '_offerid_seq');
+    $gen_offerid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_subscr_offers') . '_offerid_seq');
     $sql         = 'UPDATE '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers')
+                   . $xoopsDB->prefix($helper->getDirname() . '_subscr_offers')
                    . " SET title = '$post_title', typeid = '$post_typeid', duration = '$post_duration', count = '$post_count', price = '$post_price', activeyn = '$post_activeyn', currency = '$post_currency', descr = '$post_descr' WHERE offerid='$post_offerid'";
     $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $gen_offerid = $xoopsDB->getInsertId();
@@ -362,11 +364,11 @@ function addtype()
     //function to save a new item type
 {
     global $xoopsDB, $eh, $myts, $_POST, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
-    $p_typename = $myts->makeTboxData4Save($_POST['typename']);
-    $p_level    = $myts->makeTboxData4Save($_POST['typelevel']);
-    $newid      = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes') . '_typeid_seq');
-    $sql        = sprintf("INSERT INTO %s (typeid, typename, typelevel) VALUES (%u, '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes'), $newid, $p_typename, $p_level);
+    $helper = Efqdirectory\Helper::getInstance();
+    $p_typename = $myts->addSlashes($_POST['typename']);
+    $p_level    = $myts->addSlashes($_POST['typelevel']);
+    $newid      = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_itemtypes') . '_typeid_seq');
+    $sql        = sprintf("INSERT INTO %s (typeid, typename, typelevel) VALUES (%u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_itemtypes'), $newid, $p_typename, $p_level);
     $xoopsDB->query($sql) ; //|| $eh->show('0013');
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_SAVED);
 }
@@ -384,7 +386,7 @@ function deltype()
     if ($subscriptionhandler->countSubscriptionsForType($g_typeid) > 0) {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 3, _MD_ERR_ITEMTYPE_LINKED_TO_LISTINGS);
     }
-    $sql = sprintf('DELETE FROM %s WHERE typeid=%u', $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes'), $g_typeid);
+    $sql = sprintf('DELETE FROM %s WHERE typeid=%u', $xoopsDB->prefix($helper->getDirname() . '_itemtypes'), $g_typeid);
     $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 1, _MD_ITEMTYPE_DELETED);
 }
@@ -393,10 +395,10 @@ function deltype()
 function savetype()
 {
     global $xoopsDB, $eh, $post_typeid, $myts, $moddir;
-    $p_typename = $myts->makeTboxData4Save($_POST['typename']);
+    $p_typename = $myts->addSlashes($_POST['typename']);
     $p_level    = (int)$_POST['typelevel'];
-    $newid      = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes') . '_typeid_seq');
-    $sql        = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes') . " SET typename='$p_typename', typelevel='$p_level' WHERE typeid='$post_typeid'";
+    $newid      = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_itemtypes') . '_typeid_seq');
+    $sql        = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_itemtypes') . " SET typename='$p_typename', typelevel='$p_level' WHERE typeid='$post_typeid'";
     $xoopsDB->query($sql) ; //|| $eh->show('0013');
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_SAVED);
 }

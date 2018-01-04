@@ -19,10 +19,10 @@
  */
 
 include __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance(); // MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-$myts   = MyTextSanitizer::getInstance();
+$myts   = \MyTextSanitizer::getInstance();
 $mytree = new MyXoopsTree($xoopsDB->prefix('links_cat'), 'cid', 'pid');
 $eh     = new ErrorHandler;
 
@@ -135,11 +135,11 @@ function mod_search($queryarray, $andor, $limit, $offset)
 {
     global $xoopsDB, $eh;
     $sql = 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-           . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+           . $xoopsDB->prefix($helper->getDirname() . '_data')
            . ' d RIGHT JOIN '
-           . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+           . $xoopsDB->prefix($helper->getDirname() . '_items')
            . ' i ON (d.itemid=i.itemid) LEFT JOIN '
-           . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+           . $xoopsDB->prefix($helper->getDirname() . '_item_text')
            . " t ON (i.itemid=t.itemid) WHERE i.status='2'";
     // because count() returns 1 even if a supplied variable
     // is not an array, we must check if $queryarray is really an array
@@ -188,11 +188,11 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0)
     global $xoopsDB, $eh;
     $count = 0;
     $sql   = 'SELECT COUNT(DISTINCT i.itemid) FROM '
-             . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+             . $xoopsDB->prefix($helper->getDirname() . '_data')
              . ' d, '
-             . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+             . $xoopsDB->prefix($helper->getDirname() . '_items')
              . ' i LEFT JOIN '
-             . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+             . $xoopsDB->prefix($helper->getDirname() . '_item_text')
              . " t ON (i.itemid=t.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
     // because count() returns 1 even if a supplied variable
     // is not an array, we must check if $queryarray is really an array

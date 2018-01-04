@@ -24,7 +24,7 @@
 */
 
 include __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance(); // MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
@@ -36,7 +36,7 @@ require_once __DIR__ . '/class/class.couponhandler.php';
 $eh = new ErrorHandler; //ErrorHandler object
 
 $moddir = $xoopsModule->getVar('dirname');
-$mytree = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
+$mytree = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 
 //$moddir = $xoopsModule->getvar("dirname");
 $couponid = isset($_GET['couponid']) ? (int)$_GET['couponid'] : 0;
@@ -61,7 +61,7 @@ if ($couponid > 0) {
     $coupon = new efqCouponHandler();
     $coupon->get($couponid);
     //$couponid = $coupon->couponid;
-    $myts        = MyTextSanitizer::getInstance();
+    $myts        = \MyTextSanitizer::getInstance();
     $lbr         = $coupon->lbr;
     $description = $coupon->descr;
     $image       = $coupon->image;

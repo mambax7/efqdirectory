@@ -27,6 +27,9 @@
  * @copyright EFQ Consultancy (c) 2007
  * @version   1.1.0
  */
+
+use XoopsModules\Efqdirectory;
+
 class efqListing extends XoopsObject
 {
     public $_editrights = false;
@@ -163,8 +166,8 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function updateStatus($itemid = 0, $newstatus = '1')
     {
-        $efqdirectory = Efqdirectory::getInstance();
-        $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' SET status = ' . $newstatus . ' WHERE itemid = ' . (int)$itemid . '';
+        $helper = Efqdirectory\Helper::getInstance();
+        $sql = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_items') . ' SET status = ' . $newstatus . ' WHERE itemid = ' . (int)$itemid . '';
         if ($this->db->query($sql)) {
             return true;
         }
@@ -184,8 +187,8 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function incrementHits($itemid = 0)
     {
-        $efqdirectory = Efqdirectory::getInstance();
-        $sql = sprintf('UPDATE %s SET hits = hits+1 WHERE itemid = %u AND STATUS = 2', $this->db->prefix($efqdirectory->getDirname() . '_items'), (int)$itemid);
+        $helper = Efqdirectory\Helper::getInstance();
+        $sql = sprintf('UPDATE %s SET hits = hits+1 WHERE itemid = %u AND STATUS = 2', $this->db->prefix($helper->getDirname() . '_items'), (int)$itemid);
         if ($this->db->queryF($sql)) {
             return true;
         }
@@ -205,11 +208,11 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function getLinkedCatsArray($itemid = '0', $dirid = '0')
     {
-        $efqdirectory = Efqdirectory::getInstance();
+        $helper = Efqdirectory\Helper::getInstance();
         $sql     = 'SELECT c.cid, x.active FROM '
-                   . $this->db->prefix($efqdirectory->getDirname() . '_cat')
+                   . $this->db->prefix($helper->getDirname() . '_cat')
                    . ' c, '
-                   . $this->db->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                   . $this->db->prefix($helper->getDirname() . '_item_x_cat')
                    . ' x WHERE c.cid=x.cid AND x.itemid='
                    . (int)$itemid
                    . " AND c.dirid='"
@@ -240,8 +243,8 @@ class efqListingHandler extends XoopsObjectHandler
      */
     public function getListing($itemid)
     {
-        $efqdirectory = Efqdirectory::getInstance();
-        $sql    = 'SELECT i.*, t.description FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' i LEFT JOIN ' . $this->db->prefix($efqdirectory->getDirname() . '_item_text') . ' t ON (i.itemid=t.itemid) WHERE i.itemid=' . (int)$itemid;
+        $helper = Efqdirectory\Helper::getInstance();
+        $sql    = 'SELECT i.*, t.description FROM ' . $this->db->prefix($helper->getDirname() . '_items') . ' i LEFT JOIN ' . $this->db->prefix($helper->getDirname() . '_item_text') . ' t ON (i.itemid=t.itemid) WHERE i.itemid=' . (int)$itemid;
         $result = $this->db->query($sql);
         $arr    = [];
         if (!$result) {
@@ -265,18 +268,18 @@ class efqListingHandler extends XoopsObjectHandler
     public function getDataTypes($itemid)
     {
         global $datafieldmanager;
-        $efqdirectory = Efqdirectory::getInstance();
+        $helper = Efqdirectory\Helper::getInstance();
         $sql     = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
         $sql     .= 'FROM '
-                    . $this->db->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                    . $this->db->prefix($helper->getDirname() . '_item_x_cat')
                     . ' ic, '
-                    . $this->db->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+                    . $this->db->prefix($helper->getDirname() . '_dtypes_x_cat')
                     . ' xc, '
-                    . $this->db->prefix($efqdirectory->getDirname() . '_fieldtypes')
+                    . $this->db->prefix($helper->getDirname() . '_fieldtypes')
                     . ' f, '
-                    . $this->db->prefix($efqdirectory->getDirname() . '_dtypes')
+                    . $this->db->prefix($helper->getDirname() . '_dtypes')
                     . ' t ';
-        $sql     .= 'LEFT JOIN ' . $this->db->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . (int)$itemid . ') ';
+        $sql     .= 'LEFT JOIN ' . $this->db->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . (int)$itemid . ') ';
         $sql     .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . (int)$itemid . ' ORDER BY t.seq ASC';
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);

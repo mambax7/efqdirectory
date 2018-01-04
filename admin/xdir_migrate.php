@@ -42,7 +42,7 @@ include __DIR__ . '/../class/class.directory.php';
 include __DIR__ . '/../class/class.xdir.php';
 include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 $eh   = new ErrorHandler;
 
 $moddir = $xoopsModule->getVar('dirname');

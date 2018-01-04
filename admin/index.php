@@ -24,21 +24,16 @@ xoops_cp_header();
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
-/** @var EfqDirectoryUtility $utilityClass */
-$utilityClass = ucfirst($moduleDirName) . 'Utility';
-if (!class_exists($utilityClass)) {
-    xoops_load('utility', $moduleDirName);
-}
-
+//check or upload folders
 $configurator = include __DIR__ . '/../include/config.php';
 foreach (array_keys($configurator->uploadFolders) as $i) {
-    $utilityClass::createFolder($configurator->uploadFolders[$i]);
+    $utility::createFolder($configurator->uploadFolders[$i]);
     $adminObject->addConfigBoxLine($configurator->uploadFolders[$i], 'folder');
 }
 
 $adminObject->displayNavigation(basename(__FILE__));
 $adminObject->displayIndex();
 
-echo $utilityClass::getServerStats();
+echo $utility::getServerStats();
 
 include __DIR__ . '/admin_footer.php';

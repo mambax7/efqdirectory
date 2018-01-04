@@ -1,64 +1,57 @@
 <?php
-/*
+/**
+ * XOOPS tree handler
+ *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
  * which is considered copyrighted (c) material of the original comment or credit authors.
- *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * @copyright       XOOPS Project (https://xoops.org)
+ * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @package         kernel
+ * @since           2.0.0
+ * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
  */
+
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
- * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
- * @package
- * @since
- * @author       XOOPS Development Team, Kazumi Ono (AKA onokazu)
+ * Abstract base class for forms
+ *
+ * @author     Kazumi Ono <onokazu@xoops.org>
+ * @author     John Neill <catzwolf@xoops.org>
+ * @copyright  copyright (c) XOOPS.org
+ * @package    kernel
+ * @subpackage XoopsTree
+ * @access     public
  */
-
-// Hacks provided by: wtravel                //
-//  e-mail: info@efqconsultancy.com            //
-// ------------------------------------------------------------------------- //
-
-class efqTree
+class MyXoopsTree
 {
-    public $table;
-    //table with parent-child structure
-    public $id;
-    //name of unique id for records in table $table
-    public $pid;
-    // name of parent id used in table $table
-    public $order;
-    //specifies the order of query results
-    public $title;
-    // name of a field in table $table which will be used when  selection box and paths are generated
+    public $table; //table with parent-child structure
+    public $id; //name of unique id for records in table $table
+    public $pid; // name of parent id used in table $table
+    public $order; //specifies the order of query results
+    public $title; // name of a field in table $table which will be used when  selection box and paths are generated
     public $db;
-    public $dirid;
 
     //constructor of class XoopsTree
     //sets the names of table, unique id, and parend id
     /**
-     * efqTree constructor.
      * @param $table_name
      * @param $id_name
      * @param $pid_name
      */
     public function __construct($table_name, $id_name, $pid_name)
     {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        //        $GLOBALS['xoopsLogger']->addDeprecated("Class '" . __CLASS__ . "' is deprecated, check 'XoopsObjectTree' in tree.php" . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $this->db    = XoopsDatabaseFactory::getDatabaseConnection();
         $this->table = $table_name;
         $this->id    = $id_name;
         $this->pid   = $pid_name;
-        $this->dirid = 0;
-    }
-
-    /**
-     * @param int $dirid
-     */
-    public function setDir($dirid = 0)
-    {
-        $this->dirid = $dirid;
     }
 
     // returns an array of first child objects for a given id($sel_id)
@@ -66,12 +59,14 @@ class efqTree
     /**
      * @param        $sel_id
      * @param string $order
+     *
      * @return array
      */
     public function getFirstChild($sel_id, $order = '')
     {
-        $arr = [];
-        $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sel_id = (int)$sel_id;
+        $arr    = [];
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
@@ -91,10 +86,12 @@ class efqTree
 
     /**
      * @param $sel_id
+     *
      * @return array
      */
     public function getFirstChildId($sel_id)
     {
+        $sel_id  = (int)$sel_id;
         $idarray = [];
         $sql     = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
         $result  = $this->db->query($sql);
@@ -115,11 +112,13 @@ class efqTree
      * @param        $sel_id
      * @param string $order
      * @param array  $idarray
+     *
      * @return array
      */
     public function getAllChildId($sel_id, $order = '', $idarray = [])
     {
-        $sql = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sel_id = (int)$sel_id;
+        $sql    = 'SELECT ' . $this->id . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
@@ -142,11 +141,13 @@ class efqTree
      * @param        $sel_id
      * @param string $order
      * @param array  $idarray
+     *
      * @return array
      */
     public function getAllParentId($sel_id, $order = '', $idarray = [])
     {
-        $sql = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id . '';
+        $sel_id = (int)$sel_id;
+        $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . '=' . $sel_id . '';
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
@@ -167,10 +168,12 @@ class efqTree
      * @param        $sel_id
      * @param        $title
      * @param string $path
+     *
      * @return string
      */
     public function getPathFromId($sel_id, $title, $path = '')
     {
+        $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
         $result = $this->db->query($sql);
         if (0 == $this->db->getRowsNum($result)) {
@@ -178,7 +181,7 @@ class efqTree
         }
         list($parentid, $name) = $this->db->fetchRow($result);
         $myts = \MyTextSanitizer::getInstance();
-        $name = $myts->htmlSpecialChars($name);
+        $name = $myts->htmlspecialchars($name);
         $path = '/' . $name . $path . '';
         if (0 == $parentid) {
             return $path;
@@ -198,51 +201,39 @@ class efqTree
      * @param int    $none
      * @param string $sel_name
      * @param string $onchange
-     * @param int    $multiple
      */
-    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = '', $multiple = 0)
+    public function makeMySelBox($title, $order = '', $preset_id = 0, $none = 0, $sel_name = '', $onchange = '')
     {
-        if ('' === $sel_name) {
+        if ('' == $sel_name) {
             $sel_name = $this->id;
         }
         $myts = \MyTextSanitizer::getInstance();
-
-        $sql = 'SELECT ' . $this->id . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=0';
-        if (0 != $this->dirid) {
-            $sql .= " AND dirid=$this->dirid";
+        echo "<select name='" . $sel_name . "'";
+        if ('' !== $onchange) {
+            echo " onchange='" . $onchange . "'";
         }
+        echo ">\n";
+        $sql = 'SELECT ' . $this->id . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->pid . '=0';
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
-        //echo 'test';
-        //echo $sql;
         $result = $this->db->query($sql);
-
-        echo "<select name='" . $sel_name . '\'';
-        if ('' !== $onchange) {
-            echo " onchange='" . $onchange . '\'';
-        }
-        if (0 != $multiple) {
-            echo ' multiple="multiple"';
-        }
-        echo ">\n";
-
         if ($none) {
             echo "<option value='0'>----</option>\n";
         }
         while (list($catid, $name) = $this->db->fetchRow($result)) {
             $sel = '';
             if ($catid == $preset_id) {
-                $sel = " selected='selected'";
+                $sel = ' selected';
             }
             echo "<option value='$catid'$sel>$name</option>\n";
             $sel = '';
             $arr = $this->getChildTreeArray($catid, $order);
             foreach ($arr as $option) {
                 $option['prefix'] = str_replace('.', '--', $option['prefix']);
-                $catpath          = $option['prefix'] . '&nbsp;' . $myts->htmlSpecialChars($option[$title]);
+                $catpath          = $option['prefix'] . '&nbsp;' . $myts->htmlspecialchars($option[$title]);
                 if ($option[$this->id] == $preset_id) {
-                    $sel = " selected='selected'";
+                    $sel = ' selected';
                 }
                 echo "<option value='" . $option[$this->id] . "'$sel>$catpath</option>\n";
                 $sel = '';
@@ -258,11 +249,13 @@ class efqTree
      * @param        $title
      * @param        $funcURL
      * @param string $path
-     * @param string $outputvar
+     *
      * @return string
      */
-    public function getNicePathFromId($sel_id, $title, $funcURL, $path = '', $outputvar = 'catid')
+    public function getNicePathFromId($sel_id, $title, $funcURL, $path = '')
     {
+        $path   = !empty($path) ? '&nbsp;:&nbsp;' . $path : $path;
+        $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
         $result = $this->db->query($sql);
         if (0 == $this->db->getRowsNum($result)) {
@@ -270,44 +263,12 @@ class efqTree
         }
         list($parentid, $name) = $this->db->fetchRow($result);
         $myts = \MyTextSanitizer::getInstance();
-        $name = $myts->htmlSpecialChars($name);
-        $path = "<a href='" . $funcURL . '&' . $outputvar . '=' . $sel_id . '\'>' . $name . '</a>&nbsp;:&nbsp;' . $path . '';
+        $name = $myts->htmlspecialchars($name);
+        $path = "<a href='" . $funcURL . '&amp;' . $this->id . '=' . $sel_id . "'>" . $name . '</a>' . $path . '';
         if (0 == $parentid) {
             return $path;
         }
-        $path = $this->getNicePathFromId($parentid, $title, $funcURL, $path, $outputvar);
-
-        return $path;
-    }
-
-    //generates nicely formatted path from the root id to a given id
-
-    /**
-     * @param        $sel_id
-     * @param        $title
-     * @param string $path
-     * @return string
-     */
-    public function getUnformattedPathFromId($sel_id, $title, $path = '')
-    {
-        $sql    = 'SELECT ' . $this->pid . ', ' . $title . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
-        $result = $this->db->query($sql);
-        if (0 == $this->db->getRowsNum($result)) {
-            return $path;
-        }
-        list($parentid, $name) = $this->db->fetchRow($result);
-        $myts = \MyTextSanitizer::getInstance();
-        $name = $myts->htmlSpecialChars($name);
-        if ('' !== $path) {
-            $path = '' . $name . '&nbsp;:&nbsp;' . $path . '';
-        } else {
-            $path = '' . $name . '';
-        }
-
-        if (0 == $parentid) {
-            return $path;
-        }
-        $path = $this->getUnformattedPathFromId($parentid, $title, $path);
+        $path = $this->getNicePathFromId($parentid, $title, $funcURL, $path);
 
         return $path;
     }
@@ -317,10 +278,12 @@ class efqTree
     /**
      * @param        $sel_id
      * @param string $path
+     *
      * @return string
      */
     public function getIdPathFromId($sel_id, $path = '')
     {
+        $sel_id = (int)$sel_id;
         $sql    = 'SELECT ' . $this->pid . ' FROM ' . $this->table . ' WHERE ' . $this->id . "=$sel_id";
         $result = $this->db->query($sql);
         if (0 == $this->db->getRowsNum($result)) {
@@ -337,14 +300,18 @@ class efqTree
     }
 
     /**
-     * @param int    $sel_id
-     * @param string $order
-     * @param array  $parray
-     * @return array
+     * Enter description here...
+     *
+     * @param int|mixed    $sel_id
+     * @param string|mixed $order
+     * @param array|mixed  $parray
+     *
+     * @return mixed
      */
     public function getAllChild($sel_id = 0, $order = '', $parray = [])
     {
-        $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sel_id = (int)$sel_id;
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }
@@ -362,15 +329,19 @@ class efqTree
     }
 
     /**
-     * @param int    $sel_id
-     * @param string $order
-     * @param array  $parray
-     * @param string $r_prefix
-     * @return array
+     * Enter description here...
+     *
+     * @param int|mixed    $sel_id
+     * @param string|mixed $order
+     * @param array|mixed  $parray
+     * @param string|mixed $r_prefix
+     *
+     * @return mixed
      */
     public function getChildTreeArray($sel_id = 0, $order = '', $parray = [], $r_prefix = '')
     {
-        $sql = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
+        $sel_id = (int)$sel_id;
+        $sql    = 'SELECT * FROM ' . $this->table . ' WHERE ' . $this->pid . '=' . $sel_id . '';
         if ('' !== $order) {
             $sql .= " ORDER BY $order";
         }

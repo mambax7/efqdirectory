@@ -137,10 +137,10 @@ class efqDataFieldHandler extends XoopsObjectHandler
             //			$ret = $gmap->showMap();
             //			unset($gmap);
             //			unset($gmapHandler);
-            //return $myts->makeTboxData4Show($value);
+            //return $myts->htmlSpecialChars($value);
             //break;
             case 'radio':
-                return $myts->makeTboxData4Show($value);
+                return $myts->htmlSpecialChars($value);
                 break;
             case 'rating':
                 $xoops_url = XOOPS_URL;
@@ -183,15 +183,15 @@ class efqDataFieldHandler extends XoopsObjectHandler
                 return $rating;
                 break;
             case 'select':
-                return $myts->makeTboxData4Show($value);
+                return $myts->htmlSpecialChars($value);
                 break;
             case 'textbox':
-                return $myts->makeTboxData4Show($value);
+                return $myts->htmlSpecialChars($value);
                 break;
             case 'url':
                 $link = explode('|', $value);
 
-                return '<a href="' . $myts->makeTboxData4Show($link[0]) . '" title="' . $myts->makeTboxData4Show($link[1]) . '">' . $myts->makeTboxData4Show($link[0]) . '</a>';
+                return '<a href="' . $myts->htmlSpecialChars($link[0]) . '" title="' . $myts->htmlSpecialChars($link[1]) . '">' . $myts->htmlSpecialChars($link[0]) . '</a>';
                 break;
             case 'yesno':
                 if ('1' == $value) {
@@ -201,7 +201,7 @@ class efqDataFieldHandler extends XoopsObjectHandler
                 }
                 break;
             default:
-                return $myts->makeTboxData4Show($value);
+                return $myts->htmlSpecialChars($value);
                 break;
         }
     }

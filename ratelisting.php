@@ -20,7 +20,7 @@
 
 include __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-$myts   = MyTextSanitizer::getInstance(); // MyTextSanitizer object
+$myts   = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 $moddir = $xoopsModule->getVar('dirname');
 
 if (!empty($_POST['submit'])) {
@@ -45,7 +45,7 @@ if (!empty($_POST['submit'])) {
 
     // Check if Link POSTER is voting (UNLESS Anonymous users allowed to post)
     if (0 != $ratinguser) {
-        $sql    = 'select submitter from ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . " where itemid=$p_itemid";
+        $sql    = 'select submitter from ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " where itemid=$p_itemid";
         $result = $xoopsDB->query($sql);
         while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
@@ -54,7 +54,7 @@ if (!empty($_POST['submit'])) {
         }
 
         // Check if REG user is trying to vote twice.
-        $sql    = 'select ratinguser from ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_votedata') . " where itemid=$p_itemid";
+        $sql    = 'select ratinguser from ' . $xoopsDB->prefix($helper->getDirname() . '_votedata') . " where itemid=$p_itemid";
         $result = $xoopsDB->query($sql);
         while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
             if ($ratinguserDB == $ratinguser) {
@@ -65,7 +65,7 @@ if (!empty($_POST['submit'])) {
 
         // Check if ANONYMOUS user is trying to vote more than once per day.
         $yesterday = (time() - (86400 * $anonwaitdays));
-        $result    = $xoopsDB->query('select count(*) FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_votedata') . " WHERE itemid=$p_itemid AND ratinguser=0 AND ratinghostname = '$ip' AND ratingtimestamp > $yesterday");
+        $result    = $xoopsDB->query('select count(*) FROM ' . $xoopsDB->prefix($helper->getDirname() . '_votedata') . " WHERE itemid=$p_itemid AND ratinguser=0 AND ratinghostname = '$ip' AND ratingtimestamp > $yesterday");
         list($anonvotecount) = $xoopsDB->fetchRow($result);
         if ($anonvotecount > 0) {
             redirect_header('index.php', 4, _MD_VOTEONCE2);
@@ -76,9 +76,9 @@ if (!empty($_POST['submit'])) {
     }
 
     //Add to Line Item Rate to DB.
-    $newid    = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_votedata') . '_ratingid_seq');
+    $newid    = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_votedata') . '_ratingid_seq');
     $datetime = time();
-    $sql      = sprintf("INSERT INTO %s (ratingid, itemid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix($efqdirectory->getDirname() . '_votedata'), $newid, $p_itemid, $ratinguser, $p_rating, $ip, $datetime);
+    $sql      = sprintf("INSERT INTO %s (ratingid, itemid, ratinguser, rating, ratinghostname, ratingtimestamp) VALUES (%u, %u, %u, %u, '%s', %u)", $xoopsDB->prefix($helper->getDirname() . '_votedata'), $newid, $p_itemid, $ratinguser, $p_rating, $ip, $datetime);
     $xoopsDB->query($sql) ; //|| $eh->show('0013');
 
     //Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
@@ -114,7 +114,7 @@ if (!empty($_POST['submit'])) {
         $get_catid = '0';
     }
 
-    $sql    = 'select title from ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_listings') . " where itemid=$get_itemid";
+    $sql    = 'select title from ' . $xoopsDB->prefix($helper->getDirname() . '_listings') . " where itemid=$get_itemid";
     $result = $xoopsDB->query($sql);
     list($title) = $xoopsDB->fetchRow($result);
     $xoopsTpl->assign('listing', ['itemid' => $get_itemid, 'catid' => $get_catid, 'title' => $myts->htmlSpecialChars($title)]);

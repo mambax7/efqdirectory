@@ -30,12 +30,14 @@
  * @return array
  */
 
+use  XoopsModules\Efqdirectory;
+
 function b_efqdiralpha1_menu_show($options)
 {
     global $xoopsDB, $xoopsModule, $eh;
     $moduleDirName       = basename(dirname(__DIR__));
-    require_once __DIR__ .  '/../class/helper.php';
-    $efqdirectory = Efqdirectory::getInstance();
+    require_once __DIR__ .  '/../class/Helper.php';
+    $helper = Efqdirectory\Helper::getInstance();
     //  $info = __DIR__;
     //  $split = preg_split("#[\\\]#", $info);
     //  $count = count($split) - 2;
@@ -45,8 +47,8 @@ function b_efqdiralpha1_menu_show($options)
     $block                 = [];
     $block['lang_dirmenu'] = _MB_EFQDIR_MENU;
     $block['moddir']       = $moduleDirName;
-    $myts                  = MyTextSanitizer::getInstance();
-    $sql                   = 'SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " WHERE open='1' ORDER BY name";
+    $myts                  = \MyTextSanitizer::getInstance();
+    $sql                   = 'SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " WHERE open='1' ORDER BY name";
     $result                = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     while ($myrow = $xoopsDB->fetchArray($result)) {
         $directory              = [];

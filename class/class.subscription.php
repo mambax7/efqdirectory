@@ -17,6 +17,9 @@
  * @author       Martijn Hertog (aka wtravel)
  * @author       XOOPS Development Team,
  */
+
+use XoopsModules\Efqdirectory;
+
 class efqSubscription extends XoopsObject
 {
     /**
@@ -138,7 +141,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     public function delete(XoopsObject $orderid = null)
     {
         if (null !== $orderid) {
-            $sql = 'DELETE FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_subscr_orders') . ' WHERE orderid=' . (int)$orderid . '';
+            $sql = 'DELETE FROM ' . $this->db->prefix($helper->getDirname() . '_subscr_orders') . ' WHERE orderid=' . (int)$orderid . '';
             $this->db->query($sql);
 
             return true;
@@ -172,8 +175,8 @@ class efqSubscriptionHandler extends XoopsObjectHandler
             $startdate = strtotime($_POST['startdate']);
             //TO DO: Add Auto renew functionality.
             //$autorenew = $_POST['autorenew'];
-            $newid = $this->db->genId($this->db->prefix($efqdirectory->getDirname() . '_subscr_orders') . '_orderid_seq');
-            $sql   = 'INSERT INTO ' . $this->db->prefix($efqdirectory->getDirname() . '_subscr_orders') . "
+            $newid = $this->db->genId($this->db->prefix($helper->getDirname() . '_subscr_orders') . '_orderid_seq');
+            $sql   = 'INSERT INTO ' . $this->db->prefix($helper->getDirname() . '_subscr_orders') . "
                 (orderid, uid, offerid, typeid, startdate, status, itemid, autorenew) VALUES
                 ($newid, $submitter, $offerid, $typeid, '$startdate', '0' , $itemid, '0')";
             $this->db->query($sql);
@@ -224,9 +227,9 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     public function getOrderItemName($offerid = 0)
     {
         $sql     = 'SELECT o.offerid, o.duration, o.count, o.price, o.currency, o.descr, t.typeid, t.typename FROM '
-                   . $this->db->prefix($efqdirectory->getDirname() . '_subscr_offers')
+                   . $this->db->prefix($helper->getDirname() . '_subscr_offers')
                    . ' o, '
-                   . $this->db->prefix($efqdirectory->getDirname() . '_itemtypes')
+                   . $this->db->prefix($helper->getDirname() . '_itemtypes')
                    . " t WHERE o.typeid=t.typeid AND o.offerid='$offerid' ORDER BY t.typename ASC";
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
@@ -255,7 +258,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
         $ordervars = $this->getOrderVars($orderid);
         $typeid    = $ordervars['typeid'];
         $itemid    = $ordervars['itemid'];
-        $sql       = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_subscr_orders') . " SET status='$status'";
+        $sql       = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_subscr_orders') . " SET status='$status'";
         if ('0' != $startdate) {
             $sql .= ", startdate='$startdate'";
         }
@@ -277,7 +280,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
      */
     public function getOrderVars($orderid = '0')
     {
-        $sql     = 'SELECT ord.uid, ord.billto, ord.startdate, ord.typeid, ord.status, ord.itemid, ord.offerid FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_subscr_orders') . ' ord WHERE ord.orderid=' . (int)$orderid . '';
+        $sql     = 'SELECT ord.uid, ord.billto, ord.startdate, ord.typeid, ord.status, ord.itemid, ord.offerid FROM ' . $this->db->prefix($helper->getDirname() . '_subscr_orders') . ' ord WHERE ord.orderid=' . (int)$orderid . '';
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         $arr     = $this->db->fetchArray($result);
@@ -301,7 +304,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
      */
     public function getOfferVars($offerid = '0', $showactive = '1')
     {
-        $sql = 'SELECT count, duration FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_subscr_offers') . ' WHERE offerid=' . (int)$offerid . '';
+        $sql = 'SELECT count, duration FROM ' . $this->db->prefix($helper->getDirname() . '_subscr_offers') . ' WHERE offerid=' . (int)$offerid . '';
         if ('1' == $showactive) {
             $sql .= " AND activeyn='1'";
         }
@@ -336,7 +339,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     public function updateItem($itemid = '0', $typeid = '0')
     {
         if ('0' != $itemid && '0' != $typeid) {
-            $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . " SET typeid='" . (int)$typeid . '\' WHERE itemid=' . (int)$itemid . '';
+            $sql = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_items') . " SET typeid='" . (int)$typeid . '\' WHERE itemid=' . (int)$itemid . '';
             $this->db->queryF($sql);
 
             return true;
@@ -360,7 +363,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     public function changeItemType($itemid = 0, $itemtype = 0)
     {
         global $xoopsDB, $eh;
-        $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . " SET typeid=$itemtype WHERE itemid=(int)($itemid)";
+        $sql = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_items') . " SET typeid=$itemtype WHERE itemid=(int)($itemid)";
         $this->db->queryF($sql);
 
         return true;
@@ -373,7 +376,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
      */
     public function durationPriceArray($dashes = '0', $showactive = '1')
     {
-        $sql = 'SELECT o.offerid, o.duration, o.count, o.price, o.currency, o.descr, t.typeid, t.typename FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_subscr_offers') . ' o, ' . $this->db->prefix($efqdirectory->getDirname() . '_itemtypes') . ' t WHERE o.typeid=t.typeid';
+        $sql = 'SELECT o.offerid, o.duration, o.count, o.price, o.currency, o.descr, t.typeid, t.typename FROM ' . $this->db->prefix($helper->getDirname() . '_subscr_offers') . ' o, ' . $this->db->prefix($helper->getDirname() . '_itemtypes') . ' t WHERE o.typeid=t.typeid';
         if ('1' == $showactive) {
             $sql .= " AND activeyn='1'";
         }
@@ -403,7 +406,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
      */
     public function itemsSelBox($selname = '', $none = false, $preselected = 0)
     {
-        $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_itemtypes') . '';
+        $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($helper->getDirname() . '_itemtypes') . '';
         $result  = $this->db->query($sql);
         $numrows = $this->db->getRowsNum($result);
         echo "<select name='" . $selname . '\'';
@@ -430,8 +433,8 @@ class efqSubscriptionHandler extends XoopsObjectHandler
     public function itemTypesArray($dashes = '0')
     {
         global $xoopsModule;
-        $efqdirectory = Efqdirectory::getInstance();
-        $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_itemtypes') . ' ORDER BY typelevel ASC';
+        $helper = Efqdirectory\Helper::getInstance();
+        $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($helper->getDirname() . '_itemtypes') . ' ORDER BY typelevel ASC';
         $result  = $this->db->query($sql) ; //|| $eh->show('0013');
         $numrows = $this->db->getRowsNum($result);
         $result  = $this->db->query($sql);
@@ -451,7 +454,7 @@ class efqSubscriptionHandler extends XoopsObjectHandler
      */
     public function countSubscriptionsForType($typeid = 0)
     {
-        $sql = 'SELECT COUNT(itemid) FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' WHERE typeid=' . (int)$typeid . '';
+        $sql = 'SELECT COUNT(itemid) FROM ' . $this->db->prefix($helper->getDirname() . '_items') . ' WHERE typeid=' . (int)$typeid . '';
         if (!$result = $this->db->query($sql)) {
             return false;
         }

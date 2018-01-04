@@ -111,7 +111,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
         }
         $coupid = (int)$coupid;
         if ($coupid > 0) {
-            $sql = 'SELECT * FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE couponid=' . $coupid;
+            $sql = 'SELECT * FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' WHERE couponid=' . $coupid;
             if (!$result = $this->db->query($sql)) {
                 return false;
             }
@@ -153,11 +153,11 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
             ${$k} = $v;
         }
         if ($coupon->_isNew) {
-            $sql = 'INSERT INTO ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . "
+            $sql = 'INSERT INTO ' . $this->db->prefix($helper->getDirname() . '_coupon') . "
                 (itemid, description, image, publish, expire, heading, lbr) VALUES
                 ($itemid, " . $this->db->quoteString($description) . ', ' . $this->db->quoteString($image) . ", $publish, $expire, " . $this->db->quoteString($heading) . ", $lbr)";
         } else {
-            $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . " SET
+            $sql = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_coupon') . " SET
                 itemid = $itemid,
                 description = " . $this->db->quoteString($description) . ',
                 image = ' . $this->db->quoteString($image) . ",
@@ -185,7 +185,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
      */
     public function delete(XoopsObject $coupon)
     {
-        $sql = 'DELETE FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE couponid = ' . (int)$coupon->getVar('couponid');
+        $sql = 'DELETE FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' WHERE couponid = ' . (int)$coupon->getVar('couponid');
         if (!$this->db->query($sql)) {
             return false;
         }
@@ -207,9 +207,9 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
         $ret   = [];
         $limit = $start = 0;
         $sql   = 'SELECT l.title AS listingTitle, coup.couponid, coup.heading, coup.counter, l.itemid, l.logourl, coup.description, coup.image, coup.lbr, coup.publish, coup.expire
-            FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' coup, ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' l
+            FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' coup, ' . $this->db->prefix($helper->getDirname() . '_items') . ' l
             WHERE coup.itemid=l.itemid AND ';
-        if (isset($criteria) && is_subclass_of($criteria, 'criteriaelement')) {
+        if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->render();
             if ('' != $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -253,7 +253,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
         $limit  = $start = 0;
         $now    = time();
         $sql    = 'SELECT l.title AS listingTitle, coup.couponid, coup.heading, coup.counter, l.itemid, l.logourl, coup.description, coup.image, coup.lbr, coup.publish, coup.expire
-            FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' coup, ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' l';
+            FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' coup, ' . $this->db->prefix($helper->getDirname() . '_items') . ' l';
         $sql    .= ' WHERE coup.itemid = l.itemid AND coup.itemid=' . (int)$itemid . ' AND coup.publish < ' . $now . ' AND (coup.expire = 0 OR coup.expire > ' . $now . ')';
         $sql    .= ' ORDER BY listingTitle ASC';
         $result = $this->db->query($sql, $limit, $start) ; //|| $eh->show('0013');
@@ -278,7 +278,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
     {
         $ret = 0;
         $now = time();
-        $sql = 'SELECT count(*) FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE itemid=' . (int)$itemid . ' AND publish < ' . $now . ' AND (expire = 0 OR expire > ' . $now . ')';
+        $sql = 'SELECT count(*) FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' WHERE itemid=' . (int)$itemid . ' AND publish < ' . $now . ' AND (expire = 0 OR expire > ' . $now . ')';
         if (!$result = $this->db->query($sql)) {
             return false;
         }
@@ -300,7 +300,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
         $limit  = $start = 0;
         $now    = time();
         $sql    = 'SELECT l.title AS listingTitle, coup.couponid, coup.heading, coup.counter, l.itemid, l.logourl, coup.description,  coup.image, coup.lbr, coup.publish, coup.expire
-            FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' coup, ' . $this->db->prefix($efqdirectory->getDirname() . '_items') . ' l';
+            FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' coup, ' . $this->db->prefix($helper->getDirname() . '_items') . ' l';
         $sql    .= ' WHERE coup.itemid = l.itemid AND coup.couponid=' . (int)$coupid;
         $result = $this->db->query($sql, $limit, $start);
         if (!$result) {
@@ -322,7 +322,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
      */
     public function prepare2show($array)
     {
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $ret  = [];
         foreach ($array as $key => $myrow) {
             $description = $myts->displayTarea($myrow['description'], 1, 1, 1, 1, $myrow['lbr']);
@@ -357,7 +357,7 @@ class efqdirectoryCouponHandler extends XoopsObjectHandler
      */
     public function increment($couponid)
     {
-        $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' SET counter=counter+1 WHERE couponid=' . (int)$couponid;
+        $sql = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' SET counter=counter+1 WHERE couponid=' . (int)$couponid;
 
         return $this->db->queryF($sql);
     }

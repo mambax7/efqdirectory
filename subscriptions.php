@@ -19,7 +19,7 @@
  */
 
 include __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
@@ -74,13 +74,13 @@ function showsubscription()
     //Show current subscription order for listing
     $defaultstartdate = time();
     $sql              = 'SELECT i.title, i.typeid, o.orderid, o.offerid, o.startdate, o.enddate, o.billto, o.status, o.itemid, o.autorenew, t.typename, p.ref, p.payment_status FROM '
-                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes')
+                        . $xoopsDB->prefix($helper->getDirname() . '_itemtypes')
                         . ' t,  '
-                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                        . $xoopsDB->prefix($helper->getDirname() . '_items')
                         . ' i, '
-                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_orders')
+                        . $xoopsDB->prefix($helper->getDirname() . '_subscr_orders')
                         . ' o LEFT JOIN '
-                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_payments')
+                        . $xoopsDB->prefix($helper->getDirname() . '_subscr_payments')
                         . ' p ON (o.orderid=p.orderid) WHERE o.typeid = t.typeid AND o.itemid=p.ref AND o.itemid=i.itemid AND i.itemid='
                         . $get_itemid
                         . ' ORDER BY t.typelevel ASC';
@@ -204,9 +204,9 @@ function orderpayment()
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
     $sql          = 'SELECT o.orderid, o.uid, o.offerid, o.typeid, o.startdate, o.billto, o.status, o.itemid, o.autorenew, f.price, f.currency FROM '
-                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_orders')
+                    . $xoopsDB->prefix($helper->getDirname() . '_subscr_orders')
                     . ' o, '
-                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_subscr_offers')
+                    . $xoopsDB->prefix($helper->getDirname() . '_subscr_offers')
                     . ' f WHERE o.offerid=f.offerid AND o.orderid='
                     . $get_orderid
                     . '';

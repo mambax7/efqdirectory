@@ -18,6 +18,8 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
 
@@ -27,9 +29,9 @@ require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once __DIR__ . '/../class/class.formimage.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-$myts   = MyTextSanitizer::getInstance();
+$myts   = \MyTextSanitizer::getInstance();
 $eh     = new ErrorHandler;
-$mytree = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
+$mytree = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 
 $moddir = $xoopsModule->getVar('dirname');
 
@@ -43,11 +45,11 @@ function dirConfig()
     xoops_cp_header();
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation(basename(__FILE__));
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     //adminmenu(1, _MD_A_DIRADMIN);
     echo '<h4>' . _MD_DIRCONF . '</h4>';
     //Get a list of directories and their properties (included number of categories and items?)
-    $sql     = 'SELECT dirid, postfix, open, name FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . '';
+    $sql     = 'SELECT dirid, postfix, open, name FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . '';
     $result  = $xoopsDB->query($sql);
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
@@ -55,7 +57,7 @@ function dirConfig()
         echo "<table width='100%' border='0' cellspacing='1' class='outer'>";
         echo '<tr><th>&nbsp;</th><th>' . _MD_DIRNAME . '</th><th>' . _MD_STATUS . '</th><th>' . _MD_TOTALCATS . '</th><th>' . _MD_ACTION . "</th></tr>\n";
         while (list($dirid, $postfix, $open, $name) = $xoopsDB->fetchRow($result)) {
-            $sql              = 'SELECT COUNT(*) FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $dirid . '\'';
+            $sql              = 'SELECT COUNT(*) FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE dirid='" . $dirid . '\'';
             $result_countcats = $xoopsDB->query($sql);
             $numrows          = $xoopsDB->getRowsNum($result_countcats);
             list($totalcats) = $xoopsDB->fetchRow($result_countcats);
@@ -110,12 +112,12 @@ function dirConfig()
 function modDir($dirid = '0')
 {
     global $xoopsDB, $xoopsModule, $myts, $xoopsUser, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     xoops_cp_header();
     //adminmenu(1, _MD_A_DIRADMIN);
     echo '<h4>' . _MD_EDITDIR . '</h4>';
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-    $sql     = 'SELECT * FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " WHERE dirid='" . $dirid . '\'';
+    $sql     = 'SELECT * FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " WHERE dirid='" . $dirid . '\'';
     $result  = $xoopsDB->query($sql);
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
@@ -150,21 +152,21 @@ function modDir($dirid = '0')
 function updateDir()
 {
     global $xoopsDB, $_POST, $myts, $eh, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['dirid'])) {
         $p_dirid = (int)$_POST['dirid'];
     } else {
         echo 'no dirid';
         exit();
     }
-    $p_dirname = $myts->makeTboxData4Save($_POST['dirname']);
+    $p_dirname = $myts->addSlashes($_POST['dirname']);
     if (isset($_POST['open'])) {
         $p_open = $_POST['open'];
     } else {
         $p_open = '0';
     }
     if (isset($_POST['descr'])) {
-        $p_descr = $myts->makeTareaData4Save($_POST['descr']);
+        $p_descr = $myts->addSlashes($_POST['descr']);
     } else {
         $p_descr = '';
     }
@@ -174,7 +176,7 @@ function updateDir()
         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
             $filename = $uploader->getMediaName();
         } else {
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " SET descr = '" . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " SET descr = '" . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
             redirect_header("directories.php?dirid=$p_dirid", 2, _MD_DIR_UPDATED);
         }
@@ -182,7 +184,7 @@ function updateDir()
         if ($uploader->upload()) {
             $savedfilename = $uploader->getSavedFileName();
             echo $uploader->getErrors();
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " SET img = '" . $savedfilename . '\', descr = \'' . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " SET img = '" . $savedfilename . '\', descr = \'' . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
 
             //Rename the uploaded file to the same name in a different location that does not have 777 rights or 755.
@@ -194,7 +196,7 @@ function updateDir()
             redirect_header("directories.php?op=moddir&dirid=$p_dirid", 2, _MD_DIR_UPDATED);
         } else {
             echo $uploader->getErrors();
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " SET descr = '" . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " SET descr = '" . $p_descr . '\', open=\'' . $p_open . '\', name=\'' . $p_dirname . '\' WHERE dirid = \'' . $p_dirid . '\'';
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
             redirect_header("directories.php?dirid=$p_dirid", 2, _MD_DIR_UPDATED);
         }
@@ -208,7 +210,7 @@ function updateDir()
 function changeStatus($status = 0)
 {
     global $xoopsDB, $eh, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     $select      = $_POST['select'];
     $users       = '';
     $count       = 0;
@@ -223,7 +225,7 @@ function changeStatus($status = 0)
             }
             ++$count;
         }
-        $sql = sprintf('UPDATE %s SET OPEN=' . $status . ' WHERE dirid IN (%s)', $xoopsDB->prefix($efqdirectory->getDirname() . '_dir'), $directories);
+        $sql = sprintf('UPDATE %s SET OPEN=' . $status . ' WHERE dirid IN (%s)', $xoopsDB->prefix($helper->getDirname() . '_dir'), $directories);
         $xoopsDB->query($sql) ; //|| $eh->show('0013');
         redirect_header('directories.php', 2, _MD_DIR_UPDATED);
     } else {
@@ -234,7 +236,7 @@ function changeStatus($status = 0)
 function newDir()
 {
     global $xoopsDB, $xoopsModule, $_POST, $myts, $eh;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['postfix'])) {
         $p_postfix = $_POST['postfix'];
     } else {
@@ -246,8 +248,8 @@ function newDir()
     } else {
         $p_open = 0;
     }
-    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . '_dirid_seq');
-    $sql   = sprintf("INSERT INTO %s (dirid, postfix, OPEN, NAME) VALUES (%u, '%s', '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_dir'), $newid, $p_postfix, $p_open, $p_dirname);
+    $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_dir') . '_dirid_seq');
+    $sql   = sprintf("INSERT INTO %s (dirid, postfix, OPEN, NAME) VALUES (%u, '%s', '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_dir'), $newid, $p_postfix, $p_open, $p_dirname);
     $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $db_dirid = $xoopsDB->getInsertId();
     redirect_header("directories.php?op=moddir&dirid=$db_dirid", 2, _MD_DIR_SAVED);

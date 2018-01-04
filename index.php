@@ -19,7 +19,7 @@
  */
 
 include __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance(); // MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
@@ -33,8 +33,8 @@ $moddir           = $xoopsModule->getVar('dirname');
 
 $eh = new ErrorHandler;
 
-$mytree  = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
-$efqtree = new efqTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
+$mytree  = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$efqtree = new efqTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 
 //Check if any option in URL
 if (!empty($_GET['op'])) {
@@ -59,7 +59,7 @@ if (!empty($_GET['dirid'])) {
 
 if ('0' == $get_dirid && '0' == $get_catid) {
     //Show an overview of directories with directory title, image and description for each directory.
-    $sql         = 'SELECT dirid, name, descr, img FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " WHERE open = '1' ORDER BY name";
+    $sql         = 'SELECT dirid, name, descr, img FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " WHERE open = '1' ORDER BY name";
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     if (1 == $num_results) {
@@ -128,9 +128,9 @@ if (0 != $get_dirid || 0 != $get_catid) {
     }
 
     if (0 == $get_catid) {
-        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE pid = '0' AND dirid = '" . $get_dirid . '\' ORDER BY title') ; //|| $eh->show('0013');
+        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE pid = '0' AND dirid = '" . $get_dirid . '\' ORDER BY title') ; //|| $eh->show('0013');
     } else {
-        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE pid = '" . $get_catid . '\' ORDER BY title') ; //|| $eh->show('0013');
+        $result = $xoopsDB->query('SELECT cid, title, img FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE pid = '" . $get_catid . '\' ORDER BY title') ; //|| $eh->show('0013');
     }
     $num_results = $GLOBALS['xoopsDB']->getRowsNum($result);
     if (0 == $num_results && isset($_GET['dirid'])) {
@@ -197,13 +197,13 @@ if (0 != $get_dirid || 0 != $get_catid) {
         $sections = [];
         if (0 == $get_catid) {
             $sql    = 'SELECT l.itemid, l.logourl, l.uid, l.status, l.created, l.title, l.hits, l.rating, l.votes, l.typeid, l.dirid, t.description FROM '
-                      . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat')
+                      . $xoopsDB->prefix($helper->getDirname() . '_cat')
                       . ' c, '
-                      . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                      . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat')
                       . ' x, '
-                      . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                      . $xoopsDB->prefix($helper->getDirname() . '_items')
                       . ' l LEFT JOIN '
-                      . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                      . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                       . " t ON (l.itemid=t.itemid) WHERE x.cid=c.cid AND l.itemid=x.itemid AND c.showpopular=1 AND l.status='2' AND l.dirid = '"
                       . $get_dirid
                       . '\' ORDER BY l.created DESC';
@@ -225,15 +225,15 @@ if (0 != $get_dirid || 0 != $get_catid) {
                     $xoopsTpl->assign('showdatafieldsincat', true);
                     $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
                     $sql         .= 'FROM '
-                                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                                    . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat')
                                     . ' ic, '
-                                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+                                    . $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat')
                                     . ' xc, '
-                                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+                                    . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                                     . ' f, '
-                                    . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                                    . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                                     . ' t ';
-                    $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
+                    $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
                     $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . ' ORDER BY t.seq ASC';
                     $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
                     $numrows     = $xoopsDB->getRowsNum($data_result);
@@ -296,7 +296,7 @@ if (0 != $get_dirid || 0 != $get_catid) {
             } else {
                 $orderby = 'typelevel DESC';
             }
-            $fullcountresult = $xoopsDB->query('select count(*) from ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . " x WHERE i.itemid=x.itemid AND x.cid=$get_catid AND i.status='2'");
+            $fullcountresult = $xoopsDB->query('select count(*) from ' . $xoopsDB->prefix($helper->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " x WHERE i.itemid=x.itemid AND x.cid=$get_catid AND i.status='2'");
             list($numrows) = $xoopsDB->fetchRow($fullcountresult);
             $totalcount = $numrows;
             $page_nav   = '';
@@ -327,13 +327,13 @@ if (0 != $get_dirid || 0 != $get_catid) {
                 $xoopsTpl->assign('lang_visit', _MD_VISIT);
                 $xoopsTpl->assign('show_listings', true);
                 $sql     = 'SELECT i.itemid, i.logourl, i.uid, i.status, i.created, i.title, i.hits, i.rating, i.votes, i.typeid, i.dirid, t.typelevel, txt.description, x.cid FROM '
-                           . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                           . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat')
                            . ' x, '
-                           . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                           . $xoopsDB->prefix($helper->getDirname() . '_items')
                            . ' i LEFT JOIN '
-                           . $xoopsDB->prefix($efqdirectory->getDirname() . '_itemtypes')
+                           . $xoopsDB->prefix($helper->getDirname() . '_itemtypes')
                            . ' t ON (t.typeid=i.typeid) LEFT JOIN '
-                           . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                           . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                            . " txt ON (txt.itemid=i.itemid) WHERE i.itemid=x.itemid AND x.cid=$get_catid AND x.active='1' AND i.status='2' ORDER BY $orderby";
                 $result  = $xoopsDB->query($sql, $show, $min) ; //|| $eh->show('0013');
                 $numrows = $xoopsDB->getRowsNum($result);
@@ -374,15 +374,15 @@ if (0 != $get_dirid || 0 != $get_catid) {
                         $xoopsTpl->assign('showdatafieldsincat', true);
                         $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
                         $sql         .= 'FROM '
-                                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat')
+                                        . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat')
                                         . ' ic, '
-                                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+                                        . $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat')
                                         . ' xc, '
-                                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+                                        . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                                         . ' f, '
-                                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                                        . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                                         . ' t ';
-                        $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
+                        $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
                         $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . ' ORDER BY t.seq ASC';
                         $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
                         $numrows     = $xoopsDB->getRowsNum($data_result);

@@ -19,7 +19,7 @@
  */
 
 include __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once __DIR__ . '/class/class.couponhandler.php';
 
@@ -37,7 +37,7 @@ $coupon = new efqCouponHandler();
 if ($itemid) {
     $coupons = $coupon->getByItem($itemid);
 }
-$sql         = 'SELECT itemid, title FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' WHERE itemid=' . $itemid . '';
+$sql         = 'SELECT itemid, title FROM ' . $xoopsDB->prefix($helper->getDirname() . '_items') . ' WHERE itemid=' . $itemid . '';
 $item_result = $xoopsDB->query($sql);
 $numrows     = $xoopsDB->getRowsNum($item_result);
 //echo $numrows;

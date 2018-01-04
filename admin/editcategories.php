@@ -27,9 +27,9 @@ require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-$myts   = MyTextSanitizer::getInstance();
+$myts   = \MyTextSanitizer::getInstance();
 $eh     = new ErrorHandler;
-$mytree = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
+$mytree = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 require_once __DIR__ . '/../class/class.datafieldmanager.php';
 $datafieldmanager = new efqDataFieldManager();
 $moddir           = $xoopsModule->getVar('dirname');
@@ -57,7 +57,7 @@ if (!empty($_POST['submit'])) {
     //Get all selectable categories and put the prefix 'selectcat' in front of the catid.
     //With all results check if the result has a corresponding $_POST value.
     $dirid             = getDirIdFromItem($post_itemid);
-    $sql               = 'SELECT cid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . " WHERE itemid='" . $post_itemid . '\'';
+    $sql               = 'SELECT cid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " WHERE itemid='" . $post_itemid . '\'';
     $allitemcatsresult = $xoopsDB->query($sql);
     $numrows           = $xoopsDB->getRowsNum($allitemcatsresult);
     $count             = 0;
@@ -67,7 +67,7 @@ if (!empty($_POST['submit'])) {
             $allitemcats[] = $cid;
         }
     }
-    $sql                  = 'SELECT cid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . " WHERE itemid='" . $post_itemid . '\' AND active=\'1\'';
+    $sql                  = 'SELECT cid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " WHERE itemid='" . $post_itemid . '\' AND active=\'1\'';
     $activeitemcatsresult = $xoopsDB->query($sql);
     $numrows              = $xoopsDB->getRowsNum($activeitemcatsresult);
     $count                = 0;
@@ -77,7 +77,7 @@ if (!empty($_POST['submit'])) {
             $activeitemcats[] = $cid;
         }
     }
-    $sql           = 'SELECT cid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE active='1'";
+    $sql           = 'SELECT cid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE active='1'";
     $allcatsresult = $xoopsDB->query($sql);
     $numrows       = $xoopsDB->getRowsNum($allcatsresult);
     $allcats       = [];
@@ -96,17 +96,17 @@ if (!empty($_POST['submit'])) {
     //Update these categories to inactive
     foreach ($postedcats as $cat) {
         if (!in_array($cat, $allitemcats)) {
-            $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . '_xid_seq');
-            $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $newid, $cat, $post_itemid, 1, time());
+            $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . '_xid_seq');
+            $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cat, $post_itemid, 1, time());
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
         } elseif (!in_array($cat, $activeitemcats)) {
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . " SET active = '1' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " SET active = '1' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
         }
     }
     foreach ($allitemcats as $cat) {
         if (!in_array($cat, $postedcats)) {
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat') . " SET active = '0' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " SET active = '0' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
         }
     }

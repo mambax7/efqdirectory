@@ -30,10 +30,12 @@
  * @return array
  */
 
+use XoopsModules\Efqdirectory;
+
 function b_efqdiralpha1_menu_show($options)
 {
     global $xoopsDB, $xoopsModule, $eh;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($xoopsModule)) {
 
         //$moddir = $xoopsModule->getvar("dirname");
@@ -50,8 +52,8 @@ function b_efqdiralpha1_menu_show($options)
     $block                 = [];
     $block['lang_dirmenu'] = _MB_EFQDIR_MENU;
     $block['moddir']       = $moddir;
-    $myts                  = MyTextSanitizer::getInstance();
-    $sql                   = 'SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dir') . " WHERE open='1' ORDER BY name";
+    $myts                  = \MyTextSanitizer::getInstance();
+    $sql                   = 'SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " WHERE open='1' ORDER BY name";
     $result                = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     echo 'test';
     print_r($result);

@@ -12,7 +12,7 @@
  *
  */
 include __DIR__ . '/../header.php';
-$myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 
 $eh = new ErrorHandler;
 //get global configuration information

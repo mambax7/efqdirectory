@@ -27,7 +27,7 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 $eh   = new ErrorHandler;
 if (isset($_GET['op'])) {
     $op = $_GET['op'];

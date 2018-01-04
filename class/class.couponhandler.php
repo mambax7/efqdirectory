@@ -41,8 +41,8 @@ class efqCouponHandler
     public function create()
     {
         global $myts;
-        $this->descr   = $myts->makeTareaData4Save($_POST['description']);
-        $this->image   = $myts->makeTboxData4Save($_POST['image']);
+        $this->descr   = $myts->addSlashes($_POST['description']);
+        $this->image   = $myts->addSlashes($_POST['image']);
         $this->itemid  = (int)$_POST['itemid'];
         $this->publish = strtotime($_POST['publish']['date']) + $_POST['publish']['time'];
         if (isset($_POST['expire_enable']) && (1 == $_POST['expire_enable'])) {
@@ -51,7 +51,7 @@ class efqCouponHandler
             $this->expire = 0;
         }
         $this->lbr     = $_POST['lbr'];
-        $this->heading = $myts->makeTboxData4Save($_POST['heading']);
+        $this->heading = $myts->addSlashes($_POST['heading']);
         if (!isset($_POST['couponid'])) {
             $this->_new    = true;
             $this->message = _MD_COUPONADDED;
@@ -76,7 +76,7 @@ class efqCouponHandler
      */
     public function insert()
     {
-        $sql = 'INSERT INTO ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . '
+        $sql = 'INSERT INTO ' . $this->db->prefix($helper->getDirname() . '_coupon') . '
             (itemid, description, image, publish, expire, heading, lbr) VALUES
             (' . $this->itemid . ', ' . $this->db->quoteString($this->descr) . ', ' . $this->db->quoteString($this->image) . ', ' . $this->publish . ', ' . $this->expire . ', ' . $this->db->quoteString($this->heading) . ', ' . $this->lbr . ')';
         if ($this->db->query($sql)) {
@@ -93,7 +93,7 @@ class efqCouponHandler
      */
     public function update()
     {
-        $sql = 'UPDATE ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' SET
+        $sql = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' SET
             description = ' . $this->db->quoteString($this->descr) . ',
             image = ' . $this->db->quoteString($this->image) . ',
             publish = ' . $this->publish . ',
@@ -117,7 +117,7 @@ class efqCouponHandler
         }
         //$couponid = (int)($couponid);
         if ($couponid > 0) {
-            $sql = 'SELECT itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE couponid=' . $couponid;
+            $sql = 'SELECT itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' WHERE couponid=' . $couponid;
             //echo $sql;
             if (!$result = $this->db->query($sql)) {
                 return false;
@@ -144,7 +144,7 @@ class efqCouponHandler
      */
     public function delete($couponid)
     {
-        $sql = 'DELETE FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE couponid=' . (int)$couponid;
+        $sql = 'DELETE FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' WHERE couponid=' . (int)$couponid;
         $this->db->query($sql);
 
         return true;
@@ -164,7 +164,7 @@ class efqCouponHandler
     {
         $ret = 0;
         $now = time();
-        $sql = 'SELECT count(*) FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE itemid=' . $itemid . ' AND publish < ' . $now . ' AND (expire = 0 OR expire > ' . $now . ')';
+        $sql = 'SELECT count(*) FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' WHERE itemid=' . $itemid . ' AND publish < ' . $now . ' AND (expire = 0 OR expire > ' . $now . ')';
         //echo $sql;
         if (!$result = $this->db->query($sql)) {
             return false;
@@ -186,7 +186,7 @@ class efqCouponHandler
         }
         //$couponid = (int)($couponid);
         if ($itemid > 0) {
-            $sql = 'SELECT couponid, itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($efqdirectory->getDirname() . '_coupon') . ' WHERE itemid=' . $itemid;
+            $sql = 'SELECT couponid, itemid, description, image, publish, expire, heading, lbr FROM ' . $this->db->prefix($helper->getDirname() . '_coupon') . ' WHERE itemid=' . $itemid;
             //echo $sql;
             if (!$result = $this->db->query($sql)) {
                 return false;

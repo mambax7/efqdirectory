@@ -19,7 +19,7 @@
  */
 
 include __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
@@ -28,7 +28,7 @@ require_once __DIR__ . '/class/class.listing.php';
 require_once __DIR__ . '/class/class.datafieldmanager.php';
 require_once __DIR__ . '/class/class.couponhandler.php';
 
-$mytree           = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
+$mytree           = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 $datafieldmanager = new efqDataFieldManager();
 $eh               = new ErrorHandler;
 
@@ -100,7 +100,7 @@ if ('' !== $listing->getVar('logourl')) {
     $logourl = '';
 }
 
-$myts   = MyTextSanitizer::getInstance();
+$myts   = \MyTextSanitizer::getInstance();
 $html   = 1;
 $smiley = 1;
 $xcodes = 1;

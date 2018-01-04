@@ -29,7 +29,7 @@ require_once __DIR__ . '/class/class.image.php';
 require_once __DIR__ . '/class/class.efqtree.php';
 require_once __DIR__ . '/class/class.datafieldmanager.php';
 
-$myts             = MyTextSanitizer::getInstance();
+$myts             = \MyTextSanitizer::getInstance();
 $eh               = new ErrorHandler;
 $datafieldmanager = new efqDataFieldManager();
 
@@ -63,14 +63,14 @@ $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
 //First get an array of all datatypes within a directory that has listings linked to them
 if (isset($_POST['submit'])) {
     $sql         = 'SELECT DISTINCT dt.dtypeid, dt.title, dt.options, ft.fieldtype FROM '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+                   . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                    . ' ft, '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                   . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                    . ' dt, '
-                   . $xoopsDB->prefix($efqdirectory->getDirname()
+                   . $xoopsDB->prefix($helper->getDirname()
                                       . '_dtypes_x_cat')
                    . ' dxc, '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat')
+                   . $xoopsDB->prefix($helper->getDirname() . '_cat')
                    . " c WHERE c.cid=dxc.cid AND dt.dtypeid=dxc.dtypeid AND dt.fieldtypeid=ft.typeid AND c.dirid='$get_dirid' AND dt.activeyn='1'";
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
@@ -213,8 +213,8 @@ if (isset($_POST['submit'])) {
                 ++$y;
             } elseif ($y == $limit) {
                 //Save $items_arr_text and $page into DB
-                $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_searchresults') . '_searchid_seq');
-                $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($efqdirectory->getDirname() . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
+                $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_searchresults') . '_searchid_seq');
+                $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($helper->getDirname() . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
                 $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 if (0 == $newid) {
                     $itemid = $xoopsDB->getInsertId();
@@ -225,8 +225,8 @@ if (isset($_POST['submit'])) {
             }
         }
         if (0 != $y && $page > 1) {
-            $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_searchresults') . '_searchid_seq');
-            $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($efqdirectory->getDirname() . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
+            $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_searchresults') . '_searchid_seq');
+            $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($helper->getDirname() . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
             $xoopsDB->query($sql) ; //|| $eh->show('0013');
             if (0 == $newid) {
                 $itemid = $xoopsDB->getInsertId();
@@ -243,7 +243,7 @@ if (isset($_POST['submit'])) {
     $get_page      = (int)$_GET['page'];
 
     //Query the saved results from the DB.
-    $sql = 'SELECT searchid, searchnum, created, page, items, dirid, catid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_searchresults') . " WHERE searchnum='$get_searchnum' AND page='$get_page'";
+    $sql = 'SELECT searchid, searchnum, created, page, items, dirid, catid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_searchresults') . " WHERE searchnum='$get_searchnum' AND page='$get_page'";
 
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
@@ -310,14 +310,14 @@ if (isset($_POST['submit'])) {
     //No search was posted nor was a search page requested.
     //A search form is generated from the datatype fields in the chosen directory.
     $sql         = 'SELECT DISTINCT dt.dtypeid, dt.title, dt.options, ft.fieldtype FROM '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+                   . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                    . ' ft, '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                   . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                    . ' dt, '
-                   . $xoopsDB->prefix($efqdirectory->getDirname()
+                   . $xoopsDB->prefix($helper->getDirname()
                                       . '_dtypes_x_cat')
                    . ' dxc, '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat')
+                   . $xoopsDB->prefix($helper->getDirname() . '_cat')
                    . " c WHERE c.cid=dxc.cid AND dt.dtypeid=dxc.dtypeid AND dt.fieldtypeid=ft.typeid AND c.dirid='$get_dirid' AND dt.activeyn='1'";
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
@@ -358,11 +358,11 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
     if (is_array($queryarray) && count($queryarray) >= 1) {
         $count        = count($queryarray);
         ${'sql' . $n} = 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                        . $xoopsDB->prefix($helper->getDirname() . '_data')
                         . ' d RIGHT JOIN '
-                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                        . $xoopsDB->prefix($helper->getDirname() . '_items')
                         . ' i ON (d.itemid=i.itemid) LEFT JOIN '
-                        . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                        . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                         . " t ON (t.itemid=i.itemid) WHERE i.status='2'";
         ${'sql' . $n} .= " AND ((d.value LIKE '%$queryarray[0]%' OR i.title LIKE '%$queryarray[0]%' OR t.description LIKE '%$queryarray[0]%')";
         for ($i = 1; $i < $count; ++$i) {
@@ -385,11 +385,11 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
         if (is_array($selectfields)) {
             if (count($selectfields) >= 1) {
                 ${'sql' . $n}       .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                       . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                       . $xoopsDB->prefix($helper->getDirname() . '_data')
                                        . ' d, '
-                                       . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                       . $xoopsDB->prefix($helper->getDirname() . '_items')
                                        . ' i LEFT JOIN '
-                                       . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                       . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                        . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                 $select             = '';
                 ${'sql' . $n}       .= ' ' . $andor . " (d.dtypeid = $dtypeid AND d.value IN (";
@@ -416,81 +416,81 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
             switch ($constr) {
                 case 'equal':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = " = '" . $postvalue . '\'';
                     break;
                 case 'notequal':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = " <> '" . $postvalue . '\'';
                     break;
                 case 'contains':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = " LIKE '%" . $postvalue . "%'";
                     break;
                 case 'notcontain':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = " NOT LIKE '%" . $postvalue . "%'";
                     break;
                 case 'begins':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = " LIKE '" . $postvalue . "%'";
                     break;
                 case 'ends':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = " LIKE '%" . $postvalue . '\'';
                     break;
                 case 'bigger':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = ' > ' . (int)$postvalue . '';
                     break;
                 case 'smaller':
                     ${'sql' . $n} .= 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_data')
                                      . ' d, '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_items')
                                      . ' i LEFT JOIN '
-                                     . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+                                     . $xoopsDB->prefix($helper->getDirname() . '_item_text')
                                      . " t ON (t.itemid=i.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
                     $constraint   = ' < ' . (int)$postvalue . '';
                     break;
@@ -560,7 +560,7 @@ function get_search_results($items = '')
         $ret         = [];
         $split_items = explode(',', $items);
         foreach ($split_items as $item) {
-            $sql         = 'SELECT i.itemid, i.title, i.uid, i.created, t.description FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text') . " t WHERE i.itemid=t.itemid AND i.itemid='$item'";
+            $sql         = 'SELECT i.itemid, i.title, i.uid, i.created, t.description FROM ' . $xoopsDB->prefix($helper->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($helper->getDirname() . '_item_text') . " t WHERE i.itemid=t.itemid AND i.itemid='$item'";
             $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
             $num_results = $xoopsDB->getRowsNum($result);
             while ($myrow = $xoopsDB->fetchArray($result)) {
@@ -590,7 +590,7 @@ function getNumberOfResults($searchnum = 0, $limit = 10)
 {
     global $xoopsDB, $eh;
     $block       = [];
-    $sql         = 'SELECT MAX(page), items FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_searchresults') . " WHERE searchnum = '" . $searchnum . '\' GROUP BY page';
+    $sql         = 'SELECT MAX(page), items FROM ' . $xoopsDB->prefix($helper->getDirname() . '_searchresults') . " WHERE searchnum = '" . $searchnum . '\' GROUP BY page';
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
@@ -622,11 +622,11 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0, $filter_arr)
     $count = 0;
 
     $sql = 'SELECT COUNT(DISTINCT i.itemid) FROM '
-           . $xoopsDB->prefix($efqdirectory->getDirname() . '_data')
+           . $xoopsDB->prefix($helper->getDirname() . '_data')
            . ' d, '
-           . $xoopsDB->prefix($efqdirectory->getDirname() . '_items')
+           . $xoopsDB->prefix($helper->getDirname() . '_items')
            . ' i LEFT JOIN '
-           . $xoopsDB->prefix($efqdirectory->getDirname() . '_item_text')
+           . $xoopsDB->prefix($helper->getDirname() . '_item_text')
            . " t ON (i.itemid=t.itemid) WHERE d.itemid=i.itemid AND i.status='2'";
     // because count() returns 1 even if a supplied variable
     // is not an array, we must check if $queryarray is really an array

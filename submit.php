@@ -18,15 +18,17 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 require_once __DIR__ . '/header.php';
-$myts = MyTextSanitizer::getInstance();// MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
 $moddir = $xoopsModule->getVar('dirname');
-$efqdirectory = Efqdirectory::getInstance();
+$helper = Efqdirectory\Helper::getInstance();
 if (isset($_POST['dirid'])) {
     $dirid = (int)$_POST['dirid'];
 } elseif (isset($_GET['dirid'])) {
@@ -51,9 +53,9 @@ if (!empty($_POST['submit'])) {
     if ('' === $_POST['title']) {
         $eh->show('1001');
     }
-    $title = $myts->makeTboxData4Save($_POST['title']);
+    $title = $myts->addSlashes($_POST['title']);
     $date  = time();
-    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_items') . '_itemid_seq');
+    $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_items') . '_itemid_seq');
     if (1 == $xoopsModuleConfig['autoapprove']) {
         $status = 1;
     } else {
@@ -61,20 +63,20 @@ if (!empty($_POST['submit'])) {
     }
     //itemtype = bronze, silver, gold etc., start with 0 as default.
     $submitter = $xoopsUser->getVar('uid');
-    $newid     = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_items') . '_itemid_seq');
-    $sql       = sprintf("INSERT INTO %s (itemid, uid, STATUS, created, title, hits, rating, votes, typeid, dirid) VALUES (%u, %u, %u, '%s', '%s', %u, %u, %u, '%s', %u)", $xoopsDB->prefix($efqdirectory->getDirname() . '_items'), $newid, $submitter, $status, time(), $title, 0, 0, 0, 0, $dirid);
+    $newid     = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_items') . '_itemid_seq');
+    $sql       = sprintf("INSERT INTO %s (itemid, uid, STATUS, created, title, hits, rating, votes, typeid, dirid) VALUES (%u, %u, %u, '%s', '%s', %u, %u, %u, '%s', %u)", $xoopsDB->prefix($helper->getDirname() . '_items'), $newid, $submitter, $status, time(), $title, 0, 0, 0, 0, $dirid);
     $xoopsDB->query($sql) ; //|| $eh->show('0013');
     if (0 == $newid) {
         $itemid = $xoopsDB->getInsertId();
     }
-    $sql           = 'SELECT cid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $dirid . '\' AND active=\'1\'';
+    $sql           = 'SELECT cid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE dirid='" . $dirid . '\' AND active=\'1\'';
     $allcatsresult = $xoopsDB->query($sql);
     $numrows       = $xoopsDB->getRowsNum($allcatsresult);
     $count         = 0;
     if ($numrows > 0) {
         while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
             if (isset($_POST['selected' . $cid . ''])) {
-                $sql = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $newid, $cid, $itemid, 1, time());
+                $sql = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cid, $itemid, 1, time());
                 $xoopsDB->query($sql) ; //|| $eh->show('0013');
                 ++$count;
             }

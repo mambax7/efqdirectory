@@ -18,6 +18,8 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
 
@@ -28,13 +30,13 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once __DIR__ . '/../class/class.formimage.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once __DIR__ . '/../class/class.efqtree.php';
-$efqtree = new EfqTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
-$myts    = MyTextSanitizer::getInstance();
+$efqtree = new EfqTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$myts    = \MyTextSanitizer::getInstance();
 $eh      = new ErrorHandler;
-$mytree  = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
-$mytree2 = new MyXoopsTree($xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes'), 'typeid', 0);
-$efqtree = new EfqTree($xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), 'cid', 'pid');
-$efqdirectory = Efqdirectory::getInstance();
+$mytree  = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$mytree2 = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_fieldtypes'), 'typeid', 0);
+$efqtree = new EfqTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$helper = Efqdirectory\Helper::getInstance();
 
 $moddir = $xoopsModule->getVar('dirname');
 if (isset($_GET['dirid'])) {
@@ -114,7 +116,7 @@ function catConfig($dirid = '0')
 function editCat($catid = '0')
 {
     global $xoopsDB, $efqtree, $mytree, $mytree2, $xoopsUser, $get_catid, $eh, $myts;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     xoops_cp_header();
     $diridfromcatid = getDirId($get_catid);
     //adminmenu(-1, _MD_EDITCAT);
@@ -139,9 +141,9 @@ function editCat($catid = '0')
 
     echo "<table width='100%' border='0' cellspacing='1'><tr><td>";
     $sql     = 'SELECT c.cid, c.dirid, c.title, c.active, c.pid, c.img, c.allowlist, c.showpopular, c.height, c.width, t.text FROM '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat')
+               . $xoopsDB->prefix($helper->getDirname() . '_cat')
                . ' c LEFT JOIN '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt')
+               . $xoopsDB->prefix($helper->getDirname() . '_cat_txt')
                . " t  ON (c.cid=t.cid) WHERE c.cid='"
                . $catid
                . '\'';
@@ -195,11 +197,11 @@ function editCat($catid = '0')
     echo '<form name="editdtypes" id="editdtypes" action="categories.php" method="post">';
     echo '<table width="100%" class="outer" cellspacing="1">';
     $sql     = 'SELECT d.dtypeid, x.cid, d.title, d.section, d.seq, d.icon, f.title, f.typeid, d.defaultyn, d.activeyn, d.options, d.custom FROM '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                . ' d, '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                . ' f, '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+               . $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat')
                . " x WHERE d.fieldtypeid=f.typeid AND d.dtypeid=x.dtypeid AND x.cid='"
                . $catid
                . '\' ORDER BY d.section ASC, d.seq ASC';
@@ -365,15 +367,15 @@ function editCat($catid = '0')
 function editDatatype($dtypeid = '0')
 {
     global $xoopsDB, $mytree, $mytree2, $xoopsUser, $get_catid, $eh;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     xoops_cp_header();
     //adminmenu(-1, _MD_EDITCAT);
     echo '<h4>' . _MD_EDITDTYPE . '</h4>';
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
     $sql     = 'SELECT d.dtypeid, d.title, d.section, d.seq, d.icon, f.title, f.typeid, d.defaultyn, d.activeyn, d.options, d.custom FROM '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                . ' d, '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_fieldtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes')
                . " f WHERE d.fieldtypeid=f.typeid AND d.dtypeid='"
                . $dtypeid
                . '\' ORDER BY d.seq ASC';
@@ -460,7 +462,7 @@ function editDatatype($dtypeid = '0')
 function saveDatatype()
 {
     global $xoopsDB, $_POST, $myts, $eh, $moddir, $xoopsUser;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     $count     = 1;
     $return    = '';
     $p_dtypeid = $_POST['dtypeid'];
@@ -471,9 +473,9 @@ function saveDatatype()
         } else {
             $p_custom = '0';
         }
-        $p_title     = $myts->makeTboxData4Save($_POST['title']);
+        $p_title     = $myts->addSlashes($_POST['title']);
         $p_fieldtype = $_POST['typeid'];
-        $p_section   = $myts->makeTboxData4Save($_POST['section']);
+        $p_section   = $myts->addSlashes($_POST['section']);
         if (isset($_POST['defaultyn'])) {
             $p_default = $_POST['defaultyn'];
         } else {
@@ -485,12 +487,12 @@ function saveDatatype()
             $p_active = '0';
         }
         if (isset($_POST['options'])) {
-            $p_options = $myts->makeTareaData4Save($_POST['options']);
+            $p_options = $myts->addSlashes($_POST['options']);
         } else {
             $p_options = '';
         }
         $p_fieldtype = $_POST['typeid'];
-        $p_seq       = $myts->makeTboxData4Save($_POST['seq']);
+        $p_seq       = $myts->addSlashes($_POST['seq']);
 
         require_once XOOPS_ROOT_PATH . '/class/class.uploader.php';
         $uploader = new XoopsMediaUploader(XOOPS_ROOT_PATH . "/modules/$moddir/init_uploads", ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png', 'image/jpg'], 30000, 50, 50);
@@ -514,26 +516,26 @@ function saveDatatype()
                                 unlink('' . XOOPS_ROOT_PATH . '/modules/' . $moddir . '/init_uploads/' . $savedfilename . '');
                             }
                             $sql = 'UPDATE '
-                                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                                   . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                                    . " SET title = '$p_title', section = '$p_section', fieldtypeid = '$p_fieldtype', defaultyn = '$p_default', activeyn='$p_active', seq='$p_seq', options='$p_options', custom='$p_custom', icon='$savedfilename' WHERE dtypeid = $p_dtypeid";
                             $xoopsDB->query($sql); //|| $eh->show('0013');
                         }
                     } else {
                         $sql = 'UPDATE '
-                               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                               . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                                . " SET title = '$p_title', section = '$p_section', fieldtypeid = '$p_fieldtype', defaultyn = '$p_default', activeyn='$p_active', seq='$p_seq', options='$p_options', custom='$p_custom' WHERE dtypeid = $p_dtypeid";
                         $xoopsDB->query($sql); //|| $eh->show('0013');
                     }
                 } else {
                     $sql = 'UPDATE '
-                           . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                           . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                            . " SET title = '$p_title', section = '$p_section', fieldtypeid = '$p_fieldtype', defaultyn = '$p_default', activeyn='$p_active', seq='$p_seq', options='$p_options', custom='$p_custom' WHERE dtypeid = $p_dtypeid";
                     $xoopsDB->query($sql); //|| $eh->show('0013');
                 }
             }
         } else {
             $sql = 'UPDATE '
-                   . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+                   . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                    . " SET title = '$p_title', section = '$p_section', fieldtypeid = '$p_fieldtype', defaultyn = '$p_default', activeyn='$p_active', seq='$p_seq', options='$p_options', custom='$p_custom' WHERE dtypeid = $p_dtypeid";
             $xoopsDB->query($sql); //|| $eh->show('0013');
         }
@@ -544,13 +546,13 @@ function saveDatatype()
 function addDatatype()
 {
     global $xoopsDB, $_POST, $myts, $eh, $xoopsUser, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['catid'])) {
         $p_catid = $_POST['catid'];
     } else {
         exit();
     }
-    $p_title = $myts->makeTboxData4Save($_POST['title']);
+    $p_title = $myts->addSlashes($_POST['title']);
     if (isset($_POST['defaultyn'])) {
         $p_default = $_POST['defaultyn'];
     } else {
@@ -567,7 +569,7 @@ function addDatatype()
         $p_custom = '0';
     }
     if (isset($_POST['options'])) {
-        $p_options = $myts->makeTareaData4Save($_POST['options']);
+        $p_options = $myts->addSlashes($_POST['options']);
     } else {
         $p_options = '';
     }
@@ -575,7 +577,7 @@ function addDatatype()
     if ('' == $p_fieldtype) {
         redirect_header("categories.php?op=edit&catid=$p_catid", 2, _MD_NOFIELDTYPE_SELECTED);
     }
-    $p_section = $myts->makeTboxData4Save($_POST['section']);
+    $p_section = $myts->addSlashes($_POST['section']);
     $uid       = $xoopsUser->getVar('uid');
 
     require_once XOOPS_ROOT_PATH . '/class/uploader.php';
@@ -604,10 +606,10 @@ function addDatatype()
             }
         }
     }
-    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes') . '_dtypeid_seq');
+    $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_dtypes') . '_dtypeid_seq');
     $sql   = sprintf(
         "INSERT INTO %s (dtypeid, title, section, fieldtypeid, uid, defaultyn, created, seq, activeyn, OPTIONS, custom, icon) VALUES (%u, '%s', %u, %u, %u, %u, '%s', '%s', %u, '%s', %u, '%s')",
-        $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes'),
+        $xoopsDB->prefix($helper->getDirname() . '_dtypes'),
         $newid,
         $p_title,
                      $p_section,
@@ -623,8 +625,8 @@ function addDatatype()
     );
     $xoopsDB->query($sql); //|| $eh->show('0013');
     $dtypeid = $xoopsDB->getInsertId();
-    $newid   = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat') . '_xid_seq');
-    $sql     = sprintf('INSERT INTO %s (xid, cid, dtypeid) VALUES (%u, %u, %u)', $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat'), $newid, $p_catid, $dtypeid);
+    $newid   = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat') . '_xid_seq');
+    $sql     = sprintf('INSERT INTO %s (xid, cid, dtypeid) VALUES (%u, %u, %u)', $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat'), $newid, $p_catid, $dtypeid);
     $xoopsDB->query($sql); //|| $eh->show('0013');
     redirect_header("categories.php?op=edit&catid=$p_catid", 2, _MD_CAT_UPDATED);
 }
@@ -632,26 +634,26 @@ function addDatatype()
 function editDatatypes()
 {
     global $xoopsDB, $_POST, $myts, $eh, $moddir, $xoopsUser;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     $count      = 1;
     $return     = '';
     $dtypes     = $_POST['dtypes'];
     $p_catid    = $_POST['catid'];
     $dtypes_arr = explode('[|]', $dtypes);
     foreach ($dtypes_arr as $dtype) {
-        $p_section = $myts->makeTboxData4Save($_POST['section' . $dtype . '']);
+        $p_section = $myts->addSlashes($_POST['section' . $dtype . '']);
         if (isset($_POST['defaultyn' . $dtype . ''])) {
             $p_defaultyn = '1';
         } else {
             $p_defaultyn = '0';
         }
-        $p_seq = $myts->makeTboxData4Save($_POST['seq' . $dtype . '']);
+        $p_seq = $myts->addSlashes($_POST['seq' . $dtype . '']);
         if (isset($_POST['activeyn' . $dtype . ''])) {
             $p_activeyn = '1';
         } else {
             $p_activeyn = '0';
         }
-        $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes') . " SET section = '$p_section', defaultyn = '$p_defaultyn', activeyn='$p_activeyn', seq='$p_seq' WHERE dtypeid = $dtype";
+        $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_dtypes') . " SET section = '$p_section', defaultyn = '$p_defaultyn', activeyn='$p_activeyn', seq='$p_seq' WHERE dtypeid = $dtype";
         $xoopsDB->query($sql); //|| $eh->show('0013');
     }
     redirect_header("categories.php?op=edit&catid=$p_catid", 2, _MD_CAT_UPDATED);
@@ -660,7 +662,7 @@ function editDatatypes()
 function importDatatypes()
 {
     global $xoopsDB, $_POST, $myts, $eh, $moddir, $xoopsUser;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['pid'])) {
         $p_pid = $_POST['pid'];
     } else {
@@ -673,13 +675,13 @@ function importDatatypes()
     }
     if (0 != $p_pid) {
         $sql = 'INSERT INTO '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+               . $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat')
                . ' (cid, dtypeid) SELECT '
                . $p_catid
                . ', d.dtypeid FROM '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                . ' d, '
-               . $xoopsDB->prefix($efqdirectory->getDirname()
+               . $xoopsDB->prefix($helper->getDirname()
                                   . '_dtypes_x_cat')
                . ' x  WHERE d.dtypeid=x.dtypeid AND x.cid = '
                . $p_pid
@@ -692,7 +694,7 @@ function importDatatypes()
 function updateCat()
 {
     global $xoopsDB, $_POST, $myts, $eh, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['catid'])) {
         $p_catid = $_POST['catid'];
     } else {
@@ -705,7 +707,7 @@ function updateCat()
     } else {
         $p_pid = '0';
     }
-    $p_title = $myts->makeTboxData4Save($_POST['title']);
+    $p_title = $myts->addSlashes($_POST['title']);
     if (isset($_POST['active'])) {
         $p_active = $_POST['active'];
     } else {
@@ -722,7 +724,7 @@ function updateCat()
         $p_showpopular = 0;
     }
     if (isset($_POST['descr'])) {
-        $p_descr = $myts->makeTareaData4Save($_POST['descr']);
+        $p_descr = $myts->addSlashes($_POST['descr']);
     } else {
         $p_descr = false;
     }
@@ -732,15 +734,15 @@ function updateCat()
         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
             $filename = $uploader->getMediaName();
         } else {
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " SET title = '$p_title', active='$p_active', pid='$p_pid', allowlist='$p_allowlist', showpopular='$p_showpopular' WHERE cid = $p_catid";
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " SET title = '$p_title', active='$p_active', pid='$p_pid', allowlist='$p_allowlist', showpopular='$p_showpopular' WHERE cid = $p_catid";
             $xoopsDB->query($sql); //|| $eh->show('0013');
 
             if ($p_descr) {
                 if (true === $descr_exists) {
-                    $sql2 = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . " SET text='$p_descr' WHERE cid = $p_catid";
+                    $sql2 = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_cat_txt') . " SET text='$p_descr' WHERE cid = $p_catid";
                 } else {
-                    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . '_txtid_seq');
-                    $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt'), $newid, $p_catid, $p_descr, '1', time());
+                    $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat_txt') . '_txtid_seq');
+                    $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $newid, $p_catid, $p_descr, '1', time());
                 }
                 $xoopsDB->query($sql2); //|| $eh->show('0013');
             }
@@ -754,7 +756,7 @@ function updateCat()
             $imagelocation = $uploader->uploadDir;
             echo $uploader->getErrors();
 
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " SET img = '$savedfilename', width = '$width', height = '$height' WHERE cid = $p_catid";
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " SET img = '$savedfilename', width = '$width', height = '$height' WHERE cid = $p_catid";
             $xoopsDB->query($sql); //|| $eh->show('0013');
             rename('' . XOOPS_ROOT_PATH . "/modules/$moddir/init_uploads/" . $savedfilename . '', '' . XOOPS_ROOT_PATH . "/modules/$moddir/uploads/" . $savedfilename . '');
             //Delete the uploaded file from the initial upload folder if it is still present in that folder.
@@ -764,14 +766,14 @@ function updateCat()
             redirect_header("categories.php?op=edit&catid=$p_catid", 2, _MD_CAT_UPDATED);
         } else {
             echo $uploader->getErrors();
-            $sql = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " SET title = '$p_title', active='$p_active', pid='$p_pid', allowlist='$p_allowlist', showpopular='$p_showpopular' WHERE cid = $p_catid";
+            $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " SET title = '$p_title', active='$p_active', pid='$p_pid', allowlist='$p_allowlist', showpopular='$p_showpopular' WHERE cid = $p_catid";
             $xoopsDB->query($sql); //|| $eh->show('0013');
             if ($p_descr) {
                 if (true === $descr_exists) {
-                    $sql2 = 'UPDATE ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . " SET text='$p_descr' WHERE cid = $p_catid";
+                    $sql2 = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_cat_txt') . " SET text='$p_descr' WHERE cid = $p_catid";
                 } else {
-                    $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . '_txtid_seq');
-                    $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt'), $newid, $p_catid, $p_descr, '1', time());
+                    $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat_txt') . '_txtid_seq');
+                    $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $newid, $p_catid, $p_descr, '1', time());
                 }
                 $xoopsDB->query($sql2); //|| $eh->show('0013');
             }
@@ -784,7 +786,7 @@ function updateCat()
 function newCat()
 {
     global $xoopsDB, $_POST, $myts, $eh, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['dirid'])) {
         $p_dirid = $_POST['dirid'];
     } else {
@@ -795,7 +797,7 @@ function newCat()
     } else {
         $p_pid = '0';
     }
-    $p_title = $myts->makeTboxData4Save($_POST['title']);
+    $p_title = $myts->addSlashes($_POST['title']);
     if (isset($_POST['active'])) {
         $p_active = $_POST['active'];
     } else {
@@ -826,7 +828,7 @@ function newCat()
         $p_showpopular = 0;
     }
     if (isset($_POST['descr'])) {
-        $p_descr = $myts->makeTareaData4Save($_POST['descr']);
+        $p_descr = $myts->addSlashes($_POST['descr']);
     } else {
         $p_descr = '';
     }
@@ -837,15 +839,15 @@ function newCat()
         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
             $filename = $uploader->getMediaName();
         } else {
-            $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . '_cid_seq');
-            $sql   = sprintf("INSERT INTO %s (cid, dirid, title, active, pid, allowlist, showpopular) VALUES (%u, %u, '%s', %u, %u, %u, %u)", $xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), $newid, $p_dirid, $p_title, $p_active, $p_pid, $p_allowlist, $p_showpopular);
+            $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat') . '_cid_seq');
+            $sql   = sprintf("INSERT INTO %s (cid, dirid, title, active, pid, allowlist, showpopular) VALUES (%u, %u, '%s', %u, %u, %u, %u)", $xoopsDB->prefix($helper->getDirname() . '_cat'), $newid, $p_dirid, $p_title, $p_active, $p_pid, $p_allowlist, $p_showpopular);
             $xoopsDB->query($sql); //|| $eh->show('0013');
             if (0 == $newid) {
                 $cid = $xoopsDB->getInsertId();
             }
             if ('' != $p_descr) {
-                $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . '_txtid_seq');
-                $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, $p_txtactive, time());
+                $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat_txt') . '_txtid_seq');
+                $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, $p_txtactive, time());
                 $xoopsDB->query($sql2); //|| $eh->show('0013');
             }
             if ('1' == $p_import) {
@@ -861,10 +863,10 @@ function newCat()
             $height        = $uploader->getHeight();
             $imagelocation = $uploader->uploadDir;
             echo $uploader->getErrors();
-            $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . '_cid_seq');
+            $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat') . '_cid_seq');
             $sql   = sprintf(
                 "INSERT INTO %s (cid, dirid, title, active, pid, img, allowlist, showpopular, width, height) VALUES (%u, %u, '%s', %u, %u, '%s', %u, %u, %u, %u)",
-                $xoopsDB->prefix($efqdirectory->getDirname() . '_cat'),
+                $xoopsDB->prefix($helper->getDirname() . '_cat'),
                 $newid,
                 $p_dirid,
                 $p_title,
@@ -881,8 +883,8 @@ function newCat()
                 $cid = $xoopsDB->getInsertId();
             }
             if ('' != $p_descr) {
-                $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . '_txtid_seq');
-                $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, $p_txtactive, time());
+                $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat_txt') . '_txtid_seq');
+                $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, $p_txtactive, time());
                 $xoopsDB->query($sql2); //|| $eh->show('0013');
             }
             if ('1' == $p_import) {
@@ -896,10 +898,10 @@ function newCat()
             redirect_header("categories.php?op=edit&catid=$cid", 2, _MD_CAT_SAVED);
         } else {
             echo $uploader->getErrors();
-            $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . '_cid_seq');
+            $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat') . '_cid_seq');
             $sql   = sprintf(
                 "INSERT INTO %s (cid, dirid, title, active, pid, img, allowlist, showpopular, width, height) VALUES (%u, %u, '%s', %u, %u, %u, %u, %u, %u, %u)",
-                $xoopsDB->prefix($efqdirectory->getDirname() . '_cat'),
+                $xoopsDB->prefix($helper->getDirname() . '_cat'),
                 $newid,
                 $p_dirid,
                 $p_title,
@@ -916,8 +918,8 @@ function newCat()
                 $cid = $xoopsDB->getInsertId();
             }
             if ('' != $p_descr) {
-                $newid = $xoopsDB->genId($xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt') . '_txtid_seq');
-                $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, $p_txtactive, time());
+                $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat_txt') . '_txtid_seq');
+                $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, $p_txtactive, time());
                 $xoopsDB->query($sql2); //|| $eh->show('0013');
             }
             if ('1' == $p_import) {
@@ -949,20 +951,20 @@ function deleteCatConfirm()
 function deleteCat()
 {
     global $xoopsDB, $_POST, $eh, $xoopsModule;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['catid'])) {
         $p_catid = (int)$_POST['catid'];
     } else {
         redirect_header('directories.php', 2, _MD_INVALID_DIR);
     }
     $dirid = getDirId($p_catid);
-    $sql   = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_item_x_cat'), $p_catid);
+    $sql   = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $p_catid);
     $xoopsDB->queryF($sql); //|| $eh->show('0013');
-    $sql = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_cat'), $p_catid);
+    $sql = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($helper->getDirname() . '_cat'), $p_catid);
     $xoopsDB->queryF($sql); //|| $eh->show('0013');
-    $sql = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_cat_txt'), $p_catid);
+    $sql = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $p_catid);
     $xoopsDB->queryF($sql); //|| $eh->show('0013');
-    $sql = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat'), $p_catid);
+    $sql = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat'), $p_catid);
     $xoopsDB->queryF($sql); //|| $eh->show('0013');
     redirect_header('categories.php?dirid=' . $dirid, 2, _MD_CAT_DELETED);
 }
@@ -1014,8 +1016,8 @@ switch ($op) {
 function getCatOverview()
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
-    $sql        = 'SELECT cid, title, active, pid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $get_dirid . '\' AND pid=\'0\'';
+    $helper = Efqdirectory\Helper::getInstance();
+    $sql        = 'SELECT cid, title, active, pid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE dirid='" . $get_dirid . '\' AND pid=\'0\'';
     $mainresult = $xoopsDB->query($sql);
     $numrows    = $xoopsDB->getRowsNum($mainresult);
     $output     = '';
@@ -1064,7 +1066,7 @@ function getCatOverview()
 function getChildrenCategories($childid = 0, $level = 0)
 {
     global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     $tab    = '&nbsp;';
     $level  = $level;
     $output = '';
@@ -1072,7 +1074,7 @@ function getChildrenCategories($childid = 0, $level = 0)
     for ($i = 0; $i < $level; ++$i) {
         $tab .= '&nbsp;&nbsp;&nbsp;&nbsp;';
     }
-    $sql         = 'SELECT cid, title, active, pid FROM ' . $xoopsDB->prefix($efqdirectory->getDirname() . '_cat') . " WHERE dirid='" . $get_dirid . '\' AND pid=\'' . $childid . '\'';
+    $sql         = 'SELECT cid, title, active, pid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE dirid='" . $get_dirid . '\' AND pid=\'' . $childid . '\'';
     $childresult = $xoopsDB->query($sql);
     $numrows     = $xoopsDB->getRowsNum($childresult);
     if ($numrows > 0) {
@@ -1114,16 +1116,16 @@ function getChildrenCategories($childid = 0, $level = 0)
 function importDtypes($pid = '0', $catid = '0')
 {
     global $xoopsDB, $_POST, $eh;
-    $efqdirectory = Efqdirectory::getInstance();
+    $helper = Efqdirectory\Helper::getInstance();
     if (0 != $pid) {
         $sql = 'INSERT INTO '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes_x_cat')
+               . $xoopsDB->prefix($helper->getDirname() . '_dtypes_x_cat')
                . ' (cid, dtypeid) SELECT '
                . $catid
                . ', d.dtypeid FROM '
-               . $xoopsDB->prefix($efqdirectory->getDirname() . '_dtypes')
+               . $xoopsDB->prefix($helper->getDirname() . '_dtypes')
                . ' d, '
-               . $xoopsDB->prefix($efqdirectory->getDirname()
+               . $xoopsDB->prefix($helper->getDirname()
                                   . '_dtypes_x_cat')
                . ' x  WHERE d.dtypeid=x.dtypeid AND x.cid = '
                . $pid
