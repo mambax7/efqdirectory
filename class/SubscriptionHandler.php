@@ -70,6 +70,8 @@ class SubscriptionHandler extends \XoopsObjectHandler
      */
     public function createOrder($itemid = 0)
     {
+        /** @var Efqdirectory\Helper $helper */
+        $helper = Efqdirectory\Helper::getInstance();
         $orderid = 0;
         if (0 != $itemid) {
             if (isset($_POST['typeofferid'])) {
@@ -127,6 +129,42 @@ class SubscriptionHandler extends \XoopsObjectHandler
 
     return $orderid;
     }*/
+
+
+    /**
+     * Function durationArray: creates array of options for duration selbox:
+     * months, weeks, year, days etc.
+     *
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2007
+     * @version   1.0.0
+     *
+     * @return array $arr
+     */
+    public function durationArray()
+    {
+        $arr = ['0' => '---', '1' => _MD_DAYS, '2' => _MD_WEEKS, '3' => _MD_MONTHS, '4' => _MD_QUARTERS, '5' => _MD_YEARS];
+
+        return $arr;
+    }
+
+    /**
+     * Function durationArray: creates array of options for duration selbox:
+     * single items like: month, week, year, day etc.
+     *
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2007
+     * @version   1.0.0
+     *
+     * @return array $arr
+     */
+    public function durationSingleArray()
+    {
+        $arr = ['0' => '---', '1' => _MD_DAY, '2' => _MD_WEEK, '3' => _MD_MONTH, '4' => _MD_QUARTER, '5' => _MD_YEAR];
+
+        return $arr;
+    }
+
 
     /**
      * @param int $offerid
@@ -284,6 +322,7 @@ class SubscriptionHandler extends \XoopsObjectHandler
      */
     public function durationPriceArray($dashes = '0', $showactive = '1')
     {
+        $helper = Efqdirectory\Helper::getInstance();
         $sql = 'SELECT o.offerid, o.duration, o.count, o.price, o.currency, o.descr, t.typeid, t.typename FROM ' . $this->db->prefix($helper->getDirname() . '_subscr_offers') . ' o, ' . $this->db->prefix($helper->getDirname() . '_itemtypes') . ' t WHERE o.typeid=t.typeid';
         if ('1' == $showactive) {
             $sql .= " AND activeyn='1'";

@@ -67,7 +67,10 @@ function showsubscription()
 {
     global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
 
+    /** @var Efqdirectory\Helper $helper */
     $helper = Efqdirectory\Helper::getInstance();
+    /** @var Efqdirectory\SubscriptionHandler $subscriptionHandler */
+    $subscriptionHandler = $helper->getHandler('Subscription');
 
     //Check if item selected.
     if ('0' == $get_itemid) {
@@ -162,7 +165,7 @@ function showsubscription()
         $order_form_title = _MD_SUBSCR_FORM;
     }
     $form            = new \XoopsThemeForm($order_form_title, 'subscribeform', 'subscriptions.php?item=' . $get_itemid . '');
-    $duration_arr    = $subscriptionhandler->durationPriceArray('1');
+    $duration_arr    = $subscriptionHandler->durationPriceArray('1');
     $itemtype_select = new Efqdirectory\FormRadio(_MD_SUBSCR_TYPE, 'typeofferid', null, '<br>');
     $itemtype_select->addOptionArray($duration_arr);
     $form->addElement($itemtype_select, true);
@@ -182,10 +185,15 @@ function orderselect()
 {
     //function to update subscription by creating an order or updating an order.
     global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
+
+    $helper = Efqdirectory\Helper::getInstance();
+    /** @var Efqdirectory\SubscriptionHandler $subscriptionHandler */
+    $subscriptionHandler = $helper->getHandler('Subscription');
+
     if ('0' == $get_itemid) {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
-    $orderid = $subscription->createOrder($get_itemid);
+    $orderid = $subscriptionHandler->createOrder($get_itemid);
     if (false === $orderid) {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_SUBSCR_TYPE_NOTSELECTED);
     }
