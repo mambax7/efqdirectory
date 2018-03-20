@@ -17,7 +17,9 @@
  * @author       XOOPS Development Team,
  */
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\Efqdirectory;
+
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 include __DIR__ . '/preloads/autoloader.php';
 

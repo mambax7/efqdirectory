@@ -29,7 +29,7 @@ if (isset($paypal['business'])) {
             $paymentid = $xoopsDB->getInsertId();
         }
 
-        $subscription = new efqSubscription();
+        $subscription = new Subscription();
         $ordervalues  = $subscription->getOrderVars($orderid);
         if ('' === $ordervalues['billto']) {
             $current_billto = $ordervalues['startdate'];

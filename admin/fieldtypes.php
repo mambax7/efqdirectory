@@ -25,13 +25,13 @@ require_once __DIR__ . '/admin_header.php';
 
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once __DIR__ . '/../include/functions.php';
-require_once __DIR__ . '/../class/xoopstree.php';
+// require_once __DIR__ . '/../class/xoopstree.php';
 $myts    = \MyTextSanitizer::getInstance();
-$eh      = new ErrorHandler;
-$mytree  = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
-$mytree2 = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_fieldtypes'), 'typeid', 0);
+//$eh      = new ErrorHandler;
+$mytree  = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$mytree2 = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_fieldtypes'), 'typeid', 0);
 
 $moddir = $xoopsModule->getVar('dirname');
 
@@ -60,7 +60,7 @@ $fieldtypes = [
 
 function fieldtypesConfig()
 {
-    global $xoopsDB, $xoopsModule, $xoopsUser, $moddir, $myts, $eh, $fieldtypes;
+    global $xoopsDB, $xoopsModule, $xoopsUser, $moddir, $myts,$fieldtypes;
     xoops_cp_header();
     $moduleDirName = basename(dirname(__DIR__));
     $adminObject = \Xmf\Module\Admin::getInstance();
@@ -74,7 +74,7 @@ function fieldtypesConfig()
     $numrows = $xoopsDB->getRowsNum($result);
     echo '<tr><th>' . _MD_TITLE . '</th><th>' . _MD_TYPE . '</th><th>' . _MD_EXT . '</th><th>' . _MD_ACTIVE . "</th></tr>\n";
     if ($numrows > 0) {
-        while (list($typeid, $title, $type, $descr, $ext, $status) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($typeid, $title, $type, $descr, $ext, $status) = $xoopsDB->fetchRow($result))) {
             if ('0' != $status) {
                 $statusyn = '' . _MD_YES . '';
             } else {
@@ -94,29 +94,29 @@ function fieldtypesConfig()
     echo '<br>';
     echo '<h4>' . _MD_CREATE_NEWFTYPE . '</h4>';
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-    $form = new XoopsThemeForm(_MD_NEWFTYPEFORM, 'submitform', 'fieldtypes.php');
+    $form = new \XoopsThemeForm(_MD_NEWFTYPEFORM, 'submitform', 'fieldtypes.php');
 
-    $form->addElement(new XoopsFormText(_MD_TITLE, 'title', 100, 150, ''), true);
+    $form->addElement(new \XoopsFormText(_MD_TITLE, 'title', 100, 150, ''), true);
     //TO DO: change type field to drop down field, based on available types.
-    $element_select = new XoopsFormSelect(_MD_FIELDTYPE, 'field_type');
+    $element_select = new \XoopsFormSelect(_MD_FIELDTYPE, 'field_type');
     $element_select->addOptionArray($fieldtypes);
     //$form->addElement($type_select);
     $form->addElement($element_select);
-    $ext_tray = new XoopsFormElementTray(_MD_EXT, '');
-    $ext_text = new XoopsFormText('', 'ext', 80, 150, '');
+    $ext_tray = new \XoopsFormElementTray(_MD_EXT, '');
+    $ext_text = new \XoopsFormText('', 'ext', 80, 150, '');
     $ext_text->setExtra('disabled=true');
     $ext_text->setExtra('style=\'background-color:lightgrey\'');
-    $ext_button = new XoopsFormLabel('', '<INPUT type="button" value="' . _MD_SET_EXT . "\", onClick=\"openExtManager('submitform','" . XOOPS_URL . '/modules/' . $moddir . "/admin/extensionmanager.php','field_type', '" . _MD_SELECT_FORMTYPE . '\')">');
+    $ext_button = new \XoopsFormLabel('', '<INPUT type="button" value="' . _MD_SET_EXT . "\", onClick=\"openExtManager('submitform','" . XOOPS_URL . '/modules/' . $moddir . "/admin/extensionmanager.php','field_type', '" . _MD_SELECT_FORMTYPE . '\')">');
     $ext_tray->addElement($ext_text);
     $ext_tray->addElement($ext_button);
     $form->addElement($ext_tray);
-    $form->addElement(new XoopsFormTextArea(_MD_DESCRIPTION, 'descr', '', 8, 50, ''), true);
-    $form_txtactive = new XoopsFormCheckBox(_MD_ACTIVE, 'status', 0);
+    $form->addElement(new \XoopsFormTextArea(_MD_DESCRIPTION, 'descr', '', 8, 50, ''), true);
+    $form_txtactive = new \XoopsFormCheckBox(_MD_ACTIVE, 'status', 0);
     $form_txtactive->addOption(1, _MD_YESNO);
     $form->addElement($form_txtactive);
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-    $form->addElement(new XoopsFormHidden('op', 'addFieldtype'));
-    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+    $form->addElement(new \XoopsFormHidden('op', 'addFieldtype'));
+    $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
     $form->display();
 
     //Javascript function to check if field type is selected. If not, then warn the user. Otherwise
@@ -141,7 +141,7 @@ function fieldtypesConfig()
 
 function viewFieldtype()
 {
-    global $xoopsDB, $mytree, $mytree2, $xoopsUser, $get_typeid, $moddir, $eh, $fieldtypes;
+    global $xoopsDB, $mytree, $mytree2, $xoopsUser, $get_typeid, $moddir,$fieldtypes;
     $helper = Efqdirectory\Helper::getInstance();
     xoops_cp_header();
     //adminmenu(2, _MD_A_FTYPESADMIN);
@@ -152,30 +152,30 @@ function viewFieldtype()
     $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
-        while (list($typeid, $title, $fieldtype, $descr, $ext, $activeyn) = $xoopsDB->fetchRow($result)) {
-            $form = new XoopsThemeForm(_MD_EDITFTYPEFORM, 'submitform', 'fieldtypes.php');
-            $form->addElement(new XoopsFormText(_MD_TITLE, 'title', 100, 150, "$title"), true);
+        while (false !== (list($typeid, $title, $fieldtype, $descr, $ext, $activeyn) = $xoopsDB->fetchRow($result))) {
+            $form = new \XoopsThemeForm(_MD_EDITFTYPEFORM, 'submitform', 'fieldtypes.php');
+            $form->addElement(new \XoopsFormText(_MD_TITLE, 'title', 100, 150, "$title"), true);
             //TO DO: change type field to drop down field, based on available types.
-            $element_select = new XoopsFormSelect(_MD_FIELDTYPE, 'field_type', $fieldtype);
+            $element_select = new \XoopsFormSelect(_MD_FIELDTYPE, 'field_type', $fieldtype);
             $element_select->addOptionArray($fieldtypes);
 
             //$form->addElement($type_select);
             $form->addElement($element_select);
-            $ext_tray = new XoopsFormElementTray(_MD_EXT, '');
-            $ext_text = new XoopsFormText('', 'ext', 80, 150, "$ext");
+            $ext_tray = new \XoopsFormElementTray(_MD_EXT, '');
+            $ext_text = new \XoopsFormText('', 'ext', 80, 150, "$ext");
             $ext_text->setExtra('style=\'background-color:lightgrey\'');
-            $ext_button = new XoopsFormLabel('', '<INPUT type="button" value="' . _MD_SET_EXT . "\", onClick=\"openExtManager('submitform','" . XOOPS_URL . '/modules/' . $moddir . "/admin/extensionmanager.php','field_type', '" . _MD_SELECT_FORMTYPE . '\')">');
+            $ext_button = new \XoopsFormLabel('', '<INPUT type="button" value="' . _MD_SET_EXT . "\", onClick=\"openExtManager('submitform','" . XOOPS_URL . '/modules/' . $moddir . "/admin/extensionmanager.php','field_type', '" . _MD_SELECT_FORMTYPE . '\')">');
             $ext_tray->addElement($ext_text);
             $ext_tray->addElement($ext_button);
             $form->addElement($ext_tray);
-            $form->addElement(new XoopsFormTextArea(_MD_DESCRIPTION, 'descr', "$descr", 8, 50, ''), true);
-            $form_txtactive = new XoopsFormCheckBox(_MD_ACTIVE, 'status', $activeyn);
+            $form->addElement(new \XoopsFormTextArea(_MD_DESCRIPTION, 'descr', "$descr", 8, 50, ''), true);
+            $form_txtactive = new \XoopsFormCheckBox(_MD_ACTIVE, 'status', $activeyn);
             $form_txtactive->addOption(1, _MD_YESNO);
             $form->addElement($form_txtactive);
-            $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-            $form->addElement(new XoopsFormHidden('op', 'editFieldtype'));
-            $form->addElement(new XoopsFormHidden('typeid', $get_typeid));
-            $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+            $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+            $form->addElement(new \XoopsFormHidden('op', 'editFieldtype'));
+            $form->addElement(new \XoopsFormHidden('typeid', $get_typeid));
+            $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
             $form->display();
 
             //Javascript function to check if field type is selected. If not, then warn the user. Otherwise
@@ -202,7 +202,7 @@ function viewFieldtype()
 
 function addFieldtype()
 {
-    global $xoopsDB, $_POST, $myts, $eh, $xoopsModule;
+    global $xoopsDB, $_POST, $myts, $xoopsModule;
     $p_title     = $myts->addSlashes($_POST['title']);
     $p_fieldtype = $_POST['field_type'];
     $p_descr     = $myts->addSlashes($_POST['descr']);
@@ -218,13 +218,17 @@ function addFieldtype()
     }
     $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_fieldtypes') . '_typeid_seq');
     $sql   = sprintf("INSERT INTO %s (typeid, title, fieldtype, descr, ext, activeyn) VALUES (%u, '%s', '%s', '%s', '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_fieldtypes'), $newid, $p_title, $p_fieldtype, $p_descr, $p_ext, $p_status);
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     redirect_header('fieldtypes.php', 2, _MD_SAVED);
 }
 
 function editFieldtype()
 {
-    global $xoopsDB, $_POST, $myts, $eh;
+    global $xoopsDB, $_POST, $myts;
     if (isset($_POST['typeid'])) {
         $p_typeid = (int)$_POST['typeid'];
     } else {
@@ -244,13 +248,18 @@ function editFieldtype()
         $p_status = 0;
     }
     $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes') . " SET title = '$p_title', fieldtype='$p_fieldtype', ext='$p_ext', activeyn='$p_status' WHERE typeid = $p_typeid";
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     redirect_header("fieldtypes.php?op=view&typeid=$p_typeid", 2, _MD_SAVED);
 }
 
 function newCat()
 {
-    global $xoopsDB, $myts, $eh;
+    global $xoopsDB, $myts;
+    $logger = \XoopsLogger::getInstance();
     if (isset($_POST['dirid'])) {
         $p_dirid = (int)$_POST['dirid'];
     } else {
@@ -269,14 +278,20 @@ function newCat()
     $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat') . '_cid_seq');
     $sql   = sprintf("INSERT INTO %s (cid, dirid, title, active, pid) VALUES (%u, %u, '%s', %u, %u)", $xoopsDB->prefix($helper->getDirname() . '_cat'), $newid, $p_dirid, $p_title, $p_active, $p_pid);
     //echo $sql;
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     if (0 == $newid) {
         $cid = $xoopsDB->getInsertId();
     }
     $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_cat_txt') . '_txtid_seq');
-    $sql2  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, '1', time());
-    //echo $sql2;
-    $xoopsDB->query($sql2) ; //|| $eh->show('0013');
+    $sql  = sprintf("INSERT INTO %s (txtid, cid, TEXT, active, created) VALUES (%u, %u, '%s', %u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_cat_txt'), $newid, $cid, $p_descr, '1', time());
+    //echo $sql;
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     redirect_header("categories.php?op=edit&cid=$newid", 0, _MD_CAT_UPDATED);
 }
 
@@ -305,7 +320,7 @@ switch ($op) {
  */
 function getCatOverview()
 {
-    global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir;
+    global $xoopsDB, $myts, $mytree, $get_dirid, $moddir;
     $sql        = 'SELECT cid, title, active, pid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE dirid='" . $get_dirid . '\' AND pid=\'0\'';
     $mainresult = $xoopsDB->query($sql);
     $numrows    = $xoopsDB->getRowsNum($mainresult);
@@ -314,7 +329,7 @@ function getCatOverview()
         $output = '<th>' . _MD_CATTITLE . '</th><th>' . _MD_ACTIVEYN . '</th><th>' . _MD_PARENTCAT . "</th>\n";
         $brench = 0;
         $tab    = '';
-        while (list($cid, $title, $activeyn, $pid) = $xoopsDB->fetchRow($mainresult)) {
+        while (false !== (list($cid, $title, $activeyn, $pid) = $xoopsDB->fetchRow($mainresult))) {
             $output .= '<tr><td>' . $tab . '<a href="' . XOOPS_URL . "/modules/$moddir/admin/categories.php?op=edit&cid=$cid\">" . $title . '</a></td><td>' . $activeyn . "</td></tr>\n";
             $output .= getChildrenCategories($cid);
         }
@@ -332,7 +347,7 @@ function getCatOverview()
  */
 function getChildrenCategories($childid = '0', $level = '1')
 {
-    global $xoopsDB, $myts, $eh, $mytree;
+    global $xoopsDB, $myts, $mytree;
     $firstchildcats = $mytree->getFirstChildId($childid);
     $tab            = '';
     $output         = '';
@@ -346,7 +361,7 @@ function getChildrenCategories($childid = '0', $level = '1')
         //$childresult = $xoopsDB->query("SELECT cid, title, active, pid FROM ".$xoopsDB->prefix("efqdiralpha1_cat")." WHERE dirid='".$dirid."' AND pid='".$childid."'");
         $numrows = $xoopsDB->getRowsNum($childresult);
         if ($numrows > 0) {
-            while (list($cid, $title, $activeyn, $pid) = $xoopsDB->fetchRow($childresult)) {
+            while (false !== (list($cid, $title, $activeyn, $pid) = $xoopsDB->fetchRow($childresult))) {
                 $output   .= '<tr><td>' . $tab . '' . $plus . '</td><td>' . $title . '</td><td>' . $activeyn . "</td></tr>\n";
                 $newlevel = ++$level;
                 $output   .= getChildrenCategories($cid, $newlevel);

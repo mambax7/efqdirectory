@@ -22,7 +22,7 @@ use XoopsModules\Efqdirectory;
 
 require_once __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
-require_once __DIR__ . '/class/xoopstree.php';
+// require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
@@ -74,7 +74,7 @@ if (!empty($_POST['submit'])) {
     $numrows       = $xoopsDB->getRowsNum($allcatsresult);
     $count         = 0;
     if ($numrows > 0) {
-        while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
+        while (false !== (list($cid) = $xoopsDB->fetchRow($allcatsresult))) {
             if (isset($_POST['selected' . $cid . ''])) {
                 $sql = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cid, $itemid, 1, time());
                 $xoopsDB->query($sql) ; //|| $eh->show('0013');
@@ -119,7 +119,7 @@ if (!empty($_POST['submit'])) {
     $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
     //Query datatypes that match the categories selected. If not category selected.
     ob_start();
-    $form = new XoopsThemeForm(_MD_SUBMITLISTING_FORM, 'submitform', 'submit.php');
+    $form = new \XoopsThemeForm(_MD_SUBMITLISTING_FORM, 'submitform', 'submit.php');
     $form->setExtra('enctype="multipart/form-data"');
     $editor = !empty($_REQUEST['editor']) ? $_REQUEST['editor'] : '';
     if (!empty($editor)) {
@@ -145,15 +145,15 @@ if (!empty($_POST['submit'])) {
     // "textarea": if the selected editor with name of $editor can not be created, the editor "textarea" will be used
     // if no $onFailure is set, then the first available editor will be used
     // If dohtml is disabled, set $noHtml to true
-    $form->addElement(new XoopsFormText(_MD_TITLE, 'title', 50, 250, ''), true);
-    $category_tray = new XoopsFormElementTray(_MD_CATEGORIES, '', 'cid');
+    $form->addElement(new \XoopsFormText(_MD_TITLE, 'title', 50, 250, ''), true);
+    $category_tray = new \XoopsFormElementTray(_MD_CATEGORIES, '', 'cid');
     $catselarea    = getCatSelectArea2();
-    $category_tray->addElement(new XoopsFormLabel('', $catselarea));
+    $category_tray->addElement(new \XoopsFormLabel('', $catselarea));
     $form->addElement($category_tray, true);
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
-    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
-    $form->addElement(new XoopsFormHidden('op', 'selectcat'));
-    $form->addElement(new XoopsFormHidden('dirid', $get_dirid));
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
+    $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+    $form->addElement(new \XoopsFormHidden('op', 'selectcat'));
+    $form->addElement(new \XoopsFormHidden('dirid', $get_dirid));
     $form->display();
     $xoopsTpl->assign('submit_form', ob_get_contents());
     ob_end_clean();

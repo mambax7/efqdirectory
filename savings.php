@@ -18,12 +18,14 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
-require_once __DIR__ . '/class/class.couponhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+// require_once __DIR__ . '/class/class.couponhandler.php';
 
-$eh     = new ErrorHandler;
+//$eh     = new ErrorHandler;
 $moddir = $xoopsModule->getVar('dirname');
 
 $itemid = isset($_GET['itemid']) ? (int)$_GET['itemid'] : 0;
@@ -33,7 +35,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'efqdiralpha1_savings.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
 $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
 
-$coupon = new efqCouponHandler();
+$coupon = new Efqdirectory\CouponHandler();
 if ($itemid) {
     $coupons = $coupon->getByItem($itemid);
 }
@@ -41,7 +43,7 @@ $sql         = 'SELECT itemid, title FROM ' . $xoopsDB->prefix($helper->getDirna
 $item_result = $xoopsDB->query($sql);
 $numrows     = $xoopsDB->getRowsNum($item_result);
 //echo $numrows;
-while (list($itemid, $itemtitle) = $xoopsDB->fetchRow($item_result)) {
+while (false !== (list($itemid, $itemtitle) = $xoopsDB->fetchRow($item_result))) {
     $title = $myts->htmlSpecialChars($itemtitle);
     $item  = $itemid;
 }

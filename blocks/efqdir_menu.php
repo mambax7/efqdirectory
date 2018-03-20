@@ -57,7 +57,7 @@ function b_efqdiralpha1_menu_show($options)
     $result                = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     echo 'test';
     print_r($result);
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $directory              = [];
         $name                   = $myts->htmlSpecialChars($myrow['name']);
         $directory['dirid']     = $myrow['dirid'];

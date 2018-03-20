@@ -18,6 +18,8 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 /*
 * This file handles the addition of coupons to listings.
 * Accessible to listing owners and administrators only.
@@ -25,18 +27,18 @@
 
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
-require_once __DIR__ . '/class/xoopstree.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+// require_once __DIR__ . '/class/xoopstree.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once __DIR__ . '/class/class.formimage.php';
-require_once __DIR__ . '/class/class.image.php';
-require_once __DIR__ . '/class/class.couponhandler.php';
+// require_once __DIR__ . '/class/class.formimage.php';
+// require_once __DIR__ . '/class/class.image.php';
+// require_once __DIR__ . '/class/class.couponhandler.php';
 
-$eh = new ErrorHandler; //ErrorHandler object
+//$eh = new ErrorHandler; //ErrorHandler object
 
 $moddir = $xoopsModule->getVar('dirname');
-$mytree = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 
 //$moddir = $xoopsModule->getvar("dirname");
 $couponid = isset($_GET['couponid']) ? (int)$_GET['couponid'] : 0;
@@ -58,7 +60,7 @@ if (isset($_POST['lbr'])) {
     $lbr = 0;
 }
 if ($couponid > 0) {
-    $coupon = new efqCouponHandler();
+    $coupon = new Efqdirectory\CouponHandler();
     $coupon->get($couponid);
     //$couponid = $coupon->couponid;
     $myts        = \MyTextSanitizer::getInstance();
@@ -93,7 +95,7 @@ if ($couponid > 0) {
 }
 
 if (!empty($_POST['submit'])) {
-    $coupon = new efqCouponHandler();
+    $coupon = new Efqdirectory\CouponHandler();
     if (isset($_POST['couponid'])) {
         $couponid = (int)$_POST['couponid'];
         $message  = _MD_COUPONEDITED;
@@ -110,7 +112,7 @@ if (!empty($_POST['submit'])) {
         if (empty($_POST['couponid'])) {
             redirect_header('index.php', 2, _MD_ERR_COUPONIDMISSING);
         }
-        $coupon   = new efqCouponHandler();
+        $coupon   = new Efqdirectory\CouponHandler();
         $couponid = (int)$_POST['couponid'];
         if ($coupon->delete($couponid)) {
             redirect_header('listing.php?item=' . $itemid, 2, _MD_COUPONDELETED);

@@ -22,13 +22,13 @@ require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
 
 include __DIR__ . '/../include/functions.php';
-require_once __DIR__ . '/../class/xoopstree.php';
+// require_once __DIR__ . '/../class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 $myts = \MyTextSanitizer::getInstance();
-$eh   = new ErrorHandler;
+//$eh   = new ErrorHandler;
 if (isset($_GET['op'])) {
     $op = $_GET['op'];
 } else {
@@ -303,7 +303,7 @@ function showExtFields($type = 'text', $ext = '')
         <td bgcolor='#2F5376'><a href='https://xoops.org/' target='_blank'><img src='" . XOOPS_URL . "/images/logo.gif' alt='" . $GLOBALS['xoopsConfig']['sitename'] . "'></a></td>
         <td align='right' bgcolor='#2F5376'><img src='" . XOOPS_URL . "/images/logo.gif' alt=''></td>
         </tr><tr><td colspan='2'><div class='content'><br>";
-    $form = new XoopsThemeForm(_MD_EXTMANAGER, 'ext_manager', 'fieldtypes.php');
+    $form = new \XoopsThemeForm(_MD_EXTMANAGER, 'ext_manager', 'fieldtypes.php');
 
     //TO DO: change type field to drop down field, based on available types.
     $fieldtypes = [
@@ -320,22 +320,22 @@ function showExtFields($type = 'text', $ext = '')
         'yesno'        => _MD_FIELDNAMES_YESNO
     ];
 
-    $form->addElement(new XoopsFormText(_MD_WIDTH, 'width', 10, 20, ''));
-    $form->addElement(new XoopsFormText(_MD_HEIGHT, 'height', 10, 20, ''));
-    $form->addElement(new XoopsFormText(_MD_ROWS, 'rows', 10, 20, ''));
-    $form->addElement(new XoopsFormText(_MD_COLS, 'cols', 10, 20, ''));
-    $form->addElement(new XoopsFormText(_MD_SIZE, 'size', 10, 20, ''));
-    $form->addElement(new XoopsFormText(_MD_MAXSIZE, 'maxsize', 10, 20, ''));
-    $form->addElement(new XoopsFormText(_MD_DEFAULTVALUE, 'value', 50, 100, ''));
-    $form_multiple = new XoopsFormCheckBox(_MD_MULTIPLE, 'multiple', 0);
+    $form->addElement(new \XoopsFormText(_MD_WIDTH, 'width', 10, 20, ''));
+    $form->addElement(new \XoopsFormText(_MD_HEIGHT, 'height', 10, 20, ''));
+    $form->addElement(new \XoopsFormText(_MD_ROWS, 'rows', 10, 20, ''));
+    $form->addElement(new \XoopsFormText(_MD_COLS, 'cols', 10, 20, ''));
+    $form->addElement(new \XoopsFormText(_MD_SIZE, 'size', 10, 20, ''));
+    $form->addElement(new \XoopsFormText(_MD_MAXSIZE, 'maxsize', 10, 20, ''));
+    $form->addElement(new \XoopsFormText(_MD_DEFAULTVALUE, 'value', 50, 100, ''));
+    $form_multiple = new \XoopsFormCheckBox(_MD_MULTIPLE, 'multiple', 0);
     $form_multiple->addOption(1, _MD_YESNO);
-    $form_checked = new XoopsFormCheckBox(_MD_CHECKED, 'checked', 0);
+    $form_checked = new \XoopsFormCheckBox(_MD_CHECKED, 'checked', 0);
     $form_checked->addOption(1, _MD_YESNO);
     $form->addElement($form_multiple);
     $form->addElement($form_checked);
-    $ext_update = new XoopsFormLabel('', '<INPUT type="button" value="' . _MD_UPDATE . "\" onClick=\"ext_input('submitform','ext')\" value=\"Update\">");
-    $ext_cancel = new XoopsFormLabel('', '<INPUT type="button" value="' . _MD_CANCEL . '" onClick="self.close()" value="Cancel">');
-    $ext_tray   = new XoopsFormElementTray('', '');
+    $ext_update = new \XoopsFormLabel('', '<INPUT type="button" value="' . _MD_UPDATE . "\" onClick=\"ext_input('submitform','ext')\" value=\"Update\">");
+    $ext_cancel = new \XoopsFormLabel('', '<INPUT type="button" value="' . _MD_CANCEL . '" onClick="self.close()" value="Cancel">');
+    $ext_tray   = new \XoopsFormElementTray('', '');
     $ext_tray->addElement($ext_update);
     $ext_tray->addElement($ext_cancel);
     $form->addElement($ext_tray);

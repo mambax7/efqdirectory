@@ -24,17 +24,17 @@ require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
 
 include __DIR__ . '/../include/functions.php';
-require_once __DIR__ . '/../class/xoopstree.php';
+// require_once __DIR__ . '/../class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once __DIR__ . '/../class/class.subscription.php';
+// require_once __DIR__ . '/../class/class.subscription.php';
 $myts                = \MyTextSanitizer::getInstance();
-$eh                  = new ErrorHandler;
-$itemtypes           = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_itemtypes'), 'typeid', '');
-$subscription        = new efqSubscription();
-$subscriptionhandler = new efqSubscriptionHandler();
+//$eh                  = new ErrorHandler;
+$itemtypes           = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_itemtypes'), 'typeid', '');
+$subscription        = new Efqdirectory\Subscription();
+$subscriptionhandler = new Efqdirectory\SubscriptionHandler();
 $helper = Efqdirectory\Helper::getInstance();
 
 $moddir = $xoopsModule->getVar('dirname');
@@ -52,7 +52,8 @@ if (isset($_GET['offerid'])) {
     $get_offerid = 0;
 }
 
-$eh = new ErrorHandler; //ErrorHandler object
+//$eh = new ErrorHandler; //ErrorHandler object
+$logger = \XoopsLogger::getInstance();
 
 if (isset($_GET['op'])) {
     $op = $_GET['op'];
@@ -79,14 +80,18 @@ function listoffers()
                . ' t, '
                . $xoopsDB->prefix($helper->getDirname() . '_subscr_offers')
                . ' o WHERE o.typeid=t.typeid';
-    $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
         echo '<h4>' . _MD_SUBSCR_OFFERS . '</h4>';
         echo "<table width='100%' border='0' cellspacing='1' class='outer'>";
         echo '<tr><th>' . _MD_OFFER_TITLE . '</th><th>' . _MD_OFFER_DURATION . '</th><th>' . _MD_OFFER_COUNT . '</th><th>' . _MD_OFFER_PRICE . '</th><th>' . _MD_OFFER_CURRENCY . '</th><th>' . _MD_OFFER_ACTIVE . '</th></tr>';
         $duration_arr = $subscription->durationArray();
-        while (list($offerid, $typeid, $title, $duration, $count, $price, $activeyn, $currency, $descr, $typename, $level) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($offerid, $typeid, $title, $duration, $count, $price, $activeyn, $currency, $descr, $typename, $level) = $xoopsDB->fetchRow($result))) {
             $offertitle = $myts->htmlSpecialChars($title);
             if ('1' == $activeyn) {
                 $activeyn = _MD_YES;
@@ -110,47 +115,51 @@ function listoffers()
     echo '<h4>' . _MD_ADD_SUBSCR_OFFER . '</h4>';
 
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-    $form = new XoopsThemeForm(_MD_ADD_OFFER_FORM, 'newofferform', 'subscriptions.php');
-    $form->addElement(new XoopsFormText(_MD_OFFER_TITLE, 'title', 50, 100, ''), true);
+    $form = new \XoopsThemeForm(_MD_ADD_OFFER_FORM, 'newofferform', 'subscriptions.php');
+    $form->addElement(new \XoopsFormText(_MD_OFFER_TITLE, 'title', 50, 100, ''), true);
 
     $itemtypes_arr   = $subscriptionhandler->itemTypesArray();
-    $itemtype_select = new XoopsFormSelect(_MD_SUBSCR_ITEMTYPE, 'typeid');
+    $itemtype_select = new \XoopsFormSelect(_MD_SUBSCR_ITEMTYPE, 'typeid');
     $itemtype_select->addOptionArray($itemtypes_arr);
     $form->addElement($itemtype_select);
 
     $duration_arr    = $subscription->durationArray();
-    $duration_select = new XoopsFormSelect(_MD_OFFER_DURATION, 'duration');
+    $duration_select = new \XoopsFormSelect(_MD_OFFER_DURATION, 'duration');
     $duration_select->addOptionArray($duration_arr);
     $form->addElement($duration_select);
 
-    $form->addElement(new XoopsFormText(_MD_OFFER_COUNT, 'count', 10, 50, ''), true);
-    $form->addElement(new XoopsFormText(_MD_OFFER_PRICE, 'price', 20, 50, ''), true);
+    $form->addElement(new \XoopsFormText(_MD_OFFER_COUNT, 'count', 10, 50, ''), true);
+    $form->addElement(new \XoopsFormText(_MD_OFFER_PRICE, 'price', 20, 50, ''), true);
 
     $currency_arr    = $subscription->currencyArray();
-    $currency_select = new XoopsFormSelect(_MD_OFFER_CURRENCY, 'currency');
+    $currency_select = new \XoopsFormSelect(_MD_OFFER_CURRENCY, 'currency');
     $currency_select->addOptionArray($currency_arr);
     $form->addElement($currency_select);
 
-    $form_active = new XoopsFormCheckBox(_MD_OFFER_ACTIVEYN, 'activeyn', 0);
+    $form_active = new \XoopsFormCheckBox(_MD_OFFER_ACTIVEYN, 'activeyn', 0);
     $form_active->addOption(1, _MD_YESNO);
     $form->addElement($form_active, true);
-    $form->addElement(new XoopsFormDhtmlTextArea(_MD_OFFER_DESCR, 'descr', '', 5, 50, ''));
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-    $form->addElement(new XoopsFormHidden('op', 'addoffer'));
-    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+    $form->addElement(new \XoopsFormDhtmlTextArea(_MD_OFFER_DESCR, 'descr', '', 5, 50, ''));
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+    $form->addElement(new \XoopsFormHidden('op', 'addoffer'));
+    $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
     $form->display();
     echo '</td></tr></table>';
 
     //Show item types
     $sql     = 'SELECT typeid, typename, typelevel FROM ' . $xoopsDB->prefix($helper->getDirname() . '_itemtypes') . '';
-    $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
         echo '<h4>' . _MD_ITEMTYPES . '</h4>';
         echo "<table width='100%' border='0' cellspacing='1' class='outer'>";
         echo '<tr><th>' . _MD_ITEMTYPE_NAME . '</th><th>' . _MD_ITEMTYPE_LEVEL . '</th><th>' . _MD_ACTION . '</th></tr>';
         $duration_arr = $subscription->durationArray();
-        while (list($typeid, $typename, $level) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($typeid, $typename, $level) = $xoopsDB->fetchRow($result))) {
             $typename = $myts->htmlSpecialChars($typename);
             $level    = $myts->htmlSpecialChars($level);
 
@@ -169,13 +178,13 @@ function listoffers()
 
     //Add item type form
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-    $form = new XoopsThemeForm(_MD_ADD_ITEMTYPE_FORM, 'newitemtypeform', 'subscriptions.php');
-    $form->addElement(new XoopsFormText(_MD_ITEMTYPE_NAME, 'typename', 50, 100, ''), true);
-    $form->addElement(new XoopsFormText(_MD_ITEMTYPE_LEVEL, 'typelevel', 10, 50, ''), true);
+    $form = new \XoopsThemeForm(_MD_ADD_ITEMTYPE_FORM, 'newitemtypeform', 'subscriptions.php');
+    $form->addElement(new \XoopsFormText(_MD_ITEMTYPE_NAME, 'typename', 50, 100, ''), true);
+    $form->addElement(new \XoopsFormText(_MD_ITEMTYPE_LEVEL, 'typelevel', 10, 50, ''), true);
 
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-    $form->addElement(new XoopsFormHidden('op', 'addtype'));
-    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+    $form->addElement(new \XoopsFormHidden('op', 'addtype'));
+    $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
     $form->display();
     echo '</td></tr></table>';
     xoops_cp_footer();
@@ -193,19 +202,23 @@ function edittype()
     //adminmenu(4, _MD_MANAGE_SUBSCRIPTION_OFFERS);
     echo '<br>';
     $sql     = 'SELECT typeid, typename, typelevel FROM ' . $xoopsDB->prefix($helper->getDirname() . '_itemtypes') . " WHERE typeid=$get_typeid";
-    $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
         //$duration_arr = $subscription->durationArray();
-        while (list($typeid, $typename, $level) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($typeid, $typename, $level) = $xoopsDB->fetchRow($result))) {
             echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-            $form = new XoopsThemeForm(_MD_EDIT_ITEMTYPE_FORM, 'edititemtypeform', 'subscriptions.php');
-            $form->addElement(new XoopsFormText(_MD_ITEMTYPE_NAME, 'typename', 50, 100, $typename), true);
-            $form->addElement(new XoopsFormText(_MD_ITEMTYPE_LEVEL, 'typelevel', 10, 50, $level), true);
-            $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-            $form->addElement(new XoopsFormHidden('op', 'savetype'));
-            $form->addElement(new XoopsFormHidden('typeid', "$get_typeid"));
-            $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+            $form = new \XoopsThemeForm(_MD_EDIT_ITEMTYPE_FORM, 'edititemtypeform', 'subscriptions.php');
+            $form->addElement(new \XoopsFormText(_MD_ITEMTYPE_NAME, 'typename', 50, 100, $typename), true);
+            $form->addElement(new \XoopsFormText(_MD_ITEMTYPE_LEVEL, 'typelevel', 10, 50, $level), true);
+            $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+            $form->addElement(new \XoopsFormHidden('op', 'savetype'));
+            $form->addElement(new \XoopsFormHidden('typeid', "$get_typeid"));
+            $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
             $form->display();
             echo '</td></tr></table>';
         }
@@ -234,41 +247,45 @@ function editoffer()
                . ' o WHERE o.typeid=t.typeid AND o.offerid='
                . $get_offerid
                . '';
-    $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
         $duration_arr = $subscription->durationArray();
-        while (list($offerid, $offertitle, $typeid, $duration, $count, $price, $activeyn, $currency, $descr, $typename, $level) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($offerid, $offertitle, $typeid, $duration, $count, $price, $activeyn, $currency, $descr, $typename, $level) = $xoopsDB->fetchRow($result))) {
             echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-            $form = new XoopsThemeForm(_MD_ADD_OFFER_FORM, 'newofferform', 'subscriptions.php');
-            $form->addElement(new XoopsFormText(_MD_OFFER_TITLE, 'title', 50, 100, $offertitle), true);
+            $form = new \XoopsThemeForm(_MD_ADD_OFFER_FORM, 'newofferform', 'subscriptions.php');
+            $form->addElement(new \XoopsFormText(_MD_OFFER_TITLE, 'title', 50, 100, $offertitle), true);
 
             $itemtypes_arr   = $subscriptionhandler->itemTypesArray();
-            $itemtype_select = new XoopsFormSelect(_MD_SUBSCR_ITEMTYPE, 'typeid', $typeid);
+            $itemtype_select = new \XoopsFormSelect(_MD_SUBSCR_ITEMTYPE, 'typeid', $typeid);
             $itemtype_select->addOptionArray($itemtypes_arr);
             $form->addElement($itemtype_select);
 
             //$duration_arr = $subscription->durationArray();
-            $duration_select = new XoopsFormSelect(_MD_OFFER_DURATION, 'duration', $duration);
+            $duration_select = new \XoopsFormSelect(_MD_OFFER_DURATION, 'duration', $duration);
             $duration_select->addOptionArray($duration_arr);
             $form->addElement($duration_select);
 
-            $form->addElement(new XoopsFormText(_MD_OFFER_COUNT, 'count', 10, 50, $count), true);
-            $form->addElement(new XoopsFormText(_MD_OFFER_PRICE, 'price', 20, 50, $price), true);
+            $form->addElement(new \XoopsFormText(_MD_OFFER_COUNT, 'count', 10, 50, $count), true);
+            $form->addElement(new \XoopsFormText(_MD_OFFER_PRICE, 'price', 20, 50, $price), true);
 
             $currency_arr    = $subscription->currencyArray();
-            $currency_select = new XoopsFormSelect(_MD_OFFER_CURRENCY, 'currency', $currency);
+            $currency_select = new \XoopsFormSelect(_MD_OFFER_CURRENCY, 'currency', $currency);
             $currency_select->addOptionArray($currency_arr);
             $form->addElement($currency_select);
 
-            $form_active = new XoopsFormCheckBox(_MD_OFFER_ACTIVEYN, 'activeyn', $activeyn);
+            $form_active = new \XoopsFormCheckBox(_MD_OFFER_ACTIVEYN, 'activeyn', $activeyn);
             $form_active->addOption(1, _MD_YESNO);
             $form->addElement($form_active, true);
-            $form->addElement(new XoopsFormDhtmlTextArea(_MD_OFFER_DESCR, 'descr', $descr, 5, 50, ''));
-            $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-            $form->addElement(new XoopsFormHidden('op', 'saveoffer'));
-            $form->addElement(new XoopsFormHidden('offerid', "$get_offerid"));
-            $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+            $form->addElement(new \XoopsFormDhtmlTextArea(_MD_OFFER_DESCR, 'descr', $descr, 5, 50, ''));
+            $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+            $form->addElement(new \XoopsFormHidden('op', 'saveoffer'));
+            $form->addElement(new \XoopsFormHidden('offerid', "$get_offerid"));
+            $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
             $form->display();
             echo '</td></tr></table>';
         }
@@ -323,14 +340,18 @@ function addoffer()
         $post_currency,
         $post_descr
     );
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $gen_offerid = $xoopsDB->getInsertId();
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php?offerid=" . $gen_offerid . '', 2, _MD_SAVED);
 }
 
 function saveoffer()
 {
-    global $xoopsDB, $eh, $myts, $moddir;
+    global $xoopsDB, $myts, $moddir;
     $helper = Efqdirectory\Helper::getInstance();
     //Get POST variables;
     $post_offerid  = (int)$_POST['offerid'];
@@ -355,7 +376,11 @@ function saveoffer()
     $sql         = 'UPDATE '
                    . $xoopsDB->prefix($helper->getDirname() . '_subscr_offers')
                    . " SET title = '$post_title', typeid = '$post_typeid', duration = '$post_duration', count = '$post_count', price = '$post_price', activeyn = '$post_activeyn', currency = '$post_currency', descr = '$post_descr' WHERE offerid='$post_offerid'";
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $gen_offerid = $xoopsDB->getInsertId();
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php?offerid=" . $post_offerid . '', 2, _MD_SAVED);
 }
@@ -369,14 +394,18 @@ function addtype()
     $p_level    = $myts->addSlashes($_POST['typelevel']);
     $newid      = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_itemtypes') . '_typeid_seq');
     $sql        = sprintf("INSERT INTO %s (typeid, typename, typelevel) VALUES (%u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_itemtypes'), $newid, $p_typename, $p_level);
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_SAVED);
 }
 
 function deltype()
     //function to delete an item type
 {
-    global $xoopsDB, $eh, $moddir, $subscriptionhandler;
+    global $xoopsDB, $moddir, $subscriptionhandler;
     if (isset($_GET['typeid'])) {
         $g_typeid = (int)$_GET['typeid'];
     } else {
@@ -394,12 +423,16 @@ function deltype()
 //function to save an existing subscription type
 function savetype()
 {
-    global $xoopsDB, $eh, $post_typeid, $myts, $moddir;
+    global $xoopsDB, $post_typeid, $myts, $moddir;
     $p_typename = $myts->addSlashes($_POST['typename']);
     $p_level    = (int)$_POST['typelevel'];
     $newid      = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_itemtypes') . '_typeid_seq');
     $sql        = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_itemtypes') . " SET typename='$p_typename', typelevel='$p_level' WHERE typeid='$post_typeid'";
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_SAVED);
 }
 

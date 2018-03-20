@@ -1,7 +1,7 @@
 ![alt XOOPS CMS](https://xoops.org/images/logoXoops4GithubRepository.png)
 ## efqDirectory module for  [XOOPS CMS 2.5.9+](https://xoops.org)
 [![XOOPS CMS Module](https://img.shields.io/badge/XOOPS%20CMS-Module-blue.svg)](https://xoops.org)
-[![Software License](https://img.shields.io/badge/license-GPL-brightgreen.svg?style=flat)](LICENSE)
+[![Software License](https://img.shields.io/badge/license-GPL-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/XoopsModules25x/efqdirectory.svg?style=flat)](https://scrutinizer-ci.com/g/XoopsModules25x/efqdirectory/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/30de0f38c166432db7e482c7897ea257)](https://www.codacy.com/app/mambax7/efqdirectory_2)

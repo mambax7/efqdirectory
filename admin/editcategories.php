@@ -18,20 +18,22 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
 
 include __DIR__ . '/../include/functions.php';
-require_once __DIR__ . '/../class/xoopstree.php';
+// require_once __DIR__ . '/../class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 $myts   = \MyTextSanitizer::getInstance();
-$eh     = new ErrorHandler;
-$mytree = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
-require_once __DIR__ . '/../class/class.datafieldmanager.php';
-$datafieldmanager = new efqDataFieldManager();
+//$eh     = new ErrorHandler;
+$mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+// require_once __DIR__ . '/../class/class.datafieldmanager.php';
+$datafieldmanager = new Efqdirectory\DataFieldManager();
 $moddir           = $xoopsModule->getVar('dirname');
 
 if (isset($_GET['item'])) {
@@ -45,7 +47,7 @@ if (isset($_POST['dirid'])) {
     $post_dirid = (int)$_POST['dirid'];
 }
 
-$eh = new ErrorHandler; //ErrorHandler object
+//$eh = new ErrorHandler; //ErrorHandler object
 
 if (isset($_GET['op'])) {
     $op = $_GET['op'];
@@ -63,7 +65,7 @@ if (!empty($_POST['submit'])) {
     $count             = 0;
     $allitemcats       = [];
     if ($numrows > 0) {
-        while (list($cid) = $xoopsDB->fetchRow($allitemcatsresult)) {
+        while (false !== (list($cid) = $xoopsDB->fetchRow($allitemcatsresult))) {
             $allitemcats[] = $cid;
         }
     }
@@ -73,7 +75,7 @@ if (!empty($_POST['submit'])) {
     $count                = 0;
     $activeitemcats       = [];
     if ($numrows > 0) {
-        while (list($cid) = $xoopsDB->fetchRow($activeitemcatsresult)) {
+        while (false !== (list($cid) = $xoopsDB->fetchRow($activeitemcatsresult))) {
             $activeitemcats[] = $cid;
         }
     }
@@ -83,7 +85,7 @@ if (!empty($_POST['submit'])) {
     $allcats       = [];
     $postedcats    = [];
     if ($numrows > 0) {
-        while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
+        while (false !== (list($cid) = $xoopsDB->fetchRow($allcatsresult))) {
             $allcats[] = $cid;
             if (isset($_POST['selected' . $cid . ''])) {
                 $postedcats[] = $cid;
@@ -115,16 +117,16 @@ if (!empty($_POST['submit'])) {
     xoops_cp_header();
     $dirid = getDirIdFromItem($get_itemid);
     //Query datatypes that match the cargories selected. If not category selected.
-    $form = new XoopsThemeForm(_MD_SELECTCAT_FORM, 'submitform', 'editcategories.php');
+    $form = new \XoopsThemeForm(_MD_SELECTCAT_FORM, 'submitform', 'editcategories.php');
     $form->setExtra('enctype="multipart/form-data"');
-    $category_tray = new XoopsFormElementTray(_MD_CATEGORIES, '', 'cid');
+    $category_tray = new \XoopsFormElementTray(_MD_CATEGORIES, '', 'cid');
     $catselarea    = getCatSelectArea($dirid);
-    $category_tray->addElement(new XoopsFormLabel('', $catselarea));
+    $category_tray->addElement(new \XoopsFormLabel('', $catselarea));
     $form->addElement($category_tray, true);
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
-    $form->addElement(new XoopsFormHidden('item', $get_itemid));
-    $form->addElement(new XoopsFormHidden('dirid', $dirid));
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+    $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+    $form->addElement(new \XoopsFormHidden('item', $get_itemid));
+    $form->addElement(new \XoopsFormHidden('dirid', $dirid));
     $form->display();
     xoops_cp_footer();
 }

@@ -41,9 +41,9 @@ class db_manager
      */
     public function __construct()
     {
-        $this->db = XoopsDatabaseFactory::getDatabase();
+        $this->db = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->db->setPrefix(XOOPS_DB_PREFIX);
-        $this->db->setLogger(XoopsLogger::instance());
+        $this->db->setLogger(\XoopsLogger::instance());
     }
 
     /**

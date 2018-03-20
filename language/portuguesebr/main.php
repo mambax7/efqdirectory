@@ -289,7 +289,7 @@ define('_MD_CHECKED', 'Verificado');
 define('_MD_DELETE_CAT', ' Excluir categoria');
 define('_MD_CONFIRM_DELETECAT_FORM', 'Confirme a eliminação da categoria');
 define('_MD_DELETE_CAT_YN', 'Tem certeza de que deseja apagar esta categoria?');
-define('_MD_CAT_DELETES', 'Categoria apagada com sucesso');
+define('_MD_CAT_DELETED', 'Categoria apagada com sucesso');
 
 //Subscription offers management
 define('_MD_SUBSCR_OFFERS', 'Ofertas de Assinaturas');

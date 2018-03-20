@@ -18,13 +18,15 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
-require_once __DIR__ . '/class/xoopstree.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+// require_once __DIR__ . '/class/xoopstree.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 $myts   = \MyTextSanitizer::getInstance();
-$mytree = new MyXoopsTree($xoopsDB->prefix('links_cat'), 'cid', 'pid');
-$eh     = new ErrorHandler;
+$mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix('links_cat'), 'cid', 'pid');
+//$eh     = new ErrorHandler;
 
 $moddir = $xoopsModule->getVar('dirname');
 include XOOPS_ROOT_PATH . '/header.php';
@@ -61,7 +63,7 @@ if (!empty($_GET['q'])) {
     //get search results from query
     if (isset($_GET['q'])) {
         $querystring = $GLOBALS['xoopsDB']->escape($myts->stripSlashesGPC($_GET['q']));
-        //echo $querystring."<br>";
+    //echo $querystring."<br>";
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/search.php", 2, _MD_NO_SEARCH_STRING_SELECTED);
     }
@@ -162,7 +164,7 @@ function mod_search($queryarray, $andor, $limit, $offset)
     } else {
         $ret = [];
         $i   = 0;
-        while ($myrow = $xoopsDB->fetchArray($result)) {
+        while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
             $ret[$i]['image']       = 'images/home.gif';
             $ret[$i]['link']        = 'listing.php?item=' . $myrow['itemid'] . '';
             $ret[$i]['title']       = $myrow['title'];

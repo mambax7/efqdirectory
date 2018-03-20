@@ -18,19 +18,21 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
-require_once __DIR__ . '/class/xoopstree.php';
+// require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once __DIR__ . '/class/class.listing.php';
-require_once __DIR__ . '/class/class.datafieldmanager.php';
-require_once __DIR__ . '/class/class.couponhandler.php';
+// require_once __DIR__ . '/class/class.listing.php';
+// require_once __DIR__ . '/class/class.datafieldmanager.php';
+// require_once __DIR__ . '/class/class.couponhandler.php';
 
-$mytree           = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
-$datafieldmanager = new efqDataFieldManager();
-$eh               = new ErrorHandler;
+$mytree           = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$datafieldmanager = new Efqdirectory\DataFieldManager();
+//$eh               = new ErrorHandler;
 
 $GLOBALS['xoopsOption']['template_main'] = 'efqdiralpha1_listing.tpl';
 include XOOPS_ROOT_PATH . '/header.php';
@@ -64,9 +66,9 @@ if ($isadmin) {
 }
 $xoopsTpl->assign('adminlink', $adminlink);
 
-$coupon         = new efqCouponHandler();
-$listing        = new efqListing();
-$listinghandler = new efqListingHandler();
+$coupon         = new Efqdirectory\CouponHandler();
+$listing        = new Efqdirectory\Listing();
+$listinghandler = new Efqdirectory\ListingHandler();
 
 $listing->setVars($listinghandler->getListing($get_itemid));
 
@@ -125,7 +127,7 @@ $xoopsTpl->assign('template', $template);
 $listing->setDataTypes($listinghandler->getDataTypes($get_itemid));
 
 if (count($listing->_datatypes) > 0) {
-    xoops_debug('o, o');
+//    xoops_debug('o, o');
     $xoopsTpl->assign('datatypes', true);
     foreach ($listing->_datatypes as $datatype) {
         $xoopsTpl->append('section' . $datatype['section'] . '', ['icon' => $datatype['icon'], 'label' => $datatype['title'], 'value' => $datatype['value'], 'fieldtype' => $datatype['fieldtype']]);

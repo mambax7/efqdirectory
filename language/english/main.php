@@ -204,6 +204,7 @@ define('_MD_NORECORDS', 'No records found');
 define('_MD_ADD_DTYPE_FORM', 'Add data field type form');
 define('_MD_CAT_SAVED', 'Category saved');
 define('_MD_CAT_UPDATED', 'Category updated');
+define('_MD_CAT_NOT_UPDATED', 'Error: Category Not updated');
 define('_MD_DTYPE_ICON', 'Icon');
 define('_MD_DTYPE_CUSTOM', 'Custom field y/n');
 define('_MD_SELECT_ICON', 'Select icon');
@@ -274,7 +275,8 @@ define('_MD_CHECKED', 'Checked');
 define('_MD_DELETE_CAT', ' Delete category');
 define('_MD_CONFIRM_DELETECAT_FORM', 'Confirm deletion of category');
 define('_MD_DELETE_CAT_YN', 'Are you sure you want to delete this category?');
-define('_MD_CAT_DELETES', 'Category deleted succesfully');
+define('_MD_CAT_DELETED', 'Category deleted succesfully');
+
 
 //Subscription offers management
 define('_MD_SUBSCR_OFFERS', 'Subscription offers');

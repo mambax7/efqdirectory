@@ -17,6 +17,9 @@
  * @author       XOOPS Development Team
  */
 
+use XoopsModules\Efqdirectory;
+use XoopsModules\Efqdirectory\Common;
+
 require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
 
@@ -25,7 +28,8 @@ xoops_cp_header();
 $adminObject = \Xmf\Module\Admin::getInstance();
 
 //check or upload folders
-$configurator = include __DIR__ . '/../include/config.php';
+//check or upload folders
+$configurator = new Common\Configurator();
 foreach (array_keys($configurator->uploadFolders) as $i) {
     $utility::createFolder($configurator->uploadFolders[$i]);
     $adminObject->addConfigBoxLine($configurator->uploadFolders[$i], 'folder');

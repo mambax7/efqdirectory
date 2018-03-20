@@ -3,7 +3,7 @@ include __DIR__ . '/../../../include/cp_header.php';
 include __DIR__ . '/../include/functions.php';
 
 $filename = 'upgrade_018-019.sql';
-require_once __DIR__ . '/class/efqdir_upgrade.php';
+// require_once __DIR__ . '/class/efqdir_upgrade.php';
 $moddir = $xoopsModule->getVar('dirname');
 require_once XOOPS_ROOT_PATH . '/modules/' . $moddir . '/upgrade/language/' . $xoopsConfig['language'] . '/install.php';
 xoops_cp_header();
@@ -22,8 +22,8 @@ if (isset($_POST['submit'])) {
     }
 }
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-$upgrade_form = new XoopsThemeForm('Upgrade', 'upgradeform', 'index.php');
-$upgrade_form->addElement(new XoopsFormButton(_MU_UPDATE, 'submit', 'Update', 'submit'));
+$upgrade_form = new \XoopsThemeForm('Upgrade', 'upgradeform', 'index.php');
+$upgrade_form->addElement(new \XoopsFormButton(_MU_UPDATE, 'submit', 'Update', 'submit'));
 $upgrade_form->display();
 
 xoops_cp_footer();

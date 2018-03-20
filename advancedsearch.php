@@ -18,20 +18,22 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/header.php';
 //Include XOOPS classes
-require_once __DIR__ . '/class/xoopstree.php';
+// require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 //Include module classes
-require_once __DIR__ . '/class/class.formimage.php';
-require_once __DIR__ . '/class/class.image.php';
-require_once __DIR__ . '/class/class.efqtree.php';
-require_once __DIR__ . '/class/class.datafieldmanager.php';
+// require_once __DIR__ . '/class/class.formimage.php';
+// require_once __DIR__ . '/class/class.image.php';
+// require_once __DIR__ . '/class/class.efqtree.php';
+// require_once __DIR__ . '/class/class.datafieldmanager.php';
 
 $myts             = \MyTextSanitizer::getInstance();
 $eh               = new ErrorHandler;
-$datafieldmanager = new efqDataFieldManager();
+$datafieldmanager = new DataFieldManager();
 
 $moddir = $xoopsModule->getVar('dirname');
 
@@ -75,7 +77,7 @@ if (isset($_POST['submit'])) {
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
     $filter_arr  = [];
-    while (list($dtypeid, $dtypetitle, $dtypeoptions, $fieldtype) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($dtypeid, $dtypetitle, $dtypeoptions, $fieldtype) = $xoopsDB->fetchRow($result))) {
         switch ($fieldtype) {
             case 'textbox':
                 $filter_arr[] = getPostedValue_text($dtypeid);
@@ -247,7 +249,7 @@ if (isset($_POST['submit'])) {
 
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $num_results = $xoopsDB->getRowsNum($result);
-    while (list($searchid, $searchnum, $created, $page, $items, $dirid, $catid) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($searchid, $searchnum, $created, $page, $items, $dirid, $catid) = $xoopsDB->fetchRow($result))) {
         //Split items and for each item, get item data.
         if ('' !== $items) {
             $searchresults = get_search_results($items);
@@ -324,15 +326,15 @@ if (isset($_POST['submit'])) {
 
     $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
     ob_start();
-    $form = new XoopsThemeForm(_MD_ADVSEARCH_FORM, 'advsearchform', 'advancedsearch.php');
+    $form = new \XoopsThemeForm(_MD_ADVSEARCH_FORM, 'advsearchform', 'advancedsearch.php');
     $form->setExtra('enctype="multipart/form-data"');
-    while (list($dtypeid, $dtypetitle, $dtypeoptions, $fieldtype) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($dtypeid, $dtypetitle, $dtypeoptions, $fieldtype) = $xoopsDB->fetchRow($result))) {
         $field = $datafieldmanager->createSearchField($dtypetitle, $dtypeid, $fieldtype, '', $dtypeoptions);
     }
-    $form->addElement(new XoopsFormText(_MD_SEARCHSTRING, 'q', 50, 250, ''));
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_SEARCH, 'submit'));
-    $form->addElement(new XoopsFormHidden('op', 'search'));
-    $form->addElement(new XoopsFormHidden('dirid', $get_dirid));
+    $form->addElement(new \XoopsFormText(_MD_SEARCHSTRING, 'q', 50, 250, ''));
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_SEARCH, 'submit'));
+    $form->addElement(new \XoopsFormHidden('op', 'search'));
+    $form->addElement(new \XoopsFormHidden('dirid', $get_dirid));
     $form->display();
     $xoopsTpl->assign('search_page', ob_get_contents());
     ob_end_clean();
@@ -520,7 +522,7 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
         } elseif (0 == $num_results) {
             $num_results = 0;
         } else {
-            while ($myrow = $xoopsDB->fetchArray($result)) {
+            while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
                 $items[] = $myrow['itemid'];
                 if (0 == $i) {
                     $ret[$z]['itemid']      = $myrow['itemid'];
@@ -563,7 +565,7 @@ function get_search_results($items = '')
             $sql         = 'SELECT i.itemid, i.title, i.uid, i.created, t.description FROM ' . $xoopsDB->prefix($helper->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($helper->getDirname() . '_item_text') . " t WHERE i.itemid=t.itemid AND i.itemid='$item'";
             $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
             $num_results = $xoopsDB->getRowsNum($result);
-            while ($myrow = $xoopsDB->fetchArray($result)) {
+            while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
                 $ret[$z]['itemid']      = $myrow['itemid'];
                 $ret[$z]['image']       = 'images/home.gif';
                 $ret[$z]['link']        = 'listing.php?item=' . $myrow['itemid'] . '';

@@ -23,32 +23,32 @@ require_once XOOPS_ROOT_PATH . '/class/xoopslists.php';
 
 $uploaddirectory = '/uploads/';
 
-$coupform      = new XoopsThemeForm(_MD_COUPONFORM, 'couponform', $_SERVER['PHP_SELF'], 'POST', true);
+$coupform      = new \XoopsThemeForm(_MD_COUPONFORM, 'couponform', $_SERVER['PHP_SELF'], 'POST', true);
 $linkimg_array = XoopsLists::getImgListAsArray(XOOPS_ROOT_PATH . '/uploads/');
-$coupform->addElement(new XoopsFormHidden('itemid', $itemid));
-$coupform->addElement(new XoopsFormText(_MD_COUPONHEADER, 'heading', 25, 30, $heading), true);
-$coupform->addElement(new XoopsFormDhtmlTextArea(_MD_DESCRIPTIONC, 'description', $description));
-$image_option = new XoopsFormSelect(_MD_COUPONIMGMGR . '<br>' . _MD_COUPONIMG . '<br>', 'image', $image);
+$coupform->addElement(new \XoopsFormHidden('itemid', $itemid));
+$coupform->addElement(new \XoopsFormText(_MD_COUPONHEADER, 'heading', 25, 30, $heading), true);
+$coupform->addElement(new \XoopsFormDhtmlTextArea(_MD_DESCRIPTIONC, 'description', $description));
+$image_option = new \XoopsFormSelect(_MD_COUPONIMGMGR . '<br>' . _MD_COUPONIMG . '<br>', 'image', $image);
 $image_option->addOptionArray($linkimg_array);
-$imgtray = new XoopsFormElementTray(_MD_COUPSEL, '<br>');
+$imgtray = new \XoopsFormElementTray(_MD_COUPSEL, '<br>');
 
 $image_option->setExtra("onchange='showImgSelected(\"imagex\", \"image\", \"" . $uploaddirectory . '", "", "' . XOOPS_URL . "\")'");
 $imgtray->addElement($image_option, false);
-$imgtray->addElement(new XoopsFormLabel('', "<br><img src='" . $uploaddirectory . '/' . $image . '\' name=\'imagex\' id=\'imagex\' alt=\'\'>'));
+$imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . $uploaddirectory . '/' . $image . '\' name=\'imagex\' id=\'imagex\' alt=\'\'>'));
 $coupform->addElement($imgtray);
-$coupform->addElement(new XoopsFormRadioYN(_MD_CONVERTLBR, 'lbr', $lbr));
-$coupform->addElement(new XoopsFormDateTime(_MD_PUBLISHCOUPON, 'publish', 25, $publish));
-$expire_option = new XoopsFormCheckBox(_MD_SETEXPIRATION, 'expire_enable', $setexpire);
+$coupform->addElement(new \XoopsFormRadioYN(_MD_CONVERTLBR, 'lbr', $lbr));
+$coupform->addElement(new \XoopsFormDateTime(_MD_PUBLISHCOUPON, 'publish', 25, $publish));
+$expire_option = new \XoopsFormCheckBox(_MD_SETEXPIRATION, 'expire_enable', $setexpire);
 $expire_option->addOption(1, _YES);
 $coupform->addElement($expire_option);
-$coupform->addElement(new XoopsFormDateTime(_MD_EXPIRECOUPON, 'expire', 25, $expire));
+$coupform->addElement(new \XoopsFormDateTime(_MD_EXPIRECOUPON, 'expire', 25, $expire));
 
-$button_tray = new XoopsFormElementTray('');
-$button_tray->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+$button_tray = new \XoopsFormElementTray('');
+$button_tray->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
 
 if ($couponid) {
-    $button_tray->addElement(new XoopsFormButton('', 'delete', _MD_DELETE, 'submit'));
-    $coupform->addElement(new XoopsFormHidden('couponid', $couponid));
+    $button_tray->addElement(new \XoopsFormButton('', 'delete', _MD_DELETE, 'submit'));
+    $coupform->addElement(new \XoopsFormHidden('couponid', $couponid));
 }
 $coupform->addElement($button_tray);
 $coupform->display();

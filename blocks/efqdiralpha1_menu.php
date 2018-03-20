@@ -50,7 +50,7 @@ function b_efqdiralpha1_menu_show($options)
     $myts                  = \MyTextSanitizer::getInstance();
     $sql                   = 'SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " WHERE open='1' ORDER BY name";
     $result                = $xoopsDB->query($sql) ; //|| $eh->show('0013');
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $directory              = [];
         $name                   = $myts->htmlSpecialChars($myrow['name']);
         $directory['dirid']     = $myrow['dirid'];

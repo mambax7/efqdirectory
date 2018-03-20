@@ -23,25 +23,26 @@ use XoopsModules\Efqdirectory;
 require_once __DIR__ . '/admin_header.php';
 
 require_once __DIR__ . '/../include/functions.php';
-require_once __DIR__ . '/../class/xoopstree.php';
+// require_once __DIR__ . '/../class/xoopstree.php';
 //require_once XOOPS_ROOT_PATH.'/class/xoopslists.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 global $xoopsModule;
 //$myts   = \MyTextSanitizer::getInstance();
-$eh     = new ErrorHandler;
-$mytree = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
-require_once __DIR__ . '/../class/class.datafieldmanager.php';
-require_once __DIR__ . '/../class/class.subscription.php';
-require_once __DIR__ . '/../class/class.efqtree.php';
-require_once __DIR__ . '/../class/class.listing.php';
-$efqtree          = new EfqTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
-$datafieldmanager = new efqDataFieldManager();
+//$eh     = new ErrorHandler;
+$logger = \XoopsLogger::getInstance();
+$mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+// require_once __DIR__ . '/../class/class.datafieldmanager.php';
+// require_once __DIR__ . '/../class/class.subscription.php';
+// require_once __DIR__ . '/../class/class.efqtree.php';
+// require_once __DIR__ . '/../class/class.listing.php';
+$efqtree          = new Efqdirectory\Tree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$datafieldmanager = new Efqdirectory\DataFieldManager();
 
-$listinghandler      = new efqListingHandler;
-$subscription        = new efqSubscription;
-$subscriptionhandler = new efqSubscriptionHandler;
+$listinghandler      = new Efqdirectory\ListingHandler;
+$subscription        = new Efqdirectory\Subscription;
+$subscriptionhandler = new Efqdirectory\SubscriptionHandler;
 $moddir              = $xoopsModule->getVar('dirname');
 
 if (isset($_GET['item'])) {
@@ -104,7 +105,7 @@ function listNewListings() //completed
         echo '<table width="95%">';
         echo '<tr><td align="left"nowrap><b>' . _MD_LISTINGTITLE . '</b></td>';
         echo '<td align="left" nowrap><b>' . _MD_SUBMITTER . '</b></td><td align="left" nowrap><b>' . _MD_CREATED . '</b></td><td>&nbsp;</td></tr>';
-        while (list($itemid, $logourl, $submitterid, $status, $date, $title, $type) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($itemid, $logourl, $submitterid, $status, $date, $title, $type) = $xoopsDB->fetchRow($result))) {
             $title     = $myts->htmlSpecialChars($title);
             $submitter = XoopsUser::getUnameFromId($submitterid);
             $created   = formatTimestamp($date);
@@ -125,7 +126,12 @@ function delVote()
     $rid        = $_GET['rid'];
     $get_itemid = (int)$_GET['itemid'];
     $sql        = sprintf('DELETE FROM %s WHERE ratingid = %u', $xoopsDB->prefix('listings_votedata'), $rid);
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
+
     updaterating($get_itemid);
     redirect_header('index.php', 1, _MD_VOTEDELETED);
 }
@@ -134,14 +140,14 @@ function delListingConfirm()
 {
     global $xoopsDB, $eh, $xoopsModule, $get_itemid;
     xoops_cp_header();
-    $form        = new XoopsThemeForm(_MD_CONFIRM_DELETELISTING_FORM, 'confirmform', 'main.php');
-    $submit_tray = new XoopsFormElementTray(_MD_DELETEYN, '', 'cid');
-    $submit_tray->addElement(new XoopsFormButton('', 'submit', _MD_DELETE, 'submit'));
-    $submit_tray->addElement(new XoopsFormLabel('', '<input type="button" class="formButton" value="' . _MD_CANCEL . "\" onclick=\"location='main.php?op=edit&amp;item=$get_itemid'\""));
+    $form        = new \XoopsThemeForm(_MD_CONFIRM_DELETELISTING_FORM, 'confirmform', 'main.php');
+    $submit_tray = new \XoopsFormElementTray(_MD_DELETEYN, '', 'cid');
+    $submit_tray->addElement(new \XoopsFormButton('', 'submit', _MD_DELETE, 'submit'));
+    $submit_tray->addElement(new \XoopsFormLabel('', '<input type="button" class="formButton" value="' . _MD_CANCEL . "\" onclick=\"location='main.php?op=edit&amp;item=$get_itemid'\""));
     $form->addElement($submit_tray, true);
     //$form->addElement($form_submit);
-    $form->addElement(new XoopsFormHidden('op', 'deleteListing'));
-    $form->addElement(new XoopsFormHidden('itemid', $get_itemid));
+    $form->addElement(new \XoopsFormHidden('op', 'deleteListing'));
+    $form->addElement(new \XoopsFormHidden('itemid', $get_itemid));
     $form->display();
     xoops_cp_footer();
 }
@@ -196,20 +202,27 @@ function listDuplicateDataTypes()
     $sql .= 'FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dtypes') . ' dt1, ' . $xoopsDB->prefix($helper->getDirname() . '_dtypes') . ' dt2 ';
     $sql .= 'WHERE dt1.title=dt2.title AND dt1.fieldtypeid=dt2.fieldtypeid ORDER BY dt1.title ASC, dt1.fieldtypeid ASC';
 
-    $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
+
     $numrows = $xoopsDB->getRowsNum($result);
 
     if ($numrows > 0) {
         echo '<h4>' . _MD_DUPLICATE_DATATYPES . '</h4>';
         echo "<table width='100%' border='0' cellspacing='1' class='outer'>";
         echo '<tr><th>' . _MD_DTYPE . '</th><th>' . _MD_DTYPE_TITLE . '</th><th>' . _MD_FIELDTYPE . '</th></tr>';
-        while (list($dtypeid, $title, $fieldtypeid) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($dtypeid, $title, $fieldtypeid) = $xoopsDB->fetchRow($result))) {
             $dtypetitle     = $myts->htmlSpecialChars($title);
             $result_arr[]   = $dtypeid . $dtypetitle . $fieldtypeid;
             $result_array[] = [$dtypeid, $dtypetitle, $fieldtypeid];
         }
 //        $checkKeysUniqueComparison = create_function('$value', 'if ($value > 1) return true;');
-        $checkKeysUniqueComparison = function($value){'if ($value > 1) return true;';};
+        $checkKeysUniqueComparison = function ($value) {
+            'if ($value > 1) return true;';
+        };
         $duplicate_results         = array_keys(array_filter(array_count_values($result_arr), $checkKeysUniqueComparison));
 
         if (count($duplicate_results) > 0) {
@@ -346,7 +359,7 @@ switch ($op) {
         xoops_cp_header();
         //adminmenu(-1, _MD_A_MODADMIN_HOME);
         echo "<hr size='1'><br>";
-        while (list($itemid, $logourl, $submitter, $status, $created, $itemtitle, $typeid, $description) = $xoopsDB->fetchRow($item_result)) {
+        while (false !== (list($itemid, $logourl, $submitter, $status, $created, $itemtitle, $typeid, $description) = $xoopsDB->fetchRow($item_result))) {
             if ('1' == $status) {
                 echo '<input type="button" value="' . _MD_APPROVE . "\" onclick=\"location='main.php?op=approve&amp;item=$get_itemid'\">&nbsp;";
             }
@@ -375,40 +388,40 @@ switch ($op) {
             $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
             $numrows     = $xoopsDB->getRowsNum($data_result);
 
-            $form = new XoopsThemeForm(_MD_EDITITEM_FORM, 'editform', 'main.php');
-            $form->addElement(new XoopsFormText(_MD_TITLE, 'itemtitle', 50, 250, $itemtitle), true);
+            $form = new \XoopsThemeForm(_MD_EDITITEM_FORM, 'editform', 'main.php');
+            $form->addElement(new \XoopsFormText(_MD_TITLE, 'itemtitle', 50, 250, $itemtitle), true);
             //$categories = getCategoriesPaths($get_itemid);
             $get_dirid  = getDirIdFromItem($itemid);
             $categories = getCatSelectArea($itemid, $get_dirid);
-            $form_cats  = new XoopsFormLabel(_MD_ITEMCATEGORIES, "$categories");
+            $form_cats  = new \XoopsFormLabel(_MD_ITEMCATEGORIES, "$categories");
             $form->addElement($form_cats);
-            $form->addElement(new XoopsFormDhtmlTextArea(_MD_DESCRIPTION, 'description', $description, 5, 50));
-            while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $xoopsDB->fetchRow($data_result)) {
+            $form->addElement(new \XoopsFormDhtmlTextArea(_MD_DESCRIPTION, 'description', $description, 5, 50));
+            while (false !== (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $xoopsDB->fetchRow($data_result))) {
                 $field = $datafieldmanager->createField($title, $dtypeid, $fieldtype, $ext, $options, $value, $custom, $customtitle);
             }
-            $form->addElement(new XoopsFormButton('', 'submit', _MD_SAVE, 'submit'));
-            $form->addElement(new XoopsFormHidden('op', 'save'));
-            $form->addElement(new XoopsFormHidden('itemid', $get_itemid));
-            $form->addElement(new XoopsFormHidden('dirid', $get_dirid));
-            $form->addElement(new XoopsFormHidden('ini_itemtitle', $itemtitle));
-            $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+            $form->addElement(new \XoopsFormButton('', 'submit', _MD_SAVE, 'submit'));
+            $form->addElement(new \XoopsFormHidden('op', 'save'));
+            $form->addElement(new \XoopsFormHidden('itemid', $get_itemid));
+            $form->addElement(new \XoopsFormHidden('dirid', $get_dirid));
+            $form->addElement(new \XoopsFormHidden('ini_itemtitle', $itemtitle));
+            $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
             if (false === $description) {
-                $form->addElement(new XoopsFormHidden('description_set', '0'));
+                $form->addElement(new \XoopsFormHidden('description_set', '0'));
             } else {
-                $form->addElement(new XoopsFormHidden('description_set', '1'));
+                $form->addElement(new \XoopsFormHidden('description_set', '1'));
             }
             $form->display();
             echo '<br>';
             $itemtypes        = $subscriptionhandler->itemTypesArray();
-            $form             = new XoopsThemeForm(_MD_EDITITEMTYPE_FORM, 'edititemtypeform', 'main.php');
-            $itemtypes_select = new XoopsFormSelect(_MD_SELECT_ITEMTYPE, 'typeid', $typeid);
+            $form             = new \XoopsThemeForm(_MD_EDITITEMTYPE_FORM, 'edititemtypeform', 'main.php');
+            $itemtypes_select = new \XoopsFormSelect(_MD_SELECT_ITEMTYPE, 'typeid', $typeid);
             $itemtypes_select->addOptionArray($itemtypes);
             $form->addElement($itemtypes_select);
-            $form->addElement(new XoopsFormButton('', 'submit', _MD_SAVE, 'submit'));
-            $form->addElement(new XoopsFormHidden('op', 'updateItemType'));
-            $form->addElement(new XoopsFormHidden('itemid', $get_itemid));
-            $form->addElement(new XoopsFormHidden('dirid', $get_dirid));
-            $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+            $form->addElement(new \XoopsFormButton('', 'submit', _MD_SAVE, 'submit'));
+            $form->addElement(new \XoopsFormHidden('op', 'updateItemType'));
+            $form->addElement(new \XoopsFormHidden('itemid', $get_itemid));
+            $form->addElement(new \XoopsFormHidden('dirid', $get_dirid));
+            $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
             $form->display();
         }
         xoops_cp_footer();
@@ -428,7 +441,11 @@ switch ($op) {
                 if ($p_title != $p_ini_title) {
                     //If the posted title is different from the initial title the record should be updated.
                     $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET title = '$p_title' WHERE itemid = $post_itemid";
-                    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                    $result = $xoopsDB->query($sql);
+                    if (!$result) {
+                        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                    }
+
                 }
             } else {
                 redirect_header('index.php', 2, _MD_NOVALIDITEM);
@@ -452,12 +469,20 @@ switch ($op) {
                 if ('1' == $_POST['description_set']) {
                     if ($p_ini_description != $p_description) {
                         $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
-                        $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                        $result = $xoopsDB->query($sql);
+                        if (!$result) {
+                            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                        }
+
                     }
                 } elseif (isset($_POST['description']) && '' != $_POST['description']) {
                     if (null != $p_description) {
                         $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_text'), $post_itemid, $p_description);
-                        $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                        $result = $xoopsDB->query($sql);
+                        if (!$result) {
+                            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                        }
+
                     }
                 }
             }
@@ -475,7 +500,7 @@ switch ($op) {
             $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND ic.itemid=" . $post_itemid . '';
             $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
             $numrows     = $xoopsDB->getRowsNum($data_result);
-            while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value) = $xoopsDB->fetchRow($data_result)) {
+            while (false !== (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value) = $xoopsDB->fetchRow($data_result))) {
                 if (isset($_POST["$dtypeid"])) {
                     if ('textarea' === $fieldtype || 'dhtml') {
                         $post_value = $myts->addSlashes($_POST["$dtypeid"]);
@@ -527,14 +552,22 @@ switch ($op) {
                                 $post_country
                             );
                             //echo $sql."<br><br>";
-                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                            $result = $xoopsDB->query($sql);
+                            if (!$result) {
+                                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                            }
+
                             $post_value = $xoopsDB->getInsertId();
                         } else {
                             $sql = 'UPDATE '
                                    . $xoopsDB->prefix($helper->getDirname() . '_addresses')
                                    . " SET address = '$post_address', address2 = '$post_address2', zip = '$post_zip', postcode = '$post_postcode', lat = '$post_lat', lon = '$post_lon', main = '$post_main', active = '$post_active', fax = '$post_fax', mobile = '$post_mobile', city = '$post_city', country = '$post_country' WHERE addrid = '$post_value' AND itemid = '$post_itemid'";
                             //echo $sql."<br><br>";
-                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                            $result = $xoopsDB->query($sql);
+                            if (!$result) {
+                                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                            }
+
                         }
                     }
                 }
@@ -542,17 +575,25 @@ switch ($op) {
                     //That means there was not any value, so a new record should be added to the data table.
                     $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_data') . '_dataid_seq');
                     $sql   = sprintf("INSERT INTO %s (dataid, itemid, dtypeid, VALUE, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_data'), $newid, $post_itemid, $dtypeid, $post_value, time());
-                    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                    $result = $xoopsDB->query($sql);
+                    if (!$result) {
+                        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                    }
+
                 } else {
                     if ($value != $post_value) {
                         $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_data') . " SET value = '$post_value' WHERE dtypeid = $dtypeid AND itemid = $itemid";
-                        $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                        $result = $xoopsDB->query($sql);
+                        if (!$result) {
+                            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                        }
+
                     }
                 }
             }
 
-            $efqlisting        = new efqListing();
-            $efqlistinghandler = new efqListingHandler();
+            $efqlisting        = new Efqdirectory\Listing();
+            $efqlistinghandler = new Efqdirectory\ListingHandler();
             $linkedcats        = $efqlistinghandler->getLinkedCatsArray($post_itemid, $post_dirid);
             $sql               = 'SELECT cid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_cat') . " WHERE dirid='" . $post_dirid . '\' AND active=\'1\'';
             $allcatsresult     = $xoopsDB->query($sql);
@@ -560,19 +601,25 @@ switch ($op) {
             $numrows = $xoopsDB->getRowsNum($allcatsresult);
             $count   = 0;
             if ($numrows > 0) {
-                while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
+                while (false !== (list($cid) = $xoopsDB->fetchRow($allcatsresult))) {
                     if (isset($_POST['selected' . $cid . ''])) {
                         if (!in_array($cid, $linkedcats)) {
                             $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . '_xid_seq');
                             $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cid, $post_itemid, 1, time());
-                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                            $result = $xoopsDB->query($sql);
+                            if (!$result) {
+                                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                            }
                         }
 
                         ++$count;
                     } else {
                         if (in_array($cid, $linkedcats)) {
                             $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $cid, $post_itemid);
-                            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                            $result = $xoopsDB->query($sql);
+                            if (!$result) {
+                                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                            }
                         }
                     }
                 }

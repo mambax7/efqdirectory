@@ -18,13 +18,15 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/header.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 $myts   = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 $moddir = $xoopsModule->getVar('dirname');
 
 if (!empty($_POST['submit'])) {
-    $eh = new ErrorHandler; //ErrorHandler object
+//    $eh = new ErrorHandler; //ErrorHandler object
     if (empty($xoopsUser)) {
         $ratinguser = 0;
     } else {
@@ -47,7 +49,7 @@ if (!empty($_POST['submit'])) {
     if (0 != $ratinguser) {
         $sql    = 'select submitter from ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " where itemid=$p_itemid";
         $result = $xoopsDB->query($sql);
-        while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($ratinguserDB) = $xoopsDB->fetchRow($result))) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header('index.php', 4, _MD_CANTVOTEOWN);
             }
@@ -56,7 +58,7 @@ if (!empty($_POST['submit'])) {
         // Check if REG user is trying to vote twice.
         $sql    = 'select ratinguser from ' . $xoopsDB->prefix($helper->getDirname() . '_votedata') . " where itemid=$p_itemid";
         $result = $xoopsDB->query($sql);
-        while (list($ratinguserDB) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($ratinguserDB) = $xoopsDB->fetchRow($result))) {
             if ($ratinguserDB == $ratinguser) {
                 redirect_header('index.php', 4, _MD_VOTEONCE2);
             }

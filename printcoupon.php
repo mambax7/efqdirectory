@@ -18,6 +18,8 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/../../mainfile.php';
 include XOOPS_ROOT_PATH . '/header.php';
 $moduleDirName = basename(__DIR__);
@@ -32,7 +34,7 @@ if (!($coupid > 0)) {
 function PrintPage($coupid)
 {
     global $xoopsModule, $xoopsTpl, $xoopsModuleConfig, $moduleDirName;
-    $couponHandler = xoops_getModuleHandler('coupon', $moduleDirName);
+    $couponHandler = Efqdirectory\Helper::getInstance()->getHandler('Coupon');
     $couponHandler->increment($coupid);
     $coupon     = $couponHandler->getLinkedCoupon($coupid);
     $coupon_arr = $couponHandler->prepare2show($coupon);

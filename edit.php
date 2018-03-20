@@ -17,30 +17,32 @@
  * @author       Martijn Hertog (aka wtravel)
  * @author       XOOPS Development Team,
  */
+use XoopsModules\Efqdirectory;
 
 include __DIR__ . '/header.php';
+
 $myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
-require_once __DIR__ . '/class/xoopstree.php';
+// require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once __DIR__ . '/class/class.datafieldmanager.php';
-require_once __DIR__ . '/class/class.formimage.php';
-require_once __DIR__ . '/class/class.formdate.php';
-require_once __DIR__ . '/class/class.image.php';
-require_once __DIR__ . '/class/class.efqtree.php';
-require_once __DIR__ . '/class/class.listing.php';
+// require_once __DIR__ . '/class/class.datafieldmanager.php';
+// require_once __DIR__ . '/class/class.formimage.php';
+// require_once __DIR__ . '/class/class.formdate.php';
+// require_once __DIR__ . '/class/class.image.php';
+// require_once __DIR__ . '/class/class.efqtree.php';
+// require_once __DIR__ . '/class/class.listing.php';
 
 // Get module directory name;
 $moddir = $xoopsModule->getVar('dirname');
 // Prepare two tree classes;
-$mytree            = new MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
-$efqtree           = new efqTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
-$efqListing        = new efqListing();
-$efqListingHandler = new efqListingHandler();
+$mytree            = new Efqdirectory\Tree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$efqtree           = new Efqdirectory\Tree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
+$efqListing        = new Efqdirectory\Listing();
+$efqListingHandler = new Efqdirectory\ListingHandler();
 
 $eh               = new ErrorHandler; //ErrorHandler object
-$datafieldmanager = new efqDataFieldManager();
+$datafieldmanager = new Efqdirectory\DataFieldManager();
 
 // If the user is not logged in and anonymous postings are
 // not allowed, redirect and exit.
@@ -89,7 +91,7 @@ if (!empty($_POST['submit'])) {
         $p_ini_title = $myts->addSlashes($_POST['ini_itemtitle']);
         // Start uploading up file;
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-        $uploader = new XoopsMediaUploader(XOOPS_ROOT_PATH . '/modules/' . $moddir . '/init_uploads', ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png', 'image/jpg'], 300000, 250, 250);
+        $uploader = new \XoopsMediaUploader(XOOPS_ROOT_PATH . '/modules/' . $moddir . '/init_uploads', ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png', 'image/jpg'], 300000, 250, 250);
         $uploader->setPrefix('logo');
         $err    = [];
         $ucount = count($_POST['xoops_upload_file']);
@@ -154,7 +156,7 @@ if (!empty($_POST['submit'])) {
     $numrows       = $xoopsDB->getRowsNum($allcatsresult);
     $count         = 0;
     if ($numrows > 0) {
-        while (list($cid) = $xoopsDB->fetchRow($allcatsresult)) {
+        while (false !== (list($cid) = $xoopsDB->fetchRow($allcatsresult))) {
             if (isset($_POST['selected' . $cid . ''])) {
                 if (!in_array($cid, $linkedcats)) {
                     $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . '_xid_seq');
@@ -192,7 +194,7 @@ if (!empty($_POST['submit'])) {
     $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $post_itemid . ') ';
     $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $post_itemid . '';
     $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
-    while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $custom) = $xoopsDB->fetchRow($data_result)) {
+    while (false !== (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $custom) = $xoopsDB->fetchRow($data_result))) {
         if (isset($_POST["$dtypeid"])) {
             if (is_array($_POST["$dtypeid"])) {
                 $post_value_array       = $_POST["$dtypeid"];
@@ -272,7 +274,7 @@ if (!empty($_POST['submit'])) {
     $item_result = $xoopsDB->query($sql);
     $numrows     = $xoopsDB->getRowsNum($item_result);
 
-    while (list($itemid, $logourl, $submitter, $status, $created, $itemtitle, $typeid, $description) = $xoopsDB->fetchRow($item_result)) {
+    while (false !== (list($itemid, $logourl, $submitter, $status, $created, $itemtitle, $typeid, $description) = $xoopsDB->fetchRow($item_result))) {
         $itemtitle = $myts->htmlSpecialChars($itemtitle);
         // Only the submitter or the admin are allowed edit a listing, so make sure
         // all other users are redirected elsewhere.
@@ -297,7 +299,7 @@ if (!empty($_POST['submit'])) {
             if ('' !== $logourl) {
                 $picture = "uploads/$logourl";
             } else {
-                $picture = 'images/nopicture.gif';
+                $picture = 'assets/images/nopicture.gif';
             }
             $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, f.typeid, f.fieldtype, f.ext, t.options, d.itemid, d.value, d.customtitle, t.custom ';
             $sql         .= 'FROM '
@@ -315,34 +317,34 @@ if (!empty($_POST['submit'])) {
             $numrows     = $xoopsDB->getRowsNum($data_result);
 
             ob_start();
-            $form = new XoopsThemeForm(_MD_EDITITEM_FORM, 'editform', 'edit.php');
+            $form = new \XoopsThemeForm(_MD_EDITITEM_FORM, 'editform', 'edit.php');
             $form->setExtra('enctype="multipart/form-data"');
-            $form->addElement(new XoopsFormText(_MD_TITLE, 'itemtitle', 50, 250, $itemtitle), true);
+            $form->addElement(new \XoopsFormText(_MD_TITLE, 'itemtitle', 50, 250, $itemtitle), true);
             //$categories = getCategoriesPaths($get_itemid);
             $categories = getCatSelectArea($get_itemid, $get_dirid);
-            $form_cats  = new XoopsFormLabel(_MD_ITEMCATEGORIES, "$categories");
+            $form_cats  = new \XoopsFormLabel(_MD_ITEMCATEGORIES, "$categories");
             $form->addElement($form_cats);
-            $form->addElement(new XoopsFormDhtmlTextArea(_MD_DESCRIPTION, 'description', $description, 5, 50));
-            $form->addElement(new XoopsFormFile(_MD_SELECT_PIC, 'image', 30000));
-            $form->addElement(new XoopsFormImage(_MD_CURRENT_PIC, 'current_image', null, "$picture", '', ''));
+            $form->addElement(new \XoopsFormDhtmlTextArea(_MD_DESCRIPTION, 'description', $description, 5, 50));
+            $form->addElement(new \XoopsFormFile(_MD_SELECT_PIC, 'image', 30000));
+            $form->addElement(new Efqdirectory\XoopsFormImage(_MD_CURRENT_PIC, 'current_image', null, "$picture", '', ''));
 
-            while (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $xoopsDB->fetchRow($data_result)) {
+            while (false !== (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $xoopsDB->fetchRow($data_result))) {
                 $field = $datafieldmanager->createField($title, $dtypeid, $fieldtype, $ext, $options, $value, $custom, $customtitle);
             }
-            $form->addElement(new XoopsFormButton('', 'submit', _MD_SAVE, 'submit'));
-            $form->addElement(new XoopsFormHidden('op', 'edit'));
-            $form->addElement(new XoopsFormHidden('itemid', $get_itemid));
-            $form->addElement(new XoopsFormHidden('dirid', $get_dirid));
-            $form->addElement(new XoopsFormHidden('ini_itemtitle', $itemtitle));
+            $form->addElement(new \XoopsFormButton('', 'submit', _MD_SAVE, 'submit'));
+            $form->addElement(new \XoopsFormHidden('op', 'edit'));
+            $form->addElement(new \XoopsFormHidden('itemid', $get_itemid));
+            $form->addElement(new \XoopsFormHidden('dirid', $get_dirid));
+            $form->addElement(new \XoopsFormHidden('ini_itemtitle', $itemtitle));
 
             if (null != $description) {
-                $form->addElement(new XoopsFormHidden('ini_description', $description));
+                $form->addElement(new \XoopsFormHidden('ini_description', $description));
             }
-            $form->addElement(new XoopsFormHidden('uid', $userid));
+            $form->addElement(new \XoopsFormHidden('uid', $userid));
             if (null != $description) {
-                $form->addElement(new XoopsFormHidden('description_set', '1'));
+                $form->addElement(new \XoopsFormHidden('description_set', '1'));
             } else {
-                $form->addElement(new XoopsFormHidden('description_set', '0'));
+                $form->addElement(new \XoopsFormHidden('description_set', '0'));
             }
             $form->display();
             $xoopsTpl->assign('dtypes_form', ob_get_contents());

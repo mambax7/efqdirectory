@@ -40,8 +40,8 @@ include __DIR__ . '/../class/class.fieldtype.php';
 include __DIR__ . '/../class/class.datatype.php';
 include __DIR__ . '/../class/class.directory.php';
 include __DIR__ . '/../class/class.xdir.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-include_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 $myts = \MyTextSanitizer::getInstance();
 $eh   = new ErrorHandler;
 
@@ -58,14 +58,14 @@ function xdirConfig()
     adminmenu(0, _MD_A_DIRADMIN);
     echo '<h4>' . _MD_MIGRATE_FROM_XDIR . '</h4>';
     echo "<table width='100%' border='0' cellspacing='1' class='outer'><tr><td>";
-    $form = new XoopsThemeForm(_MD_XIDR_MIGRATE_TO_NEWDIR, 'submitform', 'xdir_migrate.php');
-    $form->addElement(new XoopsFormText(_MD_DIRNAME, 'dirname', 100, 150, ''), true);
-    $form_diropen = new XoopsFormCheckBox(_MD_OPENYN, 'open', 0);
+    $form = new \XoopsThemeForm(_MD_XIDR_MIGRATE_TO_NEWDIR, 'submitform', 'xdir_migrate.php');
+    $form->addElement(new \XoopsFormText(_MD_DIRNAME, 'dirname', 100, 150, ''), true);
+    $form_diropen = new \XoopsFormCheckBox(_MD_OPENYN, 'open', 0);
     $form_diropen->addOption(1, _MD_YESNO);
     $form->addElement($form_diropen);
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
-    $form->addElement(new XoopsFormHidden('op', 'newdir'));
-    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
+    $form->addElement(new \XoopsFormHidden('op', 'newdir'));
+    $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
     $form->display();
     echo '</td></tr></table>';
     xoops_cp_footer();
@@ -84,15 +84,15 @@ function newDir()
     } else {
         $p_open = 0;
     }
-    $directory = new efqDirectory;
+    $directory = new Directory;
     $directory->setVar('name', $p_dirname);
     $directory->setVar('open', $p_open);
-    $directoryHandler = new efqDirectoryHandler;
+    $directoryHandler = new DirectoryHandler;
     $directoryHandler->insertDirectory($directory);
     $db_dirid = $directory->getVar('dirid');
 
     if ($db_dirid > 0) {
-        $xdirHandler = new efqXdirHandler();
+        $xdirHandler = new XdirHandler();
         $xdirHandler->doMigrate($db_dirid);
         $migration_errors = $xdirHandler->get_errors();
         if (count($migration_errors) > 0) {

@@ -18,17 +18,19 @@
  * @author       XOOPS Development Team,
  */
 
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
-require_once __DIR__ . '/class/xoopstree.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+// require_once __DIR__ . '/class/xoopstree.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once __DIR__ . '/class/class.subscription.php';
-require_once __DIR__ . '/class/class.formradio.php';
+// require_once __DIR__ . '/class/class.subscription.php';
+// require_once __DIR__ . '/class/class.formradio.php';
 
-$eh           = new ErrorHandler;
-$subscription = new efqSubscription();
+//$eh           = new ErrorHandler;
+$subscription = new Efqdirectory\Subscription();
 
 if (isset($_GET['op'])) {
     $op = $_GET['op'];
@@ -64,6 +66,9 @@ if ($xoopsUser->getVar('uid') == $owner) {
 function showsubscription()
 {
     global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
+
+    $helper = Efqdirectory\Helper::getInstance();
+
     //Check if item selected.
     if ('0' == $get_itemid) {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
@@ -89,7 +94,7 @@ function showsubscription()
     $order_exists     = false;
     if ($numrows > 0) {
         $xoopsTpl->assign('order_table', true);
-        while (list($title, $typeid, $orderid, $offerid, $startdate, $enddate, $billto, $orderstatus, $itemid, $autorenew, $typename, $ref, $paymentstatus) = $xoopsDB->fetchRow($item_result)) {
+        while (false !== (list($title, $typeid, $orderid, $offerid, $startdate, $enddate, $billto, $orderstatus, $itemid, $autorenew, $typename, $ref, $paymentstatus) = $xoopsDB->fetchRow($item_result))) {
             //Assign the text of the label for subscription type.
             $ordername = $subscription->getOrderItemName($offerid);
 
@@ -156,17 +161,17 @@ function showsubscription()
     } else {
         $order_form_title = _MD_SUBSCR_FORM;
     }
-    $form            = new XoopsThemeForm($order_form_title, 'subscribeform', 'subscriptions.php?item=' . $get_itemid . '');
-    $duration_arr    = $subscription->durationPriceArray('1');
-    $itemtype_select = new efqFormRadio(_MD_SUBSCR_TYPE, 'typeofferid', null, '<br>');
+    $form            = new \XoopsThemeForm($order_form_title, 'subscribeform', 'subscriptions.php?item=' . $get_itemid . '');
+    $duration_arr    = $subscriptionhandler->durationPriceArray('1');
+    $itemtype_select = new Efqdirectory\FormRadio(_MD_SUBSCR_TYPE, 'typeofferid', null, '<br>');
     $itemtype_select->addOptionArray($duration_arr);
     $form->addElement($itemtype_select, true);
     //TO DO: Add Auto Renew functionality
-    //$form->addElement(new XoopsFormRadioYN(_MD_AUTORENEWYN, 'autorenewal', '1'),true);
-    $form->addElement(new XoopsFormTextDateSelect(_MD_SELECT_STARTDATE, 'startdate', 15, $defaultstartdate), true);
-    $form->addElement(new XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
-    $form->addElement(new XoopsFormHidden('op', 'orderselect'));
-    $form->addElement(new XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
+    //$form->addElement(new \XoopsFormRadioYN(_MD_AUTORENEWYN, 'autorenewal', '1'),true);
+    $form->addElement(new \XoopsFormTextDateSelect(_MD_SELECT_STARTDATE, 'startdate', 15, $defaultstartdate), true);
+    $form->addElement(new \XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
+    $form->addElement(new \XoopsFormHidden('op', 'orderselect'));
+    $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
     $form->display();
     $orderform = ob_get_contents();
     ob_end_clean();
@@ -196,6 +201,8 @@ function orderpayment()
     global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
     //Default function (if listing type is normal) would be to view the possible subscriptions.
 
+    $helper = Efqdirectory\Helper::getInstance();
+
     //Show current subscription for listing
     //If standard subscription: Show subcription offers plus link to upgrade
     if (!empty($_GET['orderid'])) {
@@ -213,35 +220,35 @@ function orderpayment()
     $order_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
     $numrows      = $xoopsDB->getRowsNum($order_result);
     if ($numrows > 0) {
-        while (list($orderid, $uid, $offerid, $typeid, $startdate, $billto, $status, $itemid, $autorenew, $price, $currency) = $xoopsDB->fetchRow($order_result)) {
+        while (false !== (list($orderid, $uid, $offerid, $typeid, $startdate, $billto, $status, $itemid, $autorenew, $price, $currency) = $xoopsDB->fetchRow($order_result))) {
             ob_start();
             $itemname = $subscription->getOrderItemName($offerid);
-            $form     = new XoopsThemeForm(_MD_ORDER_PAYMENT_FORM, 'orderpaymentform', 'process.php');
-            $form->addElement(new XoopsFormText(_MD_PAY_FIRSTNAME, 'firstname', 50, 150, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_LASTNAME, 'lastname', 50, 150, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_ADDRESS1, 'address1', 50, 150, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_ADDRESS2, 'address2', 50, 150, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_CITY, 'city', 50, 150, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_STATE, 'state', 50, 150, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_ZIP, 'zip', 15, 50, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_EMAIL, 'email', 30, 150, ''));
-            $form->addElement(new XoopsFormText(_MD_PAY_PHONE1, 'phone1', 30, 150, ''));
-            $form->addElement(new XoopsFormLabel(_MD_PAY_WITH, '<img src="images/visa_mastercard.gif">'));
-            $form->addElement(new XoopsFormHidden('phone2', ''));
-            $form->addElement(new XoopsFormHidden('on0', ''));
-            $form->addElement(new XoopsFormHidden('os0', ''));
-            $form->addElement(new XoopsFormHidden('on1', ''));
-            $form->addElement(new XoopsFormHidden('os1', ''));
-            $form->addElement(new XoopsFormHidden('custom', $itemid));
+            $form     = new \XoopsThemeForm(_MD_ORDER_PAYMENT_FORM, 'orderpaymentform', 'process.php');
+            $form->addElement(new \XoopsFormText(_MD_PAY_FIRSTNAME, 'firstname', 50, 150, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_LASTNAME, 'lastname', 50, 150, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_ADDRESS1, 'address1', 50, 150, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_ADDRESS2, 'address2', 50, 150, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_CITY, 'city', 50, 150, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_STATE, 'state', 50, 150, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_ZIP, 'zip', 15, 50, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_EMAIL, 'email', 30, 150, ''));
+            $form->addElement(new \XoopsFormText(_MD_PAY_PHONE1, 'phone1', 30, 150, ''));
+            $form->addElement(new \XoopsFormLabel(_MD_PAY_WITH, '<img src="images/visa_mastercard.gif">'));
+            $form->addElement(new \XoopsFormHidden('phone2', ''));
+            $form->addElement(new \XoopsFormHidden('on0', ''));
+            $form->addElement(new \XoopsFormHidden('os0', ''));
+            $form->addElement(new \XoopsFormHidden('on1', ''));
+            $form->addElement(new \XoopsFormHidden('os1', ''));
+            $form->addElement(new \XoopsFormHidden('custom', $itemid));
 
-            $form->addElement(new XoopsFormHidden('item_name', $itemname));
-            $form->addElement(new XoopsFormHidden('item_number', $orderid));
-            $form->addElement(new XoopsFormHidden('amount', $price));
-            $form->addElement(new XoopsFormHidden('quantity', 1));
-            $form->addElement(new XoopsFormHidden('shipping_amount', '0'));
-            $form->addElement(new XoopsFormHidden('tax', '0'));
+            $form->addElement(new \XoopsFormHidden('item_name', $itemname));
+            $form->addElement(new \XoopsFormHidden('item_number', $orderid));
+            $form->addElement(new \XoopsFormHidden('amount', $price));
+            $form->addElement(new \XoopsFormHidden('quantity', 1));
+            $form->addElement(new \XoopsFormHidden('shipping_amount', '0'));
+            $form->addElement(new \XoopsFormHidden('tax', '0'));
 
-            $form->addElement(new XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
+            $form->addElement(new \XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
             $form->display();
             $paymentform = ob_get_contents();
             ob_end_clean();
@@ -267,11 +274,11 @@ function terminate()
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_NOVALIDORDER);
     }
     if ('1' == $editrights) {
-        $form = new XoopsThemeForm(_MD_CONFIRM_TERMINATE_TITLE, 'terminateform', 'subscriptions.php?item=' . $get_itemid . '');
-        $form->addElement(new XoopsFormLabel(_MD_CONFIRMATION, _MD_CONFIRM_TERMINATION_TEXT));
-        $form->addElement(new XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
-        $form->addElement(new XoopsFormHidden('op', 'terminate_confirm'));
-        $form->addElement(new XoopsFormHidden('orderid', $get_orderid));
+        $form = new \XoopsThemeForm(_MD_CONFIRM_TERMINATE_TITLE, 'terminateform', 'subscriptions.php?item=' . $get_itemid . '');
+        $form->addElement(new \XoopsFormLabel(_MD_CONFIRMATION, _MD_CONFIRM_TERMINATION_TEXT));
+        $form->addElement(new \XoopsFormButton('', 'submit', _MD_CONTINUE, 'submit'));
+        $form->addElement(new \XoopsFormHidden('op', 'terminate_confirm'));
+        $form->addElement(new \XoopsFormHidden('orderid', $get_orderid));
         $form->display();
     } else {
         redirect_header("subscriptions.php?itemid=$get_itemid", 2, _MD_NORIGHTS);

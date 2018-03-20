@@ -25,7 +25,7 @@ $allowed_mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-pn
 $maxfilesize = 50000;
 $maxfilewidth = 120;
 $maxfileheight = 120;
-$uploader = new XoopsMediaUploader('/home/xoops/uploads', $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
+$uploader = new \XoopsMediaUploader('/home/xoops/uploads', $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
 if ($uploader->fetchMedia($_POST['uploade_file_name'])) {
 if (!$uploader->upload()) {
 echo $uploader->getErrors();
@@ -50,7 +50,7 @@ echo $uploader->getErrors();
  * $maxfilesize = 50000;
  * $maxfilewidth = 120;
  * $maxfileheight = 120;
- * $uploader = new XoopsMediaUploader('/home/xoops/uploads', $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
+ * $uploader = new \XoopsMediaUploader('/home/xoops/uploads', $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
  * if ($uploader->fetchMedia($_POST['uploade_file_name'])) {
  *   if (!$uploader->upload()) {
  *      echo $uploader->getErrors();
@@ -70,7 +70,7 @@ echo $uploader->getErrors();
  * @author           Kazumi Ono     <onokazu@xoops.org>
  * @copyright    (c) 2000-2003 The Xoops Project - www.xoops.org
  */
-class MyMediaUploader
+class MediaUploader
 {
     /**
      * Flag indicating if unrecognized mimetypes should be allowed (use with precaution ! may lead to security issues )

@@ -486,7 +486,7 @@ function getCatSelectArea($item = '0', $dirid = '0')
         $output .= '<tr><td class="categoryHeader" colspan="2"><strong>' . _MD_CATTITLE . '</strong></td><td class="categoryHeader"><strong>' . _MD_SELECT . "</strong></td></tr>\n";
         $brench = 0;
         $tab    = '';
-        while (list($cid, $title, $pid, $allowlist, $active) = $xoopsDB->fetchRow($mainresult)) {
+        while (false !== (list($cid, $title, $pid, $allowlist, $active) = $xoopsDB->fetchRow($mainresult))) {
             //For each cid, get all 'first children' using getFirstChildId() function
             if ('0' != $allowlist) {
                 if ('1' == $active) {
@@ -521,7 +521,7 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
     $tab    = '&nbsp;';
     $level  = $level;
     $output = '';
-    $plus   = '<img src="' . XOOPS_URL . '/images/arrow.gif">';
+    $plus   = '<img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/arrow.gif">';
     for ($i = 0; $i < $level; ++$i) {
         $tab .= '&nbsp;&nbsp;&nbsp;&nbsp;';
     }
@@ -539,7 +539,7 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
     $childresult = $xoopsDB->query($sql);
     $numrows     = $xoopsDB->getRowsNum($childresult);
     if ($numrows > 0) {
-        while (list($cid, $title, $pid, $allowlist, $active) = $xoopsDB->fetchRow($childresult)) {
+        while (false !== (list($cid, $title, $pid, $allowlist, $active) = $xoopsDB->fetchRow($childresult))) {
             if ('0' != $allowlist) {
                 if ('1' == $active) {
                     $checked = ' checked';
@@ -621,7 +621,7 @@ function updaterating($sel_id)
     $voteresult  = $xoopsDB->query($query);
     $votesDB     = $xoopsDB->getRowsNum($voteresult);
     $totalrating = 0;
-    while (list($rating) = $xoopsDB->fetchRow($voteresult)) {
+    while (false !== (list($rating) = $xoopsDB->fetchRow($voteresult))) {
         $totalrating += $rating;
     }
     $finalrating = $totalrating / $votesDB;
@@ -651,7 +651,7 @@ function getAddressFields($typeid = '0')
     if (!$result) {
         return 0;
     }
-    while (list($typeid, $address, $address2, $zip, $postcode, $lat, $lon, $phone, $fax, $mobile, $city, $country, $typename, $uselocyn) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($typeid, $address, $address2, $zip, $postcode, $lat, $lon, $phone, $fax, $mobile, $city, $country, $typename, $uselocyn) = $xoopsDB->fetchRow($result))) {
         $addressarray = [
             'typeid'        => $typeid,
             'typename'      => $typename,
@@ -690,7 +690,7 @@ function getAddressValues($addrid = '0')
     if (0 == $num_results) {
         $addressarray = ['address' => '', 'address2' => '', 'zip' => '', 'postcode' => '', 'lat' => '', 'lon' => '', 'phone' => '', 'fax' => '', 'mobile' => '', 'city' => '', 'country' => ''];
     }
-    while (list($address, $address2, $zip, $postcode, $lat, $lon, $phone, $fax, $mobile, $city, $country) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($address, $address2, $zip, $postcode, $lat, $lon, $phone, $fax, $mobile, $city, $country) = $xoopsDB->fetchRow($result))) {
         $addressarray = [
             'address'  => $address,
             'address2' => $address2,
@@ -731,12 +731,12 @@ function getCatSelectArea2()
         $brench        = 0;
         $tab           = '';
         $selectablecat = false;
-        while (list($cid, $title, $pid, $allowlist) = $xoopsDB->fetchRow($mainresult)) {
+        while (false !== (list($cid, $title, $pid, $allowlist) = $xoopsDB->fetchRow($mainresult))) {
             //For each cid, get all 'first children' using getFirstChildId() function
             if ('0' != $allowlist) {
                 $checkbox      = '<input type="checkbox" name="selected' . $cid . '"';
                 $selectablecat = true;
-                //$checked = "";
+            //$checked = "";
             } else {
                 //$checked = " checked=checked";
                 $checkbox = '&nbsp;';
@@ -775,7 +775,7 @@ function getCatSelectAreaChildren2($childid = '0', $level = '0')
     $tab    = '&nbsp;';
     $level  = $level;
     $output = '';
-    $plus   = '<img src="' . XOOPS_URL . '/images/arrow.gif">';
+    $plus   = '<img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/arrow.gif">';
     for ($i = 0; $i < $level; ++$i) {
         $tab .= '&nbsp;&nbsp;&nbsp;&nbsp;';
     }
@@ -783,7 +783,7 @@ function getCatSelectAreaChildren2($childid = '0', $level = '0')
     $childresult = $xoopsDB->query($sql);
     $numrows     = $xoopsDB->getRowsNum($childresult);
     if ($numrows > 0) {
-        while (list($cid, $title, $pid, $allowlist) = $xoopsDB->fetchRow($childresult)) {
+        while (false !== (list($cid, $title, $pid, $allowlist) = $xoopsDB->fetchRow($childresult))) {
             if ('0' != $allowlist) {
                 $checkbox = '<input type="checkbox" name="selected' . $cid . '"';
             } else {

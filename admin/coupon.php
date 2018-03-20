@@ -17,6 +17,7 @@
  * @author       Martijn Hertog (aka wtravel)
  * @author       XOOPS Development Team,
  */
+use XoopsModules\Efqdirectory;
 
 require_once __DIR__ . '/admin_header.php';
 //include __DIR__ . '/../../../include/cp_header.php';
@@ -32,27 +33,27 @@ if (file_exists(__DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.ph
     include __DIR__ . '/../language/english/main.php';
 }
 
-$couponHandler = xoops_getModuleHandler('coupon', $moddir);
+$couponHandler = Efqdirectory\Helper::getInstance()->getHandler('Coupon');
 //$couponHandler = new ListingsCouponHandler;
 
 if (!isset($_GET['op'])) {
     header('location', 'index.php');
 }
 $op       = trim($_GET['op']);
-$criteria = new CriteriaCompo();
+$criteria = new \CriteriaCompo();
 
 switch ($op) {
     case 'expired':
-        $criteria->add(new Criteria('expire', time(), '<'));
-        $criteria->add(new Criteria('expire', '0', '!='));
+        $criteria->add(new \Criteria('expire', time(), '<'));
+        $criteria->add(new \Criteria('expire', '0', '!='));
         break;
 
     case 'noexp':
-        $criteria->add(new Criteria('expire', '0', '='));
+        $criteria->add(new \Criteria('expire', '0', '='));
         break;
 
     case 'future':
-        $criteria->add(new Criteria('publish', time(), '>'));
+        $criteria->add(new \Criteria('publish', time(), '>'));
         break;
 }
 $coupons = $couponHandler->getObjects($criteria, false);
