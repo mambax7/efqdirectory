@@ -29,27 +29,28 @@
 //	Purpose: Create a business directory for xoops.		 	 				 //
 //	Based upon the mylinks and the mxDirectory modules						 //
 // ------------------------------------------------------------------------- //
+
+use XoopsModules\Efqdirectory;
+
 include __DIR__ . '/../../../include/cp_header.php';
-if (file_exists(__DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php')) {
-    include __DIR__ . '/../language/' . $xoopsConfig['language'] . '/main.php';
-} else {
-    include __DIR__ . '/../language/english/main.php';
-}
 include __DIR__ . '/../include/functions.php';
-include __DIR__ . '/../class/class.fieldtype.php';
-include __DIR__ . '/../class/class.datatype.php';
-include __DIR__ . '/../class/class.directory.php';
-include __DIR__ . '/../class/class.xdir.php';
+//include __DIR__ . '/../class/class.fieldtype.php';
+//include __DIR__ . '/../class/class.datatype.php';
+//include __DIR__ . '/../class/class.directory.php';
+//include __DIR__ . '/../class/class.xdir.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 $myts = \MyTextSanitizer::getInstance();
-$eh   = new ErrorHandler;
+//$eh   = new ErrorHandler;
 
 $moddir = $xoopsModule->getVar('dirname');
 
 if (isset($_GET['dirid'])) {
     $get_dir = (int)$_GET['dirid'];
 }
+
+$helper = Efqdirectory\Helper::getInstance();
+$helper->loadLanguage('main');
 
 function xdirConfig()
 {
@@ -73,7 +74,7 @@ function xdirConfig()
 
 function newDir()
 {
-    global $xoopsDB, $_POST, $myts, $eh;
+    global $xoopsDB, $_POST, $myts;
     if (isset($_POST['dirname']) and '' !== $_POST['dirname']) {
         $p_dirname = $_POST['dirname'];
     } else {
@@ -87,12 +88,12 @@ function newDir()
     $directory = new Directory;
     $directory->setVar('name', $p_dirname);
     $directory->setVar('open', $p_open);
-    $directoryHandler = new DirectoryHandler;
+    $directoryHandler = new Efqdirectory\DirectoryHandler();
     $directoryHandler->insertDirectory($directory);
     $db_dirid = $directory->getVar('dirid');
 
     if ($db_dirid > 0) {
-        $xdirHandler = new XdirHandler();
+        $xdirHandler = new Efqdirectory\XdirHandler();
         $xdirHandler->doMigrate($db_dirid);
         $migration_errors = $xdirHandler->get_errors();
         if (count($migration_errors) > 0) {

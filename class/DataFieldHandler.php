@@ -43,14 +43,14 @@
  */
 class DataFieldHandler extends \XoopsObjectHandler
 {
-    public $errorhandler;
+//    public $errorhandler;
 
     public function __construct()
     {
         //Instantiate class
-        global $eh;
+//        global $eh;
         $this->db           = \XoopsDatabaseFactory::getDatabaseConnection();
-        $this->errorhandler = $eh;
+//        $this->errorhandler = $eh;
     }
 
     /**
@@ -65,7 +65,12 @@ class DataFieldHandler extends \XoopsObjectHandler
         $sql .= 'FROM ' . $this->db->prefix('efqdiralpha1_item_x_cat') . ' ic, ' . $this->db->prefix('efqdiralpha1_dtypes_x_cat') . ' xc, ' . $this->db->prefix('efqdiralpha1_fieldtypes') . ' f, ' . $this->db->prefix('efqdiralpha1_dtypes') . ' t ';
         $sql .= 'LEFT JOIN ' . $this->db->prefix('efqdiralpha1_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
         $sql .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . '';
-        $data_result = $this->db->query($sql) or $this->errorhandler->show('0013');
+        $data_result = $this->db->query($sql);// || $this->errorhandler->show('0013');
+        if (!$data_result) {
+            $logger = \XoopsLogger::getInstance();
+            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+        }
+
         //$numrows = $this->db->getRowsNum($data_result);
         $arr = [];
         while (false !== (list($dtypeid, $title, $section, $icon, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $this->db->fetchRow($data_result))) {

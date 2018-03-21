@@ -94,7 +94,7 @@ class XdirHandler extends \XoopsObjectHandler
      *
      * Get xdir categories from database and return
      *
-     * @return \arr|bool
+     * @return array|bool
      */
     public function setCategories_xdir()
     {

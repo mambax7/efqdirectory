@@ -133,9 +133,9 @@ function modDir($dirid = '0')
             $form_diropen = new \XoopsFormCheckBox(_MD_OPENYN, 'open', $open);
             $form_diropen->addOption(1, _MD_DIROPENYN);
             $form->addElement($form_diropen);
-            $form->addElement(new \XoopsFormTextArea(_MD_DESCRIPTION, 'descr', "$descr", 12, 50, ''));
+            $form->addElement(new \XoopsFormTextArea(_MD_DESCRIPTION, 'descr', (string)$descr, 12, 50, ''));
             $form->addElement(new \XoopsFormFile(_MD_SELECT_PIC, 'img', 30000));
-            $form->addElement(new Efqdirectory\XoopsFormImage(_MD_CURRENT_PIC, 'current_image', null, "$picture", '', ''));
+            $form->addElement(new Efqdirectory\XoopsFormImage(_MD_CURRENT_PIC, 'current_image', null, $picture, '', ''));
             $form->addElement(new \XoopsFormButton('', 'submit', _MD_UPDATE, 'submit'));
             $form->addElement(new \XoopsFormHidden('op', 'update'));
             $form->addElement(new \XoopsFormHidden('dirid', $dirid));
@@ -149,9 +149,12 @@ function modDir($dirid = '0')
     xoops_cp_footer();
 }
 
+/**
+ * @return bool
+ */
 function updateDir()
 {
-    global $xoopsDB, $_POST, $myts, $eh, $moddir;
+    global $xoopsDB, $_POST, $myts, $moddir;
     $logger = \XoopsLogger::getInstance();
     $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['dirid'])) {
@@ -219,10 +222,11 @@ function updateDir()
 
 /**
  * @param int $status
+ * @return bool
  */
 function changeStatus($status = 0)
 {
-    global $xoopsDB, $eh, $moddir;
+    global $xoopsDB, $moddir;
     $logger = \XoopsLogger::getInstance();
     $helper = Efqdirectory\Helper::getInstance();
     $select      = $_POST['select'];
@@ -243,7 +247,6 @@ function changeStatus($status = 0)
         $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
         if (!$result) {
             $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
-            return false;
         }
         redirect_header('directories.php', 2, _MD_DIR_UPDATED);
     } else {
@@ -251,9 +254,12 @@ function changeStatus($status = 0)
     }
 }
 
+/**
+ * @return bool
+ */
 function newDir()
 {
-    global $xoopsDB, $xoopsModule, $_POST, $myts, $eh;
+    global $xoopsDB, $xoopsModule, $_POST, $myts;
     $logger = \XoopsLogger::getInstance();
     $helper = Efqdirectory\Helper::getInstance();
     if (isset($_POST['postfix'])) {

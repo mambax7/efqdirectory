@@ -31,8 +31,8 @@ use XoopsModules\Efqdirectory;
 function xoops_module_pre_install_efqdirectory(\XoopsModule $module)
 {
     include __DIR__ . '/../preloads/autoloader.php';
-    /** @var \Utility $utility */
-    $utility = new \XoopsModules\Efqdirectory\Utility();
+    /** @var Efqdirectory\Utility $utility */
+    $utility = new Efqdirectory\Utility();
     $xoopsSuccess = $utility::checkVerXoops($module);
     $phpSuccess   = $utility::checkVerPhp($module);
 
@@ -62,7 +62,7 @@ function xoops_module_install_efqdirectory(\XoopsModule $module)
 
     $helper       = Efqdirectory\Helper::getInstance();
     $utility      = new Efqdirectory\Utility();
-    $configurator = new Efqdirectory\Configurator();
+    $configurator = new Efqdirectory\Common\Configurator();
     // Load language files
     $helper->loadLanguage('admin');
     $helper->loadLanguage('modinfo');

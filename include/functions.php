@@ -22,6 +22,10 @@
 
 use XoopsModules\Efqdirectory;
 
+/**
+ * @param $orderby
+ * @return string
+ */
 function convertOrderByIn($orderby)
 {
     switch (trim($orderby)) {
@@ -467,7 +471,7 @@ function getTemplateFromCatid($get_catid = '0')
  */
 function getCatSelectArea($item = '0', $dirid = '0')
 {
-    global $xoopsDB, $myts, $eh, $mytree, $moddir, $get_itemid;
+    global $xoopsDB, $myts, $mytree, $moddir, $get_itemid;
     $helper = Efqdirectory\Helper::getInstance();
     $sql        = 'SELECT c.cid, c.title, c.pid, c.allowlist, x.active FROM '
                   . $xoopsDB->prefix($helper->getDirname() . '_cat')
@@ -516,7 +520,7 @@ function getCatSelectArea($item = '0', $dirid = '0')
  */
 function getCatSelectAreaChildren($childid = '0', $level = '0')
 {
-    global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir, $get_itemid;
+    global $xoopsDB, $myts, $mytree, $get_dirid, $moddir, $get_itemid;
     $helper = Efqdirectory\Helper::getInstance();
     $tab    = '&nbsp;';
     $level  = $level;
@@ -537,6 +541,10 @@ function getCatSelectAreaChildren($childid = '0', $level = '0')
                    . $childid
                    . '\' AND c.active=\'1\'';
     $childresult = $xoopsDB->query($sql);
+    if (!$childresult) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows     = $xoopsDB->getRowsNum($childresult);
     if ($numrows > 0) {
         while (false !== (list($cid, $title, $pid, $allowlist, $active) = $xoopsDB->fetchRow($childresult))) {
@@ -627,7 +635,7 @@ function updaterating($sel_id)
     $finalrating = $totalrating / $votesDB;
     $finalrating = number_format($finalrating, 4);
     $query       = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET rating=$finalrating, votes=$votesDB WHERE itemid = $sel_id";
-    $xoopsDB->query($query) or exit();
+    $xoopsDB->query($query) || exit();
 }
 
 /**
@@ -714,7 +722,7 @@ function getAddressValues($addrid = '0')
  */
 function getCatSelectArea2()
 {
-    global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir, $xoopsUser, $xoopsModule;
+    global $xoopsDB, $myts, $mytree, $get_dirid, $moddir, $xoopsUser, $xoopsModule;
     $helper = Efqdirectory\Helper::getInstance();
     if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
         $isadmin = true;
@@ -770,7 +778,7 @@ function getCatSelectArea2()
  */
 function getCatSelectAreaChildren2($childid = '0', $level = '0')
 {
-    global $xoopsDB, $myts, $eh, $mytree, $get_dirid, $moddir;
+    global $xoopsDB, $myts, $mytree, $get_dirid, $moddir;
     $helper = Efqdirectory\Helper::getInstance();
     $tab    = '&nbsp;';
     $level  = $level;

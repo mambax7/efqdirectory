@@ -45,6 +45,10 @@
 
 use XoopsModules\Efqdirectory;
 
+/**
+ * Class Directory
+ * @package XoopsModules\Efqdirectory
+ */
 class Directory extends \XoopsObject
 {
     /**

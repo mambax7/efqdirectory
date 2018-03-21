@@ -14,7 +14,7 @@
 include __DIR__ . '/../header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 
-$eh = new ErrorHandler;
+//$eh = new ErrorHandler;
 //get global configuration information
 require_once __DIR__ . '/../paypal_includes/global_config.inc.php';
 

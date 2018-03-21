@@ -23,7 +23,7 @@ use XoopsModules\Efqdirectory;
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 // require_once __DIR__ . '/class/xoopstree.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 // require_once __DIR__ . '/class/class.listing.php';

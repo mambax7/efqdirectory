@@ -314,7 +314,7 @@ if (0 != $get_dirid || 0 != $get_catid) {
             } else {
                 $orderby = 'typelevel DESC';
             }
-            $fullcountresult = $xoopsDB->query('select count(*) from ' . $xoopsDB->prefix($helper->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " x WHERE i.itemid=x.itemid AND x.cid=$get_catid AND i.status='2'");
+            $fullcountresult = $xoopsDB->query('SELECT count(*) FROM ' . $xoopsDB->prefix($helper->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " x WHERE i.itemid=x.itemid AND x.cid=$get_catid AND i.status='2'");
             list($numrows) = $xoopsDB->fetchRow($fullcountresult);
             $totalcount = $numrows;
             $page_nav   = '';

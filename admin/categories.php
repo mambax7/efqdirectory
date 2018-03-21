@@ -723,6 +723,9 @@ function importDatatypes()
     redirect_header("categories.php?op=edit&catid=$p_catid", 2, _MD_CAT_UPDATED);
 }
 
+/**
+ * @return string
+ */
 function updateCat()
 {
     global $xoopsDB, $_POST, $myts, $moddir;

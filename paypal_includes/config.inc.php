@@ -44,7 +44,7 @@ $paypal = [];
 
 foreach ($vars as $k => $v) {
     if (isset($_POST[$v])) {
-        $paypal[$v] = "$_POST[$v]";
+        $paypal[$v] = (string)$_POST[$v];
     } else {
         $paypal[$v] = '';
     }

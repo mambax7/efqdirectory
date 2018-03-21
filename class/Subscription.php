@@ -21,6 +21,10 @@
 
 use XoopsModules\Efqdirectory;
 
+/**
+ * Class Subscription
+ * @package XoopsModules\Efqdirectory
+ */
 class Subscription extends \XoopsObject
 {
     /**
@@ -78,4 +82,42 @@ class Subscription extends \XoopsObject
         $xoopsMailer->setSubject($subject);
         $success = $xoopsMailer->send();
     }
+
+
+
+    /**
+     * Function durationArray: creates array of options for duration selbox:
+     * months, weeks, year, days etc.
+     *
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2007
+     * @version   1.0.0
+     *
+     * @return array $arr
+     */
+    public function durationArray()
+    {
+        $arr = ['0' => '---', '1' => _MD_DAYS, '2' => _MD_WEEKS, '3' => _MD_MONTHS, '4' => _MD_QUARTERS, '5' => _MD_YEARS];
+
+        return $arr;
+    }
+
+    /**
+     * Function durationArray: creates array of options for duration selbox:
+     * single items like: month, week, year, day etc.
+     *
+     * @author    EFQ Consultancy <info@efqconsultancy.com>
+     * @copyright EFQ Consultancy (c) 2007
+     * @version   1.0.0
+     *
+     * @return array $arr
+     */
+    public function durationSingleArray()
+    {
+        $arr = ['0' => '---', '1' => _MD_DAY, '2' => _MD_WEEK, '3' => _MD_MONTH, '4' => _MD_QUARTER, '5' => _MD_YEAR];
+
+        return $arr;
+    }
+
+
 }

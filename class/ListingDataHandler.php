@@ -43,7 +43,7 @@
  */
 class ListingDataHandler extends \XoopsObjectHandler
 {
-    public $errorhandler;
+//    public $errorhandler;
 
     /**
      * ListingDataHandler constructor.
@@ -51,9 +51,9 @@ class ListingDataHandler extends \XoopsObjectHandler
     public function __construct()
     {
         //Instantiate class
-        global $eh;
+//        global $eh;
         $this->db           = \XoopsDatabaseFactory::getDatabaseConnection();
-        $this->errorhandler = $eh;
+//        $this->errorhandler = $eh;
     }
 
     /**
@@ -68,6 +68,10 @@ class ListingDataHandler extends \XoopsObjectHandler
         $sql         .= 'LEFT JOIN ' . $this->db->prefix('efqdiralpha1_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $itemid . ') ';
         $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $itemid . '';
         $data_result = $this->db->query($sql) ; //|| $eh->show('0013');
+        if (!$data_result) {
+            $logger = \XoopsLogger::getInstance();
+            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+        }
         while (false !== (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $dataid, $itemid, $value, $created, $custom) = $this->db->fetchRow($data_result))) {
             $arr[] = [
                 'dtypeid'     => $dtypeid,

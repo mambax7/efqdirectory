@@ -73,25 +73,12 @@ function xoops_module_update_efqdirectory(\XoopsModule $module, $previousVersion
 
     /** @var Efqdirectory\Helper $helper */
     /** @var Efqdirectory\Utility $utility */
-    /** @var Efqdirectory\Configurator $configurator */
+    /** @var Efqdirectory\Common\Configurator $configurator */
     $helper  = Efqdirectory\Helper::getInstance();
     $utility = new Efqdirectory\Utility();
-    $configurator = new Efqdirectory\Configurator();
+    $configurator = new Efqdirectory\Common\Configurator();
 
     if ($previousVersion < 240) {
-
-        //rename column EXAMPLE
-        $tables     = new Tables();
-        $table      = 'efqdirectoryx_categories';
-        $column     = 'ordre';
-        $newName    = 'order';
-        $attributes = "INT(5) NOT NULL DEFAULT '0'";
-        if ($tables->useTable($table)) {
-            $tables->alterColumn($table, $column, $attributes, $newName);
-            if (!$tables->executeQueue()) {
-                echo '<br>' . _AM_XXXXX_UPGRADEFAILED0 . ' ' . $migrate->getLastError();
-            }
-        }
 
         //delete old HTML templates
         if (count($configurator->templateFolders) > 0) {
@@ -138,7 +125,7 @@ function xoops_module_update_efqdirectory(\XoopsModule $module, $previousVersion
         if (count($configurator->uploadFolders) > 0) {
             //    foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
             foreach (array_keys($configurator->uploadFolders) as $i) {
-                $utilityClass::createFolder($configurator->uploadFolders[$i]);
+                $utility::createFolder($configurator->uploadFolders[$i]);
             }
         }
 
@@ -147,7 +134,7 @@ function xoops_module_update_efqdirectory(\XoopsModule $module, $previousVersion
             $file = __DIR__ . '/../assets/images/blank.png';
             foreach (array_keys($configurator->copyBlankFiles) as $i) {
                 $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
-                $utilityClass::copyFile($file, $dest);
+                $utility::copyFile($file, $dest);
             }
         }
 

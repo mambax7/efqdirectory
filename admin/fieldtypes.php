@@ -71,6 +71,10 @@ function fieldtypesConfig()
     echo "<table width='100%' border='0' cellspacing='1' class='outer'>";
     $sql     = 'SELECT typeid, title, fieldtype, descr, ext, activeyn FROM ' . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes') . ' ORDER BY fieldtype ASC';
     $result  = $xoopsDB->query($sql);// ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows = $xoopsDB->getRowsNum($result);
     echo '<tr><th>' . _MD_TITLE . '</th><th>' . _MD_TYPE . '</th><th>' . _MD_EXT . '</th><th>' . _MD_ACTIVE . "</th></tr>\n";
     if ($numrows > 0) {
@@ -150,11 +154,15 @@ function viewFieldtype()
 
     $sql = 'SELECT typeid, title, fieldtype, descr, ext, activeyn FROM ' . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes') . " WHERE typeid='" . $get_typeid . '\'';
     $result  = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows = $xoopsDB->getRowsNum($result);
     if ($numrows > 0) {
         while (false !== (list($typeid, $title, $fieldtype, $descr, $ext, $activeyn) = $xoopsDB->fetchRow($result))) {
             $form = new \XoopsThemeForm(_MD_EDITFTYPEFORM, 'submitform', 'fieldtypes.php');
-            $form->addElement(new \XoopsFormText(_MD_TITLE, 'title', 100, 150, "$title"), true);
+            $form->addElement(new \XoopsFormText(_MD_TITLE, 'title', 100, 150, (string)$title), true);
             //TO DO: change type field to drop down field, based on available types.
             $element_select = new \XoopsFormSelect(_MD_FIELDTYPE, 'field_type', $fieldtype);
             $element_select->addOptionArray($fieldtypes);
@@ -162,13 +170,13 @@ function viewFieldtype()
             //$form->addElement($type_select);
             $form->addElement($element_select);
             $ext_tray = new \XoopsFormElementTray(_MD_EXT, '');
-            $ext_text = new \XoopsFormText('', 'ext', 80, 150, "$ext");
+            $ext_text = new \XoopsFormText('', 'ext', 80, 150, (string)$ext);
             $ext_text->setExtra('style=\'background-color:lightgrey\'');
             $ext_button = new \XoopsFormLabel('', '<INPUT type="button" value="' . _MD_SET_EXT . "\", onClick=\"openExtManager('submitform','" . XOOPS_URL . '/modules/' . $moddir . "/admin/extensionmanager.php','field_type', '" . _MD_SELECT_FORMTYPE . '\')">');
             $ext_tray->addElement($ext_text);
             $ext_tray->addElement($ext_button);
             $form->addElement($ext_tray);
-            $form->addElement(new \XoopsFormTextArea(_MD_DESCRIPTION, 'descr', "$descr", 8, 50, ''), true);
+            $form->addElement(new \XoopsFormTextArea(_MD_DESCRIPTION, 'descr', (string)$descr, 8, 50, ''), true);
             $form_txtactive = new \XoopsFormCheckBox(_MD_ACTIVE, 'status', $activeyn);
             $form_txtactive->addOption(1, _MD_YESNO);
             $form->addElement($form_txtactive);

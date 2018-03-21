@@ -308,7 +308,7 @@ class SubscriptionHandler extends \XoopsObjectHandler
      */
     public function changeItemType($itemid = 0, $itemtype = 0)
     {
-        global $xoopsDB, $eh;
+        global $xoopsDB;
         $sql = 'UPDATE ' . $this->db->prefix($helper->getDirname() . '_items') . " SET typeid=$itemtype WHERE itemid=(int)($itemid)";
         $this->db->queryF($sql);
 
@@ -383,6 +383,10 @@ class SubscriptionHandler extends \XoopsObjectHandler
         $helper = Efqdirectory\Helper::getInstance();
         $sql     = 'SELECT typeid, typename FROM ' . $this->db->prefix($helper->getDirname() . '_itemtypes') . ' ORDER BY typelevel ASC';
         $result  = $this->db->query($sql) ; //|| $eh->show('0013');
+        if (!$result) {
+            $logger = \XoopsLogger::getInstance();
+            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+        }
         $numrows = $this->db->getRowsNum($result);
         $result  = $this->db->query($sql);
         if ('0' == $dashes) {

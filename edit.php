@@ -23,7 +23,7 @@ include __DIR__ . '/header.php';
 
 $myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 // require_once __DIR__ . '/class/xoopstree.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 // require_once __DIR__ . '/class/class.datafieldmanager.php';
@@ -41,7 +41,7 @@ $efqtree           = new Efqdirectory\Tree($xoopsDB->prefix($helper->getDirname(
 $efqListing        = new Efqdirectory\Listing();
 $efqListingHandler = new Efqdirectory\ListingHandler();
 
-$eh               = new ErrorHandler; //ErrorHandler object
+//$eh               = new ErrorHandler; //ErrorHandler object
 $datafieldmanager = new Efqdirectory\DataFieldManager();
 
 // If the user is not logged in and anonymous postings are
@@ -116,13 +116,21 @@ if (!empty($_POST['submit'])) {
                     } else {
                         $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET title = '" . $p_title . '\', logourl = \'' . $savedfilename . '\' WHERE itemid = \'' . $post_itemid . '\'';
                     }
-                    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                    $result = $xoopsDB->query($sql);
+                    if (!$result) {
+                        $logger = \XoopsLogger::getInstance();
+                        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                    }
                 }
             } else {
                 if ($p_title != $p_ini_title) {
                     $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET title = '" . $p_title . '\' WHERE itemid = \'' . $post_itemid . '\'';
                 }
-                $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                $result = $xoopsDB->query($sql);
+                if (!$result) {
+                    $logger = \XoopsLogger::getInstance();
+                    $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                }
             }
         }
     } else {
@@ -142,11 +150,19 @@ if (!empty($_POST['submit'])) {
         if ('1' == $_POST['description_set']) {
             if ($p_ini_description != $p_description) {
                 $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_item_text') . " SET description = '$p_description' WHERE itemid = $post_itemid";
-                $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                $result = $xoopsDB->query($sql);
+                if (!$result) {
+                    $logger = \XoopsLogger::getInstance();
+                    $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                }
             }
         } elseif (null != $p_description or '' !== $p_description) {
             $sql = sprintf("INSERT INTO %s (itemid, description) VALUES (%u, '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_text'), $post_itemid, $p_description);
-            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            $result = $xoopsDB->query($sql);
+            if (!$result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
         }
     }
 
@@ -161,14 +177,22 @@ if (!empty($_POST['submit'])) {
                 if (!in_array($cid, $linkedcats)) {
                     $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . '_xid_seq');
                     $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cid, $post_itemid, 1, time());
-                    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                    $result = $xoopsDB->query($sql);
+                    if (!$result) {
+                        $logger = \XoopsLogger::getInstance();
+                        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                    }
                 }
 
                 ++$count;
             } else {
                 if (in_array($cid, $linkedcats)) {
                     $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $cid, $post_itemid);
-                    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                    $result = $xoopsDB->query($sql);
+                    if (!$result) {
+                        $logger = \XoopsLogger::getInstance();
+                        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                    }
                 }
             }
         }
@@ -194,10 +218,14 @@ if (!empty($_POST['submit'])) {
     $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $post_itemid . ') ';
     $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $post_itemid . '';
     $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$data_result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     while (false !== (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $custom) = $xoopsDB->fetchRow($data_result))) {
-        if (isset($_POST["$dtypeid"])) {
-            if (is_array($_POST["$dtypeid"])) {
-                $post_value_array       = $_POST["$dtypeid"];
+        if (isset($_POST[(string)$dtypeid])) {
+            if (is_array($_POST[(string)$dtypeid])) {
+                $post_value_array       = $_POST[(string)$dtypeid];
                 $post_value             = '';
                 $options_arr            = explode('[|]', $options);
                 $options_arr[]          = '-';
@@ -213,7 +241,7 @@ if (!empty($_POST['submit'])) {
                     }
                 }
             } else {
-                $post_value = $myts->addSlashes($_POST["$dtypeid"]);
+                $post_value = $myts->addSlashes($_POST[(string)$dtypeid]);
             }
         } else {
             $post_value = '';
@@ -240,11 +268,19 @@ if (!empty($_POST['submit'])) {
             //That means there was not any value, so a new record should be added to the data table.
             $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_data') . '_dataid_seq');
             $sql   = sprintf("INSERT INTO %s (dataid, itemid, dtypeid, VALUE, created, customtitle) VALUES (%u, %u, %u, '%s', '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_data'), $newid, $post_itemid, $dtypeid, $post_value, time(), $post_customtitle);
-            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            $result = $xoopsDB->query($sql);
+            if (!$result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
         } else {
             if ($value != $post_value) {
                 $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_data') . " SET value = '$post_value', customtitle = '$post_customtitle' WHERE dtypeid = '$dtypeid' AND itemid = '$post_itemid'";
-                $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                $result = $xoopsDB->query($sql);
+                if (!$result) {
+                    $logger = \XoopsLogger::getInstance();
+                    $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                }
             }
         }
     }
@@ -314,6 +350,10 @@ if (!empty($_POST['submit'])) {
             $sql         .= 'LEFT JOIN ' . $xoopsDB->prefix($helper->getDirname() . '_data') . ' d ON (t.dtypeid=d.dtypeid AND d.itemid=' . $get_itemid . ') ';
             $sql         .= "WHERE ic.cid=xc.cid AND ic.active='1' AND xc.dtypeid=t.dtypeid AND t.fieldtypeid=f.typeid AND t.activeyn='1' AND ic.itemid=" . $get_itemid . '';
             $data_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            if (!$data_result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
             $numrows     = $xoopsDB->getRowsNum($data_result);
 
             ob_start();
@@ -322,11 +362,11 @@ if (!empty($_POST['submit'])) {
             $form->addElement(new \XoopsFormText(_MD_TITLE, 'itemtitle', 50, 250, $itemtitle), true);
             //$categories = getCategoriesPaths($get_itemid);
             $categories = getCatSelectArea($get_itemid, $get_dirid);
-            $form_cats  = new \XoopsFormLabel(_MD_ITEMCATEGORIES, "$categories");
+            $form_cats  = new \XoopsFormLabel(_MD_ITEMCATEGORIES, $categories);
             $form->addElement($form_cats);
             $form->addElement(new \XoopsFormDhtmlTextArea(_MD_DESCRIPTION, 'description', $description, 5, 50));
             $form->addElement(new \XoopsFormFile(_MD_SELECT_PIC, 'image', 30000));
-            $form->addElement(new Efqdirectory\XoopsFormImage(_MD_CURRENT_PIC, 'current_image', null, "$picture", '', ''));
+            $form->addElement(new Efqdirectory\XoopsFormImage(_MD_CURRENT_PIC, 'current_image', null, $picture, '', ''));
 
             while (false !== (list($dtypeid, $title, $section, $ftypeid, $fieldtype, $ext, $options, $itemid, $value, $customtitle, $custom) = $xoopsDB->fetchRow($data_result))) {
                 $field = $datafieldmanager->createField($title, $dtypeid, $fieldtype, $ext, $options, $value, $custom, $customtitle);

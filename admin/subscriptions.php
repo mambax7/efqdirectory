@@ -66,7 +66,7 @@ if (isset($_GET['op'])) {
 //function to list subscription types
 function listoffers()
 {
-    global $xoopsDB, $eh, $xoopsUser, $subscription, $subscriptionhandler, $itemtypes, $myts, $xoopsModule;
+    global $xoopsDB, $xoopsUser, $subscription, $subscriptionhandler, $itemtypes, $myts, $xoopsModule;
     xoops_cp_header();
     $adminObject = \Xmf\Module\Admin::getInstance();
     $adminObject->displayNavigation(basename(__FILE__));
@@ -192,7 +192,7 @@ function listoffers()
 
 function edittype()
 {
-    global $xoopsDB, $eh, $myts, $get_typeid, $xoopsUser;
+    global $xoopsDB, $myts, $get_typeid, $xoopsUser;
     if (0 == $get_typeid) {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_INVALID_TYPEID);
     }
@@ -217,7 +217,7 @@ function edittype()
             $form->addElement(new \XoopsFormText(_MD_ITEMTYPE_LEVEL, 'typelevel', 10, 50, $level), true);
             $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
             $form->addElement(new \XoopsFormHidden('op', 'savetype'));
-            $form->addElement(new \XoopsFormHidden('typeid', "$get_typeid"));
+            $form->addElement(new \XoopsFormHidden('typeid', (string)$get_typeid));
             $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
             $form->display();
             echo '</td></tr></table>';
@@ -230,7 +230,7 @@ function edittype()
 
 function editoffer()
 {
-    global $xoopsDB, $eh, $xoopsUser, $subscription, $subscriptionhandler, $get_offerid, $itemtypes;
+    global $xoopsDB,  $xoopsUser, $subscription, $subscriptionhandler, $get_offerid, $itemtypes;
     if (0 == $get_offerid) {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_INVALID_OFFERID);
     }
@@ -284,7 +284,7 @@ function editoffer()
             $form->addElement(new \XoopsFormDhtmlTextArea(_MD_OFFER_DESCR, 'descr', $descr, 5, 50, ''));
             $form->addElement(new \XoopsFormButton('', 'submit', _MD_SUBMIT, 'submit'));
             $form->addElement(new \XoopsFormHidden('op', 'saveoffer'));
-            $form->addElement(new \XoopsFormHidden('offerid', "$get_offerid"));
+            $form->addElement(new \XoopsFormHidden('offerid', (string)$get_offerid));
             $form->addElement(new \XoopsFormHidden('uid', $xoopsUser->getVar('uid')));
             $form->display();
             echo '</td></tr></table>';
@@ -298,7 +298,7 @@ function editoffer()
 //function to view one subscription type
 function viewtype()
 {
-    global $xoopsDB, $eh, $get_typeid;
+    global $xoopsDB,  $get_typeid;
     if (isset($get_itemid)) {
         //view type
     }
@@ -306,7 +306,7 @@ function viewtype()
 
 function addoffer()
 {
-    global $xoopsDB, $eh, $myts, $moddir;
+    global $xoopsDB, $myts, $moddir;
     $helper = Efqdirectory\Helper::getInstance();
     //Get POST variables;
     $post_title    = $myts->addSlashes($_POST['title']);
@@ -388,7 +388,7 @@ function saveoffer()
 function addtype()
     //function to save a new item type
 {
-    global $xoopsDB, $eh, $myts, $_POST, $moddir;
+    global $xoopsDB,  $myts, $_POST, $moddir;
     $helper = Efqdirectory\Helper::getInstance();
     $p_typename = $myts->addSlashes($_POST['typename']);
     $p_level    = $myts->addSlashes($_POST['typelevel']);
@@ -416,7 +416,11 @@ function deltype()
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 3, _MD_ERR_ITEMTYPE_LINKED_TO_LISTINGS);
     }
     $sql = sprintf('DELETE FROM %s WHERE typeid=%u', $xoopsDB->prefix($helper->getDirname() . '_itemtypes'), $g_typeid);
-    $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 1, _MD_ITEMTYPE_DELETED);
 }
 

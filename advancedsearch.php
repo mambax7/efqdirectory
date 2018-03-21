@@ -23,7 +23,7 @@ use XoopsModules\Efqdirectory;
 include __DIR__ . '/header.php';
 //Include XOOPS classes
 // require_once __DIR__ . '/class/xoopstree.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 //Include module classes
 // require_once __DIR__ . '/class/class.formimage.php';
@@ -32,8 +32,8 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 // require_once __DIR__ . '/class/class.datafieldmanager.php';
 
 $myts             = \MyTextSanitizer::getInstance();
-$eh               = new ErrorHandler;
-$datafieldmanager = new DataFieldManager();
+//$eh               = new \ErrorHandler;
+$datafieldmanager = new Efqdirectory\DataFieldManager();
 
 $moddir = $xoopsModule->getVar('dirname');
 
@@ -75,6 +75,10 @@ if (isset($_POST['submit'])) {
                    . $xoopsDB->prefix($helper->getDirname() . '_cat')
                    . " c WHERE c.cid=dxc.cid AND dt.dtypeid=dxc.dtypeid AND dt.fieldtypeid=ft.typeid AND c.dirid='$get_dirid' AND dt.activeyn='1'";
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $num_results = $xoopsDB->getRowsNum($result);
     $filter_arr  = [];
     while (false !== (list($dtypeid, $dtypetitle, $dtypeoptions, $fieldtype) = $xoopsDB->fetchRow($result))) {
@@ -217,7 +221,11 @@ if (isset($_POST['submit'])) {
                 //Save $items_arr_text and $page into DB
                 $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_searchresults') . '_searchid_seq');
                 $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($helper->getDirname() . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
-                $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                if (!$result) {
+                    $logger = \XoopsLogger::getInstance();
+                    $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                }
                 if (0 == $newid) {
                     $itemid = $xoopsDB->getInsertId();
                 }
@@ -229,7 +237,11 @@ if (isset($_POST['submit'])) {
         if (0 != $y && $page > 1) {
             $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_searchresults') . '_searchid_seq');
             $sql   = sprintf("INSERT INTO %s (searchid, searchnum, created, PAGE, items, dirid, catid) VALUES (%u, '%s', '%s', %u, '%s', %u, %u)", $xoopsDB->prefix($helper->getDirname() . '_searchresults'), $newid, $searchnum, time(), $page, $items_arr_text, $get_dirid, $get_cid);
-            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            if (!$result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
             if (0 == $newid) {
                 $itemid = $xoopsDB->getInsertId();
             }
@@ -248,6 +260,10 @@ if (isset($_POST['submit'])) {
     $sql = 'SELECT searchid, searchnum, created, page, items, dirid, catid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_searchresults') . " WHERE searchnum='$get_searchnum' AND page='$get_page'";
 
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $num_results = $xoopsDB->getRowsNum($result);
     while (false !== (list($searchid, $searchnum, $created, $page, $items, $dirid, $catid) = $xoopsDB->fetchRow($result))) {
         //Split items and for each item, get item data.
@@ -322,6 +338,10 @@ if (isset($_POST['submit'])) {
                    . $xoopsDB->prefix($helper->getDirname() . '_cat')
                    . " c WHERE c.cid=dxc.cid AND dt.dtypeid=dxc.dtypeid AND dt.fieldtypeid=ft.typeid AND c.dirid='$get_dirid' AND dt.activeyn='1'";
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $num_results = $xoopsDB->getRowsNum($result);
 
     $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
@@ -351,7 +371,8 @@ include XOOPS_ROOT_PATH . '/footer.php';
  */
 function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
 {
-    global $xoopsDB, $eh;
+    global $xoopsDB;
+    $helper = Efqdirectory\Helper::getInstance();
     // because count() returns 1 even if a supplied variable
     // is not an array, we must check if $queryarray is really an array
     $n            = 0;
@@ -515,6 +536,10 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
     $intersection = [];
     for ($i = 0; $i < $n; ++$i) {
         $result      = $xoopsDB->query(${'sql' . $i}) ; //|| $eh->show('0013');
+        if (!$result) {
+            $logger = \XoopsLogger::getInstance();
+            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+        }
         $num_results = $xoopsDB->getRowsNum($result);
 
         if (!$result) {
@@ -556,7 +581,7 @@ function mod_search($queryarray, $andor, $limit, $offset, $filter_arr)
  */
 function get_search_results($items = '')
 {
-    global $xoopsDB, $eh;
+    global $xoopsDB;
     if ('' !== $items) {
         $z           = 0;
         $ret         = [];
@@ -564,6 +589,10 @@ function get_search_results($items = '')
         foreach ($split_items as $item) {
             $sql         = 'SELECT i.itemid, i.title, i.uid, i.created, t.description FROM ' . $xoopsDB->prefix($helper->getDirname() . '_items') . ' i, ' . $xoopsDB->prefix($helper->getDirname() . '_item_text') . " t WHERE i.itemid=t.itemid AND i.itemid='$item'";
             $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            if (!$result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
             $num_results = $xoopsDB->getRowsNum($result);
             while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
                 $ret[$z]['itemid']      = $myrow['itemid'];
@@ -590,10 +619,14 @@ function get_search_results($items = '')
  */
 function getNumberOfResults($searchnum = 0, $limit = 10)
 {
-    global $xoopsDB, $eh;
+    global $xoopsDB;
     $block       = [];
     $sql         = 'SELECT MAX(page), items FROM ' . $xoopsDB->prefix($helper->getDirname() . '_searchresults') . " WHERE searchnum = '" . $searchnum . '\' GROUP BY page';
     $result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -620,7 +653,7 @@ function getNumberOfResults($searchnum = 0, $limit = 10)
  */
 function mod_search_count($queryarray, $andor, $limit, $offset = 0, $filter_arr)
 {
-    global $xoopsDB, $eh;
+    global $xoopsDB;
     $count = 0;
 
     $sql = 'SELECT COUNT(DISTINCT i.itemid) FROM '
@@ -641,6 +674,10 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0, $filter_arr)
         $sql .= ') ';
     }
     $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     list($count) = $xoopsDB->fetchRow($result);
 
     return $count;
@@ -654,13 +691,13 @@ function getPostedValue_text($dtypeid = 0)
 {
     global $_POST;
     $postedvalues = [];
-    if (isset($_POST["$dtypeid"])) {
+    if (isset($_POST[(string)$dtypeid])) {
         if (isset($_POST['' . $dtypeid . 'constr'])) {
             $constrvalue = $_POST['' . $dtypeid . 'constr'];
         } else {
             $constrvalue = '';
         }
-        $postvalue    = $_POST["$dtypeid"];
+        $postvalue    = $_POST[(string)$dtypeid];
         $postedvalues = ['dtypeid' => $dtypeid, 'constr' => $constrvalue, 'postvalue' => $postvalue, 'selectfields' => 0, 'addressfields' => 0];
     }
 
@@ -696,13 +733,13 @@ function getPostedValue_array($dtypeid = 0)
 {
     global $_POST;
     $postvalues_arr = [];
-    if (isset($_POST["$dtypeid"])) {
+    if (isset($_POST[(string)$dtypeid])) {
         if (isset($_POST['' . $dtypeid . 'constr'])) {
             $constrvalue = $_POST['' . $dtypeid . 'constr'];
         } else {
             $constrvalue = '';
         }
-        $postvalue    = $_POST["$dtypeid"];
+        $postvalue    = $_POST[(string)$dtypeid];
         $postedvalues = ['dtypeid' => $dtypeid, 'constr' => $constrvalue, 'postvalue' => $postvalue, 'selectfields' => 0, 'addressfields' => 0];
     }
 

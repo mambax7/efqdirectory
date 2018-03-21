@@ -74,7 +74,7 @@ function create_local_variables()
 
     foreach ($variables as $k => $v) {
         if (isset($_POST[$v])) {
-            $array_name[$v] = "$_POST[$v]";
+            $array_name[$v] = (string)$_POST[$v];
         } else {
             $array_name[$v] = '';
         }

@@ -114,6 +114,10 @@ class GmapHandler extends \XoopsObjectHandler
         $arr    = [];
         $sql    = sprintf('SELECT * FROM %s WHERE id=%u', $this->db->prefix('efqdiralpha1_gmaps'), (int)$id);
         $result = $this->db->query($sql) ; //|| $eh->show('0013');
+        if (!$result) {
+            $logger = \XoopsLogger::getInstance();
+            $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+        }
         while (false !== (list($id, $lat, $lon, $descr, $dataid) = $this->db->fetchRow($result))) {
             $arr = ['id' => $id, 'lat' => $lat, 'lon' => $lon, 'descr' => $descr, 'dataid' => $dataid];
         }

@@ -23,7 +23,7 @@ use XoopsModules\Efqdirectory;
 require_once __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 // require_once __DIR__ . '/class/xoopstree.php';
-require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
+//require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
@@ -35,7 +35,7 @@ if (isset($_POST['dirid'])) {
     $dirid = (int)$_GET['dirid'];
 }
 
-$eh = new ErrorHandler; //ErrorHandler object
+//$eh = new ErrorHandler; //ErrorHandler object
 
 if (isset($_GET['op'])) {
     $op = $_GET['op'];
@@ -51,7 +51,9 @@ if (!empty($_POST['submit'])) {
     //Get all selectable categories and put the prefix 'selectcat' in front of the catid.
     //With all results check if the result has a corresponding $_POST value.
     if ('' === $_POST['title']) {
-        $eh->show('1001');
+//        $eh::show('1001');
+        $logger = \XoopsLogger::getInstance();
+        $logger->addExtra('Validation', 'Please enter value for Title.');
     }
     $title = $myts->addSlashes($_POST['title']);
     $date  = time();
@@ -65,7 +67,11 @@ if (!empty($_POST['submit'])) {
     $submitter = $xoopsUser->getVar('uid');
     $newid     = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_items') . '_itemid_seq');
     $sql       = sprintf("INSERT INTO %s (itemid, uid, STATUS, created, title, hits, rating, votes, typeid, dirid) VALUES (%u, %u, %u, '%s', '%s', %u, %u, %u, '%s', %u)", $xoopsDB->prefix($helper->getDirname() . '_items'), $newid, $submitter, $status, time(), $title, 0, 0, 0, 0, $dirid);
-    $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    $result = $xoopsDB->query($sql);
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     if (0 == $newid) {
         $itemid = $xoopsDB->getInsertId();
     }
@@ -77,7 +83,11 @@ if (!empty($_POST['submit'])) {
         while (false !== (list($cid) = $xoopsDB->fetchRow($allcatsresult))) {
             if (isset($_POST['selected' . $cid . ''])) {
                 $sql = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cid, $itemid, 1, time());
-                $xoopsDB->query($sql) ; //|| $eh->show('0013');
+                $result = $xoopsDB->query($sql);
+                if (!$result) {
+                    $logger = \XoopsLogger::getInstance();
+                    $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+                }
                 ++$count;
             }
         }

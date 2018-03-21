@@ -135,7 +135,7 @@ include XOOPS_ROOT_PATH . '/footer.php';
  */
 function mod_search($queryarray, $andor, $limit, $offset)
 {
-    global $xoopsDB, $eh;
+    global $xoopsDB;
     $sql = 'SELECT DISTINCT i.itemid, i.title, i.uid, i.created, t.description FROM '
            . $xoopsDB->prefix($helper->getDirname() . '_data')
            . ' d RIGHT JOIN '
@@ -156,6 +156,10 @@ function mod_search($queryarray, $andor, $limit, $offset)
     $sql .= 'ORDER BY i.created DESC';
 
     $result      = $xoopsDB->query($sql, $limit, $offset) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $num_results = $xoopsDB->getRowsNum($result);
     if (!$result) {
         return 0;
@@ -187,7 +191,7 @@ function mod_search($queryarray, $andor, $limit, $offset)
  */
 function mod_search_count($queryarray, $andor, $limit, $offset = 0)
 {
-    global $xoopsDB, $eh;
+    global $xoopsDB;
     $count = 0;
     $sql   = 'SELECT COUNT(DISTINCT i.itemid) FROM '
              . $xoopsDB->prefix($helper->getDirname() . '_data')
@@ -207,6 +211,10 @@ function mod_search_count($queryarray, $andor, $limit, $offset = 0)
         $sql .= ') ';
     }
     $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     list($count) = $xoopsDB->fetchRow($result);
 
     return $count;

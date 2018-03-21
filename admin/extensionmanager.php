@@ -51,7 +51,7 @@ if (isset($_GET['ext'])) {
  */
 function showExtFields($type = 'text', $ext = '')
 {
-    global $xoopsConfig, $xoopsDB, $_POST, $myts, $eh, $xoopsUser;
+    global $xoopsConfig, $xoopsDB, $_POST, $myts, $xoopsUser;
 
     //MHE - This is added code for the listings module, handling the extension manager.
     if (!headers_sent()) {

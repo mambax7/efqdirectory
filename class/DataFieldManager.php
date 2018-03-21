@@ -177,9 +177,9 @@ class DataFieldManager extends \XoopsFormElement
                     'uselocyn' => _MD_DF_USELOCYN
                 ];
                 foreach ($addressfields['addressfields'] as $field => $fieldvalue) {
-                    $storedvalue = $addressvalues["$field"];
+                    $storedvalue = $addressvalues[(string)$field];
                     if (1 == $fieldvalue) {
-                        $title = $fieldtitles["$field"];
+                        $title = $fieldtitles[(string)$field];
                         $form->addElement(new \XoopsFormText($title, $name . $field, 50, 250, $myts->htmlSpecialChars($storedvalue)));
                     }
                 }
@@ -306,9 +306,9 @@ class DataFieldManager extends \XoopsFormElement
                 $address       = '';
 
                 foreach ($addressfields['addressfields'] as $field => $fieldvalue) {
-                    $storedvalue = $addressvalues["$field"];
+                    $storedvalue = $addressvalues[(string)$field];
                     if ('1' == $fieldvalue && '' != $storedvalue) {
-                        $title = $fieldtitles["$field"];
+                        $title = $fieldtitles[(string)$field];
 
                         switch ($field) {
                             case 'address':

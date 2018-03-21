@@ -2,7 +2,7 @@
 <hr><div align="right"><{$searchform}></div>
 <br>
 <{$lang_noresults}>
-<{if count($categories) gt 0}>
+<{if ($categories|@count)}>
 <table border='0' cellspacing='5' cellpadding='0' align="center" width="100%">
   <tr>
   <!-- Start category loop -->

@@ -31,6 +31,10 @@
 
 use XoopsModules\Efqdirectory;
 
+/**
+ * Class Listing
+ * @package XoopsModules\Efqdirectory
+ */
 class Listing extends \XoopsObject
 {
     public $_editrights = false;

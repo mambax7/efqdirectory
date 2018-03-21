@@ -100,16 +100,28 @@ if (!empty($_POST['submit'])) {
         if (!in_array($cat, $allitemcats)) {
             $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . '_xid_seq');
             $sql   = sprintf("INSERT INTO %s (xid, cid, itemid, active, created) VALUES (%u, %u, %u, '%s', '%s')", $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $newid, $cat, $post_itemid, 1, time());
-            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            if (!$result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
         } elseif (!in_array($cat, $activeitemcats)) {
             $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " SET active = '1' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
-            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            if (!$result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
         }
     }
     foreach ($allitemcats as $cat) {
         if (!in_array($cat, $postedcats)) {
             $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_item_x_cat') . " SET active = '0' WHERE itemid = '" . $post_itemid . '\' AND cid=\'' . $cat . '\'';
-            $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            $result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+            if (!$result) {
+                $logger = \XoopsLogger::getInstance();
+                $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+            }
         }
     }
     redirect_header(XOOPS_URL . "/modules/$moddir/admin/editcategories.php?item=" . $post_itemid . '', 2, _MD_CATEGORIES_UPDATED);

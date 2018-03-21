@@ -65,7 +65,7 @@ if ($xoopsUser->getVar('uid') == $owner) {
 
 function showsubscription()
 {
-    global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
+    global $xoopsDB, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
 
     /** @var Efqdirectory\Helper $helper */
     $helper = Efqdirectory\Helper::getInstance();
@@ -93,6 +93,10 @@ function showsubscription()
                         . $get_itemid
                         . ' ORDER BY t.typelevel ASC';
     $item_result      = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$item_result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows          = $xoopsDB->getRowsNum($item_result);
     $order_exists     = false;
     if ($numrows > 0) {
@@ -184,7 +188,7 @@ function showsubscription()
 function orderselect()
 {
     //function to update subscription by creating an order or updating an order.
-    global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
+    global $xoopsDB, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
 
     $helper = Efqdirectory\Helper::getInstance();
     /** @var Efqdirectory\SubscriptionHandler $subscriptionHandler */
@@ -206,7 +210,7 @@ function orderselect()
 
 function orderpayment()
 {
-    global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
+    global $xoopsDB, $myts, $moddir, $get_itemid, $owner, $xoopsOption, $xoopsTpl, $subscription, $xoopsUser;
     //Default function (if listing type is normal) would be to view the possible subscriptions.
 
     $helper = Efqdirectory\Helper::getInstance();
@@ -224,8 +228,12 @@ function orderpayment()
                     . $xoopsDB->prefix($helper->getDirname() . '_subscr_offers')
                     . ' f WHERE o.offerid=f.offerid AND o.orderid='
                     . $get_orderid
-                    . '';
+                    . ' ';
     $order_result = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$order_result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     $numrows      = $xoopsDB->getRowsNum($order_result);
     if ($numrows > 0) {
         while (false !== (list($orderid, $uid, $offerid, $typeid, $startdate, $billto, $status, $itemid, $autorenew, $price, $currency) = $xoopsDB->fetchRow($order_result))) {
@@ -275,7 +283,7 @@ function orderpayment()
 
 function terminate()
 {
-    global $xoopsDB, $eh, $myts, $moddir, $get_itemid, $editrights;
+    global $xoopsDB, $myts, $moddir, $get_itemid, $editrights;
     if (!empty($_GET['order'])) {
         $get_orderid = (int)$_GET['order'];
     } else {

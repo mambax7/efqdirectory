@@ -135,7 +135,7 @@ class DirectoryHandler extends \XoopsObjectHandler
             return false;
         }
         while (false !== (list($r_id) = $this->db->fetchRow($result))) {
-            array_push($idarray, $r_id);
+            $idarray[] = $r_id;
         }
 
         return $idarray;

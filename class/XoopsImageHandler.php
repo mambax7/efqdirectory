@@ -197,7 +197,7 @@ class XoopsImageHandler extends \XoopsObjectHandler
      * @param   $criteria {@link \CriteriaElement}
      * @return  int
      **/
-    public function getCount(CriteriaElement $criteria = null)
+    public function getCount(\CriteriaElement $criteria = null)
     {
         $sql = 'SELECT COUNT(*) FROM ' . $this->db->prefix('image');
         if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {

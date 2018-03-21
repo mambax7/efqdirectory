@@ -32,9 +32,13 @@
 
 use  XoopsModules\Efqdirectory;
 
+/**
+ * @param $options
+ * @return array
+ */
 function b_efqdiralpha1_menu_show($options)
 {
-    global $xoopsDB, $xoopsModule, $eh;
+    global $xoopsDB, $xoopsModule;
     $moduleDirName       = basename(dirname(__DIR__));
     require_once __DIR__ .  '/../class/Helper.php';
     $helper = Efqdirectory\Helper::getInstance();
@@ -50,6 +54,10 @@ function b_efqdiralpha1_menu_show($options)
     $myts                  = \MyTextSanitizer::getInstance();
     $sql                   = 'SELECT dirid, name, descr FROM ' . $xoopsDB->prefix($helper->getDirname() . '_dir') . " WHERE open='1' ORDER BY name";
     $result                = $xoopsDB->query($sql) ; //|| $eh->show('0013');
+    if (!$result) {
+        $logger = \XoopsLogger::getInstance();
+        $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
+    }
     while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $directory              = [];
         $name                   = $myts->htmlSpecialChars($myrow['name']);
