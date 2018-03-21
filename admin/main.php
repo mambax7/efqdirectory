@@ -190,8 +190,8 @@ function delListing()
 function approve()
 {
     global $xoopsConfig, $xoopsDB, $get_itemid;
-    $query = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " set status='2' where itemid=" . $get_itemid . '';
-    $result = $xoopsDB->queryF($query) ; //|| $eh->show('0013');
+    $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " set status='2' where itemid=" . $get_itemid . '';
+    $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger = \XoopsLogger::getInstance();
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
