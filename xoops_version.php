@@ -159,7 +159,7 @@ $modversion['templates'][14]['description'] = '';
 
 // Config Settings (only for modules that need config settings generated automatically)
 
-// name of config option for accessing its specified value. i.e. $xoopsModuleConfig['storyhome']
+// name of config option for accessing its specified value. i.e. $helper->getConfig('storyhome')
 $modversion['config'][1]['name'] = 'popular';
 
 // title of this config option displayed in config settings form

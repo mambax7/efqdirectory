@@ -19,6 +19,8 @@
  */
 
 use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
@@ -43,7 +45,7 @@ if (isset($_GET['op'])) {
     $op = $_POST['op'];
 }
 
-if (empty($xoopsUser) and !$xoopsModuleConfig['anonpost']) {
+if (empty($xoopsUser) and !$helper->getConfig('anonpost')) {
     redirect_header(XOOPS_URL . '/user.php', 2, _MD_MUSTREGFIRST);
 }
 
@@ -58,7 +60,7 @@ if (!empty($_POST['submit'])) {
     $title = $myts->addSlashes($_POST['title']);
     $date  = time();
     $newid = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_items') . '_itemid_seq');
-    if (1 == $xoopsModuleConfig['autoapprove']) {
+    if (1 == $helper->getConfig('autoapprove')) {
         $status = 1;
     } else {
         $status = 0;
@@ -104,7 +106,7 @@ if (!empty($_POST['submit'])) {
     $tags = array();
     $tags['ITEM_NAME'] = $title;
     $tags['ITEM_URL'] = XOOPS_URL . '/modules/'. $xoopsModule->getVar('dirname') . '/listing.php?item=' . $itemid;
-    if ($xoopsModuleConfig['autoapprove'] == 1) {
+    if ($helper->getConfig('autoapprove') == 1) {
     $notificationHandler->triggerEvent('global', $itemid, 'new_listing', $tags);
     redirect_header(XOOPS_URL."/modules/$moddir/edit.php?item=".$itemid."",2,_MD_APPROVED);
     } else {
@@ -168,7 +170,7 @@ if (!empty($_POST['submit'])) {
     $xoopsTpl->assign('submit_form', ob_get_contents());
     ob_end_clean();
 
-    $xoopsTpl->assign('notify_show', !empty($xoopsUser) && !$xoopsModuleConfig['autoapprove'] ? 1 : 0);
+    $xoopsTpl->assign('notify_show', !empty($xoopsUser) && !$helper->getConfig('autoapprove') ? 1 : 0);
     $xoopsTpl->assign('lang_sitetitle', _MD_SITETITLE);
     $xoopsTpl->assign('lang_siteurl', _MD_SITEURL);
     $xoopsTpl->assign('lang_category', _MD_CATEGORYC);

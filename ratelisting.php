@@ -19,6 +19,8 @@
  */
 
 use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 //require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';
@@ -34,7 +36,7 @@ if (!empty($_POST['submit'])) {
     }
 
     //Make sure only 1 anonymous from an IP in a single day.
-    $anonwaitdays = $xoopsModuleConfig['anonvotes_waitdays'];
+    $anonwaitdays = $helper->getConfig('anonvotes_waitdays');
     $ip           = getenv('REMOTE_ADDR');
     $p_itemid     = (int)$_POST['item'];
     $p_catid      = (int)$_POST['catid'];

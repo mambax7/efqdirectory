@@ -38,7 +38,7 @@ function PrintPage($coupid)
     $couponHandler->increment($coupid);
     $coupon     = $couponHandler->getLinkedCoupon($coupid);
     $coupon_arr = $couponHandler->prepare2show($coupon);
-    //$xoopsTpl->assign('coupon_footer', $xoopsModuleConfig['coupon_footer']);
+    //$xoopsTpl->assign('coupon_footer', $helper->getConfig('coupon_footer'));
     $xoopsTpl->assign('coupon', $coupon_arr['items']['coupons'][0]);
     $xoopsTpl->template_dir = XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->dirname();
     $xoopsTpl->display('db:efqdiralpha1_print_savings.tpl');

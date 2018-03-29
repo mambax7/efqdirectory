@@ -12,6 +12,10 @@
  *
  */
 
+use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
+
 $vars = [
     'item_name',
     'item_number',
@@ -51,7 +55,7 @@ foreach ($vars as $k => $v) {
 }
 
 //Configuration Settings
-$paypal['business']    = $xoopsModuleConfig['paypal_business_mail'];
+$paypal['business']    = $helper->getConfig('paypal_business_mail');
 $paypal['site_url']    = '' . XOOPS_URL . '/modules/' . $moddir . '/';
 $paypal['image_url']   = '';
 $paypal['success_url'] = 'ipn.php';
@@ -62,9 +66,9 @@ $paypal['return_method'] = '2'; //1=GET 2=POST
 $paypal['currency_code'] = 'EUR'; //[USD,GBP,JPY,CAD,EUR]
 $paypal['lc']            = 'US';
 
-if ('1' == $xoopsModuleConfig['paypal_test']) {
+if ('1' == $helper->getConfig('paypal_test')) {
     $paypal['url'] = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
-} elseif ('0' == $xoopsModuleConfig['paypal_secure_yn']) {
+} elseif ('0' == $helper->getConfig('paypal_secure_yn')) {
     $paypal['url'] = 'http://www.paypal.com/cgi-bin/webscr';
 } else {
     $paypal['url'] = 'https://www.paypal.com/cgi-bin/webscr';

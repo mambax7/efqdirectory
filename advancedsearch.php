@@ -19,6 +19,8 @@
  */
 
 use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 //Include XOOPS classes
@@ -163,7 +165,7 @@ if (isset($_POST['submit'])) {
     $emptyarr[] = '';
     $querydiff  = array_diff($queryarr, $emptyarr);
 
-    $limit  = $xoopsModuleConfig['searchresults_perpage'];
+    $limit  = $helper->getConfig('searchresults_perpage');
     $offset = ($get_page - 1) * $limit;
 
     $andor         = 'AND';
@@ -275,7 +277,7 @@ if (isset($_POST['submit'])) {
     }
     $maxpages      = 10;
     $maxcount      = 30;
-    $limit         = $xoopsModuleConfig['searchresults_perpage'];
+    $limit         = $helper->getConfig('searchresults_perpage');
     $count_results = getNumberOfResults($get_searchnum, $limit);
     $count_pages   = 0;
 

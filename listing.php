@@ -19,6 +19,8 @@
  */
 
 use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
@@ -81,7 +83,7 @@ if (isset($xoopsUser) && null !== $xoopsUser) {
     if ($xoopsUser->getVar('uid') == $listing->getVar('uid')) {
         $islistingowner = true;
         $xoopsTpl->assign('listingowner', '1');
-        if ('2' == $listing->getVar('status') and 1 == $xoopsModuleConfig['autoapprove']) {
+        if ('2' == $listing->getVar('status') and 1 == $helper->getConfig('autoapprove')) {
             $editrights = '1';
         } else {
             $editrights = '0';
@@ -134,14 +136,14 @@ if (count($listing->_datatypes) > 0) {
     }
 }
 
-if ('0' == $xoopsModuleConfig['allowcoupons']) {
+if ('0' == $helper->getConfig('allowcoupons')) {
     $xoopsTpl->assign('couponsallowed', '0');
 } else {
     $xoopsTpl->assign('couponsallowed', '1');
     $xoopsTpl->assign('lang_addcoupon', _MD_ADDCOUPON);
     $xoopsTpl->assign('coupons', $coupon->getCountByLink($get_itemid));
 }
-if ('0' == $xoopsModuleConfig['allowsubscr']) {
+if ('0' == $helper->getConfig('allowsubscr')) {
     $xoopsTpl->assign('subscrallowed', '0');
 } else {
     $xoopsTpl->assign('subscrallowed', '1');

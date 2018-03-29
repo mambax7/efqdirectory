@@ -19,6 +19,8 @@
  */
 
 use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
@@ -85,7 +87,7 @@ if (!empty($_GET['q'])) {
     $emptyarr[] = '';
     $querydiff  = array_diff($queryarr, $emptyarr);
 
-    $limit  = $xoopsModuleConfig['searchresults_perpage'];
+    $limit  = $helper->getConfig('searchresults_perpage');
     $offset = ($get_page - 1) * $limit;
 
     $andor         = 'AND';

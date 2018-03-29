@@ -18,6 +18,8 @@
  * @author       XOOPS Development Team,
  */
 use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 
@@ -46,7 +48,7 @@ $datafieldmanager = new Efqdirectory\DataFieldManager();
 
 // If the user is not logged in and anonymous postings are
 // not allowed, redirect and exit.
-if (empty($xoopsUser) and !$xoopsModuleConfig['anonpost']) {
+if (empty($xoopsUser) and !$helper->getConfig('anonpost')) {
     redirect_header(XOOPS_URL . '/user.php', 2, _MD_MUSTREGFIRST);
 }
 
@@ -321,7 +323,7 @@ if (!empty($_POST['submit'])) {
                                               . _MD_PUBLISH_LISTING
                                               . '"></form><br>';
                 $xoopsTpl->assign('submitview_button', $submit_for_approval_button);
-            } elseif (1 == $xoopsModuleConfig['autoapprove']) {
+            } elseif (1 == $helper->getConfig('autoapprove')) {
                 // If status is not 0 and autoapprove is on, the submitter or
                 // admin can edit the listing and with the button "view listing"
                 // Go to the listing page in 'view' mode.

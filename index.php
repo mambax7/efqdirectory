@@ -19,6 +19,8 @@
  */
 
 use XoopsModules\Efqdirectory;
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
@@ -68,7 +70,7 @@ if ('0' == $get_dirid && '0' == $get_catid) {
     }
     $num_results = $xoopsDB->getRowsNum($result);
     if (1 == $num_results) {
-        if (1 == $xoopsModuleConfig['autoshowonedir']) {
+        if (1 == $helper->getConfig('autoshowonedir')) {
             while (false !== (list($dirid, $name, $descr, $img) = $xoopsDB->fetchRow($result))) {
                 $get_dirid = $dirid;
             }
@@ -181,18 +183,18 @@ if (0 != $get_dirid || 0 != $get_catid) {
         } else {
             $isadmin = false;
         }
-        /*if ($xoopsModuleConfig['allowcomments'] == 1) {
+        /*if ($helper->getConfig('allowcomments') == 1) {
         $xoopsTpl->assign('allowcomments', true);
         $xoopsTpl->assign('lang_comments' , _COMMENTS);
         }
-        if ($xoopsModuleConfig['allowreviews'] == 1) {
+        if ($helper->getConfig('allowreviews') == 1) {
         $xoopsTpl->assign('allowreviews', true);
         }*/
-        if (1 == $xoopsModuleConfig['allowtellafriend']) {
+        if (1 == $helper->getConfig('allowtellafriend')) {
             $xoopsTpl->assign('allowtellafriend', true);
             $xoopsTpl->assign('lang_tellafriend', _MD_TELLAFRIEND);
         }
-        if (1 == $xoopsModuleConfig['allowrating']) {
+        if (1 == $helper->getConfig('allowrating')) {
             $xoopsTpl->assign('allowrating', true);
             $xoopsTpl->assign('lang_rating', _MD_RATINGC);
             $xoopsTpl->assign('lang_ratethissite', _MD_RATETHISSITE);
@@ -235,7 +237,7 @@ if (0 != $get_dirid || 0 != $get_catid) {
                     $votestring = sprintf(_MD_NUMVOTES, $votes);
                 }
 
-                if ('1' == $xoopsModuleConfig['showdatafieldsincat']) {
+                if ('1' == $helper->getConfig('showdatafieldsincat')) {
                     $xoopsTpl->assign('showdatafieldsincat', true);
                     $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
                     $sql         .= 'FROM '
@@ -303,7 +305,7 @@ if (0 != $get_dirid || 0 != $get_catid) {
             if (isset($_GET['show'])) {
                 $show = (int)$_GET['show'];
             } else {
-                $show = $xoopsModuleConfig['perpage'];
+                $show = $helper->getConfig('perpage');
             }
             $min = isset($_GET['min']) ? (int)$_GET['min'] : 0;
             if (!isset($max)) {
@@ -319,18 +321,18 @@ if (0 != $get_dirid || 0 != $get_catid) {
             $totalcount = $numrows;
             $page_nav   = '';
             if ($numrows > 0) {
-                /*if ($xoopsModuleConfig['allowcomments'] == 1) {
+                /*if ($helper->getConfig('allowcomments') == 1) {
                 $xoopsTpl->assign('allowcomments', true);
                 $xoopsTpl->assign('lang_comments' , _COMMENTS);
                 }*/
-                /*if ($xoopsModuleConfig['allowreviews'] == 1) {
+                /*if ($helper->getConfig('allowreviews') == 1) {
                 $xoopsTpl->assign('allowreviews', true);
                 }*/
-                if (1 == $xoopsModuleConfig['allowtellafriend']) {
+                if (1 == $helper->getConfig('allowtellafriend')) {
                     $xoopsTpl->assign('allowtellafriend', true);
                     $xoopsTpl->assign('lang_tellafriend', _MD_TELLAFRIEND);
                 }
-                if (1 == $xoopsModuleConfig['allowrating']) {
+                if (1 == $helper->getConfig('allowrating')) {
                     $xoopsTpl->assign('allowrating', true);
                     $xoopsTpl->assign('lang_rating', _MD_RATINGC);
                     $xoopsTpl->assign('lang_ratethissite', _MD_RATETHISSITE);
@@ -373,12 +375,12 @@ if (0 != $get_dirid || 0 != $get_catid) {
                         $xoopsTpl->assign('lang_cursortedby', sprintf(_MD_CURSORTEDBY, convertorderbytrans($orderby)));
                     }
                 }
-                if (1 == $xoopsModuleConfig['showlinkimages']) {
+                if (1 == $helper->getConfig('showlinkimages')) {
                     $xoopsTpl->assign('showlinkimages', 1);
                 }
                 while (false !== (list($itemid, $logourl, $uid, $status, $created, $itemtitle, $hits, $rating, $votes, $typeid, $dirid, $level, $description, $cid) = $xoopsDB->fetchRow($result))) {
                     if ($isadmin) {
-                        if (1 == $xoopsModuleConfig['showlinkimages']) {
+                        if (1 == $helper->getConfig('showlinkimages')) {
                             $adminlink = '<a href="' . XOOPS_URL . '/modules/' . $moddir . '/admin/index.php?op=edit&amp;item=' . $itemid . '"><img src="' . XOOPS_URL . '/modules/' . $moddir . '/assets/images/editicon.gif" border="0" alt="' . _MD_EDITTHISLISTING . '"></a>';
                         } else {
                             $adminlink = '';
@@ -392,7 +394,7 @@ if (0 != $get_dirid || 0 != $get_catid) {
                         $votestring = sprintf(_MD_NUMVOTES, $votes);
                     }
 
-                    if ('1' == $xoopsModuleConfig['showdatafieldsincat']) {
+                    if ('1' == $helper->getConfig('showdatafieldsincat')) {
                         $xoopsTpl->assign('showdatafieldsincat', true);
                         $sql         = 'SELECT DISTINCT t.dtypeid, t.title, t.section, t.icon, f.typeid, f.fieldtype, f.ext, t.options, t.custom, d.itemid, d.value, d.customtitle ';
                         $sql         .= 'FROM '

@@ -156,8 +156,10 @@ function newlinkgraphic($time, $status)
  */
 function popgraphic($hits)
 {
-    global $xoopsModuleConfig, $moddir;
-    if ($hits >= $xoopsModuleConfig['popular']) {
+    global $moddir;
+    /** @var Efqdirectory\Helper $helper */
+    $helper = Efqdirectory\Helper::getInstance();
+    if ($hits >= $helper->getConfig('popular')) {
         return '&nbsp;<img src="' . XOOPS_URL . "/modules/$moddir/assets/images/pop.gif\" alt=\"" . _MD_POPULAR . '">';
     }
 

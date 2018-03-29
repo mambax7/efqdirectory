@@ -61,8 +61,9 @@ class Gmap extends \XoopsObject
      */
     public function __construct($gmap = false)
     {
-        global $xoopsModuleConfig;
-        $key = $xoopsModuleConfig['gmapkey'];
+        /** @var Efqdirectory\Helper $helper */
+        $helper = Efqdirectory\Helper::getInstance();
+        $key = $helper->getConfig('gmapkey');
         $this->setKey($key);
         $this->setPointsJS('');
 
