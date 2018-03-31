@@ -23,7 +23,7 @@ use XoopsModules\Efqdirectory;
 include __DIR__ . '/../../mainfile.php';
 include XOOPS_ROOT_PATH . '/header.php';
 $moduleDirName = basename(__DIR__);
-$coupid        = isset($_GET['coupid']) ? (int)$_GET['coupid'] : 0;
+$coupid        = \Xmf\Request::getInt('coupid', 0, 'GET');
 if (!($coupid > 0)) {
     redirect_header('index.php');
 }

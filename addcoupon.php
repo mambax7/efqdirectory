@@ -41,7 +41,7 @@ $moddir = $xoopsModule->getVar('dirname');
 $mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 
 //$moddir = $xoopsModule->getvar("dirname");
-$couponid = isset($_GET['couponid']) ? (int)$_GET['couponid'] : 0;
+$couponid = \Xmf\Request::getInt('couponid', 0, 'GET');
 if (isset($_POST['itemid'])) {
     $itemid = (int)$_POST['itemid'];
 } elseif (isset($_GET['item'])) {
@@ -79,13 +79,13 @@ if ($couponid > 0) {
         $expire    = time() + 3600 * 24 * 7;
     }
 } else {
-    $itemid      = isset($_POST['itemid']) ? (int)$_POST['itemid'] : (isset($_GET['item']) ? (int)$_GET['item'] : 0);
-    $couponid    = isset($_POST['couponid']) ? (int)$_POST['couponid'] : null;
-    $description = isset($_POST['description']) ? $_POST['description'] : '';
-    $publish     = isset($_POST['publish']) ? $_POST['publish'] : 0;
-    $image       = isset($_POST['image']) ? $_POST['image'] : '';
-    $expire      = isset($_POST['expire']) ? $_POST['expire'] : 0;
-    $heading     = isset($_POST['heading']) ? $_POST['heading'] : '';
+    $itemid      = \Xmf\Request::getInt('itemid', (isset($_GET['item']) ? (int)$_GET['item'] : 0), 'POST');
+    $couponid    = \Xmf\Request::getInt('couponid', null, 'POST');
+    $description = \Xmf\Request::getString('description', '', 'POST');
+    $publish     = \Xmf\Request::getInt('publish', 0, POST);
+    $image       = \Xmf\Request::getString('image', '', 'POST');
+    $expire      = \Xmf\Request::getInt('expire', 0, POST);
+    $heading     = \Xmf\Request::getString('heading', '', 'POST');
     if ($expire > 0) {
         $setexpire = 1;
     } else {

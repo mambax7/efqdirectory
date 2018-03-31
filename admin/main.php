@@ -352,7 +352,7 @@ function mergeDuplicates()
 }
 
 if (!isset($_POST['op'])) {
-    $op = isset($_GET['op']) ? $_GET['op'] : 'main';
+    $op = \Xmf\Request::getInt('op', 'main', 'GET');
 } else {
     $op = $_POST['op'];
 }

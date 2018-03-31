@@ -28,8 +28,8 @@ $myts = \MyTextSanitizer::getInstance();// MyTextSanitizer object
 //$eh     = new ErrorHandler;
 $moddir = $xoopsModule->getVar('dirname');
 
-$itemid = isset($_GET['itemid']) ? (int)$_GET['itemid'] : 0;
-$catid  = isset($_GET['catid']) ? (int)$_GET['catid'] : 0;
+$itemid = \Xmf\Request::getInt('itemid', 0, 'GET');
+$catid  = \Xmf\Request::getInt('catid', 0, 'GET');
 
 $GLOBALS['xoopsOption']['template_main'] = 'efqdiralpha1_savings.tpl';
 include XOOPS_ROOT_PATH . '/header.php';

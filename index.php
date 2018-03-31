@@ -307,7 +307,7 @@ if (0 != $get_dirid || 0 != $get_catid) {
             } else {
                 $show = $helper->getConfig('perpage');
             }
-            $min = isset($_GET['min']) ? (int)$_GET['min'] : 0;
+            $min = \Xmf\Request::getInt('min', 0, 'GET');
             if (!isset($max)) {
                 $max = $min + $show;
             }
