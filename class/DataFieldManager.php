@@ -78,7 +78,7 @@ class DataFieldManager extends \XoopsFormElement
                         $size     = 5;
                     // no break
                     case 'value':
-                        if ('' != $ext_item_value and '' == $value) {
+                        if ('' != $ext_item_value && '' == $value) {
                             $value = $ext_item_value;
                         }
                         break;

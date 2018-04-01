@@ -19,10 +19,12 @@
  */
 
 use XoopsModules\Efqdirectory;
+
+include __DIR__ . '/header.php';
+
 /** @var Efqdirectory\Helper $helper */
 $helper = Efqdirectory\Helper::getInstance();
 
-include __DIR__ . '/header.php';
 //Include XOOPS classes
 // require_once __DIR__ . '/class/xoopstree.php';
 //require_once XOOPS_ROOT_PATH . '/class/module.errorhandler.php';

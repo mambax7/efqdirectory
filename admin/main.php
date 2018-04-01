@@ -32,6 +32,9 @@ global $xoopsModule;
 //$myts   = \MyTextSanitizer::getInstance();
 //$eh     = new ErrorHandler;
 $logger = \XoopsLogger::getInstance();
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
+
 $mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 // require_once __DIR__ . '/../class/class.datafieldmanager.php';
 // require_once __DIR__ . '/../class/class.subscription.php';
@@ -40,9 +43,9 @@ $mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . 
 $efqtree          = new Efqdirectory\Tree($xoopsDB->prefix($helper->getDirname() . '_cat'), 'cid', 'pid');
 $datafieldmanager = new Efqdirectory\DataFieldManager();
 
-$listinghandler      = new Efqdirectory\ListingHandler;
-$subscription        = new Efqdirectory\Subscription;
-$subscriptionhandler = new Efqdirectory\SubscriptionHandler;
+$listinghandler      = new $helper->getHandler('Listing');
+$subscription        = new Efqdirectory\Subscription();
+$subscriptionhandler = new $helper->getHandler('Subscription');
 $moddir              = $xoopsModule->getVar('dirname');
 
 if (isset($_GET['item'])) {
@@ -58,6 +61,7 @@ function listings()
     echo "<table width='100%' border='0' cellspacing='1' class='outer'>" . '<tr class="odd"><td>';
     //$result = $xoopsDB->query("select count(*) from ".$xoopsDB->prefix("efqdiralpha1_broken")."");
     //list($totalbrokenlinks) = $xoopsDB->fetchRow($result);
+    /** @var Efqdirectory\Helper $helper */
     $helper = Efqdirectory\Helper::getInstance();
     $sql     = 'SELECT count(*) FROM ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " WHERE status='1'";
     $result3 = $xoopsDB->query($sql);
@@ -89,7 +93,7 @@ function listNewListings() //completed
 {
     global $xoopsDB, $xoopsModule, $xoopsConfig, $myts, $mytree, $mytree2, $moddir;
     $debug     = false;
-    $helper = Efqdirectory\Helper::getInstance();
+    $helper = Efqdirectory\Helper::getInstance($debug);
     $sql     = 'SELECT i.itemid, i.logourl, i.uid, i.status, i.created, i.title, i.typeid FROM ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " i WHERE i.status='1'";
     $result  = $xoopsDB->query($sql, 10, 0);
     $numrows = $xoopsDB->getRowsNum($result);
@@ -156,7 +160,7 @@ function delListing()
 {
     global $xoopsDB, $xoopsModule;
     $logger = \XoopsLogger::getInstance();
-
+    $helper = Efqdirectory\Helper::getInstance();
     $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_items'), (int)$_POST['itemid']);//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
@@ -190,7 +194,9 @@ function delListing()
 function approve()
 {
     global $xoopsConfig, $xoopsDB, $get_itemid;
-    $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " set status='2' where itemid=" . $get_itemid . '';
+    /** @var Efqdirectory\Helper $helper */
+    $helper = Efqdirectory\Helper::getInstance();
+    $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " set status='2' where itemid=" . $get_itemid . ' ';
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger = \XoopsLogger::getInstance();
@@ -202,6 +208,7 @@ function approve()
 function updateItemType()
 {
     global $xoopsConfig, $xoopsDB;
+    $helper = Efqdirectory\Helper::getInstance();
     $post_itemid = (int)$_POST['itemid'];
     $post_typeid = (int)$_POST['typeid'];
     $query       = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET typeid='$post_typeid' WHERE itemid=" . $post_itemid . '';

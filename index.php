@@ -19,10 +19,10 @@
  */
 
 use XoopsModules\Efqdirectory;
-/** @var Efqdirectory\Helper $helper */
-$helper = Efqdirectory\Helper::getInstance();
 
 include __DIR__ . '/header.php';
+/** @var Efqdirectory\Helper $helper */
+$helper = Efqdirectory\Helper::getInstance();
 $myts = \MyTextSanitizer::getInstance(); // MyTextSanitizer object
 // require_once __DIR__ . '/class/xoopstree.php';
 require_once XOOPS_ROOT_PATH . '/include/xoopscodes.php';
