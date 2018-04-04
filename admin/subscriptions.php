@@ -415,7 +415,7 @@ function deltype()
     if ($subscriptionhandler->countSubscriptionsForType($g_typeid) > 0) {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 3, _MD_ERR_ITEMTYPE_LINKED_TO_LISTINGS);
     }
-    $sql = sprintf('DELETE FROM %s WHERE typeid=%u', $xoopsDB->prefix($helper->getDirname() . '_itemtypes'), $g_typeid);
+    $sql = sprintf('DELETE FROM `%s` WHERE typeid=%u', $xoopsDB->prefix($helper->getDirname() . '_itemtypes'), $g_typeid);
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger = \XoopsLogger::getInstance();

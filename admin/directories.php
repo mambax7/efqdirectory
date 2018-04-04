@@ -222,7 +222,7 @@ function updateDir()
 
 /**
  * @param int $status
- * @return bool
+ * @return void
  */
 function changeStatus($status = 0)
 {

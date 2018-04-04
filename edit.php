@@ -189,7 +189,7 @@ if (!empty($_POST['submit'])) {
                 ++$count;
             } else {
                 if (in_array($cid, $linkedcats)) {
-                    $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $cid, $post_itemid);
+                    $sql = sprintf('DELETE FROM `%s` WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $cid, $post_itemid);
                     $result = $xoopsDB->query($sql);
                     if (!$result) {
                         $logger = \XoopsLogger::getInstance();

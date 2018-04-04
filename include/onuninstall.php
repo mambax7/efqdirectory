@@ -35,13 +35,13 @@ function xoops_module_uninstall_efqdirectory(\XoopsModule $module)
 //    return true;
 
     $moduleDirName = basename(dirname(__DIR__));
-    $xsitemapHelper      = \Xmf\Module\Helper::getHelper($moduleDirName);
+     $helper      =XXX\Helper::getInstance();
 
     /** @var Efqdirectory\Utility $utility */
     $utility     = new Efqdirectory\Utility();
 
     $success = true;
-    $xsitemapHelper->loadLanguage('admin');
+    $helper->loadLanguage('admin');
 
 
     //------------------------------------------------------------------

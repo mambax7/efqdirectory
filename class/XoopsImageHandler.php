@@ -102,7 +102,7 @@ class XoopsImageHandler extends \XoopsObjectHandler
             /*             if (isset($image_body) && $image_body != '') {
             $sql = sprintf("INSERT INTO %s (image_id, image_body) VALUES (%u, %s)", $this->db->prefix('imagebody'), $image_id, $this->db->quoteString($image_body));
             if (!$result = $this->db->query($sql)) {
-            $sql = sprintf("DELETE FROM %s WHERE image_id = %u", $this->db->prefix('image'), $image_id);
+            $sql = sprintf("DELETE FROM `%s` WHERE image_id = %u", $this->db->prefix('image'), $image_id);
             $this->db->query($sql);
 
             return false;
@@ -117,7 +117,7 @@ class XoopsImageHandler extends \XoopsObjectHandler
             /*             if (isset($image_body) && $image_body != '') {
             $sql = sprintf("UPDATE %s SET image_body = %s WHERE image_id = %u", $this->db->prefix('imagebody'), $this->db->quoteString($image_body), $image_id);
             if (!$result = $this->db->query($sql)) {
-            $this->db->query(sprintf("DELETE FROM %s WHERE image_id = %u", $this->db->prefix('image'), $image_id));
+            $this->db->query(sprintf("DELETE FROM `%s` WHERE image_id = %u", $this->db->prefix('image'), $image_id));
 
             return false;
             }
@@ -139,11 +139,11 @@ class XoopsImageHandler extends \XoopsObjectHandler
             return false;
         }
         $id  = $image->getVar('image_id');
-        $sql = sprintf('DELETE FROM %s WHERE image_id = %u', $this->db->prefix('image'), $id);
+        $sql = sprintf('DELETE FROM `%s` WHERE image_id = %u', $this->db->prefix('image'), $id);
         if (!$result = $this->db->query($sql)) {
             return false;
         }
-        $sql = sprintf('DELETE FROM %s WHERE image_id = %u', $this->db->prefix('imagebody'), $id);
+        $sql = sprintf('DELETE FROM `%s` WHERE image_id = %u', $this->db->prefix('imagebody'), $id);
         $this->db->query($sql);
 
         return true;

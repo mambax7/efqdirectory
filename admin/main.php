@@ -129,7 +129,7 @@ function delVote()
     global $xoopsDB, $_GET;
     $rid        = $_GET['rid'];
     $get_itemid = (int)$_GET['itemid'];
-    $sql        = sprintf('DELETE FROM %s WHERE ratingid = %u', $xoopsDB->prefix('listings_votedata'), $rid);
+    $sql        = sprintf('DELETE FROM `%s` WHERE ratingid = %u', $xoopsDB->prefix('listings_votedata'), $rid);
     $result = $xoopsDB->query($sql);
     if (!$result) {
         $logger = \XoopsLogger::getInstance();
@@ -161,27 +161,27 @@ function delListing()
     global $xoopsDB, $xoopsModule;
     $logger = \XoopsLogger::getInstance();
     $helper = Efqdirectory\Helper::getInstance();
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_items'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_items'), (int)$_POST['itemid']);//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_text'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_text'), (int)$_POST['itemid']);//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_img'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_img'), (int)$_POST['itemid']);//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), (int)$_POST['itemid']);//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM %s WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_loc'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_loc'), (int)$_POST['itemid']);//EDIT-RC10
     $result = $xoopsDB->queryF($query) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
@@ -666,7 +666,7 @@ switch ($op) {
                         ++$count;
                     } else {
                         if (in_array($cid, $linkedcats)) {
-                            $sql = sprintf('DELETE FROM %s WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $cid, $post_itemid);
+                            $sql = sprintf('DELETE FROM `%s` WHERE cid=%u AND itemid=%u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $cid, $post_itemid);
                             $result = $xoopsDB->query($sql);
                             if (!$result) {
                                 $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);

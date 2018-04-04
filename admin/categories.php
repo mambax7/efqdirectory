@@ -1013,7 +1013,7 @@ function deleteCat()
     }
     $dirid = getDirId($p_catid);
 
-    $sql    = sprintf('DELETE FROM %s WHERE cid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $p_catid);
+    $sql    = sprintf('DELETE FROM `%s` WHERE cid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), $p_catid);
     $result = $xoopsDB->queryF($sql);
     {
         if (!$result) {
