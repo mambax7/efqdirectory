@@ -35,11 +35,11 @@ $mytree2 = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() .
 
 $moddir = $xoopsModule->getVar('dirname');
 
-if (isset($_GET['dirid'])) {
-    $get_dirid = (int)$_GET['dirid'];
+if (\Xmf\Request::hasVar('dirid', 'GET')) {
+ $get_dirid = \Xmf\Request::getInt('dirid', 0, 'GET');
 }
-if (isset($_GET['typeid'])) {
-    $get_typeid = (int)$_GET['typeid'];
+if (\Xmf\Request::hasVar('typeid', 'GET')) {
+ $get_typeid = \Xmf\Request::getInt('typeid', 0, 'GET');
 }
 $fieldtypes = [
     '0'        => '---',
@@ -219,8 +219,8 @@ function addFieldtype()
     } else {
         $p_ext = '';
     }
-    if (isset($_POST['status'])) {
-        $p_status = (int)$_POST['status'];
+    if (\Xmf\Request::hasVar('status', 'POST')) {
+        $p_status = \Xmf\Request::getInt('status', 0, 'POST');
     } else {
         $p_status = 0;
     }
@@ -237,8 +237,8 @@ function addFieldtype()
 function editFieldtype()
 {
     global $xoopsDB, $_POST, $myts;
-    if (isset($_POST['typeid'])) {
-        $p_typeid = (int)$_POST['typeid'];
+    if (\Xmf\Request::hasVar('typeid', 'POST')) {
+        $p_typeid = \Xmf\Request::getInt('typeid', 0, 'POST');
     } else {
         exit();
     }
@@ -250,11 +250,9 @@ function editFieldtype()
     } else {
         $p_ext = '';
     }
-    if (isset($_POST['status'])) {
-        $p_status = (int)$_POST['status'];
-    } else {
-        $p_status = 0;
-    }
+
+    $p_status = \Xmf\Request::getInt('status', 0, 'POST');
+
     $sql = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_fieldtypes') . " SET title = '$p_title', fieldtype='$p_fieldtype', ext='$p_ext', activeyn='$p_status' WHERE typeid = $p_typeid";
     $result = $xoopsDB->query($sql);
     if (!$result) {
@@ -268,16 +266,16 @@ function newCat()
 {
     global $xoopsDB, $myts;
     $logger = \XoopsLogger::getInstance();
-    if (isset($_POST['dirid'])) {
-        $p_dirid = (int)$_POST['dirid'];
+    if (\Xmf\Request::hasVar('dirid', 'POST')) {
+        $p_dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
     } else {
         exit();
     }
     $p_title       = $myts->addSlashes($_POST['title']);
-    $p_active      = (int)$_POST['active'];
-    $p_pid         = (int)$_POST['pid'];
-    $p_allowlist   = (int)$_POST['allowlist'];
-    $p_showpopular = (int)$_POST['showpopular'];
+    $p_active      = \Xmf\Request::getInt('active', 0, 'POST');
+    $p_pid         = \Xmf\Request::getInt('pid', 0, 'POST');
+    $p_allowlist   = \Xmf\Request::getInt('allowlist', 0, 'POST');
+    $p_showpopular = \Xmf\Request::getInt('showpopular', 0, 'POST');
     if (isset($_POST['descr'])) {
         $p_descr = $myts->addSlashes($_POST['descr']);
     } else {
@@ -303,11 +301,7 @@ function newCat()
     redirect_header("categories.php?op=edit&cid=$newid", 0, _MD_CAT_UPDATED);
 }
 
-if (!isset($_POST['op'])) {
-    $op = isset($_GET['op']) ? $_GET['op'] : 'main';
-} else {
-    $op = $_POST['op'];
-}
+$op    = \Xmf\Request::getCmd('op', 'main');
 switch ($op) {
     case 'view':
         viewFieldtype();

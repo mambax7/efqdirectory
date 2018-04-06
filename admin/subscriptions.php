@@ -38,19 +38,15 @@ $subscriptionhandler = new Efqdirectory\SubscriptionHandler();
 $helper = Efqdirectory\Helper::getInstance();
 
 $moddir = $xoopsModule->getVar('dirname');
-if (isset($_GET['typeid'])) {
-    $get_typeid = (int)$_GET['typeid'];
-} else {
-    $get_typeid = '0';
-    if (isset($_POST['typeid'])) {
-        $post_typeid = (int)$_POST['typeid'];
+
+$get_typeid = \Xmf\Request::getInt('typeid', 0, 'GET');
+if ($get_typeid === 0) {
+    if (\Xmf\Request::hasVar('typeid', 'POST')) {
+        $post_typeid = \Xmf\Request::getInt('typeid', 0, 'POST');
     }
 }
-if (isset($_GET['offerid'])) {
-    $get_offerid = (int)$_GET['offerid'];
-} else {
-    $get_offerid = 0;
-}
+
+$get_offerid = \Xmf\Request::getInt('offerid', 0, 'GET');
 
 //$eh = new ErrorHandler; //ErrorHandler object
 $logger = \XoopsLogger::getInstance();
@@ -310,13 +306,13 @@ function addoffer()
     $helper = Efqdirectory\Helper::getInstance();
     //Get POST variables;
     $post_title    = $myts->addSlashes($_POST['title']);
-    $post_typeid   = (int)$_POST['typeid'];
+    $post_typeid   = \Xmf\Request::getInt('typeid', 0, 'POST');
     $post_duration = $myts->addSlashes($_POST['duration']);
     $post_currency = $myts->addSlashes($_POST['currency']);
-    $post_count    = (int)$_POST['count'];
+    $post_count    = \Xmf\Request::getInt('count', 0, 'POST');
     $post_price    = $myts->addSlashes($_POST['price']);
     if (isset($activeyn)) {
-        $post_activeyn = (int)$_POST['activeyn'];
+        $post_activeyn = \Xmf\Request::getInt('activeyn', 0, 'POST');
     } else {
         $post_activeyn = 0;
     }
@@ -354,18 +350,16 @@ function saveoffer()
     global $xoopsDB, $myts, $moddir;
     $helper = Efqdirectory\Helper::getInstance();
     //Get POST variables;
-    $post_offerid  = (int)$_POST['offerid'];
+    $post_offerid  = \Xmf\Request::getInt('offerid', 0, 'POST');
     $post_title    = $myts->addSlashes($_POST['title']);
-    $post_typeid   = (int)$_POST['typeid'];
+    $post_typeid   = \Xmf\Request::getInt('typeid', 0, 'POST');
     $post_duration = $myts->addSlashes($_POST['duration']);
     $post_currency = $myts->addSlashes($_POST['currency']);
-    $post_count    = (int)$_POST['count'];
+    $post_count    = \Xmf\Request::getInt('count', 0, 'POST');
     $post_price    = $myts->addSlashes($_POST['price']);
-    if (isset($_POST['activeyn'])) {
-        $post_activeyn = (int)$_POST['activeyn'];
-    } else {
-        $post_activeyn = 0;
-    }
+
+    $post_activeyn = \Xmf\Request::getInt('activeyn', 0, 'POST');
+
     if (isset($_POST['descr'])) {
         $post_descr = $myts->addSlashes($_POST['descr']);
     } else {
@@ -406,8 +400,8 @@ function deltype()
     //function to delete an item type
 {
     global $xoopsDB, $moddir, $subscriptionhandler;
-    if (isset($_GET['typeid'])) {
-        $g_typeid = (int)$_GET['typeid'];
+    if (\Xmf\Request::hasVar('typeid', 'GET')) {
+        $g_typeid = \Xmf\Request::getInt('typeid', 0, 'GET');
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/admin/subscriptions.php", 2, _MD_ERR_ITEMTYPE_DELETE);
     }
@@ -429,7 +423,7 @@ function savetype()
 {
     global $xoopsDB, $post_typeid, $myts, $moddir;
     $p_typename = $myts->addSlashes($_POST['typename']);
-    $p_level    = (int)$_POST['typelevel'];
+    $p_level    = \Xmf\Request::getInt('typelevel', 0, 'POST');
     $newid      = $xoopsDB->genId($xoopsDB->prefix($helper->getDirname() . '_itemtypes') . '_typeid_seq');
     $sql        = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_itemtypes') . " SET typename='$p_typename', typelevel='$p_level' WHERE typeid='$post_typeid'";
     $result = $xoopsDB->query($sql);

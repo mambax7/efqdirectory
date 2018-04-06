@@ -81,7 +81,7 @@ class SubscriptionHandler extends \XoopsObjectHandler
             } else {
                 return false;
             }
-            $submitter = (int)$_POST['uid'];
+            $submitter = \Xmf\Request::getInt('uid', 0, 'POST');
             $startdate = strtotime($_POST['startdate']);
             //TO DO: Add Auto renew functionality.
             //$autorenew = $_POST['autorenew'];

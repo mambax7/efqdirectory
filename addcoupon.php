@@ -42,23 +42,19 @@ $mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . 
 
 //$moddir = $xoopsModule->getvar("dirname");
 $couponid = \Xmf\Request::getInt('couponid', 0, 'GET');
-if (isset($_POST['itemid'])) {
-    $itemid = (int)$_POST['itemid'];
-} elseif (isset($_GET['item'])) {
-    $itemid = (int)$_GET['item'];
+
+if (\Xmf\Request::hasVar('itemid', 'POST')) {
+    $itemid = \Xmf\Request::getInt('itemid', 0, 'POST');
 } else {
-    $itemid = 0;
+    $itemid = \Xmf\Request::getInt('item', 0, 'GET');
 }
 
 if (empty($xoopsUser) || !$xoopsUser->isAdmin($xoopsModule->mid()) || (0 == $itemid && empty($_POST['delete']))) {
     redirect_header('index.php', 3, _NOPERM);
 }
 
-if (isset($_POST['lbr'])) {
-    $lbr = (int)$_POST['lbr'];
-} else {
-    $lbr = 0;
-}
+$lbr = \Xmf\Request::getInt('lbr', 0, 'POST');
+
 if ($couponid > 0) {
     $coupon = new Efqdirectory\CouponHandler();
     $coupon->get($couponid);
@@ -79,7 +75,7 @@ if ($couponid > 0) {
         $expire    = time() + 3600 * 24 * 7;
     }
 } else {
-    $itemid      = \Xmf\Request::getInt('itemid', (isset($_GET['item']) ? (int)$_GET['item'] : 0), 'POST');
+    $itemid      = \Xmf\Request::getInt('itemid', \Xmf\Request::getInt('item', 0, 'GET'), 'POST');
     $couponid    = \Xmf\Request::getInt('couponid', null, 'POST');
     $description = \Xmf\Request::getString('description', '', 'POST');
     $publish     = \Xmf\Request::getInt('publish', 0, POST);
@@ -97,7 +93,7 @@ if ($couponid > 0) {
 if (!empty($_POST['submit'])) {
     $coupon = new Efqdirectory\CouponHandler();
     if (isset($_POST['couponid'])) {
-        $couponid = (int)$_POST['couponid'];
+        $couponid = \Xmf\Request::getInt('couponid', 0, 'POST');
         $message  = _MD_COUPONEDITED;
     } else {
         $coupon->_new = true;
@@ -113,7 +109,7 @@ if (!empty($_POST['submit'])) {
             redirect_header('index.php', 2, _MD_ERR_COUPONIDMISSING);
         }
         $coupon   = new Efqdirectory\CouponHandler();
-        $couponid = (int)$_POST['couponid'];
+        $couponid = \Xmf\Request::getInt('couponid', 0, 'POST');
         if ($coupon->delete($couponid)) {
             redirect_header('listing.php?item=' . $itemid, 2, _MD_COUPONDELETED);
         }

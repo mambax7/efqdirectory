@@ -36,24 +36,20 @@ $mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . 
 $datafieldmanager = new Efqdirectory\DataFieldManager();
 $moddir           = $xoopsModule->getVar('dirname');
 
-if (isset($_GET['item'])) {
-    $get_itemid = (int)$_GET['item'];
+if (\Xmf\Request::hasVar('item', 'GET')) {
+ $get_itemid = \Xmf\Request::getInt('item', 0, 'GET');
 }
-if (isset($_POST['item'])) {
-    $post_itemid = (int)$_POST['item'];
+if (\Xmf\Request::hasVar('item', 'POST')) {
+ $post_itemid = \Xmf\Request::getInt('item', 0, 'POST');
 }
 
-if (isset($_POST['dirid'])) {
-    $post_dirid = (int)$_POST['dirid'];
+if (\Xmf\Request::hasVar('dirid', 'POST')) {
+ $post_dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
 }
 
 //$eh = new ErrorHandler; //ErrorHandler object
 
-if (isset($_GET['op'])) {
-    $op = $_GET['op'];
-} elseif (isset($_POST['op'])) {
-    $op = $_POST['op'];
-}
+$op    = \Xmf\Request::getCmd('op', '');
 
 if (!empty($_POST['submit'])) {
     //Get all selectable categories and put the prefix 'selectcat' in front of the catid.

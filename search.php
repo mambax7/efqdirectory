@@ -33,25 +33,20 @@ $mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix('links_cat'), 'cid', 'pi
 $moddir = $xoopsModule->getVar('dirname');
 include XOOPS_ROOT_PATH . '/header.php';
 
-if (isset($_GET['catid'])) {
-    $get_cid = (int)$_GET['cid'];
-} else {
-    $get_cid = '1';
+if (\Xmf\Request::hasVar('catid', 'GET')) {
+ $get_cid = \Xmf\Request::getInt('cid', 1, 'GET');
 }
-if (isset($_GET['dirid'])) {
-    $get_dirid = (int)$_GET['dirid'];
-} else {
-    $get_dirid = '1';
+
+if (\Xmf\Request::hasVar('dirid', 'GET')) {
+ $get_dirid = \Xmf\Request::getInt('dirid', 1, 'GET');
 }
 if (isset($_GET['orderby'])) {
     $orderby = convertOrderByIn($_GET['orderby']);
 } else {
     $orderby = 'title ASC';
 }
-if (isset($_GET['page'])) {
-    $get_page = (int)$_GET['page'];
-} else {
-    $get_page = 1;
+if (\Xmf\Request::hasVar('page', 'GET')) {
+ $get_page = \Xmf\Request::getInt('page', 1, 'GET');
 }
 $GLOBALS['xoopsOption']['template_main'] = 'efqdiralpha1_search.tpl';
 $xoopsTpl->assign('xoops_module_header', $xoops_module_header);

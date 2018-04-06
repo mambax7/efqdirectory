@@ -48,14 +48,14 @@ if (!empty($_GET['op'])) {
 
 //Check if a category is selected.
 if (!empty($_GET['catid'])) {
-    $get_catid = (int)$_GET['catid'];
+    $get_catid = \Xmf\Request::getInt('catid', 0, 'GET');
 } else {
     $get_catid = '0';
 }
 
 //Check if a directory is selected.
 if (!empty($_GET['dirid'])) {
-    $get_dirid = (int)$_GET['dirid'];
+    $get_dirid = \Xmf\Request::getInt('dirid', 0, 'GET');
 } else {
     $get_dirid = '0';
 }
@@ -302,8 +302,8 @@ if (0 != $get_dirid || 0 != $get_catid) {
                 ]);
             }
         } else {
-            if (isset($_GET['show'])) {
-                $show = (int)$_GET['show'];
+            if (\Xmf\Request::hasVar('show', 'GET')) {
+                $show = \Xmf\Request::getInt('show', 0, 'GET');
             } else {
                 $show = $helper->getConfig('perpage');
             }
@@ -482,7 +482,7 @@ if (0 != $get_dirid || 0 != $get_catid) {
 
                 //Page Numbering
                 if (1 != $listingpages && 0 != $listingpages) {
-                    $get_catid = (int)$_GET['catid'];
+                    $get_catid = \Xmf\Request::getInt('catid', 0, 'GET');
                     $prev      = $min - $show;
                     if ($prev >= 0) {
                         $page_nav .= "<a href='index.php?catid=" . $get_catid . "&amp;min=$prev&amp;orderby=$orderby&amp;show=$show'><b><u>&laquo;</u></b></a>&nbsp;";

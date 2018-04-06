@@ -45,8 +45,8 @@ $myts = \MyTextSanitizer::getInstance();
 
 $moddir = $xoopsModule->getVar('dirname');
 
-if (isset($_GET['dirid'])) {
-    $get_dir = (int)$_GET['dirid'];
+if (\Xmf\Request::hasVar('dirid', 'GET')) {
+ $get_dir = \Xmf\Request::getInt('dirid', 0, 'GET');
 }
 
 $helper = Efqdirectory\Helper::getInstance();

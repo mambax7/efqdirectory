@@ -35,8 +35,8 @@ $mytree = new Efqdirectory\MyXoopsTree($xoopsDB->prefix($helper->getDirname() . 
 
 $moddir = $xoopsModule->getVar('dirname');
 
-if (isset($_GET['dirid'])) {
-    $get_dir = (int)$_GET['dirid'];
+if (\Xmf\Request::hasVar('dirid', 'GET')) {
+ $get_dir = \Xmf\Request::getInt('dirid', 0, 'GET');
 }
 
 function dirConfig()
@@ -157,8 +157,8 @@ function updateDir()
     global $xoopsDB, $_POST, $myts, $moddir;
     $logger = \XoopsLogger::getInstance();
     $helper = Efqdirectory\Helper::getInstance();
-    if (isset($_POST['dirid'])) {
-        $p_dirid = (int)$_POST['dirid'];
+    if (\Xmf\Request::hasVar('dirid', 'POST')) {
+        $p_dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
     } else {
         echo 'no dirid';
         exit();
@@ -288,11 +288,8 @@ function newDir()
     redirect_header("directories.php?op=moddir&dirid=$db_dirid", 2, _MD_DIR_SAVED);
 }
 
-if (!isset($_POST['op'])) {
-    $op = isset($_GET['op']) ? $_GET['op'] : 'dirConfig';
-} else {
-    $op = $_POST['op'];
-}
+$op    = \Xmf\Request::getCmd('op', 'dirConfig');
+
 switch ($op) {
     case 'edit':
         editDir();

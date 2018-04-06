@@ -49,7 +49,7 @@ class CouponHandler
         global $myts;
         $this->descr   = $myts->addSlashes($_POST['description']);
         $this->image   = $myts->addSlashes($_POST['image']);
-        $this->itemid  = (int)$_POST['itemid'];
+        $this->itemid  = \Xmf\Request::getInt('itemid', 0, 'POST');
         $this->publish = strtotime($_POST['publish']['date']) + $_POST['publish']['time'];
         if (isset($_POST['expire_enable']) && (1 == $_POST['expire_enable'])) {
             $this->expire = strtotime($_POST['expire']['date']) + $_POST['expire']['time'];
@@ -68,7 +68,7 @@ class CouponHandler
             }
         } else {
             $this->message  = _MD_COUPONUPDATED;
-            $this->couponid = (int)$_POST['couponid'];
+            $this->couponid = \Xmf\Request::getInt('couponid', 0, 'POST');
             if ($this->update()) {
                 return true;
             } else {

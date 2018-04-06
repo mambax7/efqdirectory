@@ -38,9 +38,9 @@ if (!empty($_POST['submit'])) {
     //Make sure only 1 anonymous from an IP in a single day.
     $anonwaitdays = $helper->getConfig('anonvotes_waitdays');
     $ip           = getenv('REMOTE_ADDR');
-    $p_itemid     = (int)$_POST['item'];
-    $p_catid      = (int)$_POST['catid'];
-    $p_rating     = (int)$_POST['rating'];
+    $p_itemid     = \Xmf\Request::getInt('item', 0, 'POST');
+    $p_catid      = \Xmf\Request::getInt('catid', 0, 'POST');
+    $p_rating     = \Xmf\Request::getInt('rating', 0, 'POST');
 
     // Check if Rating is Null
     if ('--' == $p_rating) {
@@ -92,12 +92,12 @@ if (!empty($_POST['submit'])) {
     //Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
     updaterating($p_itemid);
     if (!empty($_POST['catid'])) {
-        $p_catid = (int)$_POST['catid'];
+        $p_catid = \Xmf\Request::getInt('catid', 0, 'POST');
     } else {
         $p_catid = 0;
     }
     if (!empty($_POST['dirid'])) {
-        $p_dirid = (int)$_POST['dirid'];
+        $p_dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
     } else {
         $p_dirid = 0;
     }
@@ -111,16 +111,10 @@ if (!empty($_POST['submit'])) {
 } else {
     $GLOBALS['xoopsOption']['template_main'] = 'efqdiralpha1_ratelisting.tpl';
     include XOOPS_ROOT_PATH . '/header.php';
-    if (isset($_GET['item'])) {
-        $get_itemid = (int)$_GET['item'];
-    } else {
-        $get_itemid = '0';
-    }
-    if (isset($_GET['catid'])) {
-        $get_catid = (int)$_GET['catid'];
-    } else {
-        $get_catid = '0';
-    }
+
+    $get_itemid = \Xmf\Request::getInt('item', 0, 'GET');
+
+    $get_catid = \Xmf\Request::getInt('catid', 0, 'GET');
 
     $sql    = 'select title from ' . $xoopsDB->prefix($helper->getDirname() . '_listings') . " where itemid=$get_itemid";
     $result = $xoopsDB->query($sql);

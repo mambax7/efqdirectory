@@ -65,7 +65,7 @@ $userid = $xoopsUser->getVar('uid');
 // If submit data was posted;
 if (!empty($_POST['submit'])) {
     if (!empty($_POST['itemid'])) {
-        $post_itemid = (int)$_POST['itemid'];
+        $post_itemid = \Xmf\Request::getInt('itemid', 0, 'POST');
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM_IDMISSING);
     }
@@ -84,7 +84,7 @@ if (!empty($_POST['submit'])) {
         exit();
     }
     if (!empty($_POST['dirid'])) {
-        $post_dirid = (int)$_POST['dirid'];
+        $post_dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
     } else {
         $post_dirid = 0;
     }
@@ -290,7 +290,7 @@ if (!empty($_POST['submit'])) {
 } else {
     // Prepare page for showing listing edit form.
     if (!empty($_GET['item'])) {
-        $get_itemid = (int)$_GET['item'];
+        $get_itemid = \Xmf\Request::getInt('item', 0, 'GET');
         $get_dirid  = getDirIdFromItem($get_itemid);
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM_GET_IDMISSING);

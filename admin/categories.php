@@ -38,16 +38,13 @@ $efqtree = new Efqdirectory\Tree($xoopsDB->prefix($helper->getDirname() . '_cat'
 $helper  = Efqdirectory\Helper::getInstance();
 
 $moddir = $xoopsModule->getVar('dirname');
-if (isset($_GET['dirid'])) {
-    $get_dirid = (int)$_GET['dirid'];
-} else {
-    $get_dirid = 0;
+$get_dirid = \Xmf\Request::getInt('dirid', 0, 'GET');
+
+if (\Xmf\Request::hasVar('dtypeid', 'GET')) {
+ $get_dtypeid = \Xmf\Request::getInt('dtypeid', 0, 'GET');
 }
-if (isset($_GET['dtypeid'])) {
-    $get_dtypeid = (int)$_GET['dtypeid'];
-}
-if (isset($_GET['catid'])) {
-    $get_catid = (int)$_GET['catid'];
+if (\Xmf\Request::hasVar('catid', 'GET')) {
+ $get_catid = \Xmf\Request::getInt('catid', 0, 'GET');
 }
 
 /**
@@ -604,7 +601,7 @@ function addDatatype()
     } else {
         $p_options = '';
     }
-    $p_fieldtype = (int)$_POST['typeid'];
+    $p_fieldtype = \Xmf\Request::getInt('typeid', 0, 'POST');
     if ('' == $p_fieldtype) {
         redirect_header("categories.php?op=edit&catid=$p_catid", 2, _MD_NOFIELDTYPE_SELECTED);
     }
@@ -1006,8 +1003,8 @@ function deleteCat()
     $logger = \XoopsLogger::getInstance();
     /** @var Efqdirectory\Helper $helper */
     $helper = Efqdirectory\Helper::getInstance();
-    if (isset($_POST['catid'])) {
-        $p_catid = (int)$_POST['catid'];
+    if (\Xmf\Request::hasVar('catid', 'POST')) {
+        $p_catid = \Xmf\Request::getInt('catid', 0, 'POST');
     } else {
         redirect_header('directories.php', 2, _MD_INVALID_DIR);
     }
@@ -1041,11 +1038,7 @@ function deleteCat()
     }
 }
 
-if (!isset($_POST['op'])) {
-    $op = isset($_GET['op']) ? $_GET['op'] : 'main';
-} else {
-    $op = $_POST['op'];
-}
+$op    = \Xmf\Request::getCmd('op', 'main');
 switch ($op) {
     case 'newdatatype':
         addDatatype();

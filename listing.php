@@ -45,13 +45,10 @@ if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
     $isadmin = false;
 }
 
-if (isset($_GET['catid'])) {
-    $get_catid = (int)$_GET['catid'];
-} else {
-    $get_catid = 0;
-}
+$get_catid = \Xmf\Request::getInt('catid', 0, 'GET');
+
 if (!empty($_GET['item'])) {
-    $get_itemid = (int)$_GET['item'];
+    $get_itemid = \Xmf\Request::getInt('item', 0, 'GET');
 } else {
     redirect_header('index.php', 2, _MD_NOVALIDITEM);
 }

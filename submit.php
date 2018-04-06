@@ -31,10 +31,10 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
 $moddir = $xoopsModule->getVar('dirname');
 $helper = Efqdirectory\Helper::getInstance();
-if (isset($_POST['dirid'])) {
-    $dirid = (int)$_POST['dirid'];
-} elseif (isset($_GET['dirid'])) {
-    $dirid = (int)$_GET['dirid'];
+if (\Xmf\Request::hasVar('dirid', 'POST')) {
+ $dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
+} elseif (\Xmf\Request::hasVar('dirid', 'GET')) {
+ $dirid = \Xmf\Request::getInt('dirid', 0, 'GET');
 }
 
 //$eh = new ErrorHandler; //ErrorHandler object
@@ -121,8 +121,8 @@ if (!empty($_POST['submit'])) {
 
     redirect_header(XOOPS_URL . "/modules/$moddir/edit.php?item=" . $itemid . '', 2, _MD_SAVED);
 } else {
-    if (isset($_GET['dirid'])) {
-        $get_dirid = (int)$_GET['dirid'];
+    if (\Xmf\Request::hasVar('dirid', 'GET')) {
+        $get_dirid = \Xmf\Request::getInt('dirid', 0, 'GET');
     } else {
         redirect_header(XOOPS_URL . "/modules/$moddir/index.php", 2, _MD_NODIRECTORYSELECTED);
     }
@@ -144,8 +144,8 @@ if (!empty($_POST['submit'])) {
     }
     $editor           = 'koivi';
     $options['name']  = 'link_description';
-    $options['value'] = empty($_REQUEST['message']) ? '' : $_REQUEST['message'];
-    $options['value'] = '';
+    $options['value'] = \Xmf\Request::getString('message', '', 'REQUEST');
+//    $options['value'] = '';
     //optional configs
     $options['rows']   = 25; // default value = 5
     $options['cols']   = 60; // default value = 50

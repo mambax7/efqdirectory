@@ -48,8 +48,8 @@ $subscription        = new Efqdirectory\Subscription();
 $subscriptionhandler = new $helper->getHandler('Subscription');
 $moddir              = $xoopsModule->getVar('dirname');
 
-if (isset($_GET['item'])) {
-    $get_itemid = (int)$_GET['item'];
+if (\Xmf\Request::hasVar('item', 'GET')) {
+ $get_itemid = \Xmf\Request::getInt('item', 0, 'GET');
 }
 
 function listings()
@@ -128,7 +128,7 @@ function delVote()
 {
     global $xoopsDB, $_GET;
     $rid        = $_GET['rid'];
-    $get_itemid = (int)$_GET['itemid'];
+    $get_itemid = \Xmf\Request::getInt('itemid', 0, 'GET');
     $sql        = sprintf('DELETE FROM `%s` WHERE ratingid = %u', $xoopsDB->prefix('listings_votedata'), $rid);
     $result = $xoopsDB->query($sql);
     if (!$result) {
@@ -161,33 +161,33 @@ function delListing()
     global $xoopsDB, $xoopsModule;
     $logger = \XoopsLogger::getInstance();
     $helper = Efqdirectory\Helper::getInstance();
-    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_items'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_items'), \Xmf\Request::getInt('itemid', 0, 'POST'));//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_text'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_text'), \Xmf\Request::getInt('itemid', 0, 'POST'));//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_img'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_img'), \Xmf\Request::getInt('itemid', 0, 'POST'));//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_cat'), \Xmf\Request::getInt('itemid', 0, 'POST'));//EDIT-RC10
     $result = $xoopsDB->queryF($sql) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_loc'), (int)$_POST['itemid']);//EDIT-RC10
+    $sql = sprintf('DELETE FROM `%s` WHERE itemid = %u', $xoopsDB->prefix($helper->getDirname() . '_item_x_loc'), \Xmf\Request::getInt('itemid', 0, 'POST'));//EDIT-RC10
     $result = $xoopsDB->queryF($query) ; //|| $eh->show('0013');
     if (!$result) {
         $logger->handleError(E_USER_WARNING, $sql, __FILE__, __LINE__);
     }
-    xoops_comment_delete($xoopsModule->getVar('mid'), (int)$_POST['itemid']);
-    xoops_notification_deletebyitem($xoopsModule->getVar('mid'), 'listing', (int)$_POST['itemid']);
+    xoops_comment_delete($xoopsModule->getVar('mid'), \Xmf\Request::getInt('itemid', 0, 'POST'));
+    xoops_notification_deletebyitem($xoopsModule->getVar('mid'), 'listing', \Xmf\Request::getInt('itemid', 0, 'POST'));
     redirect_header('index.php', 1, _MD_LISTINGDELETED);
 }
 
@@ -209,8 +209,8 @@ function updateItemType()
 {
     global $xoopsConfig, $xoopsDB;
     $helper = Efqdirectory\Helper::getInstance();
-    $post_itemid = (int)$_POST['itemid'];
-    $post_typeid = (int)$_POST['typeid'];
+    $post_itemid = \Xmf\Request::getInt('itemid', 0, 'POST');
+    $post_typeid = \Xmf\Request::getInt('typeid', 0, 'POST');
     $query       = 'UPDATE ' . $xoopsDB->prefix($helper->getDirname() . '_items') . " SET typeid='$post_typeid' WHERE itemid=" . $post_itemid . '';
     $result = $xoopsDB->query($query) ; //|| $eh->show('0013');
     if (!$result) {
@@ -358,11 +358,7 @@ function mergeDuplicates()
     redirect_header('main.php?op=duplicateDataTypes', 2, _MD_SAVED);
 }
 
-if (!isset($_POST['op'])) {
-    $op = \Xmf\Request::getInt('op', 'main', 'GET');
-} else {
-    $op = $_POST['op'];
-}
+$op    = \Xmf\Request::getCmd('op', 'main');
 switch ($op) {
     case 'approve':
         approve();
@@ -478,7 +474,7 @@ switch ($op) {
             $submitter = !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
 
             if (!empty($_POST['itemid'])) {
-                $post_itemid = (int)$_POST['itemid'];
+                $post_itemid = \Xmf\Request::getInt('itemid', 0, 'POST');
             } else {
                 redirect_header('index.php', 2, _MD_NOVALIDITEM);
             }
@@ -497,11 +493,9 @@ switch ($op) {
             } else {
                 redirect_header('index.php', 2, _MD_NOVALIDITEM);
             }
-            if (!empty($_POST['dirid'])) {
-                $post_dirid = (int)$_POST['dirid'];
-            } else {
-                $post_dirid = 0;
-            }
+
+            $post_dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
+
             if (isset($_POST['ini_description'])) {
                 $p_ini_description = $myts->addSlashes($_POST['ini_description']);
             } else {

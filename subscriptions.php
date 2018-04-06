@@ -49,7 +49,7 @@ if ($xoopsUser && $xoopsUser->isAdmin($xoopsModule->mid())) {
 }
 
 if (!empty($_GET['item'])) {
-    $get_itemid = (int)$_GET['item'];
+    $get_itemid = \Xmf\Request::getInt('item', 0, 'GET');
 } else {
     $get_itemid = '0';
 }
@@ -218,7 +218,7 @@ function orderpayment()
     //Show current subscription for listing
     //If standard subscription: Show subcription offers plus link to upgrade
     if (!empty($_GET['orderid'])) {
-        $get_orderid = (int)$_GET['orderid'];
+        $get_orderid = \Xmf\Request::getInt('orderid', 0, 'GET');
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
@@ -285,7 +285,7 @@ function terminate()
 {
     global $xoopsDB, $myts, $moddir, $get_itemid, $editrights;
     if (!empty($_GET['order'])) {
-        $get_orderid = (int)$_GET['order'];
+        $get_orderid = \Xmf\Request::getInt('order', 0, 'GET');
     } else {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_NOVALIDORDER);
     }
@@ -305,7 +305,7 @@ function terminate_confirm()
 {
     global $subscription, $get_itemid;
     if (isset($_POST['orderid'])) {
-        $post_orderid = (int)$_POST['orderid'];
+        $post_orderid = \Xmf\Request::getInt('orderid', 0, 'POST');
         if ($subscription->delete($post_orderid)) {
             redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_ORDER_DELETED);
         }
@@ -318,7 +318,7 @@ function renew()
 {
     global $subscription, $get_itemid, $editrights;
     if (!empty($_GET['order'])) {
-        $get_orderid = (int)$_GET['order'];
+        $get_orderid = \Xmf\Request::getInt('order', 0, 'GET');
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
     }
