@@ -470,10 +470,10 @@ switch ($op) {
         xoops_cp_footer();
         break;
     case 'save':
-        if (!empty($_POST['submit'])) {
+       if (\Xmf\Request::hasVar('submit', 'POST')) {
             $submitter = !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
 
-            if (!empty($_POST['itemid'])) {
+           if (\Xmf\Request::hasVar('itemid', 'POST')) {
                 $post_itemid = \Xmf\Request::getInt('itemid', 0, 'POST');
             } else {
                 redirect_header('index.php', 2, _MD_NOVALIDITEM);

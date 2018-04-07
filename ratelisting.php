@@ -91,12 +91,12 @@ if (!empty($_POST['submit'])) {
 
     //Calculate Score & Add to Summary (for quick retrieval & sorting) to DB.
     updaterating($p_itemid);
-    if (!empty($_POST['catid'])) {
+   if (\Xmf\Request::hasVar('catid', 'POST')) {
         $p_catid = \Xmf\Request::getInt('catid', 0, 'POST');
     } else {
         $p_catid = 0;
     }
-    if (!empty($_POST['dirid'])) {
+   if (\Xmf\Request::hasVar('dirid', 'POST')) {
         $p_dirid = \Xmf\Request::getInt('dirid', 0, 'POST');
     } else {
         $p_dirid = 0;

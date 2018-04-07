@@ -217,7 +217,7 @@ function orderpayment()
 
     //Show current subscription for listing
     //If standard subscription: Show subcription offers plus link to upgrade
-    if (!empty($_GET['orderid'])) {
+   if (\Xmf\Request::hasVar('orderid', 'GET')) {
         $get_orderid = \Xmf\Request::getInt('orderid', 0, 'GET');
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);
@@ -284,7 +284,7 @@ function orderpayment()
 function terminate()
 {
     global $xoopsDB, $myts, $moddir, $get_itemid, $editrights;
-    if (!empty($_GET['order'])) {
+   if (\Xmf\Request::hasVar('order', 'GET')) {
         $get_orderid = \Xmf\Request::getInt('order', 0, 'GET');
     } else {
         redirect_header("subscriptions.php?item=$get_itemid", 2, _MD_NOVALIDORDER);
@@ -317,7 +317,7 @@ function terminate_confirm()
 function renew()
 {
     global $subscription, $get_itemid, $editrights;
-    if (!empty($_GET['order'])) {
+   if (\Xmf\Request::hasVar('order', 'GET')) {
         $get_orderid = \Xmf\Request::getInt('order', 0, 'GET');
     } else {
         redirect_header('index.php', 2, _MD_NOVALIDITEM);

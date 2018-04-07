@@ -104,7 +104,7 @@ if (!empty($_POST['submit'])) {
     }
     redirect_header('listing.php?item=' . $itemid, 2, $coupon->message);
 } elseif (!empty($_POST['delete'])) {
-    if (!empty($_POST['ok'])) {
+    if (\Xmf\Request::hasVar('ok', 'POST')) {
         if (empty($_POST['couponid'])) {
             redirect_header('index.php', 2, _MD_ERR_COUPONIDMISSING);
         }
